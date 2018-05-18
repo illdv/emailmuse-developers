@@ -17,6 +17,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  transition: visibility, opacity 0.15s ease;
 }
 
 .dnd-target__overlay-background--dragging {
@@ -37,6 +38,7 @@
   justify-content: center;
   align-items: center;
   border: 2px dotted #4a4a4a;
+  transition: visibility, opacity 0.15s ease;
 }
 
 .dnd-target__overlay-message--dragging {

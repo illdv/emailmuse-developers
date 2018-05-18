@@ -7,6 +7,8 @@ const b = block('dnd-target');
 namespace DragAndDropTargetSpace {
   export interface IProps {
     onDrop: (item:any) => void;
+    showOverlay?: boolean;
+    overlayMessage?: string;
     connectDropTarget?: any;
     isOverCurrent?: boolean;
   }
@@ -39,13 +41,16 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
   }
 
   render() {
-    const {connectDropTarget, isOverCurrent, children} = this.props;
+    const {connectDropTarget, isOverCurrent, showOverlay, overlayMessage, children} = this.props;
     return connectDropTarget(
       <div className={b()}>
-        <div className={b('overlay-background', {dragging: isOverCurrent})}/>
-        <div className={b('overlay-message', {dragging: isOverCurrent})}>
-          <span>Drop files here to add them to your image library</span>
-        </div>
+        {showOverlay ? <div className={b('overlay-background', {dragging: isOverCurrent})}/> : null}
+        {showOverlay && overlayMessage ?
+          <div className={b('overlay-message', {dragging: isOverCurrent})}>
+            <span>{overlayMessage}</span>
+          </div> :
+          null
+        }
         {children}
       </div>
     );

@@ -84,7 +84,11 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
-          <DragAndDropTarget onDrop={this.onDrop}>
+          <DragAndDropTarget
+            onDrop={this.onDrop}
+            showOverlay={true}
+            overlayMessage={'Drop files here to add them to your image library'}
+          >
             <div className={b('container')}>
               <ImageLibraryListComponent items={this.state.items}/>
             </div>
