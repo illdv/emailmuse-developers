@@ -1,5 +1,8 @@
 import { handleActions, createAction } from 'redux-actions';
 import { Action } from 'redux';
+import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
+import IActionsPayload = FluxDrawerMenu.IActionsPayload;
+import { IActionPayload } from 'src/renderer/flux/utils';
 
 
 const SET_AUTH_STEP = 'SET_AUTH_STEP';
@@ -8,6 +11,32 @@ const login = {
   REQUEST: createAction('LOGIN_ACCOUNT_REQUEST'),
   SUCCESS: createAction('LOGIN_ACCOUNT_SUCCESS', (token: string) => ({ token })),
   FAILURE: createAction('LOGIN_ACCOUNT_FAILURE', () => ({})),
+};
+
+export interface ICreateAccountModel {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface IUserModel {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface ICreateAccount{
+  REQUEST: (user: ICreateAccountModel) => IActionPayload<{user: ICreateAccountModel}>;
+  SUCCESS: (user: IUserModel) => IActionPayload<{user: IUserModel}>;
+  FAILURE: (error: string) => IActionPayload<{error: string}>;
+}
+
+const createAccount = {
+  REQUEST: createAction('CREATE_ACCOUNT_REQUEST', (user: ICreateAccountModel) => ({ user })),
+  SUCCESS: createAction('CREATE_ACCOUNT_SUCCESS', (user: IUserModel) => ({ user })),
+  FAILURE: createAction('CREATE_ACCOUNT_FAILURE', (error: string) => ({error})),
 };
 
 interface IActionLogin {
@@ -51,11 +80,13 @@ const reducerAccounts = handleActions({
 
 export namespace FluxAccounts {
   interface IActions {
+    createAccount: ICreateAccount;
     login: IActionLogin;
     setAuthStep: (authStep: AuthStep) => Action;
   }
 
   export const Actions: IActions = {
+    createAccount,
     login,
     setAuthStep,
   };

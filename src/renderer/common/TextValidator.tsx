@@ -3,16 +3,13 @@ import { connect, Dispatch } from 'react-redux';
 import { TextField } from '@material-ui/core/';
 import { Component } from 'react';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
-import { validate } from 'validate.js';
 
 export namespace TextValidatorSpace {
   export interface IState {
-    isBeBlur: boolean;
   }
 
   export interface IProps {
-    validations: object;
-    onError: (error: string, fieldId: string) => void;
+    validationError: string;
   }
 }
 
@@ -25,17 +22,11 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
   }
 
   render() {
-    const { validations, value, onError, ...otherProps } = this.props;
+    const {validationError,  ...otherProps } = this.props;
 
-    const constraints = { value: validations };
-
-    const error: { value: string[] } = validate({ value }, constraints);
-    console.log(error);
-
-    if (error && this.state.isBeBlur) {
-      onError(error.value[0], otherProps.id);
+    if(validationError && this.state.isBeBlur){
       return (
-        <TextField {...otherProps} error helperText={error.value[0]}/>
+        <TextField error helperText={validationError} {...otherProps} />
       );
     }
 

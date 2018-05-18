@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers} from 'redux';
 
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
 import { FluxMail } from 'src/renderer/component/MailList/flux/action';

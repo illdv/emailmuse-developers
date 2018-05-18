@@ -18,8 +18,8 @@ export function Title(props: { title: string, subtitle?: string }) {
   );
 }
 
-export function Navigation(props: { onBack: () => void, onNext: () => void }) {
-  const { onBack, onNext } = props;
+export function Navigation(props: { onBack?: () => void, onNext?: () => void, canNext?: boolean } = {canNext: true}) {
+  const { onBack, onNext, canNext } = props;
   return (
     <Grow in timeout={2000}>
       <Grid item xs={12}>
@@ -33,7 +33,7 @@ export function Navigation(props: { onBack: () => void, onNext: () => void }) {
           </Grid>
           <Grid item xs={6}>
             <Grid container justify={'flex-end'}>
-              <Button variant={'raised'} color="primary" onClick={onNext}>
+              <Button variant={'raised'} color="primary" onClick={onNext} disabled={canNext}>
                 Next
               </Button>
             </Grid>
