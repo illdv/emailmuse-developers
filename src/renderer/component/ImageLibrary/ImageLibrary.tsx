@@ -4,6 +4,7 @@ import { Paper, withStyles } from '@material-ui/core/';
 import {TypeBackground} from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
+import EmailerAPI from 'src/renderer/API/EmailerAPI';
 
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
@@ -53,11 +54,36 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     }
   }
 
+  onProgress = (percentage) => {
+    console.log('Loaded:', percentage);
+  }
+
   addFiles = files => {
     const filtered = files.filter(file => !this.state.items.some(item => item.name === file.name));
     this.setState({items: [...this.state.items, ...filtered]});
     // tslint:disable-next-line
     console.log('Files has been added', filtered);
+
+    // const filo = filtered[0];
+    // let fileData = new FormData();
+    // fileData.append(filo.name, filo.path);
+
+    // EmailerAPI.ImageLibrary.uploadImage(filtered[0], this.onProgress).then(result => {
+    //   console.log('Post done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.getImages().then(result => {
+    //   console.log('Get done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.updateImage(1, "lol").then(result => {
+    //   console.log('Get done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.deleteImages([1,2]).then(result => {
+    //   console.log('Get done', result);
+    // });
+    // filtered[0]
   }
 
   render() {
