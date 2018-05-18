@@ -1,0 +1,36 @@
+{
+  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "jsRules": {},
+  "rules": {
+    "quotemark": [
+      "single",
+      true,
+      "jsx-double"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "member-ordering": false,
+    "no-namespace": false,
+    "member-access": false,
+    "no-var-requires": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "no-empty-interface": false,
+    "jsx-boolean-value": false,
+    "jsx-wrap-multiline": true
+  },
+  "rulesDirectory": []
+}
