@@ -1,13 +1,12 @@
 import * as React from 'react';
 import block from 'bem-ts';
 import {GridList, GridListTile, GridListTileBar} from '@material-ui/core';
-import {IFileInfo} from "./ImageLibrary";
 const b = block('image-library-list');
 import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
 
 namespace ImageLibraryListSpace {
   export interface IProps {
-    items: IFileInfo[];
+    items: File[];
   }
   export interface IState {
 
@@ -30,7 +29,7 @@ export class ImageLibraryListComponent extends
             <img src={item.name}/>
             <GridListTileBar
               title={item.name}
-              subtitle={<span>{item.lastModifiedDate.toDateString()}</span>}
+              subtitle={<span>{new Date(item.lastModified).toDateString()}</span>}
             />
           </GridListTile>
         )}

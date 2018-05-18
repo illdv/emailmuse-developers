@@ -11,16 +11,12 @@ import block from 'bem-ts';
 
 const b = block('image-library');
 
-export interface IFileInfo {
-  [keys: string]: any;
-}
-
 namespace ImageLibrarySpace {
   export interface IProps {
     classes?: any;
   }
   export interface IState {
-    items: IFileInfo[];
+    items: File[];
   }
 }
 
