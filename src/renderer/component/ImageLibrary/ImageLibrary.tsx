@@ -20,7 +20,6 @@ namespace ImageLibrarySpace {
     classes?: any;
   }
   export interface IState {
-    dragging: boolean;
     items: IFileInfo[];
   }
 }
@@ -37,17 +36,11 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   constructor (props) {
     super(props);
     this.state = {
-      dragging: false,
       items: []
     };
   }
 
-  onDrag = isOverCurrent => {
-    this.setState({dragging: isOverCurrent});
-  }
-
   onDrop = item => {
-    this.setState({dragging: false});
     if (item && item.files) {
       console.log(item.files[0].lastModifiedDate);
       this.addFiles(item.files);
@@ -91,11 +84,8 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
-          <DragAndDropTarget onDrop={this.onDrop} onDrag={this.onDrag}>
-            <div className={b('container', {dragging: this.state.dragging})}>
-              <div className={b('placeholder', {dragging: this.state.dragging})}>
-                <span>Drop files here to add them to your image library</span>
-              </div>
+          <DragAndDropTarget onDrop={this.onDrop}>
+            <div className={b('container')}>
               <ImageLibraryListComponent items={this.state.items}/>
             </div>
           </DragAndDropTarget>

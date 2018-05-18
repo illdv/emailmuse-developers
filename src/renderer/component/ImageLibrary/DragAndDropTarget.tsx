@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { DropTarget } from 'react-dnd';
 import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
+import block from 'bem-ts';
+const b = block('dnd-target');
 
 namespace DragAndDropTargetSpace {
   export interface IProps {
     onDrop: (item:any) => void;
-    onDrag?: (isOverCurrent:boolean) => void;
     connectDropTarget?: any;
     isOverCurrent?: boolean;
   }
@@ -20,10 +21,9 @@ const types = {
 
 const specs = {
    drop(props, monitor, component) {
-    const item = monitor.getItem();
-    if (item && item.files && props.onDrop) {
-      props.onDrop(item);
-    }
+     if (props.onDrop) {
+       props.onDrop(monitor.getItem());
+     }
   }
 };
 
@@ -38,16 +38,14 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
     super(props);
   }
 
-  componentWillReceiveProps(props) {
-    if (props.isOverCurrent !== this.props.isOverCurrent) {
-      props.onDrag(props.isOverCurrent);
-    }
-  }
-
   render() {
-    const {connectDropTarget, children} = this.props;
+    const {connectDropTarget, isOverCurrent, children} = this.props;
     return connectDropTarget(
-      <div className={'dnd-target'}>
+      <div className={b()}>
+        <div className={b('overlay-background', {dragging: isOverCurrent})}/>
+        <div className={b('overlay-message', {dragging: isOverCurrent})}>
+          <span>Drop files here to add them to your image library</span>
+        </div>
         {children}
       </div>
     );
