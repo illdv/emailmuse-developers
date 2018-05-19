@@ -33,7 +33,7 @@ export function Navigation(props: { onBack?: () => void, onNext?: () => void, ca
           </Grid>
           <Grid item xs={6}>
             <Grid container justify={'flex-end'}>
-              <Button variant={'raised'} color="primary" onClick={onNext} disabled={canNext}>
+              <Button variant={'raised'} color="primary" onClick={onNext} disabled={!canNext}>
                 Next
               </Button>
             </Grid>

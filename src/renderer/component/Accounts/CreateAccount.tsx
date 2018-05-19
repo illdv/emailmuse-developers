@@ -13,6 +13,7 @@ import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts'
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
+import { useOrDefault } from 'src/renderer/flux/utils';
 
 const styles = theme => ({
   root: {
@@ -27,14 +28,6 @@ const styles = theme => ({
     paddingBottom: 26,
   }
 });
-
-function useOrDefault(func: () => any, defaultValue: string) {
-  try {
-    return func();
-  } catch (e) {
-    return defaultValue;
-  }
-}
 
 export namespace CreateAccountSpace {
   export interface IState {
@@ -111,8 +104,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
 
     const validationError = validate(user, validationSchema);
 
-    const validationSuccesses = validationError !== undefined;
-
+    const canNext = validationError === undefined;
 
     return (
       <InCenter>
@@ -169,7 +161,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                 </Grid>
               </Grid>
             </Grow>
-            <Navigation onBack={onClickBackToLogin} onNext={onCreateAccount(user)} canNext={validationSuccesses}/>
+            <Navigation onBack={onClickBackToLogin} onNext={onCreateAccount(user)} canNext={canNext}/>
           </Grid>
         </Paper>
       </InCenter>

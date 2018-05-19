@@ -4,6 +4,9 @@ import { connect, Dispatch } from 'react-redux';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, TextField, Theme, WithStyles, withStyles } from '@material-ui/core/';
 import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
+import * as validate from 'validate.js';
+import { TextValidator } from 'src/renderer/common/TextValidator';
+import { useOrDefault } from 'src/renderer/flux/utils';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -30,6 +33,8 @@ export namespace PaperDialogSpace {
     subtitle?: string;
     label: string;
     body?: ReactElement<any>;
+    defaultValue: string;
+    canNext?: boolean;
     /**
      * Happened if user enter value and click next.
      */
@@ -38,12 +43,28 @@ export namespace PaperDialogSpace {
      * Happened if user click onBack.
      */
     onBack?: () => void;
+    validation: object;
   }
 }
 
 class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, PaperDialogSpace.IState> {
 
   state = { value: '' };
+
+  static defaultProps = {
+    canNext: true,
+  };
+
+  static getDerivedStateFromProps(nextProps: PaperDialogSpace.IProps, prevState: PaperDialogSpace.IState): PaperDialogSpace.IState {
+    const { defaultValue } = nextProps;
+    if (defaultValue !== prevState.value) {
+      return {
+        value: defaultValue,
+      };
+
+    }
+    return null;
+  }
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({
@@ -60,7 +81,12 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
   }
 
   render() {
-    const { classes, title, label, subtitle, body } = this.props;
+    const { classes, title, label, subtitle, body, validation } = this.props;
+    const { value }                                             = this.state;
+
+    const validateResult = validate({ value }, { value: validation });
+
+    const canNext = validateResult === undefined;
 
     return (
       <InCenter>
@@ -71,17 +97,19 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
               <Grid container item xs={12} style={{ paddingTop: 0 }}>
                 <Grid item xs={12}>
                   {body ||
-                  <TextField
+                  <TextValidator
                     fullWidth
                     label={label}
                     margin="normal"
+                    value={value}
                     onChange={this.onChange}
+                    validationError={useOrDefault(() => (validateResult.value[0]), '')}
                   />
                   }
                 </Grid>
               </Grid>
             </Grow>
-            <Navigation onBack={this.onBack} onNext={this.onNext}/>
+            <Navigation onBack={this.onBack} onNext={this.onNext} canNext={canNext && this.props.canNext}/>
           </Grid>
         </Paper>
       </InCenter>
