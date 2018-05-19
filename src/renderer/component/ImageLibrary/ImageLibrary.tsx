@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { IStyle } from 'type/materialUI';
 import { Paper, withStyles } from '@material-ui/core/';
-import {TypeBackground} from '@material-ui/core/styles/createPalette';
+import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
 import EmailerAPI from 'src/renderer/API/EmailerAPI';
 
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
-
 const b = block('image-library');
 
 namespace ImageLibrarySpace {
@@ -38,7 +37,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
 
   onDrop = item => {
     if (item && item.files) {
-      console.log(item.files[0].lastModifiedDate);
+      console.log('Add files event: ', item.files);
       this.addFiles(item.files);
     }
   }
@@ -47,11 +46,13 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     console.log('Loaded:', percentage);
   }
 
+  // TODO: Should user be prevented from uploading one same image twice
+  // and how two images could be identified as 'same'?
   addFiles = files => {
     const filtered = files.filter(file => !this.state.items.some(item => item.name === file.name));
     this.setState({items: [...this.state.items, ...filtered]});
     // tslint:disable-next-line
-    console.log('Files has been added', filtered);
+    // console.log('Files has been added', filtered);
 
     // const filo = filtered[0];
     // let fileData = new FormData();

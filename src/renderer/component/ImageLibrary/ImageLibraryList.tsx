@@ -1,8 +1,9 @@
 import * as React from 'react';
-import block from 'bem-ts';
 import {GridList, GridListTile, GridListTileBar} from '@material-ui/core';
-const b = block('image-library-list');
 import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
+import block from 'bem-ts';
+
+const b = block('image-library-list');
 
 namespace ImageLibraryListSpace {
   export interface IProps {

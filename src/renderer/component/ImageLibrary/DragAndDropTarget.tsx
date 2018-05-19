@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DropTarget } from 'react-dnd';
 import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
 import block from 'bem-ts';
+
 const b = block('dnd-target');
 
 namespace DragAndDropTargetSpace {
@@ -10,7 +11,8 @@ namespace DragAndDropTargetSpace {
     showOverlay?: boolean;
     overlayMessage?: string;
     connectDropTarget?: any;
-    isOverCurrent?: boolean;
+    canDrop?: boolean;
+    dragOver?: boolean;
   }
   export interface IState {
 
@@ -22,16 +24,20 @@ const types = {
 };
 
 const specs = {
-   drop(props, monitor, component) {
-     if (props.onDrop) {
-       props.onDrop(monitor.getItem());
-     }
+  drop(props, monitor, component) {
+    if (props.onDrop) {
+      const item = monitor.getItem();
+      if (item.files && item.files.length) {
+        props.onDrop(item);
+      }
+    }
   }
 };
 
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
-  isOverCurrent: monitor.isOver({ shallow: true })
+  canDrop: monitor.canDrop(),
+  dragOver: monitor.isOver(),
 });
 
 @DropTarget(types.FILE, specs, collect)
@@ -41,12 +47,15 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
   }
 
   render() {
-    const {connectDropTarget, isOverCurrent, showOverlay, overlayMessage, children} = this.props;
+    const {connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children} = this.props;
     return connectDropTarget(
       <div className={b()}>
-        {showOverlay ? <div className={b('overlay-background', {dragging: isOverCurrent})}/> : null}
+        {showOverlay ?
+          <div className={b('overlay-background', {'can-drop': canDrop, 'drag-over': dragOver})}/> :
+          null
+        }
         {showOverlay && overlayMessage ?
-          <div className={b('overlay-message', {dragging: isOverCurrent})}>
+          <div className={b('overlay-message', {'can-drop': canDrop})}>
             <span>{overlayMessage}</span>
           </div> :
           null
