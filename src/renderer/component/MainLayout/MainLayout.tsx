@@ -10,8 +10,8 @@ import { DragDropContext } from 'react-dnd';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
-import MailList from 'src/renderer/component/MailList/MailList';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
+import MailList from 'src/renderer/component/MailList/MailList';
 
 const styles: IStyle = {
   root: {

@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core/';
 
 import { Inbox, Drafts, Send, Bookmark, Collections } from '@material-ui/icons';
-import { LabelsType } from 'src/renderer/component/MailList/flux/saga/selectors';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { ReactElement } from 'react';
@@ -55,7 +54,6 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
 
 export namespace MenuSpace {
   export interface IProps {
-    onSetLabel: (visibilityLabel: LabelsType) => () => void;
     accounts: any;
     actions: FluxDrawerMenu.IActions;
   }
