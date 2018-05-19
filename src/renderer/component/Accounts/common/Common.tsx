@@ -7,7 +7,7 @@ export function Title(props: { title: string, subtitle?: string }) {
   return (
     <Grow in timeout={1000} style={{ paddingBottom: 0 }}>
       <Grid item xs={12}>
-        <Typography variant="display1" gutterBottom>
+        <Typography style={{color: 'Black'}} variant="display1" gutterBottom>
           {title}
         </Typography>
         <Typography variant="subheading" gutterBottom>

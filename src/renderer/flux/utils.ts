@@ -22,8 +22,8 @@ export interface IActionSteps {
 export function createActionSteps(actionName: string, requestHandling, successHandling, failureHandling): IActionSteps {
   const type = {
     REQUEST: `${actionName}_REQUEST`,
-    SUCCESS: `${actionName}_REQUEST`,
-    FAILURE: `${actionName}_REQUEST`,
+    SUCCESS: `${actionName}_SUCCESS`,
+    FAILURE: `${actionName}_FAILURE`,
   };
 
   return {

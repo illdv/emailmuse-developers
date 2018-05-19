@@ -7,6 +7,8 @@ import ForgotPassword from 'src/renderer/component/Accounts/ForgotPassword';
 import CreateAccount from 'src/renderer/component/Accounts/CreateAccount';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
+import { Loading } from 'src/renderer/common/Loading';
+import { CreateAccountSuccess } from 'src/renderer/component/Accounts/CreateAccountSuccess';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -43,6 +45,10 @@ export class AuthorizationLayout extends Component<AuthorizationLayoutSpace.IPro
         return <CreateAccount/>;
       case AuthStep.FORGOT_PASSWORD:
         return <ForgotPassword/>;
+      case AuthStep.LOADING:
+        return <Loading/>;
+      case AuthStep.CREATE_ACCOUNT_SUCCESS:
+        return <CreateAccountSuccess/>;
       default:
         return <Login/>;
     }

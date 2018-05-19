@@ -14,10 +14,11 @@ export namespace FluxAccounts {
       CREATE_ACCOUNT         = 'CREATE_ACCOUNT',
       CREATE_ACCOUNT_SUCCESS = 'CREATE_ACCOUNT_SUCCESS',
       FORGOT_PASSWORD        = 'FORGOT_PASSWORD',
+      LOADING                = 'LOADING',
     }
 
     export interface IUser {
-      userName: string;
+      user: string;
       email: string;
     }
   }
@@ -62,7 +63,9 @@ export namespace FluxAccounts {
       );
     }
 
-    export const SetAuthStep = createAction('SET_AUTH_STEP', (authStep: Models.AuthStep) => ({ authStep }));
+    type SetAuthStep = (authStep: Models.AuthStep) => Action;
+
+    export const SetAuthStep: SetAuthStep = createAction('SET_AUTH_STEP', (authStep: Models.AuthStep) => ({ authStep }));
 
     interface IAllActions {
       createAccount: Actions.CreateAccount.IActions;
@@ -73,7 +76,7 @@ export namespace FluxAccounts {
 
   const createDefaultState = (): IState => {
     return {
-      user: { email: '', userName: '' },
+      user: { email: '', user: '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
       token: '',
