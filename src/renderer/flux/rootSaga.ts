@@ -1,10 +1,10 @@
 import {fork} from 'redux-saga/effects';
-import {loginSaga} from '../component/Accounts/flux/saga';
 import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';
+import { createAccountSaga } from 'src/renderer/component/Accounts/flux/AccountsSaga';
 
 export  default function* rootSaga () {
   yield [
-    fork(loginSaga),
+    fork(createAccountSaga),
     fork(menuItem),
   ];
 }

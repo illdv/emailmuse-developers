@@ -5,7 +5,8 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, TextField, withStyles } from '@material-ui/core/';
 import { Action, Title } from 'src/renderer/component/Accounts/common/Common';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 const styles = theme => ({
   root: {
@@ -52,13 +53,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.FORGOT_PASSWORD));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.CREATE_ACCOUNT));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.CREATE_ACCOUNT));
   },
   onClickNext: () => {
-    dispatch(FluxAccounts.Actions.login.REQUEST());
+    dispatch(FluxAccounts.Actions.Login.ActionLogin.REQUEST);
   },
 });
 

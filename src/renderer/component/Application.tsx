@@ -3,10 +3,10 @@ import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { AuthorizationLayout } from 'src/renderer/component/Accounts/AuthorizationLayout';
+import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
+import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
 
 import './Application.css';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
-import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 
 export namespace MainLayoutScope {

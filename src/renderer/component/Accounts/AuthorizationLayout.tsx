@@ -2,10 +2,11 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
 import Login from 'src/renderer/component/Accounts/Login';
 import ForgotPassword from 'src/renderer/component/Accounts/ForgotPassword';
 import CreateAccount from 'src/renderer/component/Accounts/CreateAccount';
+import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {

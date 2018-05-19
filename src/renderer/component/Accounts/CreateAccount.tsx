@@ -1,15 +1,18 @@
 import { ChangeEvent, Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Grid, Paper, TextField, WithStyles, withStyles } from '@material-ui/core/';
+import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
+import * as validate from 'validate.js';
 
 import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { AuthStep, FluxAccounts, ICreateAccountModel } from 'src/renderer/component/Accounts/flux/action';
 import { TextValidator } from 'src/renderer/common/TextValidator';
-import * as validate from 'validate.js';
+import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
+import action = FluxAccounts.Actions.CreateAccount;
+import IRequest = action.IRequest;
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 const styles = theme => ({
   root: {
@@ -35,14 +38,14 @@ function useOrDefault(func: () => any, defaultValue: string) {
 
 export namespace CreateAccountSpace {
   export interface IState {
-    user: ICreateAccountModel;
+    user: IRequest;
     isBeBlur: boolean;
   }
 
   export interface IProps {
     classes?: any;
     onClickBackToLogin?: () => void;
-    onCreateAccount?: (user: ICreateAccountModel) => () => void;
+    onCreateAccount?: (user: IRequest) => () => void;
   }
 }
 
@@ -52,10 +55,10 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.LOGIN));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
   },
-  onCreateAccount: (user: ICreateAccountModel) => () => {
-    dispatch(FluxAccounts.Actions.createAccount.REQUEST(user));
+  onCreateAccount: (user: IRequest) => () => {
+    dispatch(action.Step.REQUEST(user));
   },
 });
 
@@ -64,10 +67,10 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
 
   state = {
     user: {
-      userName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      name: 'Nikita',
+      email: 'hnkntoc@gmail.com',
+      password: '123456',
+      password_confirmation: '123456',
     },
     isBeBlur: false,
   };
@@ -123,9 +126,9 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                     id="userName"
                     label="User name"
                     margin="normal"
-                    value={user.userName}
+                    value={user.name}
                     onChange={this.onChange}
-                    validationError={useOrDefault(() => (validationError.userName[0]), '')}
+                    validationError={useOrDefault(() => (validationError.name[0]), '')}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -159,8 +162,8 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                       label="Confirm password"
                       margin="normal"
                       onChange={this.onChange}
-                      value={user.confirmPassword}
-                      validationError={useOrDefault(() => (validationError.confirmPassword[0]), '')}
+                      value={user.password_confirmation}
+                      validationError={useOrDefault(() => (validationError.password_confirmation[0]), '')}
                     />
                   </Grid>
                 </Grid>
