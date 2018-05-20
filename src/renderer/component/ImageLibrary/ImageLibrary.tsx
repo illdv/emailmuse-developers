@@ -1,26 +1,21 @@
 import * as React from 'react';
 import { IStyle } from 'type/materialUI';
 import { Paper, withStyles } from '@material-ui/core/';
-import {TypeBackground} from '@material-ui/core/styles/createPalette';
+import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
+import EmailerAPI from 'src/renderer/API/EmailerAPI';
 
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
-
 const b = block('image-library');
-
-export interface IFileInfo {
-  [keys: string]: any;
-}
 
 namespace ImageLibrarySpace {
   export interface IProps {
     classes?: any;
   }
   export interface IState {
-    dragging: boolean;
-    items: IFileInfo[];
+    items: File[];
   }
 }
 
@@ -36,28 +31,49 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   constructor (props) {
     super(props);
     this.state = {
-      dragging: false,
       items: []
     };
   }
 
-  onDrag = isOverCurrent => {
-    this.setState({dragging: isOverCurrent});
-  }
-
   onDrop = item => {
-    this.setState({dragging: false});
     if (item && item.files) {
-      console.log(item.files[0].lastModifiedDate);
+      console.log('Add files event: ', item.files);
       this.addFiles(item.files);
     }
   }
 
+  onProgress = (percentage) => {
+    console.log('Loaded:', percentage);
+  }
+
+  // TODO: Should user be prevented from uploading one same image twice
+  // and how two images could be identified as 'same'?
   addFiles = files => {
     const filtered = files.filter(file => !this.state.items.some(item => item.name === file.name));
     this.setState({items: [...this.state.items, ...filtered]});
     // tslint:disable-next-line
-    console.log('Files has been added', filtered);
+    // console.log('Files has been added', filtered);
+
+    // const filo = filtered[0];
+    // let fileData = new FormData();
+    // fileData.append(filo.name, filo.path);
+
+    // EmailerAPI.ImageLibrary.uploadImage(filtered[0], this.onProgress).then(result => {
+    //   console.log('Post done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.getImages().then(result => {
+    //   console.log('Get done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.updateImage(1, "lol").then(result => {
+    //   console.log('Get done', result);
+    // });
+
+    // EmailerAPI.ImageLibrary.deleteImages([1,2]).then(result => {
+    //   console.log('Get done', result);
+    // });
+    // filtered[0]
   }
 
   render() {
@@ -65,11 +81,12 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
-          <DragAndDropTarget onDrop={this.onDrop} onDrag={this.onDrag}>
-            <div className={b('container', {dragging: this.state.dragging})}>
-              <div className={b('placeholder', {dragging: this.state.dragging})}>
-                <span>Drop files here to add them to your image library</span>
-              </div>
+          <DragAndDropTarget
+            onDrop={this.onDrop}
+            showOverlay={true}
+            overlayMessage={'Drop files here to add them to your image library'}
+          >
+            <div className={b('container')}>
               <ImageLibraryListComponent items={this.state.items}/>
             </div>
           </DragAndDropTarget>
