@@ -20,23 +20,29 @@ export namespace FluxAccounts {
     export interface IUser {
       user: string;
       email: string;
+      token: string;
     }
   }
 
   export namespace Actions {
     export namespace Login {
 
-      export interface IActions {
-        REQUEST: () => Action;
-        SUCCESS: (token: string) => Action;
-        FAILURE: () => Action;
+      export interface IRequest {
+        mail: string;
+        password: string;
       }
 
-      export const ActionLogin: IActions = {
-        REQUEST: createAction('LOGIN_ACCOUNT_REQUEST'),
-        SUCCESS: createAction('LOGIN_ACCOUNT_SUCCESS', (token: string) => ({ token })),
-        FAILURE: createAction('LOGIN_ACCOUNT_FAILURE', () => ({})),
-      };
+      export interface IActions extends IActionSteps {
+        REQUEST: (request: IRequest) => IActionPayload<{ request: IRequest }>;
+        SUCCESS: (user: Models.IUser) => IActionPayload<{ user: Models.IUser }>;
+        FAILURE: (error) => IActionPayload<{ error: string }>;
+      }
+
+      export const Step: IActions = createActionSteps('LOGIN_ACCOUNT',
+        (request: IRequest) => ({ request }),
+        (user: Models.IUser) => ({ user }),
+        (error: string) => ({ error }),
+      );
     }
 
     export namespace CreateAccount {
@@ -76,14 +82,19 @@ export namespace FluxAccounts {
 
   const createDefaultState = (): IState => {
     return {
-      user: { email: '', user: '' },
+      user: { email: '', user: '', token: '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
-      token: '',
     };
   };
 
   export const reducer = handleActions({
+    [Actions.Login.Step.type.SUCCESS]: (state: IState, action: IActionPayload<{ user: Models.IUser }>): IState => {
+      return { ...state, ...action.payload };
+    },
+    [Actions.Login.Step.type.FAILURE]: (state, action) => {
+      return { ...state, ...action.payload };
+    },
     [Actions.CreateAccount.Step.type.SUCCESS]: (state: IState, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
     },
@@ -97,7 +108,6 @@ export namespace FluxAccounts {
 
   export interface IState {
     user: Models.IUser;
-    token: string;
     authStep: Models.AuthStep;
     error: string;
   }

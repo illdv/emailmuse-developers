@@ -66,10 +66,13 @@ export namespace FluxValidation {
     },
     SET_SCHEME: (state: IState, action: IActionPayload<IKeyValue<string, object>>): IState => {
       const payload          = action.payload;
+      const value    = newValue(state.value, payload.key, '');
       const validationScheme = newValue(state.validationScheme, payload.key, payload.value);
       return {
         ...state,
+        value,
         validationScheme,
+        isValid: false,
       };
     },
   }, createDefaultState());
