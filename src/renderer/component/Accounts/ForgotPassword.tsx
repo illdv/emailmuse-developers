@@ -2,7 +2,7 @@ import { ChangeEvent, Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TextField} from '@material-ui/core/';
+import { TextField } from '@material-ui/core/';
 import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
@@ -42,7 +42,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   };
 
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin, onClickNex } = this.props;
+    const { onClickBackToLogin} = this.props;
     return {
       askMail: {
         title: 'Pleas enter your email',
