@@ -6,10 +6,8 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 
 
 function* resetPassword(action: IActionPayload<IChangePasswordFields>):IterableIterator<any> {
-  console.log(`resetPassword`, action)
   const data = action.payload;
   const res = yield call(EmailerAPI.Accounts.changePassword,data);
-  console.log(res,EmailerAPI.Accounts.changePassword);
 }
 export function* watcherResetPassword(){
   while(true){

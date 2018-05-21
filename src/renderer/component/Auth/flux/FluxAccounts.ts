@@ -4,7 +4,7 @@ import { Action } from 'redux';
 import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
 import CustomStorage from '../../../../common/CustomStorage';
-
+import axios from 'axios';
 export namespace FluxAccounts {
   export namespace Models {
     /**
@@ -87,7 +87,8 @@ export namespace FluxAccounts {
   }
   
   const createDefaultState = (): IState => {
-    const token = CustomStorage.getItem('token');
+    const token = JSON.parse(CustomStorage.getItem('token'));
+    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
       user: { email: '', user: '', token:  token ? token : '' },
       error: '',

@@ -14,8 +14,8 @@ const LoginAccount = actions.Login;
 export function* watcherSetToken() {
   while (true) {
     const { payload } = yield take('SET_TOKEN');
-    CustomStorage.setItem('token', JSON.stringify(payload.token), false);
-    axios.defaults.headers.common.Authorization = `Bearer ${payload.token}`;
+    CustomStorage.setItem('token', payload.token, false);
+    axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
   }
 }
 
