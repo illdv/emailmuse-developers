@@ -87,7 +87,7 @@ export namespace FluxAccounts {
   }
   
   const createDefaultState = (): IState => {
-    const token = JSON.parse(CustomStorage.getItem('token'));
+    const token = CustomStorage.getItem('token');
     axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
       user: { email: '', user: '', token:  token ? token : '' },
