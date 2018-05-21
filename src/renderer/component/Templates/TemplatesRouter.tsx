@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import { ITemplate } from './models';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import TemplatesList from './TemplatesList';
-/* import TemplateEditor from './TemplateEditor'; */
+import TemplateEditor from './TemplateEditor';
 
 import { LOADING, FAILURE, loading } from 'src/renderer/component/Templates/flux/module';
 import { getPages, getStatus } from 'src/renderer/component/Templates/flux/selectors';
@@ -17,8 +17,9 @@ export namespace MailListSpace {
     }
   
     export interface IState {
-        displayTemplate: null|ITemplate;
-    }
+        editTemplate: null|ITemplate;
+        createTemplate: boolean;
+    };
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -33,41 +34,52 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
     state = {
-        displayTemplate: null,
+        editTemplate: null,
+        createTemplate: false
     };
 
     selectTemplate = (template: ITemplate) => {
         this.setState({
-            displayTemplate: template
+            editTemplate: template
         });
     }
 
-    exitTemplate = () => {
+    closeTemplate = () => {
         this.setState({
-            displayTemplate: null
+            editTemplate: null
         });
     }
 
     componentDidMount(){
-        console.log('did mount')
         this.props.loading();
     }
+
+    onCreateTemplate = () => {
+        this.setState({
+            createTemplate: true
+        })
+    } 
 
     render(){
 
         if (this.props.status === LOADING) {
             return <h1>Preloader ;)</h1>
         } else if (this.props.status === FAILURE) {
-            return <h1>LOADING</h1>;
+            return <h1>Failure</h1>;
         } else {
-            return <TemplatesList templates={this.props.pages[1]} selectTemplate={this.selectTemplate} />;
+            if (this.state.editTemplate !== null) {
+                return <TemplateEditor template={this.state.editTemplate} closeTemplate={this.closeTemplate} />;
+            } else if(this.state.createTemplate !== false) {
+                return <TemplateEditor template={null} closeTemplate={this.closeTemplate} />;
+            } else {
+                return (
+                    <div>
+                        <div onClick={this.onCreateTemplate}>Add</div>
+                        <TemplatesList templates={this.props.pages[1]} selectTemplate={this.selectTemplate} />
+                    </div>
+                )
+            }
         }
-
-        /* if (this.state.displayTemplate !== null) {
-            return <TemplatesList token={this.props.token} selectTemplate={this.selectTemplate}/>;
-        } else {
-            return <TemplateEditor token={this.props.token} template={this.state.displayTemplate} />;
-        } */
     }
 }
 

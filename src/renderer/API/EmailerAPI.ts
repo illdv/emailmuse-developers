@@ -79,9 +79,22 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
 
   export namespace Templates{
     export function getTemplates(){
-      return axios.get(`${API_ENDPOINT}/templates`, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
+      return axios.get(`${API_ENDPOINT}/templates`);
+    }
+
+    export function editTemplate({id, title, body, description}){
+      return axios.put(`${API_ENDPOINT}/templates/${id}`, {
+        title,
+        body,
+        description
+      });
+    }
+
+    export function saveTemplate({title, body, description}){
+      return axios.post(`${API_ENDPOINT}/templates`, {
+        title,
+        body,
+        description
       });
     }
   }

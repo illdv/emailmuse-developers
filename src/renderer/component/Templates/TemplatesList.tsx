@@ -29,10 +29,13 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
                 >
                   <ListItem button>
                     <Grid container spacing={24}>
-                      <Grid item xs={6}>
+                      <Grid item xs={4}>
                         <Typography gutterBottom noWrap>{template.title || '---'}</Typography>
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={4}>
+                        <Typography align={'center'} gutterBottom noWrap>{template.description}</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
                         <Typography align={'right'} gutterBottom noWrap>{template.updated_at}</Typography>
                       </Grid>
                     </Grid>
