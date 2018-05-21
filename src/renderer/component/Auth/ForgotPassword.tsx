@@ -1,4 +1,4 @@
-import { ChangeEvent, Component } from 'react';
+import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
@@ -9,6 +9,7 @@ import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import { bindActionCreators } from 'redux';
 
 enum Step {
   EMAIL,
@@ -23,7 +24,10 @@ export namespace ForgotPasswordSpace {
 
   export interface IProps {
     classes?: any;
+    actions?: FluxValidation.Actions.IAllAction;
     validation?: FluxValidation.IState;
+    onSendCode?: (mail: string) => void;
+    resetPassword?: (email: string, token: string, password: string, passwordConfirmation: string) => void;
     onClickBackToLogin?: () => void;
     onClickNex?: () => void;
   }
@@ -37,9 +41,15 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
     dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
   },
-  onClickNex: () => {
-    //
+  onSendCode: (mail: string) => {
+    dispatch(FluxAccounts.Actions.ForgotPassword.sendCodeOnMail.REQUEST(mail));
   },
+  resetPassword: (email: string, token: string, password: string, passwordConfirmation: string) => {
+    dispatch(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST(email, token, password, passwordConfirmation));
+  },
+  actions: bindActionCreators({
+    ...FluxValidation.Actions.AllAction,
+  }, dispatch)
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -56,8 +66,6 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
     const { onClickBackToLogin, validation } = this.props;
 
-    const {password, confirmPassword} = this.state;
-
     const validationSchema = {
       email: {
         presence: true,
@@ -65,6 +73,9 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       },
       password: {
         length: { minimum: 6 }
+      },
+      secret_code: {
+        presence: true,
       },
       password_confirmation: {
         length: { minimum: 6 },
@@ -83,7 +94,9 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         label: 'Email',
         id: 'email',
         defaultValue: this.state.mail,
-        onEnterCompleted: () => {
+        canNext: validation.isValid,
+        onEnterCompleted: (value) => {
+          this.props.onSendCode((validation.value as any).email);
           this.setState({
             step: Step.SECRET_CODE,
           });
@@ -97,6 +110,8 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         label: 'Secret code',
         defaultValue: '',
         id: 'secret_code',
+        canNext: validation.isValid,
+        body: this.createSecretCodeForm(validationSchema),
         onEnterCompleted: () => {
           this.setState({
             step: Step.NEW_PASSWORD,
@@ -115,7 +130,15 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         body: this.createPasswordForm(validationSchema),
         defaultValue: '',
         id: 'passwords',
-        onEnterCompleted: (value) => console.log(`Password: ${value}`),
+        canNext: validation.isValid,
+        onEnterCompleted: () => {
+          this.props.resetPassword(
+            (validation.value as any).email,
+            (validation.value as any).secret_code,
+            (validation.value as any).password,
+            (validation.value as any).password_confirmation,
+          );
+        },
         onBack: () => {
           this.setState({
             step: Step.SECRET_CODE,
@@ -126,7 +149,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     };
   }
 
-  createPasswordForm = (validationSchema: {password: object, password_confirmation: object}): any => {
+  createPasswordForm = (validationSchema: { password: object, password_confirmation: object }): any => {
 
     return (
       <div>
@@ -150,9 +173,21 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     );
   }
 
+  createSecretCodeForm = (validationSchema: {secret_code: object}): any => {
+    return (
+      <TextValidator
+        fullWidth
+        id={'secret_code'}
+        label={'Secret code'}
+        margin="normal"
+        schema={validationSchema.secret_code}
+      />
+    );
+  }
+
   render() {
 
-    const step   = this.state.step;
+    const step  = this.state.step;
     const steps = this.stepsRecoveriesPassword();
 
     const currentStep = steps[step];

@@ -7,7 +7,6 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindActionCreators } from 'redux';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
-import { PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
 
 export namespace TextValidatorSpace {
   export interface IState {
@@ -44,7 +43,6 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
         value: '',
         id,
       };
-
     }
     return null;
   }

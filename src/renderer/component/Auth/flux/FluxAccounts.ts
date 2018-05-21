@@ -69,6 +69,24 @@ export namespace FluxAccounts {
       );
     }
 
+    export namespace ForgotPassword {
+      export const sendCodeOnMail = createActionSteps('SEND_CODE',
+        (email: string) => ({ email }),
+        () => ({}),
+        (error: string) => ({ error }),
+      );
+      export const resetPassword  = createActionSteps('RESET_PASSWORD',
+        (email: string, token: string, password: string, passwordConfirmation: string) => ({
+          email,
+          token,
+          password,
+          passwordConfirmation
+        }),
+        () => ({}),
+        (error: string) => ({ error }),
+      );
+    }
+
     type SetAuthStep = (authStep: Models.AuthStep) => Action;
 
     export const SetAuthStep: SetAuthStep = createAction('SET_AUTH_STEP', (authStep: Models.AuthStep) => ({ authStep }));
@@ -100,6 +118,9 @@ export namespace FluxAccounts {
     },
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
+    },
+    [Actions.ForgotPassword.resetPassword.type.SUCCESS]: (state): IState => {
+      return { ...state, authStep: Models.AuthStep.LOGIN };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
