@@ -27,7 +27,7 @@ function* selectMenuItem(action: FluxDrawerMenu.IActionsPayload.onSelectMenuItem
 
 export function* menuItem(): IterableIterator<any> {
   while (true) {
-    const action: any = yield take(FluxDrawerMenu.Actions.onSelectMenuItem('' as any).type);
+    const action: any = yield take(FluxDrawerMenu.Actions.selectMenuItem('' as any).type);
     yield call(selectMenuItem, action);
   }
 }

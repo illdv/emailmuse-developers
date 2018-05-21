@@ -1,13 +1,18 @@
 import * as React from 'react';
 import { DropTarget } from 'react-dnd';
 import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
+import block from 'bem-ts';
+
+const b = block('dnd-target');
 
 namespace DragAndDropTargetSpace {
   export interface IProps {
     onDrop: (item:any) => void;
-    onDrag?: (isOverCurrent:boolean) => void;
+    showOverlay?: boolean;
+    overlayMessage?: string;
     connectDropTarget?: any;
-    isOverCurrent?: boolean;
+    canDrop?: boolean;
+    dragOver?: boolean;
   }
   export interface IState {
 
@@ -19,17 +24,20 @@ const types = {
 };
 
 const specs = {
-   drop(props, monitor, component) {
-    const item = monitor.getItem();
-    if (item && item.files && props.onDrop) {
-      props.onDrop(item);
+  drop(props, monitor, component) {
+    if (props.onDrop) {
+      const item = monitor.getItem();
+      if (item.files && item.files.length) {
+        props.onDrop(item);
+      }
     }
   }
 };
 
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
-  isOverCurrent: monitor.isOver({ shallow: true })
+  canDrop: monitor.canDrop(),
+  dragOver: monitor.isOver(),
 });
 
 @DropTarget(types.FILE, specs, collect)
@@ -38,16 +46,16 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
     super(props);
   }
 
-  componentWillReceiveProps(props) {
-    if (props.isOverCurrent !== this.props.isOverCurrent) {
-      props.onDrag(props.isOverCurrent);
-    }
-  }
-
   render() {
-    const {connectDropTarget, children} = this.props;
+    const {connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children} = this.props;
     return connectDropTarget(
-      <div className={'dnd-target'}>
+      <div className={b()}>
+        {showOverlay ?
+          <div className={b('overlay', {'can-drop': canDrop, 'drag-over': dragOver})}>
+            {overlayMessage ? <span>{overlayMessage}</span> : null}
+          </div> :
+          null
+        }
         {children}
       </div>
     );
