@@ -103,8 +103,9 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     this.props.actions.deleteImagesRequest(itemId);
   }
 
-  onEdit = itemId => () => {
-    this.props.actions.updateImageRequest({ imageId: itemId, name: new Date().getMilliseconds().toString() });
+  onEdit = (itemId, name) => {
+    // console.log(itemId, name);
+    this.props.actions.updateImageRequest({ imageId: itemId, name });
   }
 
   render() {
