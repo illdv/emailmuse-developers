@@ -10,6 +10,7 @@ import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
+import { Toast } from 'src/renderer/component/Toast/Toast';
 
 const styles = theme => ({
   root: {
@@ -123,6 +124,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
             </Grid>
           </Paper>
         </InCenter>
+        <Toast/>
       </div>
     );
   }

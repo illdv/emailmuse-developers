@@ -5,6 +5,7 @@ import { createAccountSaga } from 'src/renderer/component/Auth/flux/CreateAccoun
 import { loginSaga } from 'src/renderer/component/Auth/flux/LoginSaga';
 import { sendCodeOnMailSaga } from 'src/renderer/component/Auth/flux/SendCodeOnMailSaga';
 import { sendCodeSaga } from 'src/renderer/component/Auth/flux/SendCodeSaga';
+import { toastSaga } from 'src/renderer/component/Toast/flux/saga';
 
 export  default function* rootSaga () {
   yield [
@@ -13,5 +14,6 @@ export  default function* rootSaga () {
     fork(menuItem),
     fork(sendCodeOnMailSaga),
     fork(sendCodeSaga),
+    fork(toastSaga),
   ];
 }

@@ -110,8 +110,8 @@ export namespace FluxAccounts {
     [Actions.Login.Step.type.SUCCESS]: (state: IState, action: IActionPayload<{ user: Models.IUser }>): IState => {
       return { ...state, ...action.payload };
     },
-    [Actions.Login.Step.type.FAILURE]: (state, action) => {
-      return { ...state, ...action.payload };
+    [Actions.Login.Step.type.FAILURE]: (state, action): IState => {
+      return { ...state, ...action.payload, authStep: Models.AuthStep.LOGIN};
     },
     [Actions.CreateAccount.Step.type.SUCCESS]: (state: IState, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
