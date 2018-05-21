@@ -71,18 +71,13 @@ class ChangePassword extends React.Component<any,any> {
   handleMouseDownPassword = event => {
     event.preventDefault();
   }
-  handleClickShowPassword = (type: string) => () => {
-    console.log(type,this.state[type]);
-    return this.setState({ [type]: !this.state[type] });
-  }
+  handleClickShowPassword = (type: string) => () => 
+    this.setState({ [type]: !this.state[type] });
   submit = () => {
     this.props.changePassword(this.state.fields);
-    console.log(this.state.fields);
   }
   render(){
     const { classes } = this.props;
-    console.log(this.state);
-    console.log(this.props);
     return (<>
       <Grid container spacing={24} className={classes.root}>
         <Grid item xs={12} >

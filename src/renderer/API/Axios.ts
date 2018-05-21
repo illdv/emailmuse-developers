@@ -5,12 +5,6 @@ const EMAILER_API_URL = 'http://dev.emailer-electron-laravel.cronix.ms/api/v1';
 
 axios.defaults.baseURL = EMAILER_API_URL;
 
-
-axios.defaults.headers.common = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json, text/plain, */*',
-};
-
 export namespace Axios {
 
   export function get(apiMethod: string, urlParams: Array<{ [key: string]: string }>): AxiosPromise<any> {

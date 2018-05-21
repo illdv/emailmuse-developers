@@ -11,6 +11,7 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
       return Axios.post('/login', request);
     }
     export function changePassword(data: IChangePasswordFields): AxiosPromise<IChangePasswordFields> {
+      console.log(axios.defaults.headers.common)
       return axios.put('/profile/change-password',data);
     }
     export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
