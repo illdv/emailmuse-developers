@@ -5,6 +5,7 @@ import { Email } from '@material-ui/icons';
 import * as validate from 'validate.js';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { TextField } from '@material-ui/core/';
 import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
 import { TextValidator } from 'src/renderer/common/TextValidator';

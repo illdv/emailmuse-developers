@@ -49,11 +49,12 @@ interface IActionProps {
   onClickForgotPassword: () => void;
   onCreateAccount: () => void;
   onClickNext: () => void;
+  canNext: boolean;
 }
 
 export function Action(props: IActionProps) {
 
-  const { onClickForgotPassword, onCreateAccount, onClickNext } = props;
+  const { onClickForgotPassword, onCreateAccount, onClickNext, canNext } = props;
 
   const button = {
     margin: 20,
@@ -80,6 +81,7 @@ export function Action(props: IActionProps) {
               color="primary"
               style={button}
               onClick={onClickNext}
+              disabled={!canNext}
             >
               Next
             </Button>

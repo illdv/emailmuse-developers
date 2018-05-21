@@ -39,7 +39,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   }
 
   render() {
-    const { token } = this.props.accounts;
+    const { token } = this.props.accounts.user;
     return !!token && <MainLayout/> || <AuthorizationLayout/>;
   }
 }

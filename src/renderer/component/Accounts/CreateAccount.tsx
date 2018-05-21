@@ -1,19 +1,18 @@
-import { ChangeEvent, Component } from 'react';
+import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
-import * as validate from 'validate.js';
 
 import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { TextValidator } from 'src/renderer/common/TextValidator';
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
+import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
-import { useOrDefault } from 'src/renderer/flux/utils';
 
 const styles = theme => ({
   root: {
@@ -29,21 +28,27 @@ const styles = theme => ({
   }
 });
 
+function useOrDefault(func: () => any, defaultValue: string) {
+  try {
+    return func();
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 export namespace CreateAccountSpace {
   export interface IState {
-    user: IRequest;
-    isBeBlur: boolean;
   }
 
   export interface IProps {
-    classes?: any;
+    validation?: FluxValidation.IState;
     onClickBackToLogin?: () => void;
     onCreateAccount?: (user: IRequest) => () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  validation: state.validation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -56,43 +61,27 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any>, CreateAccountSpace.IState> {
-
-  state = {
-    user: {
-      name: 'Nikita',
-      email: 'hnkntoc@gmail.com',
-      password: '123456',
-      password_confirmation: '123456',
-    },
-    isBeBlur: false,
-  };
-
-  onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      user: {
-        ...this.state.user,
-        [event.target.id as any]: event.target.value
-      }
-    });
-  }
+class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
 
   render() {
-    const { classes, onClickBackToLogin, onCreateAccount } = this.props;
-    const { user }                                  = this.state;
+    const { classes, onClickBackToLogin, onCreateAccount, validation } = this.props;
 
 
     const validationSchema = {
-      userName: {
+      name: {
+        presence: true,
         length: { minimum: 3 }
       },
       email: {
+        presence: true,
         email: true
       },
       password: {
+        presence: true,
         length: { minimum: 6 }
       },
       confirmPassword: {
+        presence: true,
         length: { minimum: 6 },
         equality: {
           attribute: 'password',
@@ -101,10 +90,6 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
         }
       },
     };
-
-    const validationError = validate(user, validationSchema);
-
-    const canNext = validationError === undefined;
 
     return (
       <InCenter>
@@ -115,12 +100,10 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
               <Grid container>
                 <Grid item xs={6}>
                   <TextValidator
-                    id="userName"
+                    id="name"
                     label="User name"
                     margin="normal"
-                    value={user.name}
-                    onChange={this.onChange}
-                    validationError={useOrDefault(() => (validationError.name[0]), '')}
+                    schema={validationSchema.name}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -129,9 +112,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                       id="email"
                       label="Email"
                       margin="normal"
-                      onChange={this.onChange}
-                      value={user.email}
-                      validationError={useOrDefault(() => (validationError.email[0]), '')}
+                      schema={validationSchema.email}
                     />
                   </Grid>
                 </Grid>
@@ -141,9 +122,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                     type="password"
                     label="Password"
                     margin="normal"
-                    onChange={this.onChange}
-                    value={user.password}
-                    validationError={useOrDefault(() => (validationError.password[0]), '')}
+                    schema={validationSchema.password}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -153,15 +132,17 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
                       type="password"
                       label="Confirm password"
                       margin="normal"
-                      onChange={this.onChange}
-                      value={user.password_confirmation}
-                      validationError={useOrDefault(() => (validationError.password_confirmation[0]), '')}
+                      schema={validationSchema.confirmPassword}
                     />
                   </Grid>
                 </Grid>
               </Grid>
             </Grow>
-            <Navigation onBack={onClickBackToLogin} onNext={onCreateAccount(user)} canNext={canNext}/>
+            <Navigation
+              onBack={onClickBackToLogin}
+              onNext={onCreateAccount(validation.value as any)}
+              canNext={!validation.isValid}
+            />
           </Grid>
         </Paper>
       </InCenter>
