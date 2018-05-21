@@ -1,19 +1,33 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
-import  * as EmailerAPI  from 'src/renderer/API/EmailerAPI';
+import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
+import CustomStorage from '../../../../common/CustomStorage';
+import { IChangePasswordFields } from 'src/renderer/component/Account/flux/actions';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
+
+export function* watcherSetToken() {
+  while (true) {
+    const { payload } = yield take('SET_TOKEN');
+    CustomStorage.setItem('token', payload.token, false);
+    axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
+  }
+}
 
 function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterator<any> {
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
     const request: AxiosResponse<ILoginResponse> = yield EmailerAPI.Accounts.login(action.payload.request);
-    yield put(LoginAccount.Step.SUCCESS({ token: request.data.token, email: '', user: '' }));
+    const name = request.data.user.name;
+    const email = request.data.user.email;
+    const token = request.data.token;
+    yield put(LoginAccount.SetToken(token));
+    yield put(LoginAccount.Step.SUCCESS({ email, user: name, token }));
   } catch (e) {
     console.log(e);
   }
