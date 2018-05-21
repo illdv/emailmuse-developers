@@ -3,6 +3,7 @@ import { Action } from 'redux';
 
 import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
+import CustomStorage from '../../../../common/CustomStorage';
 
 export namespace FluxAccounts {
   export namespace Models {
@@ -84,10 +85,11 @@ export namespace FluxAccounts {
       setAuthStep: (authStep: Models.AuthStep) => Action;
     }
   }
-
+  
   const createDefaultState = (): IState => {
+    const token = CustomStorage.getItem('token');
     return {
-      user: { email: '', user: '', token: '' },
+      user: { email: '', user: '', token:  token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
     };
