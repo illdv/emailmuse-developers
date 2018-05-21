@@ -3,7 +3,8 @@ import { Action } from 'redux';
 
 import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
-
+import CustomStorage from '../../../../common/CustomStorage';
+import axios from 'axios';
 export namespace FluxAccounts {
   export namespace Models {
     /**
@@ -31,7 +32,11 @@ export namespace FluxAccounts {
         mail: string;
         password: string;
       }
-
+      export type ISetToken = (token:string) => IActionPayload<{token:string}>;
+      
+      export const SetToken: ISetToken = createAction('SET_TOKEN',
+        (token: IRequest) => ({ token }),
+      );
       export interface IActions extends IActionSteps {
         REQUEST: (request: IRequest) => IActionPayload<{ request: IRequest }>;
         SUCCESS: (user: Models.IUser) => IActionPayload<{ user: Models.IUser }>;
@@ -43,6 +48,7 @@ export namespace FluxAccounts {
         (user: Models.IUser) => ({ user }),
         (error: string) => ({ error }),
       );
+      
     }
 
     export namespace CreateAccount {
@@ -79,10 +85,12 @@ export namespace FluxAccounts {
       setAuthStep: (authStep: Models.AuthStep) => Action;
     }
   }
-
+  
   const createDefaultState = (): IState => {
+    const token = CustomStorage.getItem('token');
+    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
-      user: { email: '', user: '', token: '' },
+      user: { email: '', user: '', token:  token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
     };
@@ -100,6 +108,17 @@ export namespace FluxAccounts {
     },
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action) => {
       return { ...state, ...action.payload };
+    },
+    SET_TOKEN: (state, action) => {
+      const { token } = action.payload;
+      state.user.token = token;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          token
+        }
+      };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };

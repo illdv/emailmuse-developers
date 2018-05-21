@@ -59,7 +59,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       case MenuItemType.RESEARCH:
         return <Bookmark/>;
       case MenuItemType.TEMPLATES:
-        return <div>mail list Template ZALUPA</div>;
+        return <div>mail list Template</div>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
       case MenuItemType.ACCOUNT:
