@@ -1,5 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
 import { Action } from 'redux';
+import { AccountSpace } from 'src/renderer/component/Account/flux/actions';
 
 
 const SET_AUTH_STEP = 'SET_AUTH_STEP';
@@ -27,12 +28,14 @@ export enum AuthStep {
   FORGOT_PASSWORD = 'FORGOT_PASSWORD',
 }
 
-const createDefaultState = (): FluxAccounts.IState => {
+const createDefaultState = (): FluxAuth.IState => {
   return {
     userId: '',
     error: '',
     authStep: AuthStep.LOGIN,
     token: '',
+    username: '',
+    email: ''
   };
 };
 
@@ -49,7 +52,7 @@ const reducerAccounts = handleActions({
 }, createDefaultState());
 
 
-export namespace FluxAccounts {
+export namespace FluxAuth {
   interface IActions {
     login: IActionLogin;
     setAuthStep: (authStep: AuthStep) => Action;
@@ -65,6 +68,8 @@ export namespace FluxAccounts {
     error: string;
     token: string;
     authStep: AuthStep;
+    username?: string;
+    email?: string;
   }
 
   export const reducer = reducerAccounts;

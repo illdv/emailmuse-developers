@@ -1,5 +1,5 @@
 import {fork} from 'redux-saga/effects';
-import {loginSaga} from '../component/Accounts/flux/saga';
+import {loginSaga} from '../component/Auth/flux/saga';
 import { loadingMailSaga } from 'src/renderer/component/MailList/flux/saga/LoadingMailSaga';
 import { sendMailSaga } from 'src/renderer/component/MailList/flux/saga/SendMailSaga';
 import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { AuthorizationLayout } from 'src/renderer/component/Accounts/AuthorizationLayout';
+import { AuthorizationLayout } from 'src/renderer/component/Auth/AuthorizationLayout';
 
 import './Application.css';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import { FluxAuth } from 'src/renderer/component/Auth/flux/action';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 
@@ -15,7 +15,7 @@ export namespace MainLayoutScope {
   }
 
   export interface IProps {
-    accounts?: FluxAccounts.IState;
+    accounts?: FluxAuth.IState;
   }
 
 }

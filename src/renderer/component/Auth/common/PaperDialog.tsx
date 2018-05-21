@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, TextField, Theme, WithStyles, withStyles } from '@material-ui/core/';
-import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 
 const styles = (theme: Theme) => ({
   root: {

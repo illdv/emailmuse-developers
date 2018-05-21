@@ -2,10 +2,10 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
-import Login from 'src/renderer/component/Accounts/Login';
-import ForgotPassword from 'src/renderer/component/Accounts/ForgotPassword';
-import CreateAccount from 'src/renderer/component/Accounts/CreateAccount';
+import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
+import Login from 'src/renderer/component/Auth/Login';
+import ForgotPassword from 'src/renderer/component/Auth/ForgotPassword';
+import CreateAccount from 'src/renderer/component/Auth/CreateAccount';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -13,7 +13,7 @@ export namespace AuthorizationLayoutSpace {
   }
 
   export interface IProps {
-    accounts?: FluxAccounts.IState;
+    accounts?: FluxAuth.IState;
   }
 }
 

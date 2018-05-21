@@ -3,8 +3,8 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TextField} from '@material-ui/core/';
-import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
+import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
 
 export namespace ForgotPasswordSpace {
   export interface IState {
@@ -25,7 +25,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.LOGIN));
+    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.LOGIN));
   },
   onClickNex: () => {
     //

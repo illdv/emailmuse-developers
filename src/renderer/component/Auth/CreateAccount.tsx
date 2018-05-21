@@ -4,10 +4,10 @@ import { connect, Dispatch } from 'react-redux';
 import { Grid, Paper, TextField, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
 
-import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
 import { TextValidator } from 'src/renderer/common/TextValidator';
 
 const styles = theme => ({
@@ -45,7 +45,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.LOGIN));
+    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.LOGIN));
   },
   onClickNex: () => {
     //

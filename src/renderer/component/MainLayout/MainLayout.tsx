@@ -12,6 +12,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import MailList from 'src/renderer/component/MailList/MailList';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
+import Settings from '../Account/Settings';
 
 const styles: IStyle = {
   root: {
@@ -48,7 +49,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
    },
   */
 });
-
 @DragDropContext(HTML5Backend)
 @(connect(mapStateToProps, mapDispatchToProps))
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
@@ -63,6 +63,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
         return <MailList/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
+      case MenuItemType.ACCOUNT:
+        return <Settings/>;
       default:
         return <h4>Default</h4>;
     }

@@ -7,6 +7,7 @@ const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
  * Types item menu.
  */
 export enum MenuItemType {
+  ACCOUNT,
   COMPOSE,
   TEMPLATES,
   TRAINING,

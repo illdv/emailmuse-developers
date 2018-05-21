@@ -4,8 +4,8 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, TextField, withStyles } from '@material-ui/core/';
-import { Action, Title } from 'src/renderer/component/Accounts/common/Common';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import { Action, Title } from 'src/renderer/component/Auth/common/Common';
+import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
 
 const styles = theme => ({
   root: {
@@ -52,13 +52,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.FORGOT_PASSWORD));
+    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.CREATE_ACCOUNT));
+    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.CREATE_ACCOUNT));
   },
   onClickNext: () => {
-    dispatch(FluxAccounts.Actions.login.REQUEST());
+    dispatch(FluxAuth.Actions.login.REQUEST());
   },
 });
 

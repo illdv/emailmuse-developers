@@ -10,7 +10,7 @@ import {
   withStyles
 } from '@material-ui/core/';
 
-import { Inbox, Drafts, Send, Bookmark, Collections } from '@material-ui/icons';
+import { Inbox, Drafts, Send, Bookmark, Collections, SupervisorAccount } from '@material-ui/icons';
 import { LabelsType } from 'src/renderer/component/MailList/flux/saga/selectors';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
@@ -19,6 +19,7 @@ import { IStyle } from 'type/materialUI';
 
 const createMenuSchema = (): IItem[] => {
   return [
+    { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
     { title: 'Compose', icon: <Send/>, type: MenuItemType.COMPOSE },
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Training', icon: <Inbox/>, type: MenuItemType.TRAINING },
