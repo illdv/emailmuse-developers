@@ -5,11 +5,10 @@ import { Email } from '@material-ui/icons';
 import * as validate from 'validate.js';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
-import { useOrDefault } from 'src/renderer/flux/utils';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
 
 enum Step {
   EMAIL,
