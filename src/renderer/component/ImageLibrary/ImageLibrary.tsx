@@ -6,7 +6,7 @@ import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getImagesRequest, uploadImagesRequest, deleteImagesRequest } from
+import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest } from
     'src/renderer/component/ImageLibrary/store/actions';
 import { getImagesURLSelector } from 'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
@@ -22,6 +22,7 @@ namespace ImageLibrarySpace {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,
       deleteImagesRequest: typeof deleteImagesRequest,
+      updateImageRequest: typeof updateImageRequest,
     };
     items: IImageLibraryItem[];
   }
@@ -43,7 +44,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ getImagesRequest, uploadImagesRequest, deleteImagesRequest }, dispatch)
+  actions: bindActionCreators({ getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest }, dispatch)
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -102,6 +103,10 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     this.props.actions.deleteImagesRequest(itemId);
   }
 
+  onEdit = itemId => () => {
+    this.props.actions.updateImageRequest({ imageId: itemId, name: new Date().getMilliseconds().toString() });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -113,7 +118,11 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             overlayMessage={'Drop files here to add them to your image library'}
           >
             <div className={b('container')}>
-              <ImageLibraryListComponent items={this.props.items} onDelete={this.onDelete}/>
+              <ImageLibraryListComponent
+                items={this.props.items}
+                onDelete={this.onDelete}
+                onEdit={this.onEdit}
+              />
             </div>
           </DragAndDropTarget>
         </div>
