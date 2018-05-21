@@ -6,7 +6,8 @@ import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getImagesRequest, uploadImagesRequest } from 'src/renderer/component/ImageLibrary/store/actions';
+import { getImagesRequest, uploadImagesRequest, deleteImagesRequest } from
+    'src/renderer/component/ImageLibrary/store/actions';
 import { getImagesURLSelector } from 'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
@@ -20,6 +21,7 @@ namespace ImageLibrarySpace {
     actions?: {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,
+      deleteImagesRequest: typeof deleteImagesRequest,
     };
     items: IImageLibraryItem[];
   }
@@ -41,7 +43,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ getImagesRequest, uploadImagesRequest }, dispatch)
+  actions: bindActionCreators({ getImagesRequest, uploadImagesRequest, deleteImagesRequest }, dispatch)
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -96,6 +98,10 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     // filtered[0]
   // }
 
+  onDelete = itemId => () => {
+    this.props.actions.deleteImagesRequest(itemId);
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -107,7 +113,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             overlayMessage={'Drop files here to add them to your image library'}
           >
             <div className={b('container')}>
-              <ImageLibraryListComponent items={this.props.items}/>
+              <ImageLibraryListComponent items={this.props.items} onDelete={this.onDelete}/>
             </div>
           </DragAndDropTarget>
         </div>

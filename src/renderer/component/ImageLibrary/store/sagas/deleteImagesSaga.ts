@@ -1,13 +1,17 @@
-import { call, take } from 'redux-saga/effects';
+import { call, put, take } from 'redux-saga/effects';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
+import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 
-function* deleteImagesWorker(action: IActionPayload<{ ids: number[] }>): IterableIterator<any> {
+function* deleteImagesWorker(action: IActionPayload<number[]>): IterableIterator<any> {
   try {
-    console.log('Deleting images', action.payload.ids);
+    const response = yield call(EmailerAPI.ImageLibrary.deleteImages, action.payload);
+    yield put(actions.deleteImagesSuccess());
+    yield put(actions.getImagesRequest());
   } catch (e) {
-    console.log(e);
+    console.log('Deleting images failed: ', e);
+    yield put(actions.deleteImagesFailure());
   }
 }
 

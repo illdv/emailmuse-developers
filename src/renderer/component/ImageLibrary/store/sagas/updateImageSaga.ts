@@ -1,6 +1,7 @@
 import { call, take } from 'redux-saga/effects';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
+import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 
 function* updateImageWorker(action: IActionPayload<{ imageId: number, name: string }>): IterableIterator<any> {

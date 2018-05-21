@@ -10,7 +10,7 @@ function* uploadImagesWorker(action: IActionPayload<File[]>): IterableIterator<a
     yield put(actions.uploadImagesSuccess());
     yield put(actions.getImagesRequest());
   } catch (e) {
-    console.log('An error occured:',e);
+    console.log('Uploading images failed: ', e);
     yield put(actions.uploadImagesFailure());
   }
 }
