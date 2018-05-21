@@ -31,7 +31,11 @@ export namespace FluxAccounts {
         mail: string;
         password: string;
       }
-
+      export type ISetToken = (token:string) => IActionPayload<{token:string}>;
+      
+      export const SetToken: ISetToken = createAction('SET_TOKEN',
+        (token: IRequest) => ({ token }),
+      );
       export interface IActions extends IActionSteps {
         REQUEST: (request: IRequest) => IActionPayload<{ request: IRequest }>;
         SUCCESS: (user: Models.IUser) => IActionPayload<{ user: Models.IUser }>;
@@ -43,6 +47,7 @@ export namespace FluxAccounts {
         (user: Models.IUser) => ({ user }),
         (error: string) => ({ error }),
       );
+      
     }
 
     export namespace CreateAccount {
@@ -100,6 +105,17 @@ export namespace FluxAccounts {
     },
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action) => {
       return { ...state, ...action.payload };
+    },
+    SET_TOKEN: (state, action) => {
+      const { token } = action.payload;
+      state.user.token = token;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          token
+        }
+      };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
