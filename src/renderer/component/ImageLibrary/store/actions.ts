@@ -12,10 +12,9 @@ export const getImagesSuccess = (images: IFileInfo[]) => ({
   payload: images
 });
 
-export const getImagesFailure = createAction(constants.GET_IMAGES_SUCCESS);
+export const getImagesFailure = createAction(constants.GET_IMAGES_FAILURE);
 
 export const uploadImagesRequest = (files: File | File[]) => {
-  console.log('uploadActionCreator',files,[].concat(files));
   return ({
     type: constants.UPLOAD_IMAGES_REQUEST,
     payload: [].concat(files)
@@ -42,4 +41,4 @@ export const deleteImagesRequest = (ids: number | number[]) => ({
 
 export const deleteImagesSuccess = createAction(constants.DELETE_IMAGES_SUCCESS);
 
-export const deleteImagesFailure = createAction(constants.DELETE_IMAGES_SUCCESS);
+export const deleteImagesFailure = createAction(constants.DELETE_IMAGES_FAILURE);

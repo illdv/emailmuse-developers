@@ -63,6 +63,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     }
   }
 
+  // TODO implement onProgress
   // onProgress = (percentage) => {
   //   console.log('Loaded:', percentage);
   // }

@@ -9,7 +9,7 @@ function* getImagesWorker(action: IActionPayload<null>): IterableIterator<any> {
     const response = yield call(EmailerAPI.ImageLibrary.getImages);
     yield put(actions.getImagesSuccess(response.data.data));
   } catch (e) {
-    console.log('Getting images failed', e);
+    console.log('Getting images failed: ', e);
     yield put(actions.getImagesFailure());
   }
 }
