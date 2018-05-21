@@ -23,6 +23,6 @@ export default combineReducers({
   drawerMenu: FluxDrawerMenu.reducer,
   bookmarks: FluxBookmarks.reducer,
   validation: FluxValidation.reducer,
-  templates
+  templates,
   images: ImageLibrary.reducer,
 });
