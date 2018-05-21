@@ -5,6 +5,9 @@ import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getImagesRequest } from 'src/renderer/component/ImageLibrary/store/actions';
 
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
@@ -13,6 +16,9 @@ const b = block('image-library');
 namespace ImageLibrarySpace {
   export interface IProps {
     classes?: any;
+    actions?: {
+      getImagesRequest: typeof getImagesRequest
+    };
   }
   export interface IState {
     items: File[];
@@ -27,6 +33,16 @@ const styles: IStyle = theme => ({
   }
 });
 
+const mapStateToProps = state => ({
+  // TODO refactor with selectors
+  items: state.images.all
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ getImagesRequest }, dispatch)
+});
+
+@connect(mapStateToProps, mapDispatchToProps)
 class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
   constructor (props) {
     super(props);
@@ -35,9 +51,12 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     };
   }
 
+  componentDidMount () {
+    this.props.actions.getImagesRequest();
+  }
+
   onDrop = item => {
     if (item && item.files) {
-      console.log('Add files event: ', item.files);
       this.addFiles(item.files);
     }
   }

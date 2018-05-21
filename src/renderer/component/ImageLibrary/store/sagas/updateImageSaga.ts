@@ -1,5 +1,6 @@
 import { call, take } from 'redux-saga/effects';
-import * as actions from 'src/renderer/component/ImageLibrary/store/constants';
+import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
+import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
 
 function* updateImageWorker(action: IActionPayload<{ imageId: number, name: string }>): IterableIterator<any> {
@@ -12,7 +13,7 @@ function* updateImageWorker(action: IActionPayload<{ imageId: number, name: stri
 
 export function* updateImageWatcher(): IterableIterator<any> {
   while (true) {
-    const action = yield take(actions.UPDATE_IMAGE_REQUEST);
+    const action = yield take(constants.UPDATE_IMAGE_REQUEST);
     yield call(updateImageWorker, action);
   }
 }
