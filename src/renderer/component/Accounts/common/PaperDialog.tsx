@@ -5,8 +5,7 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, TextField, Theme, WithStyles, withStyles } from '@material-ui/core/';
 import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
 import * as validate from 'validate.js';
-import { TextValidator } from 'src/renderer/common/TextValidator';
-import { useOrDefault } from 'src/renderer/flux/utils';
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -103,7 +102,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
                     margin="normal"
                     value={value}
                     onChange={this.onChange}
-                    validationError={useOrDefault(() => (validateResult.value[0]), '')}
+                    schema={{}}
                   />
                   }
                 </Grid>

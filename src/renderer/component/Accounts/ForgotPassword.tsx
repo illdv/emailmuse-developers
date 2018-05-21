@@ -5,12 +5,11 @@ import { Email } from '@material-ui/icons';
 import * as validate from 'validate.js';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TextField } from '@material-ui/core/';
 import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
-import { TextValidator } from 'src/renderer/common/TextValidator';
 import { useOrDefault } from 'src/renderer/flux/utils';
 import AuthStep = FluxAccounts.Models.AuthStep;
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 
 enum Step {
   EMAIL,
@@ -143,8 +142,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           label={'Password'}
           margin="normal"
           value={password}
-          onChange={this.onChange}
-          validationError={useOrDefault(() => (validationError.password[0]), '')}
+          schema={{}}
         />
         <TextValidator
           fullWidth
@@ -153,8 +151,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           label={'Confirm password'}
           margin="normal"
           value={confirmPassword}
-          onChange={this.onChange}
-          validationError={useOrDefault(() => (validationError.passwordConfirmation[0]), '')}
+          schema={{}}
         />
       </div>
     );
