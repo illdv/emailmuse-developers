@@ -6,7 +6,7 @@ import IRequest = FluxAccounts.Actions.Login.IRequest;
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import CustomStorage from '../../../../common/CustomStorage';
-import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
+import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
@@ -28,8 +28,11 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
     const token = request.data.token;
     yield put(LoginAccount.SetToken(token));
     yield put(LoginAccount.Step.SUCCESS({ email, user: name, token }));
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    if (error.response.status === 400) {
+      yield put(FluxToast.Actions.setError(error.response.data.message));
+    }
+    yield put(LoginAccount.Step.FAILURE(error));
   }
 }
 

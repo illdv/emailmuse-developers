@@ -30,7 +30,9 @@
     "start:electron": "npx tsc ./src/main/**/*.ts; npx tsc ./src/main/*.ts; electron ./src/main/startElectron.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "lint": "tslint -c tslint.json -p tsconfig.json"
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",
@@ -49,6 +51,7 @@
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "electron": "1.8.6",
+    "electron-builder": "^20.13.4",
     "electron-load-devtool": "^1.0.0",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.7.0",
@@ -103,5 +106,12 @@
     "email": "kamyshenko.n@cronix.ms"
   },
   "description": "Emailr test",
-  "main": "init.js"
+  "main": "init.js",
+  "build": {
+    "appId": "cronix.ms.emailer-electron-react",
+    "linux": {
+      "target": "deb",
+      "category": "Office"
+    }
+  }
 }

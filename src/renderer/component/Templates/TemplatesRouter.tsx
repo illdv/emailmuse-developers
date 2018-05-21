@@ -8,6 +8,8 @@ import TemplateEditor from './TemplateEditor';
 
 import { LOADING, FAILURE, loading } from 'src/renderer/component/Templates/flux/module';
 import { getPages, getStatus } from 'src/renderer/component/Templates/flux/selectors';
+import { Button } from '@material-ui/core';
+import { Loading } from 'src/renderer/common/Loading';
 
 export namespace MailListSpace {
     export interface IProps {
@@ -15,11 +17,11 @@ export namespace MailListSpace {
         pages?: object;
         loading?: () => void;
     }
-  
+
     export interface IState {
         editTemplate: null|ITemplate;
         createTemplate: boolean;
-    };
+    }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -58,12 +60,12 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
         this.setState({
             createTemplate: true
         })
-    } 
+    }
 
     render(){
 
         if (this.props.status === LOADING) {
-            return <h1>Preloader ;)</h1>
+            return <Loading/>;
         } else if (this.props.status === FAILURE) {
             return <h1>Failure</h1>;
         } else {
@@ -74,10 +76,12 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
             } else {
                 return (
                     <div>
-                        <div onClick={this.onCreateTemplate}>Add</div>
+                      <Button variant="raised" color="primary" style={{marginBottom: 5}} onClick={this.onCreateTemplate}>
+                        Add
+                      </Button>
                         <TemplatesList templates={this.props.pages[1]} selectTemplate={this.selectTemplate} />
                     </div>
-                )
+                );
             }
         }
     }
