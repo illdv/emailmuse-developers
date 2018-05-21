@@ -5,6 +5,8 @@ import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
 import CustomStorage from '../../../../common/CustomStorage';
 import axios from 'axios';
+import { AccountSpace } from '../../Account/flux/actions';
+
 export namespace FluxAccounts {
   export namespace Models {
     /**
@@ -59,7 +61,7 @@ export namespace FluxAccounts {
         name: string;
         email: string;
         password: string;
-        password_confirmation: string;
+        password_confirmationation: string;
       }
 
       export interface IActions extends IActionSteps {
@@ -109,16 +111,8 @@ export namespace FluxAccounts {
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action) => {
       return { ...state, ...action.payload };
     },
-    SET_TOKEN: (state, action) => {
-      const { token } = action.payload;
-      state.user.token = token;
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          token
-        }
-      };
+    GET_PROFILE_SUCCESS: (state, action) => {
+      return { ...state, user:{...state.user, ...action.payload} };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
