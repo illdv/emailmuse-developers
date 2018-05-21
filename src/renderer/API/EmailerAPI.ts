@@ -5,14 +5,16 @@ import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
-import { IChangePasswordFields } from '../component/Account/flux/actions';
+import { IChangePasswordPayload } from '../component/Account/flux/actions';
   export namespace Accounts {
     export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
       return Axios.post('/login', request);
     }
-    export function changePassword(data: IChangePasswordFields): AxiosPromise<IChangePasswordFields> {
-      console.log(axios.defaults.headers.common)
+    export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
       return axios.put('/profile/change-password',data);
+    }
+    export function getProfile(): AxiosPromise<any> {
+      return axios.get('/profile');
     }
     export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
       return new Promise(resolve => {

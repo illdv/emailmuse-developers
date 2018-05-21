@@ -6,7 +6,7 @@ import IRequest = FluxAccounts.Actions.Login.IRequest;
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import CustomStorage from '../../../../common/CustomStorage';
-import { IChangePasswordFields } from 'src/renderer/component/Account/flux/actions';
+import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
