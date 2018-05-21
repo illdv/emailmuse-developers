@@ -6,12 +6,15 @@ import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
-
+import { IChangePasswordFields } from '../component/Account/flux/actions';
   export namespace Accounts {
     export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
       return Axios.post('/login', request);
     }
-
+    export function changePassword(data: IChangePasswordFields): AxiosPromise<IChangePasswordFields> {
+      console.log(axios.defaults.headers.common)
+      return axios.put('/profile/change-password',data);
+    }
     export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
       return new Promise(resolve => {
         setTimeout(() => resolve({ user: 'Jon Snow', email: 'JonSnow@gmail.com' }), 2000);
@@ -70,6 +73,28 @@ import { ILoginResponse } from 'type/EmailerAPI';
       return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' }, {
         // TODO: remove hardcoded authToken
         headers: {Authorization: authToken}
+      });
+    }
+  }
+
+  export namespace Templates{
+    export function getTemplates(){
+      return axios.get(`${API_ENDPOINT}/templates`);
+    }
+
+    export function editTemplate({id, title, body, description}){
+      return axios.put(`${API_ENDPOINT}/templates/${id}`, {
+        title,
+        body,
+        description
+      });
+    }
+
+    export function saveTemplate({title, body, description}){
+      return axios.post(`${API_ENDPOINT}/templates`, {
+        title,
+        body,
+        description
       });
     }
   }
