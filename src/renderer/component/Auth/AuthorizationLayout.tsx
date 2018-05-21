@@ -2,10 +2,13 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
 import Login from 'src/renderer/component/Auth/Login';
 import ForgotPassword from 'src/renderer/component/Auth/ForgotPassword';
 import CreateAccount from 'src/renderer/component/Auth/CreateAccount';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
+import { Loading } from 'src/renderer/common/Loading';
+import { CreateAccountSuccess } from 'src/renderer/component/Auth/CreateAccountSuccess';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -13,7 +16,7 @@ export namespace AuthorizationLayoutSpace {
   }
 
   export interface IProps {
-    accounts?: FluxAuth.IState;
+    accounts?: any;
   }
 }
 
@@ -42,6 +45,10 @@ export class AuthorizationLayout extends Component<AuthorizationLayoutSpace.IPro
         return <CreateAccount/>;
       case AuthStep.FORGOT_PASSWORD:
         return <ForgotPassword/>;
+      case AuthStep.LOADING:
+        return <Loading/>;
+      case AuthStep.CREATE_ACCOUNT_SUCCESS:
+        return <CreateAccountSuccess/>;
       default:
         return <Login/>;
     }

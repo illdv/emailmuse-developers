@@ -1,14 +1,18 @@
-import { ChangeEvent, Component } from 'react';
+import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Grid, Paper, TextField, WithStyles, withStyles } from '@material-ui/core/';
+import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
 
 import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
-import { TextValidator } from 'src/renderer/common/TextValidator';
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import action = FluxAccounts.Actions.CreateAccount;
+import IRequest = action.IRequest;
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 const styles = theme => ({
   root: {
@@ -26,53 +30,58 @@ const styles = theme => ({
 
 export namespace CreateAccountSpace {
   export interface IState {
-    userName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
   }
 
   export interface IProps {
-    classes?: any;
+    validation?: FluxValidation.IState;
     onClickBackToLogin?: () => void;
-    onClickNex?: () => void;
+    onCreateAccount?: (user: IRequest) => () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  validation: state.validation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.LOGIN));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
   },
-  onClickNex: () => {
-    //
+  onCreateAccount: (user: IRequest) => () => {
+    dispatch(action.Step.REQUEST(user));
   },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any>, CreateAccountSpace.IState> {
-
-  state = {
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  };
-
-  onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [event.target.id as any]: event.target.value });
-  }
-
-  onError = () => {
-    console.log();
-  }
+class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
 
   render() {
-    const { classes, onClickBackToLogin, onClickNex }    = this.props;
-    const { userName, email, password, confirmPassword } = this.state;
+    const { classes, onClickBackToLogin, onCreateAccount, validation } = this.props;
+
+
+    const validationSchema = {
+      name: {
+        presence: true,
+        length: { minimum: 3 }
+      },
+      email: {
+        presence: true,
+        email: true
+      },
+      password: {
+        presence: true,
+        length: { minimum: 6 }
+      },
+      confirmPassword: {
+        presence: true,
+        length: { minimum: 6 },
+        equality: {
+          attribute: 'password',
+          message: 'Those passwords didn\'t match. Try again',
+          comparator: (password, confirmPassword) => password === confirmPassword,
+        }
+      },
+    };
 
     return (
       <InCenter>
@@ -83,51 +92,49 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<any
               <Grid container>
                 <Grid item xs={6}>
                   <TextValidator
-                    id="userName"
+                    id="name"
                     label="User name"
                     margin="normal"
-                    value={userName}
-                    onChange={this.onChange}
-                    validations={{ length: { minimum: 5 } }}
-                    onError={this.onError}
+                    schema={validationSchema.name}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
-                    <TextField
+                    <TextValidator
                       id="email"
                       label="Email"
                       margin="normal"
-                      onChange={this.onChange}
-                      value={email}
+                      schema={validationSchema.email}
                     />
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
+                  <TextValidator
                     id="password"
                     type="password"
                     label="Password"
                     margin="normal"
-                    onChange={this.onChange}
-                    value={password}
+                    schema={validationSchema.password}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
-                    <TextField
+                    <TextValidator
                       id="confirmPassword"
                       type="password"
                       label="Confirm password"
                       margin="normal"
-                      onChange={this.onChange}
-                      value={confirmPassword}
+                      schema={validationSchema.confirmPassword}
                     />
                   </Grid>
                 </Grid>
               </Grid>
             </Grow>
-            <Navigation onBack={onClickBackToLogin} onNext={onClickNex}/>
+            <Navigation
+              onBack={onClickBackToLogin}
+              onNext={onCreateAccount(validation.value as any)}
+              canNext={!validation.isValid}
+            />
           </Grid>
         </Paper>
       </InCenter>

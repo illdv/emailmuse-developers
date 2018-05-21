@@ -56,7 +56,7 @@ export class EditBookmarks extends Component<EditBookmarksSpace.IProps, EditBook
             margin="dense"
             id="name"
             label="Email Address"
-            type="email"
+            typeRequest="email"
             fullWidth
           />
         </DialogContent>

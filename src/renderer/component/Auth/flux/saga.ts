@@ -1,4 +1,4 @@
-import { call, put, take } from 'redux-saga/effects';
+/* import { call, put, take } from 'redux-saga/effects';
 import { FluxAuth } from 'src/renderer/component/Auth/flux/action';
 
 function* onLogin(): IterableIterator<any> {
@@ -11,3 +11,4 @@ export function* loginSaga(): IterableIterator<any> {
     yield call(onLogin);
   }
 }
+ */

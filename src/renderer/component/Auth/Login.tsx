@@ -3,9 +3,13 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Grid, Grow, Paper, TextField, withStyles } from '@material-ui/core/';
+import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
 import { Action, Title } from 'src/renderer/component/Auth/common/Common';
-import { AuthStep, FluxAuth } from 'src/renderer/component/Auth/flux/action';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import IRequest = FluxAccounts.Actions.Login.IRequest;
 
 const styles = theme => ({
   root: {
@@ -34,31 +38,33 @@ const styles = theme => ({
 });
 
 export namespace AuthorizationSpace {
+
   export interface IState {
 
   }
 
   export interface IProps {
     classes?: any;
+    validation: FluxValidation.IState;
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
-    onClickNext: () => void;
+    onClickNext: (request: IRequest) => () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  validation: state.validation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
-    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.FORGOT_PASSWORD));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(FluxAuth.Actions.setAuthStep(AuthStep.CREATE_ACCOUNT));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.CREATE_ACCOUNT));
   },
-  onClickNext: () => {
-    dispatch(FluxAuth.Actions.login.REQUEST());
+  onClickNext: (request: IRequest) => () => {
+    dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
   },
 });
 
@@ -68,7 +74,18 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
   state = {};
 
   render() {
-    const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
+    const { classes, onClickForgotPassword, onCreateAccount, onClickNext, validation } = this.props;
+
+    const validationSchema = {
+      email: {
+        presence: true,
+        email: true
+      },
+      password: {
+        presence: true,
+        length: { minimum: 6 }
+      },
+    };
 
     return (
       <div className={classes.root}>
@@ -79,17 +96,20 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
               <Grow in timeout={1500}>
                 <Grid item xs={12} style={{ paddingTop: 0 }}>
                   <Grid item xs={12}>
-                    <TextField
+                    <TextValidator
                       fullWidth
-                      id="name"
+                      id="email"
                       label="Email"
                       margin="normal"
+                      schema={validationSchema.email}
                     />
-                    <TextField
+                    <TextValidator
                       fullWidth
-                      id="name"
+                      id="password"
                       label="Password"
+                      type="password"
                       margin="normal"
+                      schema={validationSchema.password}
                     />
                   </Grid>
                 </Grid>
@@ -97,7 +117,8 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
               <Action
                 onClickForgotPassword={onClickForgotPassword}
                 onCreateAccount={onCreateAccount}
-                onClickNext={onClickNext}
+                onClickNext={onClickNext(validation.value as any)}
+                canNext={validation.isValid}
               />
             </Grid>
           </Paper>
