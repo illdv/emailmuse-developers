@@ -2,13 +2,13 @@ import { ChangeEvent, Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
-import * as validate from 'validate.js';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
+import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 
 enum Step {
   EMAIL,
@@ -18,22 +18,19 @@ enum Step {
 
 export namespace ForgotPasswordSpace {
   export interface IState {
-    secretCode: string;
-    mail: string;
-    password: string;
-    confirmPassword: string;
     step: Step;
   }
 
   export interface IProps {
     classes?: any;
+    validation?: FluxValidation.IState;
     onClickBackToLogin?: () => void;
     onClickNex?: () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  validation: state.validation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -57,15 +54,19 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   };
 
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin } = this.props;
+    const { onClickBackToLogin, validation } = this.props;
 
     const {password, confirmPassword} = this.state;
 
     const validationSchema = {
+      email: {
+        presence: true,
+        email: true
+      },
       password: {
         length: { minimum: 6 }
       },
-      confirmPassword: {
+      password_confirmation: {
         length: { minimum: 6 },
         equality: {
           attribute: 'password',
@@ -75,33 +76,29 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       },
     };
 
-    const validationError = validate({password, confirmPassword}, validationSchema);
-
-    const canNext = validationError === undefined;
-
     return {
       [Step.EMAIL]: {
         title: 'Pleas enter your email',
         subtitle: 'We will send secret code on your mail',
         label: 'Email',
+        id: 'email',
         defaultValue: this.state.mail,
-        onEnterCompleted: (value) => {
+        onEnterCompleted: () => {
           this.setState({
             step: Step.SECRET_CODE,
-            mail: value,
           });
         },
         onBack: onClickBackToLogin,
-        validation: {email: true},
+        validation: validationSchema.email,
       },
       [Step.SECRET_CODE]: {
         title: 'Pleas enter secret code',
         subtitle: 'Maybe message with secret code got into spam',
         label: 'Secret code',
         defaultValue: '',
-        onEnterCompleted: (value) => {
+        id: 'secret_code',
+        onEnterCompleted: () => {
           this.setState({
-            secretCode: value,
             step: Step.NEW_PASSWORD,
           });
         },
@@ -115,9 +112,9 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       [Step.NEW_PASSWORD]: {
         title: 'Pleas enter new password',
         label: 'Password',
-        body: this.createPasswordForm(validationError),
+        body: this.createPasswordForm(validationSchema),
         defaultValue: '',
-        canNext,
+        id: 'passwords',
         onEnterCompleted: (value) => console.log(`Password: ${value}`),
         onBack: () => {
           this.setState({
@@ -129,8 +126,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     };
   }
 
-  createPasswordForm = (validationError: any): any => {
-    const {password, confirmPassword} = this.state;
+  createPasswordForm = (validationSchema: {password: object, password_confirmation: object}): any => {
 
     return (
       <div>
@@ -140,24 +136,18 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           id={'password'}
           label={'Password'}
           margin="normal"
-          value={password}
-          schema={{}}
+          schema={validationSchema.password}
         />
         <TextValidator
           fullWidth
           type="password"
-          id={'passwordConfirmation'}
+          id={'password_confirmation'}
           label={'Confirm password'}
           margin="normal"
-          value={confirmPassword}
-          schema={{}}
+          schema={validationSchema.password_confirmation}
         />
       </div>
     );
-  }
-
-  onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [event.target.id as any]: event.target.value });
   }
 
   render() {
