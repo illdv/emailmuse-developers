@@ -1,4 +1,4 @@
-import { ChangeEvent, Component } from 'react';
+/* import { ChangeEvent, Component } from 'react';
 import * as React from 'react';
 import {
   AppBar,
@@ -157,3 +157,4 @@ class Compose extends Component<ComposeSpace.IProps, ComposeSpace.IState> {
 }
 
 export default withStyles(styles)(Compose as any);
+ */

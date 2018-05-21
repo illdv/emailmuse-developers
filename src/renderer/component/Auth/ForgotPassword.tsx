@@ -3,8 +3,9 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TextField} from '@material-ui/core/';
-import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Accounts/common/PaperDialog';
-import { AuthStep, FluxAccounts } from 'src/renderer/component/Accounts/flux/action';
+import PaperDialog, { PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 export namespace ForgotPasswordSpace {
   export interface IState {
@@ -25,7 +26,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.setAuthStep(AuthStep.LOGIN));
+    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
   },
   onClickNex: () => {
     //
@@ -41,7 +42,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   };
 
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin, onClickNex } = this.props;
+    const { onClickBackToLogin} = this.props;
     return {
       askMail: {
         title: 'Pleas enter your email',
@@ -82,7 +83,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         <TextField
           fullWidth
           type="password"
-          id={'confirmPassword'}
+          id={'password_confirmation'}
           label={'Confirm password'}
           margin="normal"
           value={this.state.confirmPassword}

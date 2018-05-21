@@ -7,7 +7,7 @@ export function Title(props: { title: string, subtitle?: string }) {
   return (
     <Grow in timeout={1000} style={{ paddingBottom: 0 }}>
       <Grid item xs={12}>
-        <Typography variant="display1" gutterBottom>
+        <Typography style={{color: 'Black'}} variant="display1" gutterBottom>
           {title}
         </Typography>
         <Typography variant="subheading" gutterBottom>
@@ -18,8 +18,8 @@ export function Title(props: { title: string, subtitle?: string }) {
   );
 }
 
-export function Navigation(props: { onBack: () => void, onNext: () => void }) {
-  const { onBack, onNext } = props;
+export function Navigation(props: { onBack?: () => void, onNext?: () => void, canNext?: boolean } = {canNext: true}) {
+  const { onBack, onNext, canNext } = props;
   return (
     <Grow in timeout={2000}>
       <Grid item xs={12}>
@@ -33,7 +33,7 @@ export function Navigation(props: { onBack: () => void, onNext: () => void }) {
           </Grid>
           <Grid item xs={6}>
             <Grid container justify={'flex-end'}>
-              <Button variant={'raised'} color="primary" onClick={onNext}>
+              <Button variant={'raised'} color="primary" onClick={onNext} disabled={canNext}>
                 Next
               </Button>
             </Grid>
@@ -49,11 +49,12 @@ interface IActionProps {
   onClickForgotPassword: () => void;
   onCreateAccount: () => void;
   onClickNext: () => void;
+  canNext: boolean;
 }
 
 export function Action(props: IActionProps) {
 
-  const { onClickForgotPassword, onCreateAccount, onClickNext } = props;
+  const { onClickForgotPassword, onCreateAccount, onClickNext, canNext } = props;
 
   const button = {
     margin: 20,
@@ -80,6 +81,7 @@ export function Action(props: IActionProps) {
               color="primary"
               style={button}
               onClick={onClickNext}
+              disabled={!canNext}
             >
               Next
             </Button>

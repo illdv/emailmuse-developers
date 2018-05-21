@@ -4,7 +4,7 @@ import { Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
-import EmailerAPI from 'src/renderer/API/EmailerAPI';
+import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';

@@ -1,11 +1,9 @@
-import * as React from 'react';
+
+/* import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Grid, List, ListItem, Paper, Typography, withStyles } from '@material-ui/core/';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { LabelsType, IMailView } from 'src/renderer/component/MailList/flux/saga/selectors';
-import { extractTime, filterVisibilityLabel, sortSelectedMail } from 'src/renderer/component/MailList/utils';
-import { FluxMail, SelectedType } from 'src/renderer/component/MailList/flux/action';
 import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
 
 const styles = theme => ({
@@ -14,11 +12,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     overflow: 'auto',
   }
-});
-
-export namespace MailListSpace {
+}); */
+/* export namespace MailListSpace {
   export interface IProps {
-    mail?: FluxMail.IState;
     drawerMenu?: FluxDrawerMenu.IActions;
     classes?: any;
     onLoadingMail?: () => void;
@@ -27,12 +23,11 @@ export namespace MailListSpace {
   }
 
   export interface IState {
-    /*...*/
+    
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  mail: state.mail,
   drawerMenu: state.drawerMenu,
 });
 
@@ -57,9 +52,7 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
   }
 
   render() {
-    const { mailViews, visibilityLabel } = this.props.mail;
-
-    const sortingMails = sortSelectedMail(filterVisibilityLabel(mailViews, visibilityLabel));
+    const sortingMails = [];
 
     const { classes } = this.props;
     return (
@@ -77,7 +70,7 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
                       <Typography gutterBottom noWrap>{email.subject || '---'}</Typography>
                     </Grid>
                     <Grid item xs={4}>
-                      <Typography align={'right'} gutterBottom noWrap>{extractTime(email.time || '---')}</Typography>
+                      <Typography align={'right'} gutterBottom noWrap>{email.time}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
@@ -92,3 +85,4 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
 }
 
 export default withStyles(styles)(MailList as any);
+ */
