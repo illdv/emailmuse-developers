@@ -1,4 +1,3 @@
-// TODO: Do we need this wrapper? I doubt.
 import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
 import { authToken } from 'src/common/hardcoded_token';
