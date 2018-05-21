@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
+import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 
 export namespace Accounts {
   export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
