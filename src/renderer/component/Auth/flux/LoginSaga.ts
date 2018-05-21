@@ -1,6 +1,6 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
-import { EmailerAPI } from 'src/renderer/API/EmailerAPI';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import  * as EmailerAPI  from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 import { AxiosResponse } from 'axios';

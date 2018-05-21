@@ -2,10 +2,10 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
-import PaperInCenter from 'src/renderer/component/Accounts/common/PaperInCenter';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import PaperInCenter from 'src/renderer/component/Auth/common/PaperInCenter';
 import { Button, Grow, Typography } from '@material-ui/core';
-import { Title } from 'src/renderer/component/Accounts/common/Common';
+import { Title } from 'src/renderer/component/Auth/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
 
 export namespace CreateAccountSuccessSpace {

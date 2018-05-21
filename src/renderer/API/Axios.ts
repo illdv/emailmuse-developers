@@ -18,7 +18,6 @@ export namespace Axios {
       params: { ...urlParams }
     });
   }
-
   export function post(apiMethod: string, body: object): AxiosPromise<any> {
     return axios.post(EMAILER_API_URL + apiMethod,
       body

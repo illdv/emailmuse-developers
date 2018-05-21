@@ -4,11 +4,11 @@ import { connect, Dispatch } from 'react-redux';
 import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
 
-import { Navigation, Title } from 'src/renderer/component/Accounts/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;

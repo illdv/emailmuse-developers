@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+/* import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Grid, List, ListItem, Paper, Typography, withStyles } from '@material-ui/core/';
 
@@ -11,16 +12,18 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     overflow: 'auto',
   }
-});
-
-export namespace MailListSpace {
+}); */
+/* export namespace MailListSpace {
   export interface IProps {
     drawerMenu?: FluxDrawerMenu.IActions;
     classes?: any;
+    onLoadingMail?: () => void;
+    visibilityLabel?: LabelsType;
+    selectMail?: (selectedMailId: string) => void;
   }
 
   export interface IState {
-    /*...*/
+    
   }
 }
 
@@ -29,6 +32,12 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  loadMail: () => {
+    dispatch(FluxMail.Actions.loadMail.REQUEST());
+  },
+  selectMail: (selectedMailId: string) => {
+    dispatch(FluxMail.Actions.selectMail(selectedMailId, SelectedType.VIEW));
+  }
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -38,8 +47,8 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
     super(props, context);
   }
 
-  onSelectMail = () => () => {
-    console.log('select mail');
+  selectMail = (mail: IMailView) => () => {
+    this.props.selectMail(mail.id);
   }
 
   render() {
@@ -51,7 +60,7 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
         <div className={classes.root}>
           <List component="nav">
             {sortingMails && sortingMails.map((email, index) => (
-              <div key={email.id} onClick={this.onSelectMail()}>
+              <div key={email.id} onClick={this.selectMail(email)}>
                 <ListItem button>
                   <Grid container spacing={24}>
                     <Grid item xs={4}>
@@ -76,3 +85,4 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
 }
 
 export default withStyles(styles)(MailList as any);
+ */
