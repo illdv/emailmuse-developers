@@ -5,11 +5,15 @@ import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
 import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flax/action';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 
+import templates from 'src/renderer/component/Templates/flux/module';
+import { ITemplateState } from 'src/renderer/component/Templates/models';
+
 export interface IGlobalState {
   accounts: FluxAccounts.IState;
   drawerMenu: FluxDrawerMenu.IState;
   bookmarks: FluxBookmarks.IState;
   validation: FluxValidation.IState;
+  templates: ITemplateState;
 }
 
 export default combineReducers({
@@ -17,4 +21,5 @@ export default combineReducers({
   drawerMenu: FluxDrawerMenu.reducer,
   bookmarks: FluxBookmarks.reducer,
   validation: FluxValidation.reducer,
+  templates
 });

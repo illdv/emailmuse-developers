@@ -73,4 +73,13 @@ import { ILoginResponse } from 'type/EmailerAPI';
       });
     }
   }
+
+  export namespace Templates{
+    export function getTemplates(){
+      return axios.get(`${API_ENDPOINT}/templates`, {
+        // TODO: remove hardcoded authToken
+        headers: {Authorization: authToken}
+      });
+    }
+  }
   /* export default ImageLibrary; */
