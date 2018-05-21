@@ -12,7 +12,6 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Account/Settings';
-import MailList from 'src/renderer/component/MailList/MailList';
 
 const styles: IStyle = {
   root: {
@@ -60,7 +59,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       case MenuItemType.RESEARCH:
         return <Bookmark/>;
       case MenuItemType.TEMPLATES:
-        return <MailList/>;
+        return <div>mail list Template ZALUPA</div>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
       case MenuItemType.ACCOUNT:

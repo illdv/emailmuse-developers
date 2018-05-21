@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { call, put, take } from 'redux-saga/effects';
 import { AccountSpace } from 'src/renderer/component/Account/flux/actions';
-import { EmailerAPI } from 'src/renderer/API/EmailerAPI';
+import  * as EmailerAPI  from 'src/renderer/API/EmailerAPI';
 
 
 function* onChangePassword(data): IterableIterator<any>{

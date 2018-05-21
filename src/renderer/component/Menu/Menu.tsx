@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
   selectItem = (type: MenuItemType) => () => {
-    this.props.actions.onSelectMenuItem(type);
+    this.props.actions.selectMenuItem(type);
   }
 
   render() {

@@ -1,4 +1,4 @@
-import { Component} from 'react';
+/* import { Component} from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Paper} from '@material-ui/core/';
@@ -30,6 +30,18 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 // noinspection JSUnusedLocalSymbols
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onResetSelectedMail: () => {
+    dispatch(FluxMail.Actions.selectMail(null, SelectedType.VIEW));
+  },
+  onAddMail: (newMail: IMailView) => {
+    dispatch(FluxMail.Actions.addMail(newMail));
+  },
+  onSetMail: (newMail: IMailView) => {
+    dispatch(FluxMail.Actions.setMail(newMail));
+  },
+  onOpenCompose: (selectedMailId: string) => () => {
+    dispatch(FluxMail.Actions.selectMail(selectedMailId, SelectedType.COMPOSE));
+  }
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -68,3 +80,4 @@ class MailEdit extends Component<MailEditSpace.IProps, MailEditSpace.IState> {
 }
 
 export default MailEdit;
+ */
