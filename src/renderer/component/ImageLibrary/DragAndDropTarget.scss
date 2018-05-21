@@ -7,48 +7,30 @@
   align-items: center;
 }
 
-.dnd-target__overlay-background {
+.dnd-target__overlay {
   background-color: #FFF;
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   transition: visibility, opacity 0.15s ease;
+  outline: 2px dashed #4a4a4a;
+  outline-offset: -0.7rem;
+  z-index: 1000;
   pointer-events: none;
 }
 
-.dnd-target__overlay-background--can-drop {
+.dnd-target__overlay--can-drop {
   opacity: 0.85 !important;
   visibility: visible !important;
 }
 
-.dnd-target__overlay-background--drag-over {
+.dnd-target__overlay--drag-over {
   background-color: #DDD;
-}
-
-.dnd-target__overlay-message {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  z-index: 1001;
-  top: 0.7rem;
-  bottom: 0.7rem;
-  left: 0.7rem;
-  right: 0.7rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px dotted #4a4a4a;
-  user-select: none;
-  transition: visibility, opacity 0.15s ease;
-  pointer-events: none;
-}
-
-.dnd-target__overlay-message--can-drop {
-  opacity: 1 !important;
-  visibility: visible !important;
 }
