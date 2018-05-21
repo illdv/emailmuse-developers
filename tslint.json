@@ -2,8 +2,7 @@
   "defaultSeverity": "warning",
   "extends": [
     "tslint:recommended",
-    "tslint-react",
-    "tslint-config-prettier"
+    "tslint-react"
   ],
   "linterOptions": {
     "exclude": [
@@ -14,8 +13,8 @@
   "jsRules": {},
   "rules": {
     "quotemark": [
-      "single",
       true,
+      "single",
       "jsx-double"
     ],
     "semicolon": [

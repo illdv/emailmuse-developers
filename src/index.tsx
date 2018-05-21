@@ -15,12 +15,11 @@ const store = createStore(
   reducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
-
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
     <MainLayout/>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

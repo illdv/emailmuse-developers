@@ -1,6 +1,6 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Accounts/flux/FluxAccounts';
-import { EmailerAPI } from 'src/renderer/API/EmailerAPI';
+import { EmailerAPI } from '../../../API/EmailerAPI';
 const actions = FluxAccounts.Actions;
 const CreateAccount = actions.CreateAccount;
 

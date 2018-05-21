@@ -14,7 +14,7 @@ export namespace EmailerAPI {
     }
 
     export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => resolve({ user: 'Jon Snow', email: 'JonSnow@gmail.com' }), 2000);
       });
       // return Axios.post('/register', user);
