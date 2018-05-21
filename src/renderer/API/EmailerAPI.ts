@@ -68,4 +68,26 @@ import { IChangePasswordPayload } from '../component/Account/flux/actions';
       return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' });
     }
   }
+
+  export namespace Templates{
+    export function getTemplates(){
+      return axios.get(`${API_ENDPOINT}/templates`);
+    }
+
+    export function editTemplate({id, title, body, description}){
+      return axios.put(`${API_ENDPOINT}/templates/${id}`, {
+        title,
+        body,
+        description
+      });
+    }
+
+    export function saveTemplate({title, body, description}){
+      return axios.post(`${API_ENDPOINT}/templates`, {
+        title,
+        body,
+        description
+      });
+    }
+  }
   /* export default ImageLibrary; */
