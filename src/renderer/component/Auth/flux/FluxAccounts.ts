@@ -111,4 +111,5 @@ export namespace FluxAccounts {
     authStep: Models.AuthStep;
     error: string;
   }
+
 }

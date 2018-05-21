@@ -28,6 +28,14 @@ const styles = theme => ({
   }
 });
 
+function useOrDefault(func: () => any, defaultValue: string) {
+  try {
+    return func();
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 export namespace CreateAccountSpace {
   export interface IState {
   }
