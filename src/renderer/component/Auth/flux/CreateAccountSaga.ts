@@ -1,6 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
+import { useOrDefault } from 'src/renderer/utils';
 const actions = FluxAccounts.Actions;
 const CreateAccount = actions.CreateAccount;
 
@@ -11,7 +12,9 @@ function* onCreateAccount(action): IterableIterator<any> {
     const user = yield EmailerAPI.Accounts.createAccount(requestUser);
     yield put(CreateAccount.Step.SUCCESS(user));
   } catch (error) {
-    yield put(CreateAccount.Step.FAILURE(error.response.data.errors.email[0], requestUser));
+    console.log(error);
+    const errorMessages = useOrDefault(() => (error.response.data.errors.email[0]), 'Unknown error');
+    yield put(CreateAccount.Step.FAILURE(errorMessages, requestUser));
   }
 }
 

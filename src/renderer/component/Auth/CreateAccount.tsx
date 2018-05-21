@@ -76,7 +76,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
         presence: true,
         email: true
       },
-      password: {
+      'password_confirmation': {
         presence: true,
         length: { minimum: 6 }
       },
@@ -122,13 +122,13 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
                     type="password"
                     label="Password"
                     margin="normal"
-                    schema={validationSchema.password}
+                    schema={validationSchema.password_confirmation}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
                     <TextValidator
-                      id="confirmPassword"
+                      id="password_confirmation"
                       type="password"
                       label="Confirm password"
                       margin="normal"
