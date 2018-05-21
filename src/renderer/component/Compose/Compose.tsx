@@ -68,13 +68,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 // noinspection JSUnusedGlobalSymbols
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCloseCompose: () => {
-    dispatch(FluxMail.Actions.onSelectMail(null, SelectedType.COMPOSE));
+    dispatch(FluxMail.Actions.selectMail(null, SelectedType.COMPOSE));
   },
   onSendMail: (mailId: string) => {
-    dispatch(FluxMail.Actions.onSendMail.REQUEST(mailId));
+    dispatch(FluxMail.Actions.sendMail.REQUEST(mailId));
   },
   onSetMail: (newMail: IMailView) => {
-    dispatch(FluxMail.Actions.onSetMail(newMail));
+    dispatch(FluxMail.Actions.setMail(newMail));
   }
 });
 

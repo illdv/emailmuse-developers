@@ -14,7 +14,7 @@ export enum MenuItemType {
   IMAGE_LIBRARY,
 }
 
-const onSelectMenuItem = createAction(SELECT_MENU_ITEM, (selectedItem: MenuItemType) => ({ selectedItem }));
+const selectMenuItem = createAction(SELECT_MENU_ITEM, (selectedItem: MenuItemType) => ({ selectedItem }));
 
 const createDefaultState = (): FluxDrawerMenu.IState => {
   return {
@@ -34,11 +34,11 @@ export namespace FluxDrawerMenu {
   }
 
   export interface IActions {
-    onSelectMenuItem: (selectedItem: MenuItemType) => IActionsPayload.onSelectMenuItemPayload;
+    selectMenuItem: (selectedItem: MenuItemType) => IActionsPayload.onSelectMenuItemPayload;
   }
 
   export const Actions: IActions = {
-    onSelectMenuItem,
+    selectMenuItem: selectMenuItem,
   };
 
   export interface IState {

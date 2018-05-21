@@ -9,9 +9,9 @@ const SELECT_MAIL          = 'SELECT_MAIL';
 const SET_MAIL             = 'SET_MAIL';
 const SET_VISIBILITY_LABEL = 'SET_VISIBILITY_LABEL';
 
-const LOADING_EMAIL_REQUEST = 'LOADING_EMAIL_REQUEST';
-const LOADING_EMAIL_SUCCESS = 'LOADING_EMAIL_SUCCESS';
-const LOADING_EMAIL_FAILURE = 'LOADING_EMAIL_FAILURE';
+const LOAD_EMAIL_REQUEST = 'LOAD_EMAIL_REQUEST';
+const LOAD_EMAIL_SUCCESS = 'LOAD_EMAIL_SUCCESS';
+const LOAD_EMAIL_FAILURE = 'LOAD_EMAIL_FAILURE';
 
 export const SEND_MAIL_REQUEST = 'SEND_MAIL_REQUEST';
 const SEND_MAIL_SUCCESS = 'SEND_MAIL_SUCCESS';
@@ -25,25 +25,25 @@ export enum SelectedType {
   COMPOSE,
 }
 
-const onSelectMail = createAction(SELECT_MAIL, (selectedMailId: string, selectedType: SelectedType) => ({
+const selectMail = createAction(SELECT_MAIL, (selectedMailId: string, selectedType: SelectedType) => ({
   selectedMailId,
   selectedType
 }));
 
-const onAddMail    = createAction(ADD_MAIL, (newMail: IMailView) => ({ newMail }));
-const onSetMail    = createAction(SET_MAIL, (newMail: IMailView) => ({ newMail }));
-const onSetLabel   = createAction(SET_VISIBILITY_LABEL, (visibilityLabel = LabelsType.INBOX) => ({ visibilityLabel }));
+const addMail    = createAction(ADD_MAIL, (newMail: IMailView) => ({ newMail }));
+const setMail    = createAction(SET_MAIL, (newMail: IMailView) => ({ newMail }));
+const setLabel   = createAction(SET_VISIBILITY_LABEL, (visibilityLabel = LabelsType.INBOX) => ({ visibilityLabel }));
 
-const onSendMail: ISendMail = {
+const sendMail: ISendMail = {
   REQUEST: createAction(SEND_MAIL_REQUEST, (mailId: string) => ({ mailId })),
   SUCCESS: createAction(SEND_MAIL_SUCCESS, (mailId: string) => ({ mailId })),
   FAILURE: createAction(SEND_MAIL_FAILURE, (error, mailId: string) => ({ error, mailId })),
 };
 
-const onLoadingMail: ILoadingMail = {
-  REQUEST: createAction(LOADING_EMAIL_REQUEST),
-  SUCCESS: createAction(LOADING_EMAIL_SUCCESS, (mailViews) => ({ mailViews, error: null })),
-  FAILURE: createAction(LOADING_EMAIL_FAILURE, (error) => ({ error, mailViews: null, })),
+const loadMail: ILoadingMail = {
+  REQUEST: createAction(LOAD_EMAIL_REQUEST),
+  SUCCESS: createAction(LOAD_EMAIL_SUCCESS, (mailViews) => ({ mailViews, error: null })),
+  FAILURE: createAction(LOAD_EMAIL_FAILURE, (error) => ({ error, mailViews: null, })),
 };
 
 interface ILoadingMail {
@@ -78,10 +78,10 @@ function setMailInState(newMail: IMailView, state: FluxMail.IState) {
 }
 
 const handle = handleActions({
-  LOADING_EMAIL_SUCCESS: (state, action): FluxMail.IState => {
+  LOAD_EMAIL_SUCCESS: (state, action): FluxMail.IState => {
     return { ...state, mailViews: [...state.mailViews || [], ...action.payload.mailViews] };
   },
-  LOADING_EMAIL_FAILURE: (state, action): FluxMail.IState => {
+  LOAD_EMAIL_FAILURE: (state, action): FluxMail.IState => {
     return { ...state, ...action.payload };
   },
   SET_VISIBILITY_LABEL: (state, action): FluxMail.IState => {
@@ -112,21 +112,21 @@ const handle = handleActions({
 
 export namespace FluxMail {
   interface IActions {
-    onLoadingMail: ILoadingMail;
-    onSetMail: (newMail: IMailView) => any;
-    onAddMail: (newMail: IMailView) => any;
-    onSetLabel: (visibilityLabel: LabelsType) => any;
-    onSelectMail: (selectedMailId: string, selectedType: SelectedType) => any;
-    onSendMail: ISendMail;
+    loadMail: ILoadingMail;
+    setMail: (newMail: IMailView) => any;
+    addMail: (newMail: IMailView) => any;
+    setLabel: (visibilityLabel: LabelsType) => any;
+    selectMail: (selectedMailId: string, selectedType: SelectedType) => any;
+    sendMail: ISendMail;
   }
 
   export const Actions: IActions = {
-    onLoadingMail,
-    onSetLabel,
-    onSetMail,
-    onSelectMail,
-    onAddMail,
-    onSendMail,
+    loadMail,
+    setLabel,
+    setMail,
+    selectMail,
+    addMail,
+    sendMail,
   };
 
   export interface IState {

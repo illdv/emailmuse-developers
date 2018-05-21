@@ -41,16 +41,16 @@ const mapStateToProps = (state: IGlobalState) => ({
 // noinspection JSUnusedLocalSymbols
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onResetSelectedMail: () => {
-    dispatch(FluxMail.Actions.onSelectMail(null, SelectedType.VIEW));
+    dispatch(FluxMail.Actions.selectMail(null, SelectedType.VIEW));
   },
   onAddMail: (newMail: IMailView) => {
-    dispatch(FluxMail.Actions.onAddMail(newMail));
+    dispatch(FluxMail.Actions.addMail(newMail));
   },
   onSetMail: (newMail: IMailView) => {
-    dispatch(FluxMail.Actions.onSetMail(newMail));
+    dispatch(FluxMail.Actions.setMail(newMail));
   },
   onOpenCompose: (selectedMailId: string) => () => {
-    dispatch(FluxMail.Actions.onSelectMail(selectedMailId, SelectedType.COMPOSE));
+    dispatch(FluxMail.Actions.selectMail(selectedMailId, SelectedType.COMPOSE));
   }
 });
 

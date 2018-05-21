@@ -23,7 +23,7 @@ export namespace MailListSpace {
     classes?: any;
     onLoadingMail?: () => void;
     visibilityLabel?: LabelsType;
-    onSelectMail?: (selectedMailId: string) => void;
+    selectMail?: (selectedMailId: string) => void;
   }
 
   export interface IState {
@@ -37,11 +37,11 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onLoadingMail: () => {
-    dispatch(FluxMail.Actions.onLoadingMail.REQUEST());
+  loadMail: () => {
+    dispatch(FluxMail.Actions.loadMail.REQUEST());
   },
-  onSelectMail: (selectedMailId: string) => {
-    dispatch(FluxMail.Actions.onSelectMail(selectedMailId, SelectedType.VIEW));
+  selectMail: (selectedMailId: string) => {
+    dispatch(FluxMail.Actions.selectMail(selectedMailId, SelectedType.VIEW));
   }
 });
 
@@ -52,8 +52,8 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
     super(props, context);
   }
 
-  onSelectMail = (mail: IMailView) => () => {
-    this.props.onSelectMail(mail.id);
+  selectMail = (mail: IMailView) => () => {
+    this.props.selectMail(mail.id);
   }
 
   render() {
@@ -67,7 +67,7 @@ class MailList extends React.Component<MailListSpace.IProps, MailListSpace.IStat
         <div className={classes.root}>
           <List component="nav">
             {sortingMails && sortingMails.map((email, index) => (
-              <div key={email.id} onClick={this.onSelectMail(email)}>
+              <div key={email.id} onClick={this.selectMail(email)}>
                 <ListItem button>
                   <Grid container spacing={24}>
                     <Grid item xs={4}>
