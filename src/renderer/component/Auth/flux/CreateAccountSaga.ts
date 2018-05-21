@@ -5,12 +5,13 @@ const actions = FluxAccounts.Actions;
 const CreateAccount = actions.CreateAccount;
 
 function* onCreateAccount(action): IterableIterator<any> {
+  const requestUser = action.payload.user;
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
-    const user = yield EmailerAPI.Accounts.createAccount(action.payload.user);
+    const user = yield EmailerAPI.Accounts.createAccount(requestUser);
     yield put(CreateAccount.Step.SUCCESS(user));
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    yield put(CreateAccount.Step.FAILURE(error.response.data.errors.email[0], requestUser));
   }
 }
 

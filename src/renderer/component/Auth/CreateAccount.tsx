@@ -141,7 +141,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
             <Navigation
               onBack={onClickBackToLogin}
               onNext={onCreateAccount(validation.value as any)}
-              canNext={!validation.isValid}
+              canNext={validation.isValid}
             />
           </Grid>
         </Paper>

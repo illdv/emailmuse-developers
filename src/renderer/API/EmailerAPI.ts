@@ -1,4 +1,3 @@
-// TODO: Do we need this wrapper? I doubt.
 import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
 import { authToken } from 'src/common/hardcoded_token';
@@ -13,10 +12,7 @@ import { ILoginResponse } from 'type/EmailerAPI';
     }
 
     export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
-      return new Promise(resolve => {
-        setTimeout(() => resolve({ user: 'Jon Snow', email: 'JonSnow@gmail.com' }), 2000);
-      });
-      // return Axios.post('/register', user);
+      return Axios.post('/register', user);
     }
   }
 

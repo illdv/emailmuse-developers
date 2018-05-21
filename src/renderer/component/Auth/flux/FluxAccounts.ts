@@ -59,13 +59,13 @@ export namespace FluxAccounts {
       export interface IActions extends IActionSteps {
         REQUEST: (user: IRequest) => IActionPayload<{ user: IRequest }>;
         SUCCESS: (user: IUser) => IActionPayload<{ user: Models.IUser }>;
-        FAILURE: (error: string) => IActionPayload<{ error: string }>;
+        FAILURE: (error: string, request: IRequest) => IActionPayload<{ error: string, request: IRequest }>;
       }
 
       export const Step: IActions = createActionSteps('CREATE_ACCOUNT',
         (user: IRequest) => ({ user }),
         (user: IUser) => ({ user }),
-        (error: string) => ({ error }),
+        (error: string, request: IRequest) => ({ error, request }),
       );
     }
 
@@ -98,8 +98,8 @@ export namespace FluxAccounts {
     [Actions.CreateAccount.Step.type.SUCCESS]: (state: IState, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
     },
-    [Actions.CreateAccount.Step.type.FAILURE]: (state, action) => {
-      return { ...state, ...action.payload };
+    [Actions.CreateAccount.Step.type.FAILURE]: (state, action): IState => {
+      return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
