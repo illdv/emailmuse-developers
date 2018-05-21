@@ -1,5 +1,6 @@
 import { IFileInfo }from 'src/renderer/component/ImageLibrary/store/models';
 import { handleActions } from 'redux-actions';
+import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 
 export namespace ImageLibrary {
   export interface IState {
@@ -12,9 +13,12 @@ export namespace ImageLibrary {
     };
   };
 
-  export const reducer = handleActions({
-    GET_IMAGES_SUCCESS: (state: IState, action): IState => {
-      return { ...state, ...action.payload };
+  export const reducer = handleActions(
+    {
+      [constants.GET_IMAGES_SUCCESS]: (state: IState, action): IState => {
+        return { ...state, all: action.payload };
+      },
     },
-  }, createDefaultState());
+    createDefaultState()
+  );
 }

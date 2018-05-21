@@ -24,3 +24,9 @@ export interface IGetImagesResponse {
   to: number;
   total: number;
 }
+
+export interface IImageLibraryItem {
+  id: number;
+  url: string;
+  name: string;
+}

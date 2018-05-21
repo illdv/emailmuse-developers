@@ -22,6 +22,7 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
   }
 
   export namespace ImageLibrary {
+    // TODO change type
     export function uploadImages(
       files: File | File[],
       onProgress?: (percent: number) => void
@@ -29,15 +30,13 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
 
     export function uploadImages(files, onProgress = _ => void 0) {
       // If files is a single file (not an array) - wrap it into an array
-      files = [].concat(files);
+      // files = [].concat(files);
 
       const fd = new FormData();
       for (let i=0; i<files.length; i++) {
         fd.append(`images[${i}]`, files[i]);
       }
       return axios.post(`${API_ENDPOINT}/images`, fd, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken},
         onUploadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable
             ? progressEvent.total
@@ -51,27 +50,19 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
     }
 
     export function getImages() {
-      return axios.get(`${API_ENDPOINT}/images`, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+      return axios.get(`${API_ENDPOINT}/images`);
     }
 
     export function updateImage(imageId: number, name: string) {
-      return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name }, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+      return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name });
     }
 
+    // TODO change type
     export function deleteImages(imageIds: number | number[]) {
       // If imageIds is a single file (not an array) - wrap it into an array
-      imageIds = [].concat(imageIds);
+      // imageIds = [].concat(imageIds);
 
-      return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' }, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+      return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' });
     }
   }
   /* export default ImageLibrary; */
