@@ -1,14 +1,15 @@
-import { ChangeEvent, Component } from 'react';
+import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
-import * as validate from 'validate.js';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
+import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import { bindActionCreators } from 'redux';
 
 enum Step {
   EMAIL,
@@ -18,31 +19,37 @@ enum Step {
 
 export namespace ForgotPasswordSpace {
   export interface IState {
-    secretCode: string;
-    mail: string;
-    password: string;
-    confirmPassword: string;
     step: Step;
   }
 
   export interface IProps {
     classes?: any;
+    actions?: FluxValidation.Actions.IAllAction;
+    validation?: FluxValidation.IState;
+    onSendCode?: (mail: string) => void;
+    resetPassword?: (email: string, token: string, password: string, passwordConfirmation: string) => void;
     onClickBackToLogin?: () => void;
     onClickNex?: () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  validation: state.validation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
     dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
   },
-  onClickNex: () => {
-    //
+  onSendCode: (mail: string) => {
+    dispatch(FluxAccounts.Actions.ForgotPassword.sendCodeOnMail.REQUEST(mail));
   },
+  resetPassword: (email: string, token: string, password: string, passwordConfirmation: string) => {
+    dispatch(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST(email, token, password, passwordConfirmation));
+  },
+  actions: bindActionCreators({
+    ...FluxValidation.Actions.AllAction,
+  }, dispatch)
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -57,15 +64,20 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   };
 
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin } = this.props;
-
-    const {password, confirmPassword} = this.state;
+    const { onClickBackToLogin, validation } = this.props;
 
     const validationSchema = {
+      email: {
+        presence: true,
+        email: true
+      },
       password: {
         length: { minimum: 6 }
       },
-      confirmPassword: {
+      secret_code: {
+        presence: true,
+      },
+      password_confirmation: {
         length: { minimum: 6 },
         equality: {
           attribute: 'password',
@@ -75,33 +87,33 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       },
     };
 
-    const validationError = validate({password, confirmPassword}, validationSchema);
-
-    const canNext = validationError === undefined;
-
     return {
       [Step.EMAIL]: {
         title: 'Pleas enter your email',
         subtitle: 'We will send secret code on your mail',
         label: 'Email',
+        id: 'email',
         defaultValue: this.state.mail,
+        canNext: validation.isValid,
         onEnterCompleted: (value) => {
+          this.props.onSendCode((validation.value as any).email);
           this.setState({
             step: Step.SECRET_CODE,
-            mail: value,
           });
         },
         onBack: onClickBackToLogin,
-        validation: {email: true},
+        validation: validationSchema.email,
       },
       [Step.SECRET_CODE]: {
         title: 'Pleas enter secret code',
         subtitle: 'Maybe message with secret code got into spam',
         label: 'Secret code',
         defaultValue: '',
-        onEnterCompleted: (value) => {
+        id: 'secret_code',
+        canNext: validation.isValid,
+        body: this.createSecretCodeForm(validationSchema),
+        onEnterCompleted: () => {
           this.setState({
-            secretCode: value,
             step: Step.NEW_PASSWORD,
           });
         },
@@ -115,10 +127,18 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       [Step.NEW_PASSWORD]: {
         title: 'Pleas enter new password',
         label: 'Password',
-        body: this.createPasswordForm(validationError),
+        body: this.createPasswordForm(validationSchema),
         defaultValue: '',
-        canNext,
-        onEnterCompleted: (value) => console.log(`Password: ${value}`),
+        id: 'passwords',
+        canNext: validation.isValid,
+        onEnterCompleted: () => {
+          this.props.resetPassword(
+            (validation.value as any).email,
+            (validation.value as any).secret_code,
+            (validation.value as any).password,
+            (validation.value as any).password_confirmation,
+          );
+        },
         onBack: () => {
           this.setState({
             step: Step.SECRET_CODE,
@@ -129,8 +149,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     };
   }
 
-  createPasswordForm = (validationError: any): any => {
-    const {password, confirmPassword} = this.state;
+  createPasswordForm = (validationSchema: { password: object, password_confirmation: object }): any => {
 
     return (
       <div>
@@ -140,29 +159,35 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           id={'password'}
           label={'Password'}
           margin="normal"
-          value={password}
-          schema={{}}
+          schema={validationSchema.password}
         />
         <TextValidator
           fullWidth
           type="password"
-          id={'passwordConfirmation'}
+          id={'password_confirmation'}
           label={'Confirm password'}
           margin="normal"
-          value={confirmPassword}
-          schema={{}}
+          schema={validationSchema.password_confirmation}
         />
       </div>
     );
   }
 
-  onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [event.target.id as any]: event.target.value });
+  createSecretCodeForm = (validationSchema: {secret_code: object}): any => {
+    return (
+      <TextValidator
+        fullWidth
+        id={'secret_code'}
+        label={'Secret code'}
+        margin="normal"
+        schema={validationSchema.secret_code}
+      />
+    );
   }
 
   render() {
 
-    const step   = this.state.step;
+    const step  = this.state.step;
     const steps = this.stepsRecoveriesPassword();
 
     const currentStep = steps[step];

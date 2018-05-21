@@ -36,12 +36,17 @@ export class CreateAccountSuccess extends Component<CreateAccountSuccessSpace.IP
 
   render() {
     const { accounts } = this.props;
+    const error        = accounts.error;
+
+    const title = error ? 'Failed create account' : 'Create account success';
+    const body  = error || `A message was sent to ${accounts.user.email}. Check your email and follow the link.`;
+
     return (
       <PaperInCenter>
-        <Title title={'Account create success'}/>
+        <Title title={title}/>
         <Grow in timeout={1000}>
           <Typography variant="title" gutterBottom>
-            A message was sent to {accounts.user.email}. Check your email and follow the link.
+            {body}
           </Typography>
         </Grow>
         <InCenter>

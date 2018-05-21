@@ -5,24 +5,32 @@ import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
-import { IChangePasswordPayload } from '../component/Account/flux/actions';
-  export namespace Accounts {
-    export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
-      return Axios.post('/login', request);
-    }
-    export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
-      return axios.put('/profile/change-password',data);
-    }
-    export function getProfile(): AxiosPromise<any> {
-      return axios.get('/profile');
-    }
-    export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
-      return new Promise(resolve => {
-        setTimeout(() => resolve({ user: 'Jon Snow', email: 'JonSnow@gmail.com' }), 2000);
-      });
-      // return Axios.post('/register', user);
-    }
+import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
+
+export namespace Accounts {
+  export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
+    return Axios.post('/login', request);
   }
+
+  export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
+    return Axios.post('/register', user);
+  }
+
+  export function sendCodeOnMail(email: string) {
+    return Axios.post('/password/email', { email });
+  }
+
+  export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
+    return axios.put('/profile/change-password',data);
+  }
+  export function getProfile(): AxiosPromise<any> {
+    return axios.get('/profile');
+  }
+
+  export function resetPassword({email, token, password, passwordConfirmation}: {email: string, token: string, password: string, passwordConfirmation: string }) {
+    return Axios.post('/password/reset', { email, token, password, password_confirmation: passwordConfirmation });
+  }
+}
 
   export namespace ImageLibrary {
     // TODO change type

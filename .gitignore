@@ -1,5 +1,6 @@
 .idea
 1test
+dist
 
 # dependencies
 /node_modules

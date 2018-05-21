@@ -8,7 +8,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "outDir": "build/dist",
+    "outDir": "build_ts",
     "module": "esnext",
     "target": "es6",
     "lib": [
@@ -31,6 +31,7 @@
     "baseUrl": "./",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
+
   },
   "exclude": [
     "node_modules",

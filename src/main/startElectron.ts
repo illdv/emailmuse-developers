@@ -1,6 +1,5 @@
 const url                                  = require('url');
 const path2                                = require('path');
-const appState: Store                      = require('./Store/rootStore').appState;
 const loadDevTool                          = require('electron-load-devtool');
 const { app, ipcMain, BrowserWindow }      = require('electron');
 let mainWindow: any;
@@ -41,15 +40,4 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-});
-
-// ======================== Store ========================
-
-ipcMain.on('load-store', () => {
-  const store = appState.get('store');
-  mainWindow.webContents.send('loading-store', store);
-});
-
-ipcMain.on('save-store', (event, store) => {
-  appState.set('store', store);
 });

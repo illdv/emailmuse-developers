@@ -67,12 +67,30 @@ export namespace FluxAccounts {
       export interface IActions extends IActionSteps {
         REQUEST: (user: IRequest) => IActionPayload<{ user: IRequest }>;
         SUCCESS: (user: IUser) => IActionPayload<{ user: Models.IUser }>;
-        FAILURE: (error: string) => IActionPayload<{ error: string }>;
+        FAILURE: (error: string, request: IRequest) => IActionPayload<{ error: string, request: IRequest }>;
       }
 
       export const Step: IActions = createActionSteps('CREATE_ACCOUNT',
         (user: IRequest) => ({ user }),
         (user: IUser) => ({ user }),
+        (error: string, request: IRequest) => ({ error, request }),
+      );
+    }
+
+    export namespace ForgotPassword {
+      export const sendCodeOnMail = createActionSteps('SEND_CODE',
+        (email: string) => ({ email }),
+        () => ({}),
+        (error: string) => ({ error }),
+      );
+      export const resetPassword  = createActionSteps('RESET_PASSWORD',
+        (email: string, token: string, password: string, passwordConfirmation: string) => ({
+          email,
+          token,
+          password,
+          passwordConfirmation
+        }),
+        () => ({}),
         (error: string) => ({ error }),
       );
     }
@@ -102,14 +120,17 @@ export namespace FluxAccounts {
     [Actions.Login.Step.type.SUCCESS]: (state: IState, action: IActionPayload<{ user: Models.IUser }>): IState => {
       return { ...state, ...action.payload };
     },
-    [Actions.Login.Step.type.FAILURE]: (state, action) => {
-      return { ...state, ...action.payload };
+    [Actions.Login.Step.type.FAILURE]: (state, action): IState => {
+      return { ...state, ...action.payload, authStep: Models.AuthStep.LOGIN};
     },
     [Actions.CreateAccount.Step.type.SUCCESS]: (state: IState, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
     },
-    [Actions.CreateAccount.Step.type.FAILURE]: (state, action) => {
-      return { ...state, ...action.payload };
+    [Actions.CreateAccount.Step.type.FAILURE]: (state, action): IState => {
+      return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
+    },
+    [Actions.ForgotPassword.resetPassword.type.SUCCESS]: (state): IState => {
+      return { ...state, authStep: Models.AuthStep.LOGIN };
     },
     GET_PROFILE_SUCCESS: (state, action) => {
       return { ...state, user:{...state.user, ...action.payload} };
