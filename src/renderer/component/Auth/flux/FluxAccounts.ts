@@ -3,6 +3,9 @@ import { Action } from 'redux';
 
 import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
+import CustomStorage from '../../../../common/CustomStorage';
+import axios from 'axios';
+import { AccountSpace } from '../../Account/flux/actions';
 
 export namespace FluxAccounts {
   export namespace Models {
@@ -31,7 +34,11 @@ export namespace FluxAccounts {
         mail: string;
         password: string;
       }
-
+      export type ISetToken = (token:string) => IActionPayload<{token:string}>;
+      
+      export const SetToken: ISetToken = createAction('SET_TOKEN',
+        (token: IRequest) => ({ token }),
+      );
       export interface IActions extends IActionSteps {
         REQUEST: (request: IRequest) => IActionPayload<{ request: IRequest }>;
         SUCCESS: (user: Models.IUser) => IActionPayload<{ user: Models.IUser }>;
@@ -43,6 +50,7 @@ export namespace FluxAccounts {
         (user: Models.IUser) => ({ user }),
         (error: string) => ({ error }),
       );
+      
     }
 
     export namespace CreateAccount {
@@ -53,7 +61,7 @@ export namespace FluxAccounts {
         name: string;
         email: string;
         password: string;
-        password_confirmation: string;
+        password_confirmationation: string;
       }
 
       export interface IActions extends IActionSteps {
@@ -97,10 +105,12 @@ export namespace FluxAccounts {
       setAuthStep: (authStep: Models.AuthStep) => Action;
     }
   }
-
+  
   const createDefaultState = (): IState => {
+    const token = CustomStorage.getItem('token');
+    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
-      user: { email: '', user: '', token: '' },
+      user: { email: '', user: '', token:  token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
     };
@@ -121,6 +131,9 @@ export namespace FluxAccounts {
     },
     [Actions.ForgotPassword.resetPassword.type.SUCCESS]: (state): IState => {
       return { ...state, authStep: Models.AuthStep.LOGIN };
+    },
+    GET_PROFILE_SUCCESS: (state, action) => {
+      return { ...state, user:{...state.user, ...action.payload} };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };

@@ -5,7 +5,9 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import classNames from 'classnames';
-
+import { connect } from 'react-redux';
+import { AccountSpace } from 'src/renderer/component/Account/flux/actions';
+import { bindActionCreators } from 'redux';
 export namespace ChangePasswordSpace {
   export interface IProps {
     classes?: any;
@@ -19,6 +21,7 @@ export namespace ChangePasswordSpace {
     confirmPassword: string;
   }
 }
+
 const styles: IStyle = theme => ({
   root: {
     display: 'flex',
@@ -40,48 +43,53 @@ const styles: IStyle = theme => ({
     flexBasis: 200,
   },
 });
+const mapStateToProps = state => ({
+  name: '',
+  email: ''
+});
+const mapDispatchToProps = dispatch => ({
+  changePassword: bindActionCreators(AccountSpace.Actions.changePassword.REQUEST , dispatch)
+});
 
+@connect(mapStateToProps,mapDispatchToProps)
 class ChangePassword extends React.Component<any,any> {
   state = {
     showPassword: false,
     showPasswordC: false,
     showPasswordN: false,
     fields: {
+      old_password: '',
       password: '',
-      newPassword: '',
-      confirmPassword: '',
+      password_confirmation: '',
     }
   };
 
   handleChange = (type:string) => event => 
     this.setState({
-      [type]: event.target.value
+      fields: { ...this.state.fields, [type]: event.target.value }
     })
   handleMouseDownPassword = event => {
     event.preventDefault();
   }
-  handleClickShowPassword = (type: string) => () => {
-    console.log(type,this.state[type]);
-    return this.setState({ [type]: !this.state[type] });
-  }
+  handleClickShowPassword = (type: string) => () => 
+    this.setState({ [type]: !this.state[type] });
   submit = () => {
-    console.log(this.state.fields);
+    this.props.changePassword(this.state.fields);
   }
   render(){
     const { classes } = this.props;
-    console.log(this.state);
     return (<>
       <Grid container spacing={24} className={classes.root}>
         <Grid item xs={12} >
           <Grid container spacing={24} alignItems={'center'} justify={'center'}>
             <Grid item>
               <FormControl className={classNames(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="password">Old Password</InputLabel>
+                <InputLabel htmlFor="old_password">Old Password</InputLabel>
                       <Input
-                        id="password"
+                        id="old_password"
                         type={this.state.showPassword ? 'text' : 'password'}
-                        value={this.state.fields.password}
-                        onChange={this.handleChange('password')}
+                        value={this.state.fields.old_password}
+                        onChange={this.handleChange('old_password')}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
@@ -99,12 +107,12 @@ class ChangePassword extends React.Component<any,any> {
             <Grid container spacing={24} alignItems={'center'} justify={'center'}>
               <Grid item>
                 <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="newPassword">New password</InputLabel>
+                  <InputLabel htmlFor="password">New password</InputLabel>
                       <Input
-                        id="newPassword"
+                        id="password"
                         type={this.state.showPasswordN ? 'text' : 'password'}
-                        value={this.state.fields.newPassword}
-                        onChange={this.handleChange('newPassword')}
+                        value={this.state.fields.password}
+                        onChange={this.handleChange('password')}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
@@ -123,12 +131,12 @@ class ChangePassword extends React.Component<any,any> {
             <Grid container spacing={24} alignItems={'center'} justify={'center'}>
               <Grid item>
                 <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="confirmPassword">Confirm new password</InputLabel>
+                  <InputLabel htmlFor="password_confirmation">Confirm new password</InputLabel>
                       <Input
-                        id="confirmPassword"
+                        id="password_confirmation"
                         type={this.state.showPasswordC ? 'text' : 'password'}
-                        value={this.state.fields.confirmPassword}
-                        onChange={this.handleChange('confirmPassword')}
+                        value={this.state.fields.password_confirmation}
+                        onChange={this.handleChange('password_confirmation')}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
@@ -146,7 +154,7 @@ class ChangePassword extends React.Component<any,any> {
             </Grid>
             <Grid container spacing={24} alignItems={'center'} justify={'center'} className={classes.lastRow}>
               <Grid item>
-                <Button variant="raised" color="primary" className={classes.button}>
+                <Button variant="raised" color="primary" className={classes.button} onClick={this.submit}>
                     Send
                 </Button>
               </Grid>

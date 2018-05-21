@@ -5,6 +5,7 @@ import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
 import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flax/action';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
+import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
 
 export interface IGlobalState {
   accounts: FluxAccounts.IState;
@@ -12,6 +13,7 @@ export interface IGlobalState {
   bookmarks: FluxBookmarks.IState;
   validation: FluxValidation.IState;
   toast: FluxToast.IState;
+  images: ImageLibrary.IState;
 }
 
 export default combineReducers({
@@ -20,4 +22,5 @@ export default combineReducers({
   bookmarks: FluxBookmarks.reducer,
   validation: FluxValidation.reducer,
   toast: FluxToast.reducer,
+  images: ImageLibrary.reducer,
 });
