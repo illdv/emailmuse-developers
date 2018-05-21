@@ -60,7 +60,7 @@ class ChangePassword extends React.Component<any,any> {
     fields: {
       old_password: '',
       password: '',
-      password_confirm: '',
+      password_confirmation: '',
     }
   };
 
@@ -131,12 +131,12 @@ class ChangePassword extends React.Component<any,any> {
             <Grid container spacing={24} alignItems={'center'} justify={'center'}>
               <Grid item>
                 <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="password_confirm">Confirm new password</InputLabel>
+                  <InputLabel htmlFor="password_confirmation">Confirm new password</InputLabel>
                       <Input
-                        id="password_confirm"
+                        id="password_confirmation"
                         type={this.state.showPasswordC ? 'text' : 'password'}
-                        value={this.state.fields.password_confirm}
-                        onChange={this.handleChange('password_confirm')}
+                        value={this.state.fields.password_confirmation}
+                        onChange={this.handleChange('password_confirmation')}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
