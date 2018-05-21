@@ -5,7 +5,6 @@ import { createAccountSaga } from 'src/renderer/component/Auth/flux/CreateAccoun
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
 import { loginSaga, watcherSetToken } from 'src/renderer/component/Auth/flux/LoginSaga';
 import { watcherGetProfile, watcherResetPassword } from '../component/Account/flux/saga';
-import { watcherResetPassword } from '../component/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
 
 export  default function* rootSaga () {
