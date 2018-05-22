@@ -18,6 +18,7 @@ export namespace TextValidatorSpace {
     actions?: FluxValidation.Actions.IAllAction;
     validation?: FluxValidation.IState;
     schema: object;
+    inputRef?: (ref) => void
   }
 }
 
@@ -35,7 +36,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export class TextValidator extends Component<TextValidatorSpace.IProps & TextFieldProps, TextValidatorSpace.IState> {
 
   state = { value: this.props.value as any, id: '' };
-
   static getDerivedStateFromProps(nextProps: TextValidatorSpace.IProps & TextFieldProps, prevState: TextValidatorSpace.IState): TextValidatorSpace.IState {
     const { id } = nextProps;
     if (id !== prevState.id) {
@@ -62,7 +62,7 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
   }
 
   render() {
-    const { validation, id, ...otherProps } = this.props;
+    const { validation, inputRef , id, ...otherProps } = this.props;
     const { isWasBlur, resultValidation }   = validation;
 
     const error = isWasBlur[id] && useOrDefault(() => (resultValidation[id][0]), '');
@@ -71,9 +71,11 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
       <TextField
         error={!!error}
         helperText={error}
+        inputRef={inputRef}
         onBlur={this.onBlur(this.state.value)}
         onChange={this.onChange}
         value={this.state.value}
+        autoComplete='off'
         {...otherProps}
       />
     );

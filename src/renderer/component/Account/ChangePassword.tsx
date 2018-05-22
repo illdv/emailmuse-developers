@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Paper,Input, FormControl, IconButton, InputAdornment, InputLabel, Grid, Button} from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -11,14 +11,19 @@ import { bindActionCreators } from 'redux';
 export namespace ChangePasswordSpace {
   export interface IProps {
     classes?: any;
+    email?: string;
+    name?: string;
+    changePassword?: typeof AccountSpace.Actions.changePassword.REQUEST;
   }
   export interface IState {
-    showPassword: boolean;
-    showPasswordC: boolean;
-    showPasswordN: boolean;
-    password: string;
-    newPassword: string;
-    confirmPassword: string;
+    showPassword?: boolean;
+    showPasswordC?: boolean;
+    showPasswordN?: boolean;
+    fields?: {
+      password?: string;
+      old_password?: string;
+      password_confirmation?: string;
+    };
   }
 }
 
@@ -52,7 +57,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps,mapDispatchToProps)
-class ChangePassword extends React.Component<any,any> {
+class ChangePassword extends React.Component<ChangePasswordSpace.IProps & WithStyles<any>,ChangePasswordSpace.IState> {
   state = {
     showPassword: false,
     showPasswordC: false,
@@ -72,11 +77,11 @@ class ChangePassword extends React.Component<any,any> {
     event.preventDefault();
   }
   handleClickShowPassword = (type: string) => () => 
-    this.setState({ [type]: !this.state[type] });
+    this.setState({ [type]: !this.state[type] })
   submit = () => {
     this.props.changePassword(this.state.fields);
   }
-  render(){
+  render() {
     const { classes } = this.props;
     return (<>
       <Grid container spacing={24} className={classes.root}>
