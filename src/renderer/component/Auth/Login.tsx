@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, PureComponent } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -66,14 +66,16 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   onClickNext: (request: IRequest) => () => {
     dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
-  },
+  }
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
-
-  state = {};
-
+  state = {
+  };
+  shouldComponentUpdate(nextProps,nextState) {
+    return nextProps.validation.isValid !== this.props.validation.isValid;
+  }
   render() {
     const { classes, onClickForgotPassword, onCreateAccount, onClickNext, validation } = this.props;
 
@@ -89,7 +91,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
     };
 
     return (
-      <div className={classes.root}>
+      <div className={classes.root} >
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>
@@ -119,7 +121,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                 onClickForgotPassword={onClickForgotPassword}
                 onCreateAccount={onCreateAccount}
                 onClickNext={onClickNext(validation.value as any)}
-                canNext={validation.isValid}
+                canNext={true}
               />
             </Grid>
           </Paper>

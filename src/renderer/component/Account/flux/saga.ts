@@ -7,7 +7,6 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 function* getProfileSaga() {
   try {
     const res = yield call(EmailerAPI.Accounts.getProfile);
-    console.log(res);
     yield put(AccountSpace.Actions.getProfile.SUCCESS({
       name: res.data.name,
       email: res.data.email
