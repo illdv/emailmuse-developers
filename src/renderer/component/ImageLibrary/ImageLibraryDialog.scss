@@ -1,3 +1,7 @@
+.image-library-dialog {
+    position: relative;
+}
+
 .image-library-dialog__img {
     display: flex;
     margin: auto;
@@ -5,4 +9,23 @@
     max-width: 100%;
     overflow: hidden;
     border-radius: 0.25rem;
+}
+
+.image-library-dialog__content {
+    overflow-y: hidden !important;
+}
+
+.image-library-dialog__url-field:hover ~ .image-library-dialog__url-tooltip {
+    visibility: visible;
+}
+
+.image-library-dialog__url-tooltip {
+    visibility: hidden;
+    width: 240px;
+    background-color: #ececec;
+    position: absolute;
+    right: 0;
+    bottom: -1.9rem;
+    text-align: center;
+    padding: 5px 0;
 }
