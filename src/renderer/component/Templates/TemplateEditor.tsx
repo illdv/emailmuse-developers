@@ -3,12 +3,12 @@ import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Save, Close, Delete, Menu, AddToPhotos } from '@material-ui/icons';
 import { Paper, TextField, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core/';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, AtomicBlockUtils,Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
+import createImagePlugin from 'draft-js-image-plugin';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
   ITemplate,
@@ -20,7 +20,7 @@ import {
 import { create, edit, remove, setOpenDialog } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
-
+const imagePlugin = createImagePlugin();
 const styles = {
   root: {
     flexGrow: 1,
@@ -66,6 +66,29 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   remove: (data: IDataForDeleteTemplates) => dispatch(remove(data)),
 });
 
+const Media = (props) => {
+
+	const entity = Entity.get(props.block.getEntityAt(0));
+
+	const {src} = entity.getData();
+	const type = entity.getType();
+
+  let media;
+	if (type === 'image') {
+		media = <img src={src} style={{width:'100%', height:'auto'}}/>;
+	}
+
+	return media;
+};
+function mediaBlockRenderer(block) {
+	if (block.getType() === 'atomic') {
+		return {
+			component: Media,
+			editable: false
+		};
+	}
+	return null;
+}
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
 
@@ -121,10 +144,28 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   }
 
   insertImage = (url: string) => {
-    console.log(this.state.content.getSelection());
-    const contentState = ContentState.createFromText(url);
-    const editorState = EditorState.push(this.state.content, contentState);
-    this.setState({ content: editorState,  selectImageOpen: false});
+    const { content } = this.state;
+    const contentState = content.getCurrentContent();
+    console.log(url);
+    const contentStateWithEntity = contentState.createEntity(
+      'image',
+      'IMMUTABLE',
+      {src: url}
+    );
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = EditorState.set(
+      content,
+      {currentContent: contentStateWithEntity}
+    );
+    
+    this.setState({ 
+      content: AtomicBlockUtils.insertAtomicBlock(
+        newEditorState,
+        entityKey,
+        '  '
+      ),
+      selectImageOpen: false
+    });
   }
 
   handleCloseSelectImage = () => {
@@ -202,6 +243,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               editorState={this.state.content}
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
+              blockRendererFn={mediaBlockRenderer}
               editorClassName="editorClassName"
               onEditorStateChange={this.onChangeContent}
               toolbarCustomButtons={[
