@@ -30,7 +30,7 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
     yield put(LoginAccount.Step.SUCCESS({ email, user: name, token }));
   } catch (error) {
     if (error.response.status === 400) {
-      yield put(FluxToast.Actions.setError(error.response.data.message));
+      yield put(FluxToast.Actions.showToast(error.response.data.message));
     }
     yield put(LoginAccount.Step.FAILURE(error));
   }

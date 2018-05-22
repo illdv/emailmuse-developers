@@ -34,9 +34,9 @@ export function* editTemplate(action) {
   try {
     const response = yield call(Templates.editTemplate, action.payload);
     yield put(updateChanged(response.data));
-    yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+    yield put(FluxToast.Actions.showToast('Success.'));
   } catch (error) {
-    yield put(FluxToast.Actions.setError('Error'));
+    yield put(FluxToast.Actions.showToast('Error'));
   }
 }
 
@@ -44,9 +44,9 @@ export function* createTempate(action) {
     try {
       const response = yield call(Templates.createTemplate, action.payload);
       yield put(clearPages(response.data));
-      yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+      yield put(FluxToast.Actions.showToast('Success. Tost is not used'));
     } catch (error) {
-      yield put(FluxToast.Actions.setError('Error'));
+      yield put(FluxToast.Actions.showToast('Error'));
     }
 }
 
@@ -54,9 +54,9 @@ export function* removeTemplates(action) {
     try {
         const response = yield call(Templates.removeTempates, action.payload);
         yield put(clearPages(response.data));
-        yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+        yield put(FluxToast.Actions.showToast('Success. Tost is not used'));
     } catch (error) {
-        yield put(FluxToast.Actions.setError('Error'));
+        yield put(FluxToast.Actions.showToast('Error'));
     }
 }
 
