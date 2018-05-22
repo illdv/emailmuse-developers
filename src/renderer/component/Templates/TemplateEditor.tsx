@@ -20,6 +20,7 @@ import {
 import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
 
@@ -203,10 +204,12 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
         <Paper elevation={4}>
           <div className={classes.offset}>
             <TextField
+              required
               value={this.state.title}
               onChange={this.onChangeTitle}
               label="Title template"
               margin="normal"
+              id={'template_title'}
             />
           </div>
           <div className={classes.offset}>

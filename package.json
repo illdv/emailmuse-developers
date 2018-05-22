@@ -1,6 +1,6 @@
 {
-  "name": "emailer-electron-react",
-  "version": "0.1.0",
+  "name": "Emailer",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^1.0.0",
@@ -113,10 +113,10 @@
     "name": "Nikita Kamyshenko",
     "email": "kamyshenko.n@cronix.ms"
   },
-  "description": "Emailr test",
+  "description": "Emailr demo v2",
   "main": "init.js",
   "build": {
-    "appId": "cronix.ms.emailer-electron-react",
+    "appId": "cronix.ms.emailer",
     "linux": {
       "target": "deb",
       "category": "Office"
