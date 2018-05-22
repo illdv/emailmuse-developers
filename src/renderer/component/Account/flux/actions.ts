@@ -5,7 +5,7 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 export interface IChangePasswordPayload {
   old_password: string;
   password: string;
-  password_confirmationation: string;
+  password_confirmation: string;
 }
 export interface IProfile{
   name: string;
@@ -35,7 +35,7 @@ export namespace AccountSpace {
   interface IRequest {
     old_password: string;
     password: string;
-    password_confirmationation: string;
+    password_confirmation: string;
   }
   interface IActions {
     changePassword: IActionsChangePassword;
