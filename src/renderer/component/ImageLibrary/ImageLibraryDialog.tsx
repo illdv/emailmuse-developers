@@ -7,6 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
+import block from 'bem-ts';
+const b = block('image-library-dialog');
+import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
 
 namespace ImageLibraryDialogSpace {
   export interface IProps {
@@ -56,11 +59,14 @@ export class ImageLibraryDialog
         aria-labelledby="form-dialog-title"
       >
         <form onSubmit={this.handleUpdate}>
-          <DialogTitle id="form-dialog-title">Change name of the image</DialogTitle>
+          <DialogTitle id="form-dialog-title">Edit image</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Please enter new name of the image and click Submit to apply name change
-            </DialogContentText>
+            <DialogContentText>Enter new name and click 'Update' to apply changes.</DialogContentText>
+            <DialogContentText>Or click 'Delete' to delete image from library.</DialogContentText>
+            <img
+              src={this.props.item.url}
+              className={b('img')}
+            />
             <TextField
               autoFocus
               margin="dense"

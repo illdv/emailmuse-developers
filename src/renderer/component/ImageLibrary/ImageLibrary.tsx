@@ -51,9 +51,6 @@ const mapDispatchToProps = dispatch => ({
 class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
   constructor (props) {
     super(props);
-    // this.state = {
-    //   items: []
-    // };
   }
 
   componentDidMount () {
@@ -67,16 +64,12 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   }
 
   // TODO implement onProgress
-  // onProgress = (percentage) => {
-  //   console.log('Loaded:', percentage);
-  // }
 
   onDelete = itemId => {
     this.props.actions.deleteImagesRequest(itemId);
   }
 
   onUpdate = (itemId, name) => {
-    // console.log(itemId, name);
     this.props.actions.updateImageRequest({ imageId: itemId, name });
   }
 
