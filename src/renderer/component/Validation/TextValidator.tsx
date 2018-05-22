@@ -18,6 +18,7 @@ export namespace TextValidatorSpace {
     actions?: FluxValidation.Actions.IAllAction;
     validation?: FluxValidation.IState;
     schema: object;
+    inputRef?: (ref) => void
   }
 }
 
@@ -74,6 +75,7 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
         onBlur={this.onBlur(this.state.value)}
         onChange={this.onChange}
         value={this.state.value}
+        autoComplete='off'
         {...otherProps}
       />
     );
