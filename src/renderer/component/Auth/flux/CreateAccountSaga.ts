@@ -9,8 +9,8 @@ function* onCreateAccount(action): IterableIterator<any> {
   const requestUser = action.payload.user;
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
-    const user = yield EmailerAPI.Accounts.createAccount(requestUser);
-    yield put(CreateAccount.Step.SUCCESS(user));
+    yield EmailerAPI.Accounts.sendCode(requestUser);
+    yield put(CreateAccount.Step.SUCCESS(requestUser));
   } catch (error) {
     console.log(error);
     const errorMessages = useOrDefault(() => (error.response.data.errors.email[0]), 'Unknown error');

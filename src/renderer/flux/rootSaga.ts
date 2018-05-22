@@ -9,6 +9,7 @@ import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/
 import { loginSaga, watcherSetToken } from 'src/renderer/component/Auth/flux/LoginSaga';
 import { watcherGetProfile, watcherResetPassword } from '../component/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
+import { checkCodeSaga } from 'src/renderer/component/Auth/flux/CheckCodeSaga';
 
 export  default function* rootSaga () {
   yield [
@@ -22,6 +23,7 @@ export  default function* rootSaga () {
     fork(watcherSetToken),
     fork(watcherResetPassword),
     ...templates.map(fork),
-    fork(watcherGetProfile)
+    fork(watcherGetProfile),
+    fork(checkCodeSaga)
   ];
 }

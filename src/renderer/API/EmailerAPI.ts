@@ -1,6 +1,5 @@
 import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
-import { authToken } from 'src/common/hardcoded_token';
 import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
@@ -17,7 +16,11 @@ export namespace Accounts {
     return Axios.post('/login', request);
   }
 
-  export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
+  export function checkCode(code: string) {
+    return Axios.get('/register/confirm', [{email_token: code}]);
+  }
+
+  export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
     return Axios.post('/register', user);
   }
 

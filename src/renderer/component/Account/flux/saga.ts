@@ -3,6 +3,7 @@ import { call, put, take } from 'redux-saga/effects';
 import { AccountSpace, IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 
 function* getProfileSaga() {
   try {
@@ -18,8 +19,13 @@ function* getProfileSaga() {
   
 }
 function* resetPasswordSaga(action: IActionPayload<IChangePasswordPayload>):IterableIterator<any> {
-  const data = action.payload;
-  const res = yield call(EmailerAPI.Accounts.changePassword,data);
+  try {
+    const data = action.payload;
+    const res  = yield call(EmailerAPI.Accounts.changePassword, data);
+    yield put(FluxToast.Actions.showToast('Reset password success', ToastType.Success));
+  } catch (e) {
+    yield put(FluxToast.Actions.showToast('Failed reset password', ToastType.Error));
+  }
 }
 export function* watcherGetProfile(){
   while(true){

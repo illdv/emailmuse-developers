@@ -4,7 +4,6 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { AuthorizationLayout } from 'src/renderer/component/Auth/AuthorizationLayout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 
 import './Application.css';
 

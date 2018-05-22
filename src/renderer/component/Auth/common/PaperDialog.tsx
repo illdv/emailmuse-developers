@@ -3,7 +3,6 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, Theme, WithStyles, withStyles } from '@material-ui/core/';
-import * as validate from 'validate.js';
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 
