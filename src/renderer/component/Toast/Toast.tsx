@@ -21,7 +21,7 @@ export namespace ToastSpace {
   export interface IProps {
     onLoadingMail?: (error) => void;
     toast?: FluxToast.IState;
-    setError?: (error: string) => void;
+    showToast?: (error: string) => void;
     clear?: () => void;
   }
 }
@@ -31,9 +31,6 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setError: (error) => {
-    dispatch(FluxToast.Actions.showToast(error));
-  },
   clear: () => {
     dispatch(FluxToast.Actions.clear());
   }
