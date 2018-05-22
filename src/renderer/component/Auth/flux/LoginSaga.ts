@@ -32,7 +32,7 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
     if (error.response === undefined) {
       yield put(FluxToast.Actions.showToast(error.message, ToastType.Error));
     } else {
-      if (error.response.status) {
+      if (error.response && error.response.status) {
         yield put(FluxToast.Actions.showToast(error.response.data.message, ToastType.Error));
       }
     }

@@ -39,15 +39,19 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
 
   state = {};
 
+  onCheckCode = () =>{
+    this.props.onCheckCode(this.props.validation.value['check_code']);
+  }
+
   render() {
-    const { accounts, onClickBack, onCheckCode } = this.props;
+    const { accounts, onClickBack } = this.props;
 
     return (
       <PaperDialog
         title={'Check your email and enter code.'}
         subtitle={`A message was sent to ${accounts.user.email}.`}
         canNext={true}
-        onEnterCompleted={onCheckCode}
+        onEnterCompleted={this.onCheckCode}
         onBack={onClickBack}
         id={'check_code'}
         label={'Code'}

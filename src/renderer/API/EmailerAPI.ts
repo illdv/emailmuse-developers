@@ -17,7 +17,7 @@ export namespace Accounts {
   }
 
   export function checkCode(code: string) {
-    return Axios.get('/register/confirm', [{email_token: code}]);
+    return Axios.post(`/register/confirm/${code}`, {});
   }
 
   export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
