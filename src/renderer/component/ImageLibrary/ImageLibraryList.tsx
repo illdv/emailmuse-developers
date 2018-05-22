@@ -5,19 +5,17 @@ import block from 'bem-ts';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import IconButton from '@material-ui/core/IconButton';
 import Delete from '@material-ui/icons/Delete';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 
 const b = block('image-library-list');
 
 namespace ImageLibraryListSpace {
   export interface IProps {
     items: IImageLibraryItem[];
-    onDelete?: (id) => void;
-    onUpdate?: (id, name) => void;
+    onDelete: (item:IImageLibraryItem) => () => void;
+    onOpenDialog: (item:IImageLibraryItem) => () => void;
   }
   export interface IState {
-    openDialog: boolean;
-    chosenImage: IImageLibraryItem;
+
   }
 }
 
@@ -26,33 +24,11 @@ export class ImageLibraryListComponent extends
 
   constructor(props){
     super(props);
-    this.state = { openDialog: false, chosenImage: null };
-  }
-
-  handleEditOpen = (item:IImageLibraryItem) => () => {
-    this.setState({ openDialog: true, chosenImage: item });
-  }
-
-  handleEditClose = () => {
-    this.setState({ openDialog: false, chosenImage: null });
-  }
-
-  handleDelete = (item:IImageLibraryItem) => () => {
-    this.props.onDelete(item.id);
   }
 
   render() {
     return (
       <>
-        {this.state.chosenImage ?
-          <ImageLibraryDialog
-            item={this.state.chosenImage}
-            onDelete={this.props.onDelete}
-            onUpdate={this.props.onUpdate}
-            onClose={this.handleEditClose}
-          /> :
-          null
-        }
         <GridList
           className={b()}
           cols={3}
@@ -65,13 +41,13 @@ export class ImageLibraryListComponent extends
             >
               <img
                 src={item.url}
-                onClick={this.handleEditOpen(item)}
+                onClick={this.props.onOpenDialog(item)}
                 className={b('tile-img')}
               />
               <GridListTileBar
                 title={item.name}
                 actionIcon={
-                  <IconButton onClick={this.handleDelete(item)}>
+                  <IconButton onClick={this.props.onDelete(item)}>
                     <Delete nativeColor='white'/>
                   </IconButton>
                 }

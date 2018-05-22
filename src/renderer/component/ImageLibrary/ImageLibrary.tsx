@@ -12,6 +12,7 @@ import { getImagesURLSelector } from 'src/renderer/component/ImageLibrary/store/
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
+import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 
 const b = block('image-library');
 
@@ -27,7 +28,8 @@ namespace ImageLibrarySpace {
     items: IImageLibraryItem[];
   }
   export interface IState {
-
+    openDialog: boolean;
+    chosenImage: IImageLibraryItem;
   }
 }
 
@@ -51,27 +53,36 @@ const mapDispatchToProps = dispatch => ({
 class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
   constructor (props) {
     super(props);
+    this.state = { openDialog:false, chosenImage: null };
   }
 
   componentDidMount () {
     this.props.actions.getImagesRequest();
   }
 
-  onDrop = item => {
+  onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
   }
 
+  openDialog = (item:IImageLibraryItem) => () => {
+    this.setState({openDialog: true, chosenImage: item});
+  }
+
+  closeDialog = () => {
+    this.setState({openDialog: false, chosenImage: null});
+  }
+
+  deleteItem = (item:IImageLibraryItem) => () => {
+    this.props.actions.deleteImagesRequest(item.id);
+  }
+
+  updateItem = (item:IImageLibraryItem, name) => {
+    this.props.actions.updateImageRequest({ imageId: item.id, name });
+  }
+
   // TODO implement onProgress
-
-  onDelete = itemId => {
-    this.props.actions.deleteImagesRequest(itemId);
-  }
-
-  onUpdate = (itemId, name) => {
-    this.props.actions.updateImageRequest({ imageId: itemId, name });
-  }
 
   render() {
     const { classes } = this.props;
@@ -79,15 +90,24 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
           <DragAndDropTarget
-            onDrop={this.onDrop}
+            onDrop={this.onDropFile}
             showOverlay={true}
             overlayMessage={'Drop files here to add them to your image library'}
           >
             <div className={b('container')}>
+              {this.state.chosenImage ?
+                <ImageLibraryDialog
+                  item={this.state.chosenImage}
+                  onDeleteItem={this.deleteItem}
+                  onUpdateItem={this.updateItem}
+                  onClose={this.closeDialog}
+                /> :
+                null
+              }
               <ImageLibraryListComponent
                 items={this.props.items}
-                onDelete={this.onDelete}
-                onUpdate={this.onUpdate}
+                onDelete={this.deleteItem}
+                onOpenDialog={this.openDialog}
               />
             </div>
           </DragAndDropTarget>

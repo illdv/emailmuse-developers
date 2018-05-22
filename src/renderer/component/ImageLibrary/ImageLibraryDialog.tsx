@@ -14,8 +14,8 @@ import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
 namespace ImageLibraryDialogSpace {
   export interface IProps {
     item: IImageLibraryItem;
-    onUpdate: (itemId:number, newName:string) => void;
-    onDelete: (itemId:number) => void;
+    onUpdateItem: (item:IImageLibraryItem, newName:string) => void;
+    onDeleteItem: (item:IImageLibraryItem) => () => void;
     onClose: () => void;
   }
   export interface IState {
@@ -32,37 +32,37 @@ export class ImageLibraryDialog
     };
   }
 
-  handleEditClose = () => {
+  handleDialogClose = () => {
     this.props.onClose();
   }
 
-  handleUpdate = (e) => {
+  handleUpdateItem = (e) => {
     e.preventDefault();
-    this.props.onUpdate(this.props.item.id, this.state.newName);
-    this.handleEditClose();
+    this.props.onUpdateItem(this.props.item, this.state.newName);
+    this.handleDialogClose();
   }
 
   handleInput = (e) => {
     this.setState({ newName: e.target.value });
   }
 
-  handleDelete = () => {
-    this.props.onDelete(this.props.item.id);
-    this.handleEditClose();
+  handleDeleteItem = () => {
+    this.props.onDeleteItem(this.props.item)();
+    this.handleDialogClose();
   }
 
   render() {
     return (
       <Dialog
         open={true}
-        onClose={this.handleEditClose}
+        onClose={this.handleDialogClose}
         aria-labelledby="form-dialog-title"
       >
-        <form onSubmit={this.handleUpdate}>
+        <form onSubmit={this.handleUpdateItem}>
           <DialogTitle id="form-dialog-title">Edit image</DialogTitle>
           <DialogContent>
-            <DialogContentText>Enter new name and click 'Update' to apply changes.</DialogContentText>
-            <DialogContentText>Or click 'Delete' to delete image from library.</DialogContentText>
+            <DialogContentText>Enter new name of this image and click 'Update' to apply changes.</DialogContentText>
+            <DialogContentText>Or click 'Delete' to delete this image from library.</DialogContentText>
             <img
               src={this.props.item.url}
               className={b('img')}
@@ -79,7 +79,7 @@ export class ImageLibraryDialog
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleEditClose} color="primary">
+            <Button onClick={this.handleDialogClose} color="primary">
               Cancel
             </Button>
             <Button
@@ -88,7 +88,7 @@ export class ImageLibraryDialog
             >
               Update
             </Button>
-            <Button onClick={this.handleDelete} color="primary">
+            <Button onClick={this.handleDeleteItem} color="primary">
               Delete
             </Button>
           </DialogActions>
