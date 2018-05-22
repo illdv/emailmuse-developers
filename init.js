@@ -18,7 +18,7 @@ function createWindow() {
         mainWindow = null;
     });
 
-    mainWindow.toggleDevTools();
+    // mainWindow.toggleDevTools();
 }
 app.on('activate', () => {
     if (mainWindow === null) {
