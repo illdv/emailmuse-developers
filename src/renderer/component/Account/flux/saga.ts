@@ -22,10 +22,11 @@ function* changePasswordSaga(action: IActionPayload<IChangePasswordPayload>):Ite
   const data = action.payload;
   try {
     const res = yield call(EmailerAPI.Accounts.changePassword,data);
+    yield put(FluxToast.Actions.showToast('Your password has been successfully changed', ToastType.Success));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast(error.message , ToastType.Success));
+    console.log(error);
+    yield put(FluxToast.Actions.showToast('Failed reset password'));
   }
-  yield put(FluxToast.Actions.showToast('Your password has been successfully changed', ToastType.Success));
 }
 function* changeNameSaga(action: IActionPayload<{name:string}>) :IterableIterator<any> {
   const data = action.payload;
@@ -40,7 +41,7 @@ export function* watcherGetProfile(){
   while(true){
     yield take('GET_PROFILE_REQUEST');
     yield call(getProfileSaga);
-    
+
   }
 }
 export function* watcherChangeName(){

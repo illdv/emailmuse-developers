@@ -15,6 +15,7 @@ export namespace FluxAccounts {
     export enum AuthStep {
       LOGIN                  = 'LOGIN',
       CREATE_ACCOUNT         = 'CREATE_ACCOUNT',
+      CHECK_CODE             = 'CHECK_CODE',
       CREATE_ACCOUNT_SUCCESS = 'CREATE_ACCOUNT_SUCCESS',
       FORGOT_PASSWORD        = 'FORGOT_PASSWORD',
       LOADING                = 'LOADING',
@@ -34,11 +35,13 @@ export namespace FluxAccounts {
         mail: string;
         password: string;
       }
-      export type ISetToken = (token:string) => IActionPayload<{token:string}>;
-      
+
+      export type ISetToken = (token: string) => IActionPayload<{ token: string }>;
+
       export const SetToken: ISetToken = createAction('SET_TOKEN',
         (token: IRequest) => ({ token }),
       );
+
       export interface IActions extends IActionSteps {
         REQUEST: (request: IRequest) => IActionPayload<{ request: IRequest }>;
         SUCCESS: (user: Models.IUser) => IActionPayload<{ user: Models.IUser }>;
@@ -50,7 +53,7 @@ export namespace FluxAccounts {
         (user: Models.IUser) => ({ user }),
         (error: string) => ({ error }),
       );
-      
+
     }
 
     export namespace CreateAccount {
@@ -74,6 +77,12 @@ export namespace FluxAccounts {
         (user: IRequest) => ({ user }),
         (user: IUser) => ({ user }),
         (error: string, request: IRequest) => ({ error, request }),
+      );
+
+      export const checkCode = createActionSteps('CHECK_CODE',
+        (code: string) => ({ code }),
+        () => ({}),
+        (error: string) => ({error}),
       );
     }
 
@@ -105,14 +114,15 @@ export namespace FluxAccounts {
       setAuthStep: (authStep: Models.AuthStep) => Action;
     }
   }
-  
+
   const createDefaultState = (): IState => {
-    const token = CustomStorage.getItem('token');
+    const token                                    = CustomStorage.getItem('token');
     axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
-      user: { email: '', user: '', token:  token ? token : '' },
+      user: { email: '', user: '', token: token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
+      checkCodeSuccess: false,
     };
   };
 
@@ -121,19 +131,22 @@ export namespace FluxAccounts {
       return { ...state, ...action.payload };
     },
     [Actions.Login.Step.type.FAILURE]: (state, action): IState => {
-      return { ...state, ...action.payload, authStep: Models.AuthStep.LOGIN};
+      return { ...state, ...action.payload, authStep: Models.AuthStep.LOGIN };
     },
     [Actions.CreateAccount.Step.type.SUCCESS]: (state: IState, action): IState => {
-      return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
+      return { ...state, ...action.payload, authStep: Models.AuthStep.CHECK_CODE };
     },
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action): IState => {
-      return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT_SUCCESS };
+      return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT };
+    },
+    [Actions.CreateAccount.checkCode.SUCCESS]: (state, action): IState => {
+      return { ...state, authStep: Models.AuthStep.LOGIN };
     },
     [Actions.ForgotPassword.resetPassword.type.SUCCESS]: (state): IState => {
       return { ...state, authStep: Models.AuthStep.LOGIN };
     },
     GET_PROFILE_SUCCESS: (state, action) => {
-      return { ...state, user:{...state.user, ...action.payload} };
+      return { ...state, user: { ...state.user, ...action.payload } };
     },
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
@@ -142,6 +155,7 @@ export namespace FluxAccounts {
 
   export interface IState {
     user: Models.IUser;
+    checkCodeSuccess: boolean;
     authStep: Models.AuthStep;
     error: string;
   }
