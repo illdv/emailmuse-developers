@@ -13,6 +13,7 @@ import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Account/Settings';
 import Templates from '../Templates/TemplatesRouter';
+import { PreloaderLayout } from 'src/renderer/component/PreloaderLayout/PreloaderLayout';
 
 const styles: IStyle = {
   root: {
@@ -78,7 +79,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           <Grid item xs={12} sm={3}>
             {<Menu/>}
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflow: 'auto' }}>
+          <Grid item xs={12} sm={9} style={{ overflow: 'auto', position: 'relative' }}>
+            <PreloaderLayout/>
             {this.mainDisplay(this.props)}
           </Grid>
         </Grid>

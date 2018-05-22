@@ -1,6 +1,5 @@
 var url = require('url');
 var path2 = require('path');
-var appState = require('./Store/rootStore').appState;
 var loadDevTool = require('electron-load-devtool');
 var _a = require('electron'), app = _a.app, ipcMain = _a.ipcMain, BrowserWindow = _a.BrowserWindow;
 var mainWindow;
@@ -32,12 +31,4 @@ app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         app.quit();
     }
-});
-// ======================== Store ========================
-ipcMain.on('load-store', function () {
-    var store = appState.get('store');
-    mainWindow.webContents.send('loading-store', store);
-});
-ipcMain.on('save-store', function (event, store) {
-    appState.set('store', store);
 });
