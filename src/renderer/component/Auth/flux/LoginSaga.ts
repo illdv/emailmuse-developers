@@ -36,7 +36,7 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
         yield put(FluxToast.Actions.showToast(error.response.data.message, ToastType.Error));
       }
     }
-    yield put(LoginAccount.Step.FAILURE(error));
+    yield put(LoginAccount.Step.FAILURE(''));
   }
 }
 

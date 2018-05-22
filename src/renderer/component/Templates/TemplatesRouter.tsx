@@ -10,6 +10,8 @@ import { LOADING, FAILURE, loading } from 'src/renderer/component/Templates/flux
 import { getPages, getStatus } from 'src/renderer/component/Templates/flux/selectors';
 import { Button } from '@material-ui/core';
 import { Loading } from 'src/renderer/common/Loading';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+
 
 export namespace MailListSpace {
     export interface IProps {
@@ -27,12 +29,13 @@ export namespace MailListSpace {
 
 const mapStateToProps = (state: IGlobalState) => ({
     status: getStatus(state),
-    pages: getPages(state)
+    pages: getPages(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    loading: () => dispatch(loading())
+    loading: () => dispatch(loading()),
 });
+@connect(null, mapDispatchToProps)
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
@@ -54,7 +57,7 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
             createTemplate: false
         });
     }
-    
+
     onCreateTemplate = () => {
         this.setState({
             createTemplate: true
@@ -67,11 +70,11 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
         }
     }
 
-    // componentWillUpdate(nextProps, nextState){
-    //     if(!nextProps.pages[nextState.activePage]){
-    //         this.props.loading();
-    //     }
-    // }
+     componentWillUpdate(nextProps, nextState){
+         if(!nextProps.pages[nextState.activePage]){
+             this.props.loading();
+         }
+     }
 
     render(){
         if (this.props.status === LOADING || !(this.props.pages[this.state.activePage])) {
