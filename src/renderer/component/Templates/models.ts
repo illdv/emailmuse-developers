@@ -18,3 +18,20 @@ export interface IResponseTemplates {
     current_page: number;
     data:         object;
 }
+
+export interface IDataForCreateTemplate {
+    title: string;
+    body: string;
+    description: string;
+}
+
+export interface IDataForEditTemplate {
+    id: number;
+    title: string;
+    body: string;
+    description: string;
+}
+
+export interface IDataForDeleteTemplates {
+    id: number[];
+}
