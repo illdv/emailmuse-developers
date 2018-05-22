@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.image-library-list__tile {
+  user-select: none;
+}
+
 .image-library-list__tile-img {
   cursor: pointer;
 }

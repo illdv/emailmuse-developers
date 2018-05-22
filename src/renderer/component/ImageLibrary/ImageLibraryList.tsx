@@ -105,7 +105,10 @@ export class ImageLibraryListComponent extends
           spacing={20}
         >
           {this.props.items.map(item =>
-            <GridListTile key={item.id}>
+            <GridListTile
+              className={b('tile')}
+              key={item.id}
+            >
               <img
                 src={item.url}
                 onClick={this.handleClickOpen(item.id)}
