@@ -3,6 +3,7 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 import * as validate from 'validate.js';
 import { IKeyValue } from 'src/renderer/utils';
 
+// TODO: fix validation on login page
 export namespace FluxValidation {
   export namespace Actions {
 

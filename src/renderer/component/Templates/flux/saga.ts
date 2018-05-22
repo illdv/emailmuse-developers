@@ -1,6 +1,15 @@
 import { take, call, put, select } from 'redux-saga/effects';
 
-import { LOADING, CHANGE, CREATE, failure, loaded, } from './module';
+import {
+    LOADING,
+    EDIT,
+    REMOVE,
+    CREATE,
+    failure,
+    loaded,
+    updateChanged,
+    clearPages
+} from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
 
@@ -21,27 +30,55 @@ export function* watchLoading() {
   }
 }
 
-export function* changeTemplate(isChange, action) {
+export function* editTemplate(action) {
   try {
-    const response = yield call(isChange ? Templates.editTemplate : Templates.saveTemplate, action.payload);
-    yield put(FluxToast.Actions.showToast('Success. Tost is not used'));
+    const response = yield call(Templates.editTemplate, action.payload);
+    yield put(updateChanged(response.data));
+    yield put(FluxToast.Actions.showToast('Success.'));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Error'));
   }
 }
 
-export function* watherChange() {
+export function* createTempate(action) {
+    try {
+      const response = yield call(Templates.createTemplate, action.payload);
+      yield put(clearPages(response.data));
+      yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+    } catch (error) {
+      yield put(FluxToast.Actions.setError('Error'));
+    }
+}
+
+export function* removeTemplates(action) {
+    try {
+        const response = yield call(Templates.removeTempates, action.payload);
+        yield put(clearPages(response.data));
+        yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+    } catch (error) {
+        yield put(FluxToast.Actions.setError('Error'));
+    }
+}
+
+export function* watchEdit() {
   while (true) {
-    const data = yield take(CHANGE);
-    yield call(changeTemplate, true, data);
+    const data = yield take(EDIT);
+    yield call(editTemplate, data);
   }
 }
 
-export function* watherCreate() {
+export function* watchCreate() {
   while (true) {
     const data = yield take(CREATE);
-    yield call(changeTemplate, false, data);
+    yield call(createTempate, data);
   }
 }
 
-export default [watchLoading, watherChange, watherCreate];
+export function* watchRemove() {
+    while (true) {
+        const data = yield take(REMOVE);
+        yield call(removeTemplates, data);
+    }
+}
+
+export default [watchLoading, watchEdit, watchCreate, watchRemove];

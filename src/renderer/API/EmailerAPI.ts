@@ -6,6 +6,11 @@ import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
+import {
+  IDataForDeleteTemplates,
+  IDataForCreateTemplate,
+  IDataForEditTemplate
+} from 'src/renderer/component/Templates/models';
 
 export namespace Accounts {
   export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
@@ -82,20 +87,17 @@ export namespace Accounts {
       return axios.get(`${API_ENDPOINT}/templates`);
     }
 
-    export function editTemplate({id, title, body, description}){
-      return axios.put(`${API_ENDPOINT}/templates/${id}`, {
-        title,
-        body,
-        description
-      });
+    export function editTemplate(data: IDataForEditTemplate){
+      const {id, ...remainingData} = data;
+      return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
     }
 
-    export function saveTemplate({title, body, description}){
-      return axios.post(`${API_ENDPOINT}/templates`, {
-        title,
-        body,
-        description
-      });
+    export function createTemplate(data: IDataForCreateTemplate){
+      return axios.post(`${API_ENDPOINT}/templates`, data);
+    }
+
+    export function removeTempates(data: IDataForDeleteTemplates){
+        return axios.delete(`${API_ENDPOINT}/templates`, { data });
     }
   }
   /* export default ImageLibrary; */
