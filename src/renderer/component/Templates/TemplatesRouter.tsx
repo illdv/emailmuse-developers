@@ -67,11 +67,11 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
         }
     }
 
-    componentWillUpdate(nextProps, nextState){
-        if(!nextProps.pages[nextState.activePage]){
-            this.props.loading();
-        }
-    }
+    // componentWillUpdate(nextProps, nextState){
+    //     if(!nextProps.pages[nextState.activePage]){
+    //         this.props.loading();
+    //     }
+    // }
 
     render(){
         if (this.props.status === LOADING || !(this.props.pages[this.state.activePage])) {
