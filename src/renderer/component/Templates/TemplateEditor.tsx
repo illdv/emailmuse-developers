@@ -17,7 +17,7 @@ import {
   IDataForDeleteTemplates
 } from './models';
 
-import { create, edit, remove, setOpenDialog } from 'src/renderer/component/Templates/flux/module';
+import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
 const imagePlugin = createImagePlugin();
@@ -99,7 +99,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
       this.state = {
         selectImageOpen: false,
         isEdit: false,
-        title: '',
+        title: `Image`,
         content: EditorState.createEmpty(),
         description: ''
       };
@@ -135,8 +135,8 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
       content,
       {currentContent: contentStateWithEntity}
     );
-    
-    this.setState({ 
+
+    this.setState({
       content: AtomicBlockUtils.insertAtomicBlock(
         newEditorState,
         entityKey,
@@ -153,7 +153,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   render() {
     const { classes } = this.props;
     const save = () => {
-      
+
       const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
         if (this.state.isEdit) {
             // change

@@ -18,7 +18,7 @@ export namespace TextValidatorSpace {
     actions?: FluxValidation.Actions.IAllAction;
     validation?: FluxValidation.IState;
     schema: object;
-    inputRef?: (ref) => void
+    inputRef?: (ref) => void;
   }
 }
 

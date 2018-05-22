@@ -70,22 +70,22 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
     const validationSchema = {
       name: {
         presence: true,
-        length: { minimum: 3 }
+        length: { minimum: 3, message: 'minimum is 3 characters' }
       },
       email: {
         presence: true,
         email: true
       },
-      'password_confirmation': {
+      password: {
         presence: true,
-        length: { minimum: 6 }
+        length: { minimum: 6, message: 'minimum is 6 characters' }
       },
-      confirmPassword: {
+      password_confirmation: {
         presence: true,
-        length: { minimum: 6 },
+        length: { minimum: 6, message: 'minimum is 6 characters' },
         equality: {
           attribute: 'password',
-          message: 'Those passwords didn\'t match. Try again',
+          message: 'Passwords didn\'t match.',
           comparator: (password, confirmPassword) => password === confirmPassword,
         }
       },
@@ -122,7 +122,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
                     type="password"
                     label="Password"
                     margin="normal"
-                    schema={validationSchema.password_confirmation}
+                    schema={validationSchema.password}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -132,7 +132,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
                       type="password"
                       label="Confirm password"
                       margin="normal"
-                      schema={validationSchema.confirmPassword}
+                      schema={validationSchema.password_confirmation}
                     />
                   </Grid>
                 </Grid>

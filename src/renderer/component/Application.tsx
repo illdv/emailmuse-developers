@@ -7,7 +7,7 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 
 import './Application.css';
-import { PreloaderLayout } from 'src/renderer/component/PreloaderLayout/PreloaderLayout';
+import { Toast } from 'src/renderer/component/Toast/Toast';
 
 
 export namespace MainLayoutScope {
@@ -41,7 +41,12 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
 
   render() {
     const { token } = this.props.accounts.user;
-    return !!token && <MainLayout/> || <AuthorizationLayout/>;
+    return (
+    <>
+      {!!token && <MainLayout/> || <AuthorizationLayout/>}
+      <Toast/>
+    </>
+  );
   }
 }
 
