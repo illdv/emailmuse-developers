@@ -35,6 +35,11 @@ const handle = handleActions({
 
 export namespace FluxToast {
 
+  /*export interface IActions {
+    showToast: (messages: string, type?: ToastType) => void;
+    clear: () => void;
+  }*/
+
   export const Actions = {
     showToast,
     clear,

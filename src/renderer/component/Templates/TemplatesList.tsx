@@ -15,37 +15,49 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
     super(props, context);
   }
 
+  templateList = () => {
+    const templates = this.props.templates;
+    if(templates && templates.length === 0){
+      return (
+        <Typography variant="headline" noWrap align="center">Templates list empty</Typography>
+      );
+    }
+    return (
+      <List component="nav">
+        {templates && templates.map((template: ITemplate, index) => {
+            const selectTemplate = () => this.props.selectTemplate(template);
+            return (
+              <div
+                key={template.id}
+                onClick={selectTemplate}
+              >
+                <ListItem button>
+                  <Grid container spacing={24}>
+                    <Grid item xs={4}>
+                      <Typography gutterBottom noWrap>{template.title || '---'}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography align={'center'} gutterBottom noWrap>{template.description}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography align={'right'} gutterBottom noWrap>{template.updated_at}</Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                {index !== this.props.templates.length - 1 && <Divider/>}
+              </div>
+            );
+          }
+        )}
+      </List>
+    );
+  }
+
   render() {
     return (
-      <Paper elevation={4}>
+      <Paper elevation={4} style={{height: '100%'}}>
         <div>
-          <List component="nav">
-            {this.props.templates && this.props.templates.map((template: ITemplate, index) => {
-              const selectTemplate = () => this.props.selectTemplate(template);
-              return (
-                <div
-                  key={template.id}
-                  onClick={selectTemplate}
-                >
-                  <ListItem button>
-                    <Grid container spacing={24}>
-                      <Grid item xs={4}>
-                        <Typography gutterBottom noWrap>{template.title || '---'}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography align={'center'} gutterBottom noWrap>{template.description}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography align={'right'} gutterBottom noWrap>{template.updated_at}</Typography>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                  {index !== this.props.templates.length - 1 && <Divider/>}
-                </div>
-              );
-            }
-            )}
-          </List>
+          {this.templateList()}
         </div>
       </Paper>
     );

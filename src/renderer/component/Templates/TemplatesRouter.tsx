@@ -58,7 +58,7 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
     onCreateTemplate = () => {
         this.setState({
             createTemplate: true
-        })
+        });
     }
 
     componentDidMount(){

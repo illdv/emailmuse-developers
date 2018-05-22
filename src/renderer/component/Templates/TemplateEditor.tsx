@@ -3,12 +3,12 @@ import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Save, Close, Delete, Menu, AddToPhotos } from '@material-ui/icons';
 import { Paper, TextField, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core/';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, AtomicBlockUtils,Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
+import createImagePlugin from 'draft-js-image-plugin';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
   ITemplate,
@@ -17,9 +17,12 @@ import {
   IDataForDeleteTemplates
 } from './models';
 
-import { create, edit, remove, setOpenDialog } from 'src/renderer/component/Templates/flux/module';
+import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
+import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+const imagePlugin = createImagePlugin();
+const plugins = [imagePlugin];
 
 const styles = {
   root: {
@@ -97,7 +100,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
       this.state = {
         selectImageOpen: false,
         isEdit: false,
-        title: '',
+        title: `Image`,
         content: EditorState.createEmpty(),
         description: ''
       };
@@ -121,10 +124,27 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   }
 
   insertImage = (url: string) => {
-    console.log(this.state.content.getSelection());
-    const contentState = ContentState.createFromText(url);
-    const editorState = EditorState.push(this.state.content, contentState);
-    this.setState({ content: editorState,  selectImageOpen: false});
+    const { content } = this.state;
+    const contentState = content.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity(
+      'IMAGE',
+      'IMMUTABLE',
+      {src: url}
+    );
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = EditorState.set(
+      content,
+      {currentContent: contentStateWithEntity}
+    );
+
+    this.setState({
+      content: AtomicBlockUtils.insertAtomicBlock(
+        newEditorState,
+        entityKey,
+        '  '
+      ),
+      selectImageOpen: false
+    });
   }
 
   handleCloseSelectImage = () => {
@@ -134,7 +154,8 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   render() {
     const { classes } = this.props;
     const save = () => {
-        const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
+
+      const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
         if (this.state.isEdit) {
             // change
             this.props.edit({
@@ -183,10 +204,12 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
         <Paper elevation={4}>
           <div className={classes.offset}>
             <TextField
+              required
               value={this.state.title}
               onChange={this.onChangeTitle}
               label="Title template"
               margin="normal"
+              id={'template_title'}
             />
           </div>
           <div className={classes.offset}>
@@ -204,6 +227,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               onEditorStateChange={this.onChangeContent}
+              plugins={plugins}
               toolbarCustomButtons={[
                 <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onAddImage}>
                   <AddToPhotos/>

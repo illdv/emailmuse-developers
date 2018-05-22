@@ -8,7 +8,7 @@ export namespace FluxValidation {
   export namespace Actions {
 
     export const initScheme
-                   = createAction('INIT_SCHEME', (validationScheme: object) => ({ validationScheme }));
+                   = createAction('INIT_SCHEME');
 
     export const setValue
                    = createAction('SET_VALUE', (payload: IKeyValue<string, any>) => (payload));
@@ -17,7 +17,7 @@ export namespace FluxValidation {
                    = createAction('SET_SCHEME', (payload: IKeyValue<string, object>) => (payload));
 
     export interface IAllAction {
-      initScheme?: (validationScheme: object) => IActionPayload<object>;
+      initScheme?: () => IActionPayload<null>;
       setValue?: (payload: IKeyValue<string, any>) => IActionPayload<object>;
       setScheme?: (payload: IKeyValue<string, object>) => IActionPayload<object>;
     }
@@ -49,7 +49,7 @@ export namespace FluxValidation {
 
   export const reducer = handleActions({
     INIT_SCHEME: (state: IState, action): IState => {
-      return { ...state, ...action.payload };
+      return createDefaultState();
     },
     SET_VALUE: (state: IState, action: IActionPayload<IKeyValue<string, any>>): IState => {
       const payload  = action.payload;

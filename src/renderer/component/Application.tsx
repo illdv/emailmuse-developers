@@ -6,6 +6,7 @@ import { AuthorizationLayout } from 'src/renderer/component/Auth/AuthorizationLa
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.css';
+import { Toast } from 'src/renderer/component/Toast/Toast';
 
 
 export namespace MainLayoutScope {
@@ -39,7 +40,12 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
 
   render() {
     const { token } = this.props.accounts.user;
-    return !!token && <MainLayout/> || <AuthorizationLayout/>;
+    return (
+    <>
+      {!!token && <MainLayout/> || <AuthorizationLayout/>}
+      <Toast/>
+    </>
+  );
   }
 }
 

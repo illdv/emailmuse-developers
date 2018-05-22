@@ -1,6 +1,6 @@
 {
-  "name": "emailer-electron-react",
-  "version": "0.1.0",
+  "name": "Emailer",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^1.0.0",
@@ -9,6 +9,11 @@
     "chalk": "1.1.3",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.5",
+    "draft-js-dnd-plugin": "^2.0.0-beta1",
+    "draft-js-drag-n-drop-plugin": "^2.0.3",
+    "draft-js-focus-plugin": "^2.0.4",
+    "draft-js-image-plugin": "^2.0.5",
+    "draft-js-plugins-editor": "^2.0.8",
     "draftjs-to-html": "^0.8.4",
     "googleapis": "^30.0.0",
     "jodit-react": "^1.0.14",
@@ -108,10 +113,10 @@
     "name": "Nikita Kamyshenko",
     "email": "kamyshenko.n@cronix.ms"
   },
-  "description": "Emailr test",
+  "description": "Emailr demo v2",
   "main": "init.js",
   "build": {
-    "appId": "cronix.ms.emailer-electron-react",
+    "appId": "cronix.ms.emailer",
     "linux": {
       "target": "deb",
       "category": "Office"
