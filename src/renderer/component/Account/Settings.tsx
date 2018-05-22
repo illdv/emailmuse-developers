@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Paper, IconButton, InputAdornment, InputLabel, Grid, Typography} from '@material-ui/core';
+import {Paper, IconButton, InputAdornment, InputLabel, Grid, Typography, Divider} from '@material-ui/core';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import classNames from 'classnames';
@@ -46,6 +46,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
   componentDidMount(){
     !this.props.name && this.props.getProfile();
   }
+
   render() {
     const { classes, name, email } = this.props;
     return name ? (
@@ -53,14 +54,18 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
         <Paper className={classes.root}>
           <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography variant='headline' noWrap align='center'>Account settings</Typography>
+                <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <Typography variant='subheading' noWrap align='left'>
-                  Name:  {name}
+                  Name: {name}
+                  <Divider light/>
                 </Typography>
+              </Grid>
+              <Grid item xs={6}>
                 <Typography variant='subheading' noWrap align='left'>
-                  Email: {email}
+                    Email: {email}
+                    <Divider light/>
                 </Typography>
               </Grid>
           </Grid>

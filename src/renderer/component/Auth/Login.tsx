@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, PureComponent } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -11,6 +11,7 @@ import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 import { Toast } from 'src/renderer/component/Toast/Toast';
+import { bindActionCreators } from 'redux';
 
 const styles = theme => ({
   root: {
@@ -50,6 +51,7 @@ export namespace AuthorizationSpace {
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
     onClickNext: (request: IRequest) => () => void;
+    actions?: FluxValidation.Actions.IAllAction;
   }
 }
 
@@ -67,12 +69,22 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickNext: (request: IRequest) => () => {
     dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
   },
+  actions: bindActionCreators({
+    ...FluxValidation.Actions.AllAction,
+  }, dispatch)
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+  state = {
+  };
+  shouldComponentUpdate(nextProps,nextState) {
+    return nextProps.validation.isValid !== this.props.validation.isValid;
+  }
 
-  state = {};
+  componentWillUnmount(): void {
+    this.props.actions.initScheme();
+  }
 
   render() {
     const { classes, onClickForgotPassword, onCreateAccount, onClickNext, validation } = this.props;
@@ -89,7 +101,9 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
     };
 
     return (
-      <div className={classes.root}>
+      <div className={classes.root} >
+        <input type="text" name="prevent_autofill" id="prevent_autofill" value="" style={{display: 'none'}} />
+        <input type="password" name="password_fake" id="password_fake" value="" style={{display: 'none'}} />
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>
@@ -119,12 +133,11 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                 onClickForgotPassword={onClickForgotPassword}
                 onCreateAccount={onCreateAccount}
                 onClickNext={onClickNext(validation.value as any)}
-                canNext={validation.isValid}
+                canNext={true}
               />
             </Grid>
           </Paper>
         </InCenter>
-        <Toast/>
       </div>
     );
   }

@@ -61,7 +61,7 @@ export namespace FluxAccounts {
         name: string;
         email: string;
         password: string;
-        password_confirmationation: string;
+        password_confirmation: string;
       }
 
       export interface IActions extends IActionSteps {

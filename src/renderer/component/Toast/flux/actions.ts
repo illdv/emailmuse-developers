@@ -1,35 +1,54 @@
 import { handleActions, createAction } from 'redux-actions';
 
-const SET_ERROR = 'SET_ERROR';
-const CLEAR = 'CLEAR';
+export enum ToastType {
+  Error   = 'Error',
+  Warning = 'Warning',
+  Info    = 'Info',
+  Success = 'Success',
+}
 
-const setError = createAction(SET_ERROR, (error: string) => ({ error }));
-const clear = createAction(CLEAR, () => ({ error: '' }));
+const SHOW_TOAST  = 'SHOW_TOAST';
+const CLEAR_TOAST = 'CLEAR_TOAST';
+
+const showToast = createAction(
+  SHOW_TOAST,
+  (messages: string, type: ToastType = ToastType.Info) => ({ messages, type }));
+
+const clear = createAction(CLEAR_TOAST);
 
 const createDefaultState = (): FluxToast.IState => {
   return {
-    error: '',
+    messages: '',
+    type: ToastType.Info,
+    isOpen: false,
   };
 };
 
 const handle = handleActions({
-  SET_ERROR: (state, action) => {
-    return { ...state, ...action.payload };
+  [SHOW_TOAST]: (state, action): FluxToast.IState => {
+    return { ...state, ...action.payload, isOpen: true };
   },
-  CLEAR: (state, action) => {
-    return { ...state, ...action.payload };
+  [CLEAR_TOAST]: () => {
+    return createDefaultState();
   }
 }, createDefaultState());
 
 export namespace FluxToast {
 
+  /*export interface IActions {
+    showToast: (messages: string, type?: ToastType) => void;
+    clear: () => void;
+  }*/
+
   export const Actions = {
-    setError,
+    showToast,
     clear,
   };
 
   export interface IState {
-    error: string;
+    messages: string;
+    type: ToastType;
+    isOpen: boolean;
   }
 
   export const reducer = handle;

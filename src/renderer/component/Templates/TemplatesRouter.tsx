@@ -19,6 +19,7 @@ export namespace MailListSpace {
     }
 
     export interface IState {
+        activePage: number;
         editTemplate: null|ITemplate;
         createTemplate: boolean;
     }
@@ -36,6 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
     state = {
+        activePage: 1,
         editTemplate: null,
         createTemplate: false
     };
@@ -48,23 +50,31 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
 
     closeTemplate = () => {
         this.setState({
-            editTemplate: null
+            editTemplate: null,
+            createTemplate: false
+        });
+    }
+    
+    onCreateTemplate = () => {
+        this.setState({
+            createTemplate: true
         });
     }
 
     componentDidMount(){
-        this.props.loading();
+        if(!this.props.pages[this.state.activePage] || this.props.status !== LOADING){
+            this.props.loading();
+        }
     }
 
-    onCreateTemplate = () => {
-        this.setState({
-            createTemplate: true
-        })
+    componentWillUpdate(nextProps, nextState){
+        if(!nextProps.pages[nextState.activePage]){
+            this.props.loading();
+        }
     }
 
     render(){
-
-        if (this.props.status === LOADING) {
+        if (this.props.status === LOADING || !(this.props.pages[this.state.activePage])) {
             return <Loading/>;
         } else if (this.props.status === FAILURE) {
             return <h1>Failure</h1>;
@@ -79,7 +89,10 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
                       <Button variant="raised" color="primary" style={{marginBottom: 5}} onClick={this.onCreateTemplate}>
                         Add
                       </Button>
-                        <TemplatesList templates={this.props.pages[1]} selectTemplate={this.selectTemplate} />
+                      <TemplatesList
+                         templates={this.props.pages[this.state.activePage]}
+                         selectTemplate={this.selectTemplate}
+                      />
                     </div>
                 );
             }

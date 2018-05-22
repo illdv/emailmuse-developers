@@ -11,6 +11,7 @@ export function Fab(props: {onClick: any, className: string, icon: ReactElement<
       unmountOnExit
     >
       <Button
+        style={{zIndex: 99}}
         className={props.className}
         color={props.color || 'primary'}
         variant="fab"
