@@ -2,20 +2,20 @@ import * as React from 'react';
 import { IStyle } from 'type/materialUI';
 import { Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
+import Button from '@material-ui/core/Button';
+import TablePagination from '@material-ui/core/TablePagination';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest } from
-    'src/renderer/component/ImageLibrary/store/actions';
+'src/renderer/component/ImageLibrary/store/actions';
 import { getImagesURLSelector, getCurrentPageSelector, getTotalImages, getLastPageSelector, getPerPageSelector } from
-    'src/renderer/component/ImageLibrary/store/selectors';
+'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
-import Button from '@material-ui/core/Button';
-import TablePagination from '@material-ui/core/TablePagination';
 
 const b = block('image-library');
 
