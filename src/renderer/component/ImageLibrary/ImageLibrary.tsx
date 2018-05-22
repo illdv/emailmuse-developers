@@ -13,6 +13,7 @@ import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/mod
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
 import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import Button from '@material-ui/core/Button';
 
 const b = block('image-library');
 
@@ -66,6 +67,19 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     }
   }
 
+  onUploadFiles = e => {
+    if (e.target.files) {
+      let files = [];
+      // tslint:disable-next-line
+      for (let i = 0; i < e.target.files.length; i++) {
+        files = files.concat(e.target.files[i]);
+      }
+      if (files.length) {
+        this.props.actions.uploadImagesRequest(files);
+      }
+    }
+  }
+
   openDialog = (item:IImageLibraryItem) => () => {
     this.setState({openDialog: true, chosenImage: item});
   }
@@ -111,6 +125,20 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
               />
             </div>
           </DragAndDropTarget>
+          <div className={b('footer')}>
+            <Button color="primary">
+              <label htmlFor='upload'>
+                Upload images
+              </label>
+              <input
+                id='upload'
+                className={b('upload-input')}
+                type='file'
+                multiple
+                onChange={this.onUploadFiles}
+              />
+            </Button>
+          </div>
         </div>
       </Paper>
     );
