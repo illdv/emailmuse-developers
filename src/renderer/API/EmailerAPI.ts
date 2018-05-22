@@ -28,6 +28,11 @@ export namespace Accounts {
   export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
     return axios.put('/profile/change-password',data);
   }
+  export function changeName({name:sting}): AxiosPromise<{name:string}> {
+    return axios.put('/profile', {
+      name
+    });
+  }
   export function getProfile(): AxiosPromise<any> {
     return axios.get('/profile');
   }
@@ -65,8 +70,8 @@ export namespace Accounts {
       });
     }
 
-    export function getImages() {
-      return axios.get(`${API_ENDPOINT}/images`);
+    export function getImages(pageId:number = 1) {
+      return axios.get(`${API_ENDPOINT}/images/?page=${pageId}`);
     }
 
     export function updateImage(imageId: number, name: string) {

@@ -6,6 +6,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 650,
+        title: "Emailer",
     });
     const loadUrl = url.format({
         pathname: path2.join(__dirname, 'index.html'),

@@ -7,7 +7,7 @@ import { resetPasswordSaga } from 'src/renderer/component/Auth/flux/ResetPasswor
 import { toastSaga } from 'src/renderer/component/Toast/flux/saga';
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
 import { loginSaga, watcherSetToken } from 'src/renderer/component/Auth/flux/LoginSaga';
-import { watcherGetProfile, watcherResetPassword } from '../component/Account/flux/saga';
+import { watcherGetProfile, watcherChangePassword } from '../component/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
 
 export  default function* rootSaga () {
@@ -20,7 +20,7 @@ export  default function* rootSaga () {
     fork(toastSaga),
     fork(imageLibraryRootSaga),
     fork(watcherSetToken),
-    fork(watcherResetPassword),
+    fork(watcherChangePassword),
     ...templates.map(fork),
     fork(watcherGetProfile)
   ];

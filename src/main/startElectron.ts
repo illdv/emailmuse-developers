@@ -9,6 +9,7 @@ function createWindow() {
     {
       width: 800,
       height: 650,
+      title: 'Emailer',
     });
 
   const loadUrl = url.format({
