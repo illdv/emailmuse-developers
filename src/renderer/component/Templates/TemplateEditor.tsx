@@ -21,6 +21,8 @@ import { create, edit, remove, setOpenDialog } from 'src/renderer/component/Temp
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
 const imagePlugin = createImagePlugin();
+const plugins = [imagePlugin];
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -66,29 +68,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   remove: (data: IDataForDeleteTemplates) => dispatch(remove(data)),
 });
 
-const Media = (props) => {
-
-	const entity = Entity.get(props.block.getEntityAt(0));
-
-	const {src} = entity.getData();
-	const type = entity.getType();
-
-  let media;
-	if (type === 'image') {
-		media = <img src={src} style={{width:'100%', height:'auto'}}/>;
-	}
-
-	return media;
-};
-function mediaBlockRenderer(block) {
-	if (block.getType() === 'atomic') {
-		return {
-			component: Media,
-			editable: false
-		};
-	}
-	return null;
-}
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
 
@@ -146,9 +125,8 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   insertImage = (url: string) => {
     const { content } = this.state;
     const contentState = content.getCurrentContent();
-    console.log(url);
     const contentStateWithEntity = contentState.createEntity(
-      'image',
+      'IMAGE',
       'IMMUTABLE',
       {src: url}
     );
@@ -175,7 +153,8 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   render() {
     const { classes } = this.props;
     const save = () => {
-        const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
+      
+      const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
         if (this.state.isEdit) {
             // change
             this.props.edit({
@@ -243,9 +222,9 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               editorState={this.state.content}
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
-              blockRendererFn={mediaBlockRenderer}
               editorClassName="editorClassName"
               onEditorStateChange={this.onChangeContent}
+              plugins={plugins}
               toolbarCustomButtons={[
                 <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onAddImage}>
                   <AddToPhotos/>
