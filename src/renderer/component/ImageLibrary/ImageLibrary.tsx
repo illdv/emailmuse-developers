@@ -71,11 +71,11 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   //   console.log('Loaded:', percentage);
   // }
 
-  onDelete = itemId => () => {
+  onDelete = itemId => {
     this.props.actions.deleteImagesRequest(itemId);
   }
 
-  onEdit = (itemId, name) => {
+  onUpdate = (itemId, name) => {
     // console.log(itemId, name);
     this.props.actions.updateImageRequest({ imageId: itemId, name });
   }
@@ -94,7 +94,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
               <ImageLibraryListComponent
                 items={this.props.items}
                 onDelete={this.onDelete}
-                onEdit={this.onEdit}
+                onUpdate={this.onUpdate}
               />
             </div>
           </DragAndDropTarget>

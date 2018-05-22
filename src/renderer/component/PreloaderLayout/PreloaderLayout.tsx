@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { statusSelector } from 'src/renderer/component/PreloaderLayout/Status/selectors';
 import { Preloader } from 'src/renderer/component/PreloaderLayout/Preloader';
 
-export namespace IPreloaderLayout {
+export namespace PreloaderLayoutSpace {
   export interface IProps {
     status?: constants.TStatus;
   }
@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
 });
 
 @connect(mapStateToProps)
-export class PreloaderLayout extends React.Component<IPreloaderLayout.IProps, IPreloaderLayout.IState> {
+export class PreloaderLayout extends React.Component<PreloaderLayoutSpace.IProps, PreloaderLayoutSpace.IState> {
   constructor(props) {
     super(props);
   }
