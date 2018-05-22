@@ -9,7 +9,7 @@ function* onSetError(action): IterableIterator<any> {
 
 export function* toastSaga(): IterableIterator<any> {
   while (true) {
-    const action = yield take(FluxToast.Actions.setError().type);
+    const action = yield take(FluxToast.Actions.showToast().type);
     yield call(onSetError, action);
   }
 }

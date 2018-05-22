@@ -24,9 +24,9 @@ export function* watchLoading() {
 export function* changeTemplate(isChange, action) {
   try {
     const response = yield call(isChange ? Templates.editTemplate : Templates.saveTemplate, action.payload);
-    yield put(FluxToast.Actions.setError('Success. Tost is not used'));
+    yield put(FluxToast.Actions.showToast('Success. Tost is not used'));
   } catch (error) {
-    yield put(FluxToast.Actions.setError('Error'));
+    yield put(FluxToast.Actions.showToast('Error'));
   }
 }
 

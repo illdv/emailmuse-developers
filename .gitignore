@@ -1,6 +1,7 @@
 .idea
 1test
 dist
+src/main/*.js
 
 # dependencies
 /node_modules
@@ -10,6 +11,7 @@ dist
 
 # production
 /build
+/build_ts
 
 # misc
 .DS_Store

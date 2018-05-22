@@ -3,7 +3,15 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Snackbar } from '@material-ui/core';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import './Toast.css';
+
+const style = {
+  [ToastType.Success]: 'toast_success',
+  [ToastType.Info]: 'toast_info',
+  [ToastType.Warning]: 'toast_warning',
+  [ToastType.Error]: 'toast_error',
+};
 
 export namespace ToastSpace {
   export interface IState {
@@ -14,6 +22,7 @@ export namespace ToastSpace {
     onLoadingMail?: (error) => void;
     toast?: FluxToast.IState;
     setError?: (error: string) => void;
+    clear?: () => void;
   }
 }
 
@@ -23,28 +32,35 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setError: (error) => {
-    dispatch(FluxToast.Actions.setError(error));
+    dispatch(FluxToast.Actions.showToast(error));
+  },
+  clear: () => {
+    dispatch(FluxToast.Actions.clear());
   }
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 export class Toast extends Component<ToastSpace.IProps, ToastSpace.IState> {
   handleClose = () => {
-    this.props.setError('');
+    this.props.clear();
   }
 
   render() {
-    const { error } = this.props.toast;
+    const { messages, isOpen, type } = this.props.toast;
+
     return (
       <div>
         <Snackbar
-          open={error !== ''}
+          open={isOpen}
           onClose={this.handleClose}
           TransitionComponent={Fade}
           ContentProps={{
             'aria-describedby': 'message-id',
+            classes: {
+              root: `.toast ${style[type]}`,
+          }
           }}
-          message={<span id="message-id">{error}</span>}
+          message={<span id="message-id">{messages}</span>}
         />
       </div>
     );

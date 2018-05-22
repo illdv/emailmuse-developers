@@ -3,7 +3,7 @@ import {fork} from 'redux-saga/effects';
 import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';
 import { createAccountSaga } from 'src/renderer/component/Auth/flux/CreateAccountSaga';
 import { sendCodeOnMailSaga } from 'src/renderer/component/Auth/flux/SendCodeOnMailSaga';
-import { sendCodeSaga } from 'src/renderer/component/Auth/flux/SendCodeSaga';
+import { resetPasswordSaga } from 'src/renderer/component/Auth/flux/ResetPasswordSaga';
 import { toastSaga } from 'src/renderer/component/Toast/flux/saga';
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
 import { loginSaga, watcherSetToken } from 'src/renderer/component/Auth/flux/LoginSaga';
@@ -16,7 +16,7 @@ export  default function* rootSaga () {
     fork(loginSaga),
     fork(menuItem),
     fork(sendCodeOnMailSaga),
-    fork(sendCodeSaga),
+    fork(resetPasswordSaga),
     fork(toastSaga),
     fork(imageLibraryRootSaga),
     fork(watcherSetToken),
