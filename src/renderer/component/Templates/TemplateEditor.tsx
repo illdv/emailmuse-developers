@@ -68,29 +68,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   remove: (data: IDataForDeleteTemplates) => dispatch(remove(data)),
 });
 
-const Media = (props) => {
-
-	const entity = Entity.get(props.block.getEntityAt(0));
-
-	const {src} = entity.getData();
-	const type = entity.getType();
-
-	let media;
-	if (type === 'image') {
-		media = <img src={src} />;
-	}
-
-	return media;
-};
-function mediaBlockRenderer(block) {
-	if (block.getType() === 'atomic') {
-		return {
-			component: Media,
-			editable: false
-		};
-	}
-	return null;
-}
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
 
@@ -178,9 +155,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
     const save = () => {
       
       const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
-      console.log(this.state.content.getCurrentContent());
-      console.log(convertToRaw(this.state.content.getCurrentContent()));
-      console.log(body)
         if (this.state.isEdit) {
             // change
             this.props.edit({
