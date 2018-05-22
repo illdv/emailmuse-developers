@@ -16,7 +16,7 @@
     "quotemark": [
       true,
       "single",
-      "jsx-double"
+      "jsx-single"
     ],
     "semicolon": [
       true,

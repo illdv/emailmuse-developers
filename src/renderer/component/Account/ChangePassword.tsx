@@ -80,6 +80,9 @@ class ChangePassword extends React.Component<ChangePasswordSpace.IProps & WithSt
     this.setState({ [type]: !this.state[type] })
   submit = () => {
     this.props.changePassword(this.state.fields);
+    this.setState({
+      fields: Object.keys(this.state.fields).reduce((p,k) => ({...p, [k]: ''}),{})
+    })
   }
   render() {
     const { classes } = this.props;

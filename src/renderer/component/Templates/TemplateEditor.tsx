@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Save, Close, Delete, Menu, AddToPhotos } from '@material-ui/icons';
+import { Save, Close, Delete, Menu, AddToPhotos,GetApp, ContentCopy, Publish } from '@material-ui/icons';
 import { Paper, TextField, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core/';
 import { EditorState, convertToRaw, ContentState, AtomicBlockUtils,Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
-
+  editorNode: any;
   constructor(props: TemplateEditorSpace.IProps, context?: object) {
     super(props, context);
 
@@ -122,7 +122,81 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
   onAddImage = () => {
     this.setState({selectImageOpen: true});
   }
+  copyTextToClipboard = (text: string): boolean => {
+      // Find the dummy text area or create it if it doesn't exist
+      const dummyTextAreaID = "utilities-copyTextToClipboard-hidden-TextArea-ID";
+      let dummyTextArea: HTMLTextAreaElement = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
+      if (!dummyTextArea)
+      {
+          console.log("Creating dummy textarea for clipboard copy.");
 
+          let textArea = document.createElement("textarea");
+          textArea.id = dummyTextAreaID;
+
+          // Place in top-left corner of screen regardless of scroll position.
+          textArea.style.position = "fixed";
+          textArea.style.top = "0";
+          textArea.style.left = "0";
+
+          // Ensure it has a small width and height. Setting to 1px / 1em
+          // doesn't work as this gives a negative w/h on some browsers.
+          textArea.style.width = "1px";
+          textArea.style.height = "1px";
+
+          // We don't need padding, reducing the size if it does flash render.
+          textArea.style.padding = "0";
+
+          // Clean up any borders.
+          textArea.style.border = "none";
+          textArea.style.outline = "none";
+          textArea.style.boxShadow = "none";
+
+          // Avoid flash of white box if rendered for any reason.
+          textArea.style.background = "transparent";
+
+          document.querySelector("body").appendChild(textArea);
+          dummyTextArea = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
+
+          console.log("The dummy textarea for clipboard copy now exists.");
+      }
+      else
+      {
+          console.log("The dummy textarea for clipboard copy already existed.")
+      }
+      // Set the text in the text area to what we want to copy and select it
+      dummyTextArea.value = text;
+      dummyTextArea.select();
+      // Now execute the copy command
+      try
+      {
+          let status = document.execCommand("copy");
+          if (!status)
+          {
+              console.error("Copying text to clipboard failed.");
+              return false;
+          }
+          else
+          {
+              console.log("Text copied to clipboard.");
+              return true;
+          }
+      }
+      catch (error)
+      {
+          console.log("Unable to copy text to clipboard in this browser.");
+          return false;
+      }
+  }
+  pickHtmlContent = () => {
+    window
+    .getSelection()
+    .selectAllChildren(this.editorNode.editor.editorContainer.children[0].children[0]);
+  }
+  onGetHtml = () => {
+    let status = document.execCommand("copy");
+    const html = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
+    this.copyTextToClipboard(html);
+  }
   insertImage = (url: string) => {
     const { content } = this.state;
     const contentState = content.getCurrentContent();
@@ -155,7 +229,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
     const { classes } = this.props;
     const save = () => {
 
-      const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()))
+      const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
         if (this.state.isEdit) {
             // change
             this.props.edit({
@@ -227,10 +301,17 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               onEditorStateChange={this.onChangeContent}
+              ref={ref => this.editorNode = ref}
               plugins={plugins}
               toolbarCustomButtons={[
                 <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onAddImage}>
                   <AddToPhotos/>
+                </IconButton>,
+                <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onGetHtml}>
+                  <ContentCopy />
+                </IconButton>,
+                <IconButton color="inherit" arial-label="Delete" onClick={this.pickHtmlContent}>
+                  <GetApp />
                 </IconButton>
               ]}
             />
