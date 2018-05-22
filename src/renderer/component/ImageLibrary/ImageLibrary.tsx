@@ -8,12 +8,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest } from
     'src/renderer/component/ImageLibrary/store/actions';
-import { getImagesURLSelector } from 'src/renderer/component/ImageLibrary/store/selectors';
-import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
+import { getImagesURLSelector, getCurrentPageSelector, getTotalImages, getLastPageSelector, getPerPageSelector } from
+    'src/renderer/component/ImageLibrary/store/selectors';
+import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
 import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import Button from '@material-ui/core/Button';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const b = block('image-library');
 
@@ -27,6 +29,7 @@ namespace ImageLibrarySpace {
       updateImageRequest: typeof updateImageRequest,
     };
     items: IImageLibraryItem[];
+    pagination: IPagination;
   }
   export interface IState {
     openDialog: boolean;
@@ -43,11 +46,19 @@ const styles: IStyle = theme => ({
 });
 
 const mapStateToProps = state => ({
-  items: getImagesURLSelector(state)
+  items: getImagesURLSelector(state),
+  pagination: {
+    current_page: getCurrentPageSelector(state),
+    total: getTotalImages(state),
+    last_page: getLastPageSelector(state),
+    per_page: getPerPageSelector(state),
+  }
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest }, dispatch)
+  actions: bindActionCreators(
+    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+    dispatch)
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -98,11 +109,38 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
 
   // TODO implement onProgress
 
+  onChangePage = (e, page) => {
+    this.props.actions.getImagesRequest(page+1);
+  }
+
+  // TODO: implement properly when there is capability to change rows per page
+  onChangeRowsPerPage = e => {
+    console.log('Change rows',e.target.value);
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes, pagination } = this.props;
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
+          {
+            pagination.total ?
+              <TablePagination
+                component="div"
+                count={pagination.total}
+                rowsPerPage={pagination.per_page}
+                rowsPerPageOptions={[15]}
+                page={pagination.current_page-1}
+                backIconButtonProps={{
+                  'aria-label': 'Previous Page',
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'Next Page',
+                }}
+                onChangePage={this.onChangePage}
+                onChangeRowsPerPage={this.onChangeRowsPerPage}
+              /> : null
+          }
           <DragAndDropTarget
             onDrop={this.onDropFile}
             showOverlay={true}

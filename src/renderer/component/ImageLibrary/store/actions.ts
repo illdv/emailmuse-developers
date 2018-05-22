@@ -1,17 +1,17 @@
 import * as constants from './constants';
 import { createAction } from 'redux-actions';
-import { IFileInfo } from 'src/renderer/component/ImageLibrary/store/models';
+import { IFileInfo, IGetImagesResponse } from 'src/renderer/component/ImageLibrary/store/models';
 import * as Status from 'src/renderer/component/PreloaderLayout/Status/constants';
 
-export const getImagesRequest = () => ({
+export const getImagesRequest = (pageId = 1) => ({
   type: constants.GET_IMAGES_REQUEST,
-  payload: null,
+  payload: pageId,
   meta: { status: Status.LOADING }
 });
 
-export const getImagesSuccess = (images: IFileInfo[]) => ({
+export const getImagesSuccess = (response: IGetImagesResponse) => ({
   type: constants.GET_IMAGES_SUCCESS,
-  payload: images,
+  payload: response,
   meta: { status: Status.LOADED }
 });
 
