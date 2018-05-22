@@ -65,8 +65,8 @@ export namespace Accounts {
       });
     }
 
-    export function getImages() {
-      return axios.get(`${API_ENDPOINT}/images`);
+    export function getImages(pageId:number = 1) {
+      return axios.get(`${API_ENDPOINT}/images/?page=${pageId}`);
     }
 
     export function updateImage(imageId: number, name: string) {
