@@ -40,6 +40,7 @@ export function* watcherGetProfile(){
   while(true){
     yield take('GET_PROFILE_REQUEST');
     yield call(getProfileSaga);
+    
   }
 }
 export function* watcherChangeName(){
