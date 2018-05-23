@@ -13,7 +13,7 @@ export class Loading extends Component {
     return (
       <div style={{ height: '100%' }}>
         <InCenter>
-          <Fade in timeout={3000}>
+          <Fade in timeout={500}>
             <CircularProgress size={60}/>
           </Fade>
         </InCenter>

@@ -1,0 +1,22 @@
+.toast {
+    color: white !important;
+}
+
+.toast_success {
+    background-color: #51a351 !important;
+}
+
+.toast_info {
+    background-color: #2f96b4 !important;
+}
+
+.toast_warning {
+    background-color: #f89406 !important;
+}
+
+.toast_error {
+    background-color: #bd362f !important;
+}
+
+
+

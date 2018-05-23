@@ -6,7 +6,7 @@ import IRequest = FluxAccounts.Actions.Login.IRequest;
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import CustomStorage from '../../../../common/CustomStorage';
-import { IChangePasswordFields } from 'src/renderer/component/Account/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
@@ -23,13 +23,20 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
     const request: AxiosResponse<ILoginResponse> = yield EmailerAPI.Accounts.login(action.payload.request);
-    const name = request.data.user.name;
-    const email = request.data.user.email;
-    const token = request.data.token;
+    const name                                   = request.data.user.name;
+    const email                                  = request.data.user.email;
+    const token                                  = request.data.token;
     yield put(LoginAccount.SetToken(token));
     yield put(LoginAccount.Step.SUCCESS({ email, user: name, token }));
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    if (error.response === undefined) {
+      yield put(FluxToast.Actions.showToast(error.message, ToastType.Error));
+    } else {
+      if (error.response && error.response.status) {
+        yield put(FluxToast.Actions.showToast(error.response.data.message, ToastType.Error));
+      }
+    }
+    yield put(LoginAccount.Step.FAILURE(error));
   }
 }
 

@@ -14,9 +14,9 @@
   "jsRules": {},
   "rules": {
     "quotemark": [
-      "single",
       true,
-      "jsx-double"
+      "single",
+      "jsx-single"
     ],
     "semicolon": [
       true,

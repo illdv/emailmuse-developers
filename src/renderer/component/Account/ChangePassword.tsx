@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Paper,Input, FormControl, IconButton, InputAdornment, InputLabel, Grid, Button} from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -11,14 +11,19 @@ import { bindActionCreators } from 'redux';
 export namespace ChangePasswordSpace {
   export interface IProps {
     classes?: any;
+    email?: string;
+    name?: string;
+    changePassword?: typeof AccountSpace.Actions.changePassword.REQUEST;
   }
   export interface IState {
-    showPassword: boolean;
-    showPasswordC: boolean;
-    showPasswordN: boolean;
-    password: string;
-    newPassword: string;
-    confirmPassword: string;
+    showPassword?: boolean;
+    showPasswordC?: boolean;
+    showPasswordN?: boolean;
+    fields?: {
+      password?: string;
+      old_password?: string;
+      password_confirmation?: string;
+    };
   }
 }
 
@@ -52,7 +57,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps,mapDispatchToProps)
-class ChangePassword extends React.Component<any,any> {
+class ChangePassword extends React.Component<ChangePasswordSpace.IProps & WithStyles<any>,ChangePasswordSpace.IState> {
   state = {
     showPassword: false,
     showPasswordC: false,
@@ -60,7 +65,7 @@ class ChangePassword extends React.Component<any,any> {
     fields: {
       old_password: '',
       password: '',
-      password_confirm: '',
+      password_confirmation: '',
     }
   };
 
@@ -72,11 +77,14 @@ class ChangePassword extends React.Component<any,any> {
     event.preventDefault();
   }
   handleClickShowPassword = (type: string) => () => 
-    this.setState({ [type]: !this.state[type] });
+    this.setState({ [type]: !this.state[type] })
   submit = () => {
     this.props.changePassword(this.state.fields);
+    this.setState({
+      fields: Object.keys(this.state.fields).reduce((p,k) => ({...p, [k]: ''}),{})
+    })
   }
-  render(){
+  render() {
     const { classes } = this.props;
     return (<>
       <Grid container spacing={24} className={classes.root}>
@@ -131,12 +139,12 @@ class ChangePassword extends React.Component<any,any> {
             <Grid container spacing={24} alignItems={'center'} justify={'center'}>
               <Grid item>
                 <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="password_confirm">Confirm new password</InputLabel>
+                  <InputLabel htmlFor="password_confirmation">Confirm new password</InputLabel>
                       <Input
-                        id="password_confirm"
+                        id="password_confirmation"
                         type={this.state.showPasswordC ? 'text' : 'password'}
-                        value={this.state.fields.password_confirm}
-                        onChange={this.handleChange('password_confirm')}
+                        value={this.state.fields.password_confirmation}
+                        onChange={this.handleChange('password_confirmation')}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton

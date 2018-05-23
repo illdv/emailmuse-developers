@@ -8,6 +8,8 @@ import TemplateEditor from './TemplateEditor';
 
 import { LOADING, FAILURE, loading } from 'src/renderer/component/Templates/flux/module';
 import { getPages, getStatus } from 'src/renderer/component/Templates/flux/selectors';
+import { Button } from '@material-ui/core';
+import { Loading } from 'src/renderer/common/Loading';
 
 export namespace MailListSpace {
     export interface IProps {
@@ -15,11 +17,12 @@ export namespace MailListSpace {
         pages?: object;
         loading?: () => void;
     }
-  
+
     export interface IState {
+        activePage: number;
         editTemplate: null|ITemplate;
         createTemplate: boolean;
-    };
+    }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -34,6 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
     state = {
+        activePage: 1,
         editTemplate: null,
         createTemplate: false
     };
@@ -46,24 +50,32 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
 
     closeTemplate = () => {
         this.setState({
-            editTemplate: null
+            editTemplate: null,
+            createTemplate: false
+        });
+    }
+    
+    onCreateTemplate = () => {
+        this.setState({
+            createTemplate: true
         });
     }
 
     componentDidMount(){
-        this.props.loading();
+        if(!this.props.pages[this.state.activePage] || this.props.status !== LOADING){
+            this.props.loading();
+        }
     }
 
-    onCreateTemplate = () => {
-        this.setState({
-            createTemplate: true
-        })
-    } 
+    // componentWillUpdate(nextProps, nextState){
+    //     if(!nextProps.pages[nextState.activePage]){
+    //         this.props.loading();
+    //     }
+    // }
 
     render(){
-
-        if (this.props.status === LOADING) {
-            return <h1>Preloader ;)</h1>
+        if (this.props.status === LOADING || !(this.props.pages[this.state.activePage])) {
+            return <Loading/>;
         } else if (this.props.status === FAILURE) {
             return <h1>Failure</h1>;
         } else {
@@ -74,10 +86,15 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
             } else {
                 return (
                     <div>
-                        <div onClick={this.onCreateTemplate}>Add</div>
-                        <TemplatesList templates={this.props.pages[1]} selectTemplate={this.selectTemplate} />
+                      <Button variant="raised" color="primary" style={{marginBottom: 5}} onClick={this.onCreateTemplate}>
+                        Add
+                      </Button>
+                      <TemplatesList
+                         templates={this.props.pages[this.state.activePage]}
+                         selectTemplate={this.selectTemplate}
+                      />
                     </div>
-                )
+                );
             }
         }
     }

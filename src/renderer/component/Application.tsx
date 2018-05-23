@@ -4,9 +4,9 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { AuthorizationLayout } from 'src/renderer/component/Auth/AuthorizationLayout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 
 import './Application.css';
+import { Toast } from 'src/renderer/component/Toast/Toast';
 
 
 export namespace MainLayoutScope {
@@ -40,7 +40,12 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
 
   render() {
     const { token } = this.props.accounts.user;
-    return !!token && <MainLayout/> || <AuthorizationLayout/>;
+    return (
+    <>
+      {!!token && <MainLayout/> || <AuthorizationLayout/>}
+      <Toast/>
+    </>
+  );
   }
 }
 

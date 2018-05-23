@@ -1,29 +1,52 @@
-// TODO: Do we need this wrapper? I doubt.
 import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
-import { authToken } from 'src/common/hardcoded_token';
 import axios from 'axios';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
-import { IChangePasswordFields } from '../component/Account/flux/actions';
-  export namespace Accounts {
-    export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
-      return Axios.post('/login', request);
-    }
-    export function changePassword(data: IChangePasswordFields): AxiosPromise<IChangePasswordFields> {
-      console.log(axios.defaults.headers.common)
-      return axios.put('/profile/change-password',data);
-    }
-    export function createAccount(user: FluxAccounts.Actions.CreateAccount.IRequest) {
-      return new Promise(resolve => {
-        setTimeout(() => resolve({ user: 'Jon Snow', email: 'JonSnow@gmail.com' }), 2000);
-      });
-      // return Axios.post('/register', user);
-    }
+import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
+import {
+  IDataForDeleteTemplates,
+  IDataForCreateTemplate,
+  IDataForEditTemplate
+} from 'src/renderer/component/Templates/models';
+
+export namespace Accounts {
+  export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
+    return Axios.post('/login', request);
   }
 
+  export function checkCode(code: string) {
+    return Axios.post(`/register/confirm/${code}`, {});
+  }
+
+  export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
+    return Axios.post('/register', user);
+  }
+
+  export function sendCodeOnMail(email: string) {
+    return Axios.post('/password/email', { email });
+  }
+
+  export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
+    return axios.put('/profile/change-password',data);
+  }
+  export function changeName({name:sting}): AxiosPromise<{name:string}> {
+    return axios.put('/profile', {
+      name
+    });
+  }
+  export function getProfile(): AxiosPromise<any> {
+    return axios.get('/profile');
+  }
+
+  export function resetPassword({email, token, password, passwordConfirmation}: {email: string, token: string, password: string, passwordConfirmation: string }) {
+    return Axios.post('/password/reset', { email, token, password, password_confirmation: passwordConfirmation });
+  }
+}
+
   export namespace ImageLibrary {
+    // TODO change type
     export function uploadImages(
       files: File | File[],
       onProgress?: (percent: number) => void
@@ -31,15 +54,13 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
 
     export function uploadImages(files, onProgress = _ => void 0) {
       // If files is a single file (not an array) - wrap it into an array
-      files = [].concat(files);
+      // files = [].concat(files);
 
       const fd = new FormData();
       for (let i=0; i<files.length; i++) {
         fd.append(`images[${i}]`, files[i]);
       }
       return axios.post(`${API_ENDPOINT}/images`, fd, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken},
         onUploadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable
             ? progressEvent.total
@@ -52,28 +73,20 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
       });
     }
 
-    export function getImages() {
-      return axios.get(`${API_ENDPOINT}/images`, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+    export function getImages(pageId:number = 1) {
+      return axios.get(`${API_ENDPOINT}/images/?page=${pageId}`);
     }
 
     export function updateImage(imageId: number, name: string) {
-      return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name }, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+      return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name });
     }
 
+    // TODO change type
     export function deleteImages(imageIds: number | number[]) {
       // If imageIds is a single file (not an array) - wrap it into an array
-      imageIds = [].concat(imageIds);
+      // imageIds = [].concat(imageIds);
 
-      return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' }, {
-        // TODO: remove hardcoded authToken
-        headers: {Authorization: authToken}
-      });
+      return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' });
     }
   }
 
@@ -82,20 +95,17 @@ import { IChangePasswordFields } from '../component/Account/flux/actions';
       return axios.get(`${API_ENDPOINT}/templates`);
     }
 
-    export function editTemplate({id, title, body, description}){
-      return axios.put(`${API_ENDPOINT}/templates/${id}`, {
-        title,
-        body,
-        description
-      });
+    export function editTemplate(data: IDataForEditTemplate){
+      const {id, ...remainingData} = data;
+      return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
     }
 
-    export function saveTemplate({title, body, description}){
-      return axios.post(`${API_ENDPOINT}/templates`, {
-        title,
-        body,
-        description
-      });
+    export function createTemplate(data: IDataForCreateTemplate){
+      return axios.post(`${API_ENDPOINT}/templates`, data);
+    }
+
+    export function removeTempates(data: IDataForDeleteTemplates){
+        return axios.delete(`${API_ENDPOINT}/templates`, { data });
     }
   }
   /* export default ImageLibrary; */

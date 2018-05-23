@@ -20,10 +20,10 @@ import { IStyle } from 'type/materialUI';
 const createMenuSchema = (): IItem[] => {
   return [
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
-    { title: 'Compose', icon: <Send/>, type: MenuItemType.COMPOSE },
+    /*{ title: 'Compose', icon: <Send/>, type: MenuItemType.COMPOSE },*/
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
-    { title: 'Training', icon: <Inbox/>, type: MenuItemType.TRAINING },
-    { title: 'Research', icon: <Bookmark/>, type: MenuItemType.RESEARCH },
+    /*{ title: 'Training', icon: <Inbox/>, type: MenuItemType.TRAINING },*/
+    /*{ title: 'Research', icon: <Bookmark/>, type: MenuItemType.RESEARCH },*/
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
   ];
 };

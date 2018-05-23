@@ -3,7 +3,6 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, Theme, WithStyles, withStyles } from '@material-ui/core/';
-import * as validate from 'validate.js';
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
 
@@ -33,6 +32,7 @@ export namespace PaperDialogSpace {
     label: string;
     body?: ReactElement<any>;
     defaultValue: string;
+    id: string;
     canNext?: boolean;
     /**
      * Happened if user enter value and click next.
@@ -80,12 +80,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
   }
 
   render() {
-    const { classes, title, label, subtitle, body, validation } = this.props;
-    const { value }                                             = this.state;
-
-    const validateResult = validate({ value }, { value: validation });
-
-    const canNext = validateResult === undefined;
+    const { classes, title, label, subtitle, body, validation, id } = this.props;
 
     return (
       <InCenter>
@@ -98,17 +93,16 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
                   {body ||
                   <TextValidator
                     fullWidth
+                    id={id}
                     label={label}
                     margin="normal"
-                    value={value}
-                    onChange={this.onChange}
-                    schema={{}}
+                    schema={validation}
                   />
                   }
                 </Grid>
               </Grid>
             </Grow>
-            <Navigation onBack={this.onBack} onNext={this.onNext} canNext={canNext && this.props.canNext}/>
+            <Navigation onBack={this.onBack} onNext={this.onNext} canNext={this.props.canNext}/>
           </Grid>
         </Paper>
       </InCenter>

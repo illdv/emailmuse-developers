@@ -70,7 +70,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
     const validationSchema = {
       name: {
         presence: true,
-        length: { minimum: 3 }
+        length: { minimum: 3, message: 'minimum is 3 characters' }
       },
       email: {
         presence: true,
@@ -78,14 +78,14 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
       },
       password: {
         presence: true,
-        length: { minimum: 6 }
+        length: { minimum: 6, message: 'minimum is 6 characters' }
       },
-      confirmPassword: {
+      password_confirmation: {
         presence: true,
-        length: { minimum: 6 },
+        length: { minimum: 6, message: 'minimum is 6 characters' },
         equality: {
           attribute: 'password',
-          message: 'Those passwords didn\'t match. Try again',
+          message: 'Passwords didn\'t match.',
           comparator: (password, confirmPassword) => password === confirmPassword,
         }
       },
@@ -128,11 +128,11 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
                     <TextValidator
-                      id="confirmPassword"
+                      id="password_confirmation"
                       type="password"
                       label="Confirm password"
                       margin="normal"
-                      schema={validationSchema.confirmPassword}
+                      schema={validationSchema.password_confirmation}
                     />
                   </Grid>
                 </Grid>
@@ -141,7 +141,7 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
             <Navigation
               onBack={onClickBackToLogin}
               onNext={onCreateAccount(validation.value as any)}
-              canNext={!validation.isValid}
+              canNext={validation.isValid}
             />
           </Grid>
         </Paper>
