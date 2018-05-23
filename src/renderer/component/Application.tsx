@@ -23,7 +23,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   accounts: state.accounts,
 });
 
-
 @(connect(mapStateToProps))
 class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScope.IState> {
 

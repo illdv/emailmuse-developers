@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Snackbar } from '@material-ui/core';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -27,13 +27,13 @@ export namespace ToastSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  toast: state.toast
+  toast: state.toast,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clear: () => {
     dispatch(FluxToast.Actions.clear());
-  }
+  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -53,11 +53,11 @@ export class Toast extends Component<ToastSpace.IProps, ToastSpace.IState> {
           TransitionComponent={Fade}
           ContentProps={{
             'aria-describedby': 'message-id',
-            classes: {
+            'classes': {
               root: `.toast ${style[type]}`,
-          }
+            },
           }}
-          message={<span id="message-id">{messages}</span>}
+          message={<span id='message-id'>{messages}</span>}
         />
       </div>
     );
