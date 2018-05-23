@@ -101,8 +101,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
 
     return (
       <div className={classes.root}>
-        <input type='text' name='prevent_autofill' id='prevent_autofill' value='' style={{ display: 'none' }}/>
-        <input type='password' name='password_fake' id='password_fake' value='' style={{ display: 'none' }}/>
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>

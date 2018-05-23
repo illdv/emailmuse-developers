@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Paper, Grid, Typography, Divider } from '@material-ui/core';
+import { Divider, Grid, Paper, Typography } from '@material-ui/core';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import ChangePassword from 'src/renderer/component/Account/ChangePassword';
@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AccountSpace } from './flux/actions';
 import { Loading } from 'src/renderer/common/Loading';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 
 const styles: IStyle = (theme) => ({
   root: {
@@ -26,17 +27,15 @@ const styles: IStyle = (theme) => ({
 export namespace AccountSettingsSpace {
   export interface IProps {
     classes?: any;
-    name?: string;
-    email?: string;
     getProfile?: any;
+    accounts?: FluxAccounts.IState;
   }
 
   export interface IState {
   }
 }
 const mapStateToProps = (state) => ({
-  email: state.accounts.user.email,
-  name: state.accounts.user.name,
+  accounts: state.accounts,
 });
 
 const mapDispathToProps = (dispatch) => ({
@@ -47,14 +46,20 @@ const mapDispathToProps = (dispatch) => ({
 class AccountSettings extends React.Component<AccountSettingsSpace.IProps & WithStyles<any>,
   AccountSettingsSpace.IState> {
   componentDidMount() {
-    if (this.props.name) {
+    if (this.props.accounts.user) {
       this.props.getProfile();
     }
   }
 
   render() {
-    const { classes, name, email } = this.props;
-    return name ? (
+    const { classes, accounts } = this.props;
+    const { name, email }       = accounts.user;
+
+    if (!name) {
+      return <Loading/>;
+    }
+
+    return (
       <div className={classes.container}>
         <Paper className={classes.root}>
           <Grid container spacing={24}>
@@ -77,7 +82,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
           <ChangePassword/>
         </Paper>
       </div>
-    ) : <Loading/>;
+    );
   }
 }
 

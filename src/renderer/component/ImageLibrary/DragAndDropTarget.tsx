@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DropTarget } from 'react-dnd';
-import 'src/renderer/component/ImageLibrary/DragAndDropTarget.css';
+import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
 import block from 'bem-ts';
 
 const b = block('dnd-target');

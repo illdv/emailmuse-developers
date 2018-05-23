@@ -21,7 +21,7 @@ export namespace FluxAccounts {
     }
 
     export interface IUser {
-      user: string;
+      name: string;
       email: string;
       token: string;
     }
@@ -120,7 +120,7 @@ export namespace FluxAccounts {
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
     return {
-      user: { email: '', user: '', token: token ? token : '' },
+      user: { email: '', name: '', token: token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
       checkCodeSuccess: false,

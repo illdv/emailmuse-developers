@@ -11,7 +11,7 @@ import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImage
 import { getImagesURLSelector, getCurrentPageSelector, getTotalImages, getLastPageSelector, getPerPageSelector } from
     'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
-import 'src/renderer/component/ImageLibrary/ImageLibrary.css';
+import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import block from 'bem-ts';
 import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import Button from '@material-ui/core/Button';

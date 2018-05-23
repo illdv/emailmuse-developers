@@ -35,11 +35,11 @@ export namespace PaperDialogSpace {
     id: string;
     canNext?: boolean;
     /**
-     * Happened if user enter value and click next.
+     * Happened if name enter value and click next.
      */
     onEnterCompleted?: (value: string) => void;
     /**
-     * Happened if user click onBack.
+     * Happened if name click onBack.
      */
     onBack?: () => void;
     validation: object;

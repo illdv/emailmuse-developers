@@ -11,7 +11,7 @@ import Language from '@material-ui/icons/Language';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import block from 'bem-ts';
 const b = block('image-library-dialog');
-import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.css';
+import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 import { connect, Dispatch } from 'react-redux';
 

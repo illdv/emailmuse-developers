@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import { Fade, Snackbar } from '@material-ui/core';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
-import './Toast.css';
+import './Toast.scss';
 
 const style = {
   [ToastType.Success]: 'toast_success',

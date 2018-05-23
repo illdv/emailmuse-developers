@@ -9,6 +9,7 @@
       "node_modules/@types"
     ],
     "outDir": "build",
+    "rootDir": "src",
     "module": "commonjs",
     "target": "es6",
     "lib": [
@@ -19,7 +20,6 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -33,6 +33,9 @@
     "experimentalDecorators": true
 
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
     "build",

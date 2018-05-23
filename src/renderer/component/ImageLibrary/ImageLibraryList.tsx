@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {GridList, GridListTile, GridListTileBar} from '@material-ui/core';
-import 'src/renderer/component/ImageLibrary/ImageLibraryList.css';
+import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
 import block from 'bem-ts';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import IconButton from '@material-ui/core/IconButton';

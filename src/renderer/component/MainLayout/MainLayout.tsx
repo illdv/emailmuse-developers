@@ -58,16 +58,14 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
 
   mainDisplay = (props: MainLayoutSpace.IProps) => {
     switch (props.drawerMenu.selectedItem) {
-      case MenuItemType.RESEARCH:
-        return <Bookmark/>;
+      case MenuItemType.ACCOUNT:
+        return <Settings/>;
       case MenuItemType.TEMPLATES:
         return <Templates/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
-      case MenuItemType.ACCOUNT:
-        return <Settings/>;
       default:
-        return <h4>Default</h4>;
+        return <Settings/>;
     }
   }
 
