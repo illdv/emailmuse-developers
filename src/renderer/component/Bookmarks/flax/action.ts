@@ -5,8 +5,8 @@ import payload = FluxBookmarks.IActionsPayload;
 const SELECT_BOOKMARK  = 'SELECT_BOOKMARK';
 const ADD_BOOKMARK          = 'ADD_BOOKMARK';
 
-const onSelectBookmark = createAction(SELECT_BOOKMARK, (editBookmarkId?: string) => ({editBookmarkId}));
-const onCreateBookmark = createAction(ADD_BOOKMARK, (newBookmark: FluxBookmarks.IModel) => ({ newBookmark }));
+const selectBookmark = createAction(SELECT_BOOKMARK, (editBookmarkId?: string) => ({editBookmarkId}));
+const createBookmark = createAction(ADD_BOOKMARK, (newBookmark: FluxBookmarks.IModel) => ({ newBookmark }));
 
 const createDefaultState = (): FluxBookmarks.IState => {
   return {
@@ -30,13 +30,13 @@ export namespace FluxBookmarks {
   }
 
   export interface IActions {
-    onSelectBookmark: (editBookmarkId?: string) => IActionsPayload.onOpenBookmarkEditorPayload;
-    onCreateBookmark: () => IActionsPayload.onCreateBookmarkPayload;
+    selectBookmark: (editBookmarkId?: string) => IActionsPayload.onOpenBookmarkEditorPayload;
+    createBookmark: () => IActionsPayload.onCreateBookmarkPayload;
   }
 
   export const Actions: IActions = {
-    onSelectBookmark,
-    onCreateBookmark,
+    selectBookmark,
+    createBookmark,
   };
 
   export interface IModel {

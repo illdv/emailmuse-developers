@@ -11,12 +11,14 @@ import { useOrDefault } from 'src/renderer/utils';
 export namespace TextValidatorSpace {
   export interface IState {
     value: string;
+    id: string;
   }
 
   export interface IProps {
     actions?: FluxValidation.Actions.IAllAction;
     validation?: FluxValidation.IState;
     schema: object;
+    inputRef?: (ref) => void;
   }
 }
 
@@ -33,8 +35,17 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 export class TextValidator extends Component<TextValidatorSpace.IProps & TextFieldProps, TextValidatorSpace.IState> {
 
-  state = { value: this.props.value as any };
-
+  state = { value: this.props.value as any, id: '' };
+  static getDerivedStateFromProps(nextProps: TextValidatorSpace.IProps & TextFieldProps, prevState: TextValidatorSpace.IState): TextValidatorSpace.IState {
+    const { id } = nextProps;
+    if (id !== prevState.id) {
+      return {
+        value: '',
+        id,
+      };
+    }
+    return null;
+  }
 
   componentDidMount(): void {
     const { actions, id, schema } = this.props;
@@ -47,12 +58,12 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
   }
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   render() {
-    const { validation, id, ...otherProps } = this.props;
-    const { isWasBlur, resultValidation }          = validation;
+    const { validation, inputRef , id, ...otherProps } = this.props;
+    const { isWasBlur, resultValidation }   = validation;
 
     const error = isWasBlur[id] && useOrDefault(() => (resultValidation[id][0]), '');
 
@@ -60,8 +71,11 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
       <TextField
         error={!!error}
         helperText={error}
+        inputRef={inputRef}
         onBlur={this.onBlur(this.state.value)}
         onChange={this.onChange}
+        value={this.state.value}
+        autoComplete='off'
         {...otherProps}
       />
     );

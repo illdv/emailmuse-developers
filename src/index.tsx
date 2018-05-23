@@ -7,7 +7,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import reducer from './renderer/flux/rootReducers';
 import rootSaga from './renderer/flux/rootSaga';
-import MainLayout from 'src/renderer/component/Application';
+import Application from 'src/renderer/component/Application';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -19,7 +19,7 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <MainLayout/>
+    <Application/>
   </Provider>,
   document.getElementById('root'),
 );

@@ -1,0 +1,39 @@
+export interface IFileInfo {
+  id: number;
+  name: string;
+  hash: string;
+  imagable_id: number;
+  imagable_type: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+  url: string;
+}
+
+export interface IGetImagesResponse {
+  current_page: number;
+  data: IFileInfo[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: null;
+  path: string;
+  per_page: number;
+  prev_page_url: string;
+  to: number;
+  total: number;
+}
+
+export interface IImageLibraryItem {
+  id: number;
+  url: string;
+  name: string;
+}
+
+export interface IPagination {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}

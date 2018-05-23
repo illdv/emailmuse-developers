@@ -4,18 +4,36 @@ import { Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { ImageLibraryListComponent } from './ImageLibraryList';
-import EmailerAPI from 'src/renderer/API/EmailerAPI';
-
-import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest } from
+    'src/renderer/component/ImageLibrary/store/actions';
+import { getImagesURLSelector, getCurrentPageSelector, getTotalImages, getLastPageSelector, getPerPageSelector } from
+    'src/renderer/component/ImageLibrary/store/selectors';
+import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import 'src/renderer/component/ImageLibrary/ImageLibrary.css';
 import block from 'bem-ts';
+import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import Button from '@material-ui/core/Button';
+import TablePagination from '@material-ui/core/TablePagination';
+
 const b = block('image-library');
 
 namespace ImageLibrarySpace {
   export interface IProps {
     classes?: any;
+    actions?: {
+      getImagesRequest: typeof getImagesRequest,
+      uploadImagesRequest: typeof uploadImagesRequest,
+      deleteImagesRequest: typeof deleteImagesRequest,
+      updateImageRequest: typeof updateImageRequest,
+    };
+    items: IImageLibraryItem[];
+    pagination: IPagination;
   }
   export interface IState {
-    items: File[];
+    openDialog: boolean;
+    chosenImage: IImageLibraryItem;
   }
 }
 
@@ -27,69 +45,138 @@ const styles: IStyle = theme => ({
   }
 });
 
+const mapStateToProps = state => ({
+  items: getImagesURLSelector(state),
+  pagination: {
+    current_page: getCurrentPageSelector(state),
+    total: getTotalImages(state),
+    last_page: getLastPageSelector(state),
+    per_page: getPerPageSelector(state),
+  }
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+    dispatch)
+});
+
+@connect(mapStateToProps, mapDispatchToProps)
 class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
   constructor (props) {
     super(props);
-    this.state = {
-      items: []
-    };
+    this.state = { openDialog:false, chosenImage: null };
   }
 
-  onDrop = item => {
+  componentDidMount () {
+    this.props.actions.getImagesRequest();
+  }
+
+  onDropFile = item => {
     if (item && item.files) {
-      console.log('Add files event: ', item.files);
-      this.addFiles(item.files);
+      this.props.actions.uploadImagesRequest(item.files);
     }
   }
 
-  onProgress = (percentage) => {
-    console.log('Loaded:', percentage);
+  onUploadFiles = e => {
+    if (e.target.files) {
+      let files = [];
+      // tslint:disable-next-line
+      for (let i = 0; i < e.target.files.length; i++) {
+        files = files.concat(e.target.files[i]);
+      }
+      if (files.length) {
+        this.props.actions.uploadImagesRequest(files);
+      }
+    }
   }
 
-  // TODO: Should user be prevented from uploading one same image twice
-  // and how two images could be identified as 'same'?
-  addFiles = files => {
-    const filtered = files.filter(file => !this.state.items.some(item => item.name === file.name));
-    this.setState({items: [...this.state.items, ...filtered]});
-    // tslint:disable-next-line
-    // console.log('Files has been added', filtered);
+  openDialog = (item:IImageLibraryItem) => () => {
+    this.setState({openDialog: true, chosenImage: item});
+  }
 
-    // const filo = filtered[0];
-    // let fileData = new FormData();
-    // fileData.append(filo.name, filo.path);
+  closeDialog = () => {
+    this.setState({openDialog: false, chosenImage: null});
+  }
 
-    // EmailerAPI.ImageLibrary.uploadImage(filtered[0], this.onProgress).then(result => {
-    //   console.log('Post done', result);
-    // });
+  deleteItem = (item:IImageLibraryItem) => () => {
+    this.props.actions.deleteImagesRequest(item.id);
+  }
 
-    // EmailerAPI.ImageLibrary.getImages().then(result => {
-    //   console.log('Get done', result);
-    // });
+  updateItem = (item:IImageLibraryItem, name) => {
+    this.props.actions.updateImageRequest({ imageId: item.id, name });
+  }
 
-    // EmailerAPI.ImageLibrary.updateImage(1, "lol").then(result => {
-    //   console.log('Get done', result);
-    // });
+  // TODO implement onProgress
 
-    // EmailerAPI.ImageLibrary.deleteImages([1,2]).then(result => {
-    //   console.log('Get done', result);
-    // });
-    // filtered[0]
+  onChangePage = (e, page) => {
+    this.props.actions.getImagesRequest(page+1);
+  }
+
+  // TODO: implement properly when there is capability to change rows per page
+  onChangeRowsPerPage = e => {
+    console.log('Change rows',e.target.value);
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, pagination } = this.props;
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
+          {
+            pagination.total ?
+              <TablePagination
+                component="div"
+                count={pagination.total}
+                rowsPerPage={pagination.per_page}
+                rowsPerPageOptions={[15]}
+                page={pagination.current_page-1}
+                backIconButtonProps={{
+                  'aria-label': 'Previous Page',
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'Next Page',
+                }}
+                onChangePage={this.onChangePage}
+                onChangeRowsPerPage={this.onChangeRowsPerPage}
+              /> : null
+          }
           <DragAndDropTarget
-            onDrop={this.onDrop}
+            onDrop={this.onDropFile}
             showOverlay={true}
             overlayMessage={'Drop files here to add them to your image library'}
           >
             <div className={b('container')}>
-              <ImageLibraryListComponent items={this.state.items}/>
+              {this.state.chosenImage ?
+                <ImageLibraryDialog
+                  item={this.state.chosenImage}
+                  onDeleteItem={this.deleteItem}
+                  onUpdateItem={this.updateItem}
+                  onClose={this.closeDialog}
+                /> :
+                null
+              }
+              <ImageLibraryListComponent
+                items={this.props.items}
+                onDelete={this.deleteItem}
+                onOpenDialog={this.openDialog}
+              />
             </div>
           </DragAndDropTarget>
+          <div className={b('footer')}>
+            <Button color="primary">
+              <label htmlFor='upload'>
+                Upload images
+              </label>
+              <input
+                id='upload'
+                className={b('upload-input')}
+                type='file'
+                multiple
+                onChange={this.onUploadFiles}
+              />
+            </Button>
+          </div>
         </div>
       </Paper>
     );
