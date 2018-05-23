@@ -5,7 +5,7 @@ import { CircularProgress, Fade } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import block from 'bem-ts';
 const b = block('preloader');
-import 'src/renderer/component/PreloaderLayout/Preloader.scss';
+import 'src/renderer/component/PreloaderLayout/Preloader.css';
 
 export class Preloader extends Component {
 
