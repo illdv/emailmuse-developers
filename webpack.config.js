@@ -3,19 +3,24 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-    template: './public/index.html',
+    template: '../public/index.html',
     filename: 'index.html',
     inject: 'body',
 })
 
+const outPath = path.join(__dirname, './dist');
+const sourcePath = path.join(__dirname, './src');
+
 const styleLoader = process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader;
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: './index.tsx',
+    context: sourcePath,
     output: {
-        path: path.join(__dirname, "dist"),
+        path: outPath,
         filename: 'index_bundle.js',
     },
+    mode: 'development',
     devtool: "source-map",
     module: {
         rules: [
@@ -53,11 +58,11 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        modules: [
-            path.resolve('./src'),
-            path.resolve('./node_modules')
-        ],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        modules: ['node_modules', sourcePath],
+        alias: {
+            src: sourcePath,
+        }
     },
     plugins: [
         HtmlWebpackPluginConfig,
