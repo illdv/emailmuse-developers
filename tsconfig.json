@@ -8,8 +8,8 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "outDir": "build_ts",
-    "module": "esnext",
+    "outDir": "build",
+    "module": "commonjs",
     "target": "es6",
     "lib": [
       "es6",
@@ -40,6 +40,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "config/**/*.js"
+    "config/**/*.js",
+    "init.js",
+    "webpack.config.js"
   ]
 }

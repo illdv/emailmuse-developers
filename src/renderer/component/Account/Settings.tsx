@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Paper, IconButton, InputAdornment, InputLabel, Grid, Typography, Divider} from '@material-ui/core';
+import {Paper, Grid, Typography, Divider} from '@material-ui/core';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
-import classNames from 'classnames';
 import ChangePassword from 'src/renderer/component/Account/ChangePassword';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

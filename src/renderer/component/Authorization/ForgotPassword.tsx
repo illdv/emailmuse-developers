@@ -2,14 +2,14 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
+import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import { bindActionCreators } from 'redux';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 enum Step {
   EMAIL,

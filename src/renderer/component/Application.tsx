@@ -8,7 +8,6 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 import './Application.css';
 import { Toast } from 'src/renderer/component/Toast/Toast';
 
-
 export namespace MainLayoutScope {
 
   export interface IState {

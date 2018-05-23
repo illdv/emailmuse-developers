@@ -6,7 +6,7 @@ import { Paper, TextField, AppBar, Toolbar, IconButton, Typography } from '@mate
 import { EditorState, convertToRaw, ContentState, AtomicBlockUtils,Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
-import draftToHtml from 'draftjs-to-html';
+import * as draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import createImagePlugin from 'draft-js-image-plugin';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
