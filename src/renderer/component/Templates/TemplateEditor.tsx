@@ -21,6 +21,7 @@ import { create, edit, remove } from 'src/renderer/component/Templates/flux/modu
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
 
@@ -50,6 +51,7 @@ export namespace TemplateEditorSpace {
     classes: any;
     template: ITemplate | null;
     closeTemplate: () => void;
+    onShowToast?: (messages: string, type: ToastType) => void;
   }
 
   export interface IState {
@@ -67,6 +69,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   edit: (data: IDataForEditTemplate) => dispatch(edit(data)),
   create: (data: IDataForCreateTemplate) => dispatch(create(data)),
   remove: (data: IDataForDeleteTemplates) => dispatch(remove(data)),
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  }
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -191,11 +196,13 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
     window
     .getSelection()
     .selectAllChildren(this.editorNode.editor.editorContainer.children[0].children[0]);
+    this.props.onShowToast('Content selected', ToastType.Success);
   }
   onGetHtml = () => {
     let status = document.execCommand("copy");
     const html = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
     this.copyTextToClipboard(html);
+    this.props.onShowToast('Content copied to clipboard', ToastType.Success);
   }
   insertImage = (url: string) => {
     const { content } = this.state;
