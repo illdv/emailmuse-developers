@@ -11,7 +11,9 @@ import Language from '@material-ui/icons/Language';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import block from 'bem-ts';
 const b = block('image-library-dialog');
-import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
+import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.css';
+import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { connect, Dispatch } from 'react-redux';
 
 namespace ImageLibraryDialogSpace {
   export interface IProps {
@@ -19,12 +21,20 @@ namespace ImageLibraryDialogSpace {
     onUpdateItem: (item:IImageLibraryItem, newName:string) => void;
     onDeleteItem: (item:IImageLibraryItem) => () => void;
     onClose: () => void;
+    onShowToast?: (messages: string, type: ToastType) => void;
   }
   export interface IState {
     newName: string;
   }
 }
 
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  }
+});
+
+@connect(null, mapDispatchToProps)
 export class ImageLibraryDialog
   extends React.Component<ImageLibraryDialogSpace.IProps, ImageLibraryDialogSpace.IState> {
   constructor(props) {
@@ -57,7 +67,12 @@ export class ImageLibraryDialog
     e.preventDefault();
     const p = document.getElementById('url') as HTMLInputElement;
     p.select();
-    document.execCommand('copy');
+    const status = document.execCommand('copy');
+    if (status) {
+      this.props.onShowToast('URL copied to clipboard', ToastType.Success);
+    } else {
+      this.props.onShowToast('URL copying failed', ToastType.Error);
+    }
   }
 
   preventDefault = (e) => {

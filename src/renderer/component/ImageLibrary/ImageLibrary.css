@@ -6,7 +6,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .image-library__container {
   width: 95%;
   height: 95%;
@@ -15,13 +14,10 @@
   justify-content: space-around;
   flex-wrap: wrap;
 }
-
 .image-library__upload-input {
-  //padding-top: 1rem;
   position: absolute;
-  top: -1000;
-  left: -1000;
+  top: -1000px;
+  left: -1000px;
   opacity: 0;
   visibility: hidden;
 }
-
