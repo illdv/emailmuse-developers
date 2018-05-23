@@ -6,7 +6,19 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 
 function* getImagesWorker(action: IActionPayload<number>): IterableIterator<any> {
   try {
-    const response = yield call(EmailerAPI.ImageLibrary.getImages, action.payload);
+    // Check for page === undefined || null
+    let requestedPage = action.payload || 1;
+    // Check for page < 1
+    if (requestedPage < 1) {
+      requestedPage = 1;
+    }
+    let response = yield call(EmailerAPI.ImageLibrary.getImages, requestedPage);
+    const currentPage = response.data.current_page;
+    const lastPage = response.data.last_page;
+    // Check for current page > last page
+    if (currentPage > lastPage) {
+      response = yield call (EmailerAPI.ImageLibrary.getImages, lastPage || 1);
+    }
     yield put(actions.getImagesSuccess(response.data));
   } catch (e) {
     console.log('Getting images failed: ', e);
