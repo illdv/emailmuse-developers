@@ -1,9 +1,7 @@
 import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
 import axios from 'axios';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
 import { AxiosPromise } from 'axios';
-import { ILoginResponse } from 'type/EmailerAPI';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 import {
   IDataForDeleteTemplates,
@@ -12,22 +10,6 @@ import {
 } from 'src/renderer/component/Templates/models';
 
 export namespace Accounts {
-  export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
-    return Axios.post('/login', request);
-  }
-
-  export function checkCode(code: string) {
-    return Axios.post(`/register/confirm/${code}`, {});
-  }
-
-  export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
-    return Axios.post('/register', user);
-  }
-
-  export function sendCodeOnMail(email: string) {
-    return Axios.post('/password/email', { email });
-  }
-
   export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
     return axios.put('/profile/change-password',data);
   }

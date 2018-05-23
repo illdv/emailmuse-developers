@@ -1,11 +1,11 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
-import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { checkCode } from 'src/renderer/API/Auth';
 
 function* onCheckCode(action): IterableIterator<any> {
   try {
-    yield EmailerAPI.Accounts.checkCode(action.payload.code);
+    yield checkCode(action.payload.code);
     yield put(FluxAccounts.Actions.CreateAccount.checkCode.SUCCESS());
     yield put(FluxToast.Actions.showToast('Account activation successfully', ToastType.Success));
   } catch(error) {
