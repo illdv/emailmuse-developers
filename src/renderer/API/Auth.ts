@@ -18,3 +18,15 @@ export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
 export function sendCodeOnMail(email: string) {
   return Axios.post('/password/email', { email });
 }
+
+// TODO: move in Authorisation module
+interface IResetPasswordRequest {
+  email: string;
+  token: string;
+  password: string;
+  passwordConfirmation: string;
+}
+
+export function resetPassword({ email, token, password, passwordConfirmation }: IResetPasswordRequest) {
+  return Axios.post('/password/reset', { email, token, password, password_confirmation: passwordConfirmation });
+}

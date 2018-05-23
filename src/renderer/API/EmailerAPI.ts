@@ -1,4 +1,3 @@
-import { Axios } from 'src/renderer/API/Axios';
 import { API_ENDPOINT } from 'src/common/api.config';
 import axios from 'axios';
 import { AxiosPromise } from 'axios';
@@ -20,10 +19,6 @@ export namespace Accounts {
   }
   export function getProfile(): AxiosPromise<any> {
     return axios.get('/profile');
-  }
-
-  export function resetPassword({email, token, password, passwordConfirmation}: {email: string, token: string, password: string, passwordConfirmation: string }) {
-    return Axios.post('/password/reset', { email, token, password, password_confirmation: passwordConfirmation });
   }
 }
 
