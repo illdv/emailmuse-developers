@@ -1,16 +1,15 @@
-import { Component, PureComponent } from 'react';
+import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
-import { Action, Title } from 'src/renderer/component/Auth/common/Common';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
-import { Toast } from 'src/renderer/component/Toast/Toast';
 import { bindActionCreators } from 'redux';
 
 const styles = theme => ({
@@ -102,8 +101,8 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
 
     return (
       <div className={classes.root} >
-        <input type="text" name="prevent_autofill" id="prevent_autofill" value="" style={{display: 'none'}} />
-        <input type="password" name="password_fake" id="password_fake" value="" style={{display: 'none'}} />
+        <input type='text' name='prevent_autofill' id='prevent_autofill' value='' style={{display: 'none'}} />
+        <input type='password' name='password_fake' id='password_fake' value='' style={{display: 'none'}} />
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>
@@ -113,17 +112,17 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                   <Grid item xs={12}>
                     <TextValidator
                       fullWidth
-                      id="email"
-                      label="Email"
-                      margin="normal"
+                      id='email'
+                      label='Email'
+                      margin='normal'
                       schema={validationSchema.email}
                     />
                     <TextValidator
                       fullWidth
-                      id="password"
-                      label="Password"
-                      type="password"
-                      margin="normal"
+                      id='password'
+                      label='Password'
+                      type='password'
+                      margin='normal'
                       schema={validationSchema.password}
                     />
                   </Grid>

@@ -1,5 +1,5 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 import axios, { AxiosResponse } from 'axios';
@@ -15,6 +15,7 @@ export function* watcherSetToken() {
   while (true) {
     const { payload } = yield take('SET_TOKEN');
     CustomStorage.setItem('token', payload.token, false);
+    // noinspection TsLint
     axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
   }
 }

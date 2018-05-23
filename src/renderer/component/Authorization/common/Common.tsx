@@ -7,10 +7,10 @@ export function Title(props: { title: string, subtitle?: string }) {
   return (
     <Grow in timeout={1000} style={{ paddingBottom: 0 }}>
       <Grid item xs={12}>
-        <Typography style={{color: 'Black'}} variant="display1" gutterBottom>
+        <Typography style={{color: 'Black'}} variant='display1' gutterBottom>
           {title}
         </Typography>
-        <Typography variant="subheading" gutterBottom>
+        <Typography variant='subheading' gutterBottom>
           {subtitle || ''}
         </Typography>
       </Grid>
@@ -26,14 +26,14 @@ export function Navigation(props: { onBack?: () => void, onNext?: () => void, ca
         <Grid container>
           <Grid item xs={6}>
             <Grid container justify={'flex-start'}>
-              <Button variant={'raised'} color="primary" onClick={onBack}>
+              <Button variant={'raised'} color='primary' onClick={onBack}>
                 Back
               </Button>
             </Grid>
           </Grid>
           <Grid item xs={6}>
             <Grid container justify={'flex-end'}>
-              <Button variant={'raised'} color="primary" onClick={onNext} disabled={!canNext}>
+              <Button variant={'raised'} color='primary' onClick={onNext} disabled={!canNext}>
                 Next
               </Button>
             </Grid>
@@ -77,8 +77,8 @@ export function Action(props: IActionProps) {
         <Grid item xs={12}>
           <Grid container direction={'row'} justify={'flex-end'}>
             <Button
-              variant="raised"
-              color="primary"
+              variant='raised'
+              color='primary'
               style={button}
               onClick={onClickNext}
               disabled={!canNext}
@@ -96,7 +96,7 @@ export function Action(props: IActionProps) {
           >
             <Grid item xs={6} style={{ paddingBottom: 0 }}>
               <Button
-                color="primary"
+                color='primary'
                 style={url}
                 onClick={onClickForgotPassword}
               >
@@ -105,7 +105,7 @@ export function Action(props: IActionProps) {
             </Grid>
             <Grid item xs={6} style={{ paddingBottom: 0 }}>
               <Button
-                color="primary"
+                color='primary'
                 style={url2}
                 onClick={onCreateAccount}
               >

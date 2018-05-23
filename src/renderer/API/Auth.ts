@@ -1,7 +1,7 @@
 import { ILoginResponse } from 'type/EmailerAPI';
 import { Axios } from 'src/renderer/API/Axios';
 import { AxiosPromise } from 'axios';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 
 export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
   return Axios.post('/login', request);

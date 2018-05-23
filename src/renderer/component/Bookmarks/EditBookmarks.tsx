@@ -4,7 +4,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@material-ui/core/';
-import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flax/action';
+import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flux/action';
 
 export namespace EditBookmarksSpace {
   export interface IState {

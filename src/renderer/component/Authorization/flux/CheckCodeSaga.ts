@@ -1,5 +1,5 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 import { checkCode } from 'src/renderer/API/Auth';
 

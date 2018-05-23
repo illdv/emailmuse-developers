@@ -17,7 +17,7 @@ import { AddCircleOutline, Edit } from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import { Fab } from 'src/renderer/common/Fab';
 import { bindActionCreators } from 'redux';
-import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flax/action';
+import { FluxBookmarks } from 'src/renderer/component/Bookmarks/flux/action';
 
 const styles: IStyle = theme => ({
   root: {
