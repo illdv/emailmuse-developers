@@ -2,10 +2,10 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
-import PaperInCenter from 'src/renderer/component/Auth/common/PaperInCenter';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import PaperInCenter from 'src/renderer/component/Authorization/common/PaperInCenter';
 import { Button, Grow, Typography } from '@material-ui/core';
-import { Title } from 'src/renderer/component/Auth/common/Common';
+import { Title } from 'src/renderer/component/Authorization/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
 
 export namespace CreateAccountSuccessSpace {
@@ -45,13 +45,13 @@ export class CreateAccountSuccess extends Component<CreateAccountSuccessSpace.IP
       <PaperInCenter>
         <Title title={title}/>
         <Grow in timeout={1000}>
-          <Typography variant="title" gutterBottom>
+          <Typography variant='title' gutterBottom>
             {body}
           </Typography>
         </Grow>
         <InCenter>
           <Grow in timeout={1000}>
-            <Button variant={'raised'} color="primary" onClick={this.props.onBackLogin}>
+            <Button variant={'raised'} color='primary' onClick={this.props.onBackLogin}>
               Next
             </Button>
           </Grow>

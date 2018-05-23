@@ -4,17 +4,17 @@ import { connect, Dispatch } from 'react-redux';
 import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
 
-import { Navigation, Title } from 'src/renderer/component/Auth/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Authorization/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     height: '100%',
   },
@@ -27,14 +27,6 @@ const styles = theme => ({
     paddingBottom: 26,
   }
 });
-
-function useOrDefault(func: () => any, defaultValue: string) {
-  try {
-    return func();
-  } catch (e) {
-    return defaultValue;
-  }
-}
 
 export namespace CreateAccountSpace {
   export interface IState {
@@ -100,38 +92,38 @@ class CreateAccount extends Component<CreateAccountSpace.IProps & WithStyles<'ro
               <Grid container>
                 <Grid item xs={6}>
                   <TextValidator
-                    id="name"
-                    label="User name"
-                    margin="normal"
+                    id='name'
+                    label='User name'
+                    margin='normal'
                     schema={validationSchema.name}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
                     <TextValidator
-                      id="email"
-                      label="Email"
-                      margin="normal"
+                      id='email'
+                      label='Email'
+                      margin='normal'
                       schema={validationSchema.email}
                     />
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
                   <TextValidator
-                    id="password"
-                    type="password"
-                    label="Password"
-                    margin="normal"
+                    id='password'
+                    type='password'
+                    label='Password'
+                    margin='normal'
                     schema={validationSchema.password}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <Grid container justify={'flex-end'}>
                     <TextValidator
-                      id="password_confirmation"
-                      type="password"
-                      label="Confirm password"
-                      margin="normal"
+                      id='password_confirmation'
+                      type='password'
+                      label='Confirm password'
+                      margin='normal'
                       schema={validationSchema.password_confirmation}
                     />
                   </Grid>

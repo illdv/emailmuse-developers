@@ -5,7 +5,6 @@ import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import { createActionSteps } from '../../../flux/utils';
 import CustomStorage from '../../../../common/CustomStorage';
 import axios from 'axios';
-import { AccountSpace } from '../../Account/flux/actions';
 
 export namespace FluxAccounts {
   export namespace Models {
@@ -117,6 +116,7 @@ export namespace FluxAccounts {
 
   const createDefaultState = (): IState => {
     const token                                    = CustomStorage.getItem('token');
+    // noinspection TsLint
     axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     return {
       user: { email: '', user: '', token: token ? token : '' },
@@ -139,7 +139,7 @@ export namespace FluxAccounts {
     [Actions.CreateAccount.Step.type.FAILURE]: (state, action): IState => {
       return { ...state, ...action.payload, authStep: Models.AuthStep.CREATE_ACCOUNT };
     },
-    [Actions.CreateAccount.checkCode.SUCCESS]: (state, action): IState => {
+    [Actions.CreateAccount.checkCode.SUCCESS]: (state): IState => {
       return { ...state, authStep: Models.AuthStep.LOGIN };
     },
     [Actions.ForgotPassword.resetPassword.type.SUCCESS]: (state): IState => {

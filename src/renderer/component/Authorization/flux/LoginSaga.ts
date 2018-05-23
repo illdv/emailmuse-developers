@@ -1,12 +1,12 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
-import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import CustomStorage from '../../../../common/CustomStorage';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { login } from 'src/renderer/API/Auth';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
@@ -15,6 +15,7 @@ export function* watcherSetToken() {
   while (true) {
     const { payload } = yield take('SET_TOKEN');
     CustomStorage.setItem('token', payload.token, false);
+    // noinspection TsLint
     axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
   }
 }
@@ -22,7 +23,7 @@ export function* watcherSetToken() {
 function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterator<any> {
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
-    const request: AxiosResponse<ILoginResponse> = yield EmailerAPI.Accounts.login(action.payload.request);
+    const request: AxiosResponse<ILoginResponse> = yield login(action.payload.request);
     const name                                   = request.data.user.name;
     const email                                  = request.data.user.email;
     const token                                  = request.data.token;

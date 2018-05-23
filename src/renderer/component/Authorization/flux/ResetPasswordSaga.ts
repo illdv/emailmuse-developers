@@ -1,13 +1,13 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { resetPassword } from 'src/renderer/API/Auth';
 
 function* onResetPassword(action: {payload: {email: string, token: string, password: string, passwordConfirmation: string}}): IterableIterator<any> {
   try {
     yield put(FluxValidation.Actions.setScheme({key: 'secret_code', value: {presence: true}}));
-    yield EmailerAPI.Accounts.resetPassword(action.payload);
+    yield resetPassword(action.payload);
     yield put(FluxAccounts.Actions.ForgotPassword.resetPassword.SUCCESS());
     yield put(FluxToast.Actions.showToast('Reset password success.', ToastType.Success));
   } catch(error){
