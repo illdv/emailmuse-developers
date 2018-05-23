@@ -6,8 +6,8 @@ import { Email } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
-import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Auth/common/PaperDialog';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import { bindActionCreators } from 'redux';
 
@@ -95,7 +95,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         id: 'email',
         defaultValue: this.state.mail,
         canNext: validation.isValid,
-        onEnterCompleted: (value) => {
+        onEnterCompleted: () => {
           this.props.onSendCode((validation.value as any).email);
           this.setState({
             step: Step.SECRET_CODE,
@@ -155,18 +155,18 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
       <div>
         <TextValidator
           fullWidth
-          type="password"
+          type='password'
           id={'password'}
           label={'Password'}
-          margin="normal"
+          margin='normal'
           schema={validationSchema.password}
         />
         <TextValidator
           fullWidth
-          type="password"
+          type='password'
           id={'password_confirmation'}
           label={'Confirm password'}
-          margin="normal"
+          margin='normal'
           schema={validationSchema.password_confirmation}
         />
       </div>
@@ -179,7 +179,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         fullWidth
         id={'secret_code'}
         label={'Secret code'}
-        margin="normal"
+        margin='normal'
         schema={validationSchema.secret_code}
       />
     );

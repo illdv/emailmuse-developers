@@ -2,8 +2,8 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import PaperDialog from 'src/renderer/component/Auth/common/PaperDialog';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import PaperDialog from 'src/renderer/component/Authorization/common/PaperDialog';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
 import AuthStep = FluxAccounts.Models.AuthStep;
 
@@ -40,6 +40,7 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
   state = {};
 
   onCheckCode = () =>{
+    // noinspection TsLint
     this.props.onCheckCode(this.props.validation.value['check_code']);
   }
 

@@ -2,15 +2,14 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import Login from 'src/renderer/component/Auth/Login';
-import ForgotPassword from 'src/renderer/component/Auth/ForgotPassword';
-import CreateAccount from 'src/renderer/component/Auth/CreateAccount';
-import { FluxAccounts } from 'src/renderer/component/Auth/flux/FluxAccounts';
+import Login from 'src/renderer/component/Authorization/Login';
+import ForgotPassword from 'src/renderer/component/Authorization/ForgotPassword';
+import CreateAccount from 'src/renderer/component/Authorization/CreateAccount';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import { Loading } from 'src/renderer/common/Loading';
-import { CreateAccountSuccess } from 'src/renderer/component/Auth/CreateAccountSuccess';
-import PaperDialog from 'src/renderer/component/Auth/common/PaperDialog';
-import { CheckCode } from 'src/renderer/component/Auth/CheckCode';
+import { CreateAccountSuccess } from 'src/renderer/component/Authorization/CreateAccountSuccess';
+import { CheckCode } from 'src/renderer/component/Authorization/CheckCode';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -26,16 +25,10 @@ const mapStateToProps = (state: IGlobalState) => ({
   accounts: state.accounts
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
-});
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
 
 @(connect(mapStateToProps, mapDispatchToProps))
-export class AuthorizationLayout extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
+export class Layout extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
 
   state = {};
 

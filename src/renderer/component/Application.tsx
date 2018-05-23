@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { AuthorizationLayout } from 'src/renderer/component/Auth/AuthorizationLayout';
+import { Layout } from 'src/renderer/component/Authorization/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.css';
@@ -42,7 +42,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
     const { token } = this.props.accounts.user;
     return (
     <>
-      {!!token && <MainLayout/> || <AuthorizationLayout/>}
+      {!!token && <MainLayout/> || <Layout/>}
       <Toast/>
     </>
   );

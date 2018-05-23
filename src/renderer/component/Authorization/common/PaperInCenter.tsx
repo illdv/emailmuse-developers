@@ -1,11 +1,10 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Paper, WithStyles, withStyles } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = () => ({
   paper: {
     width: 500,
     height: 300,
