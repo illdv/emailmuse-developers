@@ -17,7 +17,7 @@ const styles = () => ({
     paddingRight: 40,
     paddingTop: 48,
     paddingBottom: 26,
-  }
+  },
 });
 
 export namespace PaperDialogSpace {
@@ -54,7 +54,10 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
     canNext: true,
   };
 
-  static getDerivedStateFromProps(nextProps: PaperDialogSpace.IProps, prevState: PaperDialogSpace.IState): PaperDialogSpace.IState {
+  static getDerivedStateFromProps(
+    nextProps: PaperDialogSpace.IProps,
+    prevState: PaperDialogSpace.IState): PaperDialogSpace.IState {
+
     const { defaultValue } = nextProps;
     if (defaultValue !== prevState.value) {
       return {

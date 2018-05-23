@@ -44,7 +44,6 @@ export function Navigation(props: { onBack?: () => void, onNext?: () => void, ca
   );
 }
 
-
 interface IActionProps {
   onClickForgotPassword: () => void;
   onCreateAccount: () => void;
@@ -68,7 +67,7 @@ export function Action(props: IActionProps) {
   const url2 = {
     paddingRight: 0,
     textAlign: 'right' as any,
-    marginLeft: 10
+    marginLeft: 10,
   };
 
   return (

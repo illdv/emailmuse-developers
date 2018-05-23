@@ -12,7 +12,7 @@ const styles = () => ({
     paddingRight: 40,
     paddingTop: 48,
     paddingBottom: 26,
-  }
+  },
 });
 
 class PaperInCenter extends Component<WithStyles<'paper'>, any> {
@@ -32,4 +32,3 @@ class PaperInCenter extends Component<WithStyles<'paper'>, any> {
 }
 
 export default withStyles(styles)(PaperInCenter);
-

@@ -1,18 +1,18 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
 import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import IRequest = FluxAccounts.Actions.Login.IRequest;
 import { bindActionCreators } from 'redux';
+import AuthStep = FluxAccounts.Models.AuthStep;
+import IRequest = FluxAccounts.Actions.Login.IRequest;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     height: '100%',
   },
@@ -34,8 +34,8 @@ const styles = theme => ({
   url2: {
     paddingRight: 0,
     textAlign: 'right' as any,
-    marginLeft: 10
-  }
+    marginLeft: 10,
+  },
 });
 
 export namespace AuthorizationSpace {
@@ -55,7 +55,7 @@ export namespace AuthorizationSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation
+  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -70,14 +70,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   actions: bindActionCreators({
     ...FluxValidation.Actions.AllAction,
-  }, dispatch)
+  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
-  state = {
-  };
-  shouldComponentUpdate(nextProps,nextState) {
+  state = {};
+
+  shouldComponentUpdate(nextProps, nextState) {
     return nextProps.validation.isValid !== this.props.validation.isValid;
   }
 
@@ -91,18 +91,18 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
     const validationSchema = {
       email: {
         presence: true,
-        email: true
+        email: true,
       },
       password: {
         presence: true,
-        length: { minimum: 6 }
+        length: { minimum: 6 },
       },
     };
 
     return (
-      <div className={classes.root} >
-        <input type='text' name='prevent_autofill' id='prevent_autofill' value='' style={{display: 'none'}} />
-        <input type='password' name='password_fake' id='password_fake' value='' style={{display: 'none'}} />
+      <div className={classes.root}>
+        <input type='text' name='prevent_autofill' id='prevent_autofill' value='' style={{ display: 'none' }}/>
+        <input type='password' name='password_fake' id='password_fake' value='' style={{ display: 'none' }}/>
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>
@@ -141,6 +141,5 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
     );
   }
 }
-
 
 export default withStyles(styles)(Login as any);

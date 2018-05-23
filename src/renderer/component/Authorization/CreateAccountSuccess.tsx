@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
@@ -20,7 +20,7 @@ export namespace CreateAccountSuccessSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts
+  accounts: state.accounts,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -30,7 +30,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-export class CreateAccountSuccess extends Component<CreateAccountSuccessSpace.IProps, CreateAccountSuccessSpace.IState> {
+export class CreateAccountSuccess
+  extends Component<CreateAccountSuccessSpace.IProps, CreateAccountSuccessSpace.IState> {
 
   state = {};
 
