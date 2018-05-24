@@ -1,29 +1,24 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Save, Close, Delete, Menu, AddToPhotos,GetApp, ContentCopy, Publish } from '@material-ui/icons';
-import { Paper, TextField, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core/';
-import { EditorState, convertToRaw, ContentState, AtomicBlockUtils,Entity } from 'draft-js';
+import { AddAPhoto, Close, ContentCopy, Delete, Save, SelectAll } from '@material-ui/icons';
+import { AppBar, IconButton, Paper, TextField, Toolbar, Typography } from '@material-ui/core/';
+import { AtomicBlockUtils, ContentState, convertToRaw, EditorState, Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
 import * as draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import createImagePlugin from 'draft-js-image-plugin';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import {
-  ITemplate,
-  IDataForEditTemplate,
-  IDataForCreateTemplate,
-  IDataForDeleteTemplates
-} from './models';
+import { IDataForCreateTemplate, IDataForDeleteTemplates, IDataForEditTemplate, ITemplate } from './models';
 
 import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
-import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+
 const imagePlugin = createImagePlugin();
-const plugins = [imagePlugin];
+const plugins     = [imagePlugin];
 
 const styles = {
   root: {
@@ -38,8 +33,8 @@ const styles = {
   },
   offset: {
     display: 'inline-block',
-    margin: 20
-  }
+    margin: 20,
+  },
 };
 
 export namespace TemplateEditorSpace {
@@ -71,12 +66,13 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   remove: (data: IDataForDeleteTemplates) => dispatch(remove(data)),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
-  }
+  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
   editorNode: any;
+
   constructor(props: TemplateEditorSpace.IProps, context?: object) {
     super(props, context);
 
@@ -90,7 +86,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
           isEdit: true,
           title: this.props.template.title,
           content: editorState,
-          description: this.props.template.description
+          description: this.props.template.description,
         };
       } else {
         this.state = {
@@ -98,7 +94,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
           isEdit: true,
           title: this.props.template.title,
           content: EditorState.createEmpty(),
-          description: this.props.template.description
+          description: this.props.template.description,
         };
       }
     } else {
@@ -107,7 +103,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
         isEdit: false,
         title: `Image`,
         content: EditorState.createEmpty(),
-        description: ''
+        description: '',
       };
     }
   }
@@ -124,136 +120,127 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
     this.setState({ description: event.target.value });
   }
 
-  onAddImage = () => {
-    this.setState({selectImageOpen: true});
+  onAddImage          = () => {
+    this.setState({ selectImageOpen: true });
   }
   copyTextToClipboard = (text: string): boolean => {
-      // Find the dummy text area or create it if it doesn't exist
-      const dummyTextAreaID = "utilities-copyTextToClipboard-hidden-TextArea-ID";
-      let dummyTextArea: HTMLTextAreaElement = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
-      if (!dummyTextArea)
-      {
-          console.log("Creating dummy textarea for clipboard copy.");
+    // Find the dummy text area or create it if it doesn't exist
+    const dummyTextAreaID                  = 'utilities-copyTextToClipboard-hidden-TextArea-ID';
+    let dummyTextArea: HTMLTextAreaElement = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
+    if (!dummyTextArea) {
+      console.log('Creating dummy textarea for clipboard copy.');
 
-          let textArea = document.createElement("textarea");
-          textArea.id = dummyTextAreaID;
+      const textArea = document.createElement('textarea');
+      textArea.id  = dummyTextAreaID;
 
-          // Place in top-left corner of screen regardless of scroll position.
-          textArea.style.position = "fixed";
-          textArea.style.top = "0";
-          textArea.style.left = "0";
+      // Place in top-left corner of screen regardless of scroll position.
+      textArea.style.position = 'fixed';
+      textArea.style.top      = '0';
+      textArea.style.left     = '0';
 
-          // Ensure it has a small width and height. Setting to 1px / 1em
-          // doesn't work as this gives a negative w/h on some browsers.
-          textArea.style.width = "1px";
-          textArea.style.height = "1px";
+      // Ensure it has a small width and height. Setting to 1px / 1em
+      // doesn't work as this gives a negative w/h on some browsers.
+      textArea.style.width  = '1px';
+      textArea.style.height = '1px';
 
-          // We don't need padding, reducing the size if it does flash render.
-          textArea.style.padding = "0";
+      // We don't need padding, reducing the size if it does flash render.
+      textArea.style.padding = '0';
 
-          // Clean up any borders.
-          textArea.style.border = "none";
-          textArea.style.outline = "none";
-          textArea.style.boxShadow = "none";
+      // Clean up any borders.
+      textArea.style.border    = 'none';
+      textArea.style.outline   = 'none';
+      textArea.style.boxShadow = 'none';
 
-          // Avoid flash of white box if rendered for any reason.
-          textArea.style.background = "transparent";
+      // Avoid flash of white box if rendered for any reason.
+      textArea.style.background = 'transparent';
 
-          document.querySelector("body").appendChild(textArea);
-          dummyTextArea = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
+      document.querySelector('body').appendChild(textArea);
+      dummyTextArea = document.getElementById(dummyTextAreaID) as HTMLTextAreaElement;
 
-          console.log("The dummy textarea for clipboard copy now exists.");
+      console.log('The dummy textarea for clipboard copy now exists.');
+    } else {
+      console.log('The dummy textarea for clipboard copy already existed.');
+    }
+    // Set the text in the text area to what we want to copy and select it
+    dummyTextArea.value = text;
+    dummyTextArea.select();
+    // Now execute the copy command
+    try {
+      const status = document.execCommand('copy');
+      if (!status) {
+        console.error('Copying text to clipboard failed.');
+        return false;
+      } else {
+        console.log('Text copied to clipboard.');
+        return true;
       }
-      else
-      {
-          console.log("The dummy textarea for clipboard copy already existed.")
-      }
-      // Set the text in the text area to what we want to copy and select it
-      dummyTextArea.value = text;
-      dummyTextArea.select();
-      // Now execute the copy command
-      try
-      {
-          let status = document.execCommand("copy");
-          if (!status)
-          {
-              console.error("Copying text to clipboard failed.");
-              return false;
-          }
-          else
-          {
-              console.log("Text copied to clipboard.");
-              return true;
-          }
-      }
-      catch (error)
-      {
-          console.log("Unable to copy text to clipboard in this browser.");
-          return false;
-      }
+    } catch (error) {
+      console.log('Unable to copy text to clipboard in this browser.');
+      return false;
+    }
   }
-  pickHtmlContent = () => {
+  pickHtmlContent     = () => {
     window
-    .getSelection()
-    .selectAllChildren(this.editorNode.editor.editorContainer.children[0].children[0]);
+      .getSelection()
+      .selectAllChildren(this.editorNode.editor.editorContainer.children[0].children[0]);
     this.props.onShowToast('Content selected', ToastType.Success);
   }
-  onGetHtml = () => {
-    let status = document.execCommand("copy");
+  onGetHtml           = () => {
+    const status = document.execCommand('copy');
     const html = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
     this.copyTextToClipboard(html);
     this.props.onShowToast('Content copied to clipboard', ToastType.Success);
   }
-  insertImage = (url: string) => {
-    const { content } = this.state;
-    const contentState = content.getCurrentContent();
+  insertImage         = (url: string) => {
+    const { content }            = this.state;
+    const contentState           = content.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity(
       'IMAGE',
       'IMMUTABLE',
-      {src: url}
+      { src: url },
     );
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-    const newEditorState = EditorState.set(
+    const entityKey              = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState         = EditorState.set(
       content,
-      {currentContent: contentStateWithEntity}
+      { currentContent: contentStateWithEntity },
     );
 
     this.setState({
       content: AtomicBlockUtils.insertAtomicBlock(
         newEditorState,
         entityKey,
-        '  '
+        '  ',
       ),
-      selectImageOpen: false
+      selectImageOpen: false,
     });
   }
 
   handleCloseSelectImage = () => {
-    this.setState({selectImageOpen: false});
+    this.setState({ selectImageOpen: false });
   }
 
   render() {
     const { classes } = this.props;
-    const save = () => {
+    const save        = () => {
 
       const body = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
-        if (this.state.isEdit) {
-            // change
-            this.props.edit({
-                id: this.props.template.id,
-                title: this.state.title,
-                body,
-                description: this.state.description
-            });
-        } else {
-            // save
-            this.props.create({
-                title: this.state.title,
-                body,
-                description: this.state.description
-            });
-            this.props.closeTemplate();
-        }
+      if (this.state.isEdit) {
+        // change
+        this.props.edit({
+          id: this.props.template.id,
+          title: this.state.title,
+          body,
+          description: this.state.description,
+        });
+      } else {
+        // save
+        this.props.create({
+          title: this.state.title,
+          body,
+          description: this.state.description,
+        });
+        this.props.closeTemplate();
+      }
     };
 
     const remove = () => {
@@ -263,20 +250,20 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
 
     return (
       <div style={{ height: '100%' }} className={classes.root}>
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Close"
+            <IconButton className={classes.menuButton} color='inherit' aria-label='Close'
                         onClick={this.props.closeTemplate}>
               <Close/>
             </IconButton>
-            <Typography className={classes.flex} variant="title" color="inherit">
+            <Typography className={classes.flex} variant='title' color='inherit'>
               {
                 this.state.isEdit ? 'Edit template' : 'Create template'
               }
             </Typography>
             {
               this.state.isEdit &&
-              <IconButton color="inherit" aria-label="Delete" onClick={remove}>
+              <IconButton color='inherit' aria-label='Delete' onClick={remove}>
                 <Delete/>
               </IconButton>
             }
@@ -288,8 +275,8 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               required
               value={this.state.title}
               onChange={this.onChangeTitle}
-              label="Title template"
-              margin="normal"
+              label='Title template'
+              margin='normal'
               id={'template_title'}
             />
           </div>
@@ -297,37 +284,38 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
             <TextField
               value={this.state.description}
               onChange={this.onChangeDescription}
-              label="Description template"
-              margin="normal"
+              label='Description template'
+              margin='normal'
             />
           </div>
           <div className={classes.offset}>
             <Editor
               editorState={this.state.content}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
+              toolbarClassName='toolbarClassName'
+              wrapperClassName='wrapperClassName'
+              editorClassName='editorClassName'
               onEditorStateChange={this.onChangeContent}
-              ref={ref => this.editorNode = ref}
+              ref={(ref) => this.editorNode = ref}
               plugins={plugins}
               toolbarCustomButtons={[
-                <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onAddImage}>
-                  <AddToPhotos/>
+                <IconButton key={1} color='inherit' aria-label='Add photos' onClick={this.onAddImage}>
+                  <AddAPhoto/>
                 </IconButton>,
-                <IconButton key={1} color="inherit" aria-label="Delete" onClick={this.onGetHtml}>
-                  <ContentCopy />
+                <IconButton key={2} color='inherit' aria-label='Copy content' onClick={this.onGetHtml}>
+                  <ContentCopy/>
                 </IconButton>,
-                <IconButton color="inherit" arial-label="Delete" onClick={this.pickHtmlContent}>
-                  <GetApp />
-                </IconButton>
+                <IconButton key={3} color='inherit' arial-label='Select all' onClick={this.pickHtmlContent}>
+                  <SelectAll/>
+                </IconButton>,
               ]}
             />
           </div>
         </Paper>
         <div>
-          <Fab className="fab fab_1" onClick={save} icon={<Save/>}/>
+          <Fab className='fab fab_1' onClick={save} icon={<Save/>}/>
         </div>
-        <DialogSelectImage handleClose={this.handleCloseSelectImage} isOpen={this.state.selectImageOpen} insertImage={this.insertImage}/>
+        <DialogSelectImage handleClose={this.handleCloseSelectImage} isOpen={this.state.selectImageOpen}
+                           insertImage={this.insertImage}/>
       </div>
     );
   }
