@@ -33,6 +33,7 @@
     "draft-js-plugins-editor": "^2.0.8",
     "draftjs-to-html": "^0.8.4",
     "googleapis": "^30.0.0",
+    "jodit": "^3.1.95",
     "jodit-react": "^1.0.14",
     "log4js": "^2.6.1",
     "moment": "^2.22.1",
