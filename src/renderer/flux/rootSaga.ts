@@ -1,4 +1,4 @@
-import {fork} from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects';
 
 import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';
 import { createAccountSaga } from 'src/renderer/component/Authorization/flux/CreateAccountSaga';
@@ -6,12 +6,12 @@ import { sendCodeOnMailSaga } from 'src/renderer/component/Authorization/flux/Se
 import { resetPasswordSaga } from 'src/renderer/component/Authorization/flux/ResetPasswordSaga';
 import { toastSaga } from 'src/renderer/component/Toast/flux/saga';
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
-import { loginSaga, watcherSetToken } from 'src/renderer/component/Authorization/flux/LoginSaga';
-import { watcherGetProfile, watcherChangePassword } from '../component/Account/flux/saga';
+import { loginSaga, watcherLogout, watcherSetToken } from 'src/renderer/component/Authorization/flux/LoginSaga';
+import { watcherChangePassword, watcherGetProfile } from '../component/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
 import { checkCodeSaga } from 'src/renderer/component/Authorization/flux/CheckCodeSaga';
 
-export  default function* rootSaga () {
+export default function* rootSaga() {
   yield [
     fork(createAccountSaga),
     fork(loginSaga),
@@ -24,6 +24,7 @@ export  default function* rootSaga () {
     fork(watcherChangePassword),
     ...templates.map(fork),
     fork(watcherGetProfile),
-    fork(checkCodeSaga)
+    fork(checkCodeSaga),
+    fork(watcherLogout),
   ];
 }

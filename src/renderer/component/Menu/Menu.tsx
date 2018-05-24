@@ -1,29 +1,29 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
+  Button,
   Divider,
+  Grid,
   List,
   ListItem,
   ListItemIcon,
-  Paper, Typography, WithStyles,
-  withStyles
+  Paper,
+  Typography,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core/';
-
-import { Inbox, Drafts, Send, Bookmark, Collections, SupervisorAccount } from '@material-ui/icons';
-/* import { LabelsType } from 'src/renderer/component/MailList/flux/saga/selectors'; */
+import { Collections, Drafts, SupervisorAccount } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
-import { ReactElement } from 'react';
 import { IStyle } from 'type/materialUI';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 
 const createMenuSchema = (): IItem[] => {
   return [
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
-    /*{ title: 'Compose', icon: <Send/>, type: MenuItemType.COMPOSE },*/
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
-    /*{ title: 'Training', icon: <Inbox/>, type: MenuItemType.TRAINING },*/
-    /*{ title: 'Research', icon: <Bookmark/>, type: MenuItemType.RESEARCH },*/
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
   ];
 };
@@ -49,7 +49,7 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
       <ListItemIcon>
         {icon}
       </ListItemIcon>
-      <Typography variant="subheading" noWrap>{title}</Typography>
+      <Typography variant='subheading' noWrap>{title}</Typography>
     </ListItem>
   );
 }
@@ -58,6 +58,7 @@ export namespace MenuSpace {
   export interface IProps {
     accounts: any;
     actions: FluxDrawerMenu.IActions;
+    logout: () => void;
   }
 
   export interface IState {
@@ -83,18 +84,21 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators({
     ...FluxDrawerMenu.Actions,
-  }, dispatch)
+  }, dispatch),
+  logout: () => {
+    dispatch(FluxAccounts.Actions.Logout());
+  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
   selectItem = (type: MenuItemType) => () => {
     this.props.actions.selectMenuItem(type);
-  }
+  };
 
   render() {
-    const { classes } = this.props;
-    const menuSchema  = createMenuSchema();
+    const { classes, logout } = this.props;
+    const menuSchema          = createMenuSchema();
 
     const toItem = (items: IItem[]) => {
       return items.map((item) => (
@@ -112,9 +116,21 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
 
     return (
       <Paper elevation={4} className={classes.root}>
-        <List component="nav">
-          {toItem(menuSchema)}
-        </List>
+          <List component='nav'>
+            {toItem(menuSchema)}
+          </List>
+          <Grid
+            container
+            direction={'column'}
+            justify={'flex-end'}
+            alignItems={'center'}
+          >
+            <Grid item>
+              <Button variant='raised' color='primary' onClick={logout}>
+                Logout
+              </Button>
+            </Grid>
+          </Grid>
       </Paper>
     );
   }
