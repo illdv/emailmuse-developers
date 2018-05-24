@@ -10,6 +10,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 const outPath = path.join(__dirname, './dist');
 const sourcePath = path.join(__dirname, './src');
+const assetsPath = path.join(__dirname, './assets');
 
 const styleLoader = process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader;
 
@@ -55,6 +56,16 @@ module.exports = {
                     {loader: "css-loader"},
                 ],
             },
+            {
+                test: /\.(png|jpg|gif|svg|jpeg|ico)$/,
+                include: [sourcePath, assetsPath],
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: './images/[name].[hash].[ext]'
+                    }
+                }]
+            }
         ],
     },
     resolve: {

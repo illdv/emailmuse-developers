@@ -7,7 +7,7 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
-import { TemplateEditorJodit } from 'src/renderer/component/TemplateEditorJodit';
+import { TemplateEditorJodit } from 'src/renderer/component/Templates/TemplateEditorJodit';
 
 export namespace MainLayoutScope {
 
@@ -40,7 +40,10 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   render() {
     const { token } = this.props.accounts.user;
     return (
-    <TemplateEditorJodit/>
+      <>
+        {!!token && <MainLayout/> || <Layout/>}
+        <Toast/>
+      </>
   );
   }
 }
