@@ -7,6 +7,7 @@ import {
   IDataForEditTemplate,
 } from 'src/renderer/component/Templates/models';
 
+// TODO: Move in file
 export namespace Accounts {
   export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
     return axios.put('/profile/change-password', data);
@@ -23,6 +24,7 @@ export namespace Accounts {
   }
 }
 
+// TODO: Move in file
 export namespace Templates {
   export function getTemplates() {
     return axios.get(`${API_ENDPOINT}/templates`);
