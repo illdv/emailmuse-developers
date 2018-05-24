@@ -4,7 +4,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 import { sendCode } from 'src/renderer/API/Auth';
 
-const actions = FluxAccounts.Actions;
+const actions       = FluxAccounts.Actions;
 const CreateAccount = actions.CreateAccount;
 
 function* onCreateAccount(action): IterableIterator<any> {

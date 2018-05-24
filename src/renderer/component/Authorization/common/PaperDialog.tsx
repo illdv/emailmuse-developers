@@ -17,7 +17,7 @@ const styles = () => ({
     paddingRight: 40,
     paddingTop: 48,
     paddingBottom: 26,
-  }
+  },
 });
 
 export namespace PaperDialogSpace {
@@ -35,11 +35,11 @@ export namespace PaperDialogSpace {
     id: string;
     canNext?: boolean;
     /**
-     * Happened if user enter value and click next.
+     * Happened if name enter value and click next.
      */
     onEnterCompleted?: (value: string) => void;
     /**
-     * Happened if user click onBack.
+     * Happened if name click onBack.
      */
     onBack?: () => void;
     validation: object;
@@ -54,7 +54,10 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
     canNext: true,
   };
 
-  static getDerivedStateFromProps(nextProps: PaperDialogSpace.IProps, prevState: PaperDialogSpace.IState): PaperDialogSpace.IState {
+  static getDerivedStateFromProps(
+    nextProps: PaperDialogSpace.IProps,
+    prevState: PaperDialogSpace.IState): PaperDialogSpace.IState {
+
     const { defaultValue } = nextProps;
     if (defaultValue !== prevState.value) {
       return {

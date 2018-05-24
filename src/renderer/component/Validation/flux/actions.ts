@@ -1,4 +1,4 @@
-import { handleActions, createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import * as validate from 'validate.js';
 import { IKeyValue } from 'src/renderer/utils';
@@ -67,7 +67,7 @@ export namespace FluxValidation {
     },
     SET_SCHEME: (state: IState, action: IActionPayload<IKeyValue<string, object>>): IState => {
       const payload          = action.payload;
-      const value    = newValue(state.value, payload.key, '');
+      const value            = newValue(state.value, payload.key, '');
       const validationScheme = newValue(state.validationScheme, payload.key, payload.value);
       return {
         ...state,
@@ -82,11 +82,3 @@ export namespace FluxValidation {
 function newValue(old, id, value) {
   return { ...old, [id]: value };
 }
-
-
-
-
-
-
-
-

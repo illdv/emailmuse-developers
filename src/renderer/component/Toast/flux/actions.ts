@@ -1,4 +1,4 @@
-import { handleActions, createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 
 export enum ToastType {
   Error   = 'Error',
@@ -30,7 +30,7 @@ const handle = handleActions({
   },
   [CLEAR_TOAST]: () => {
     return createDefaultState();
-  }
+  },
 }, createDefaultState());
 
 export namespace FluxToast {

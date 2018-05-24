@@ -21,7 +21,7 @@ export namespace FluxAccounts {
     }
 
     export interface IUser {
-      user: string;
+      name: string;
       email: string;
       token: string;
     }
@@ -81,7 +81,7 @@ export namespace FluxAccounts {
       export const checkCode = createActionSteps('CHECK_CODE',
         (code: string) => ({ code }),
         () => ({}),
-        (error: string) => ({error}),
+        (error: string) => ({ error }),
       );
     }
 
@@ -96,7 +96,7 @@ export namespace FluxAccounts {
           email,
           token,
           password,
-          passwordConfirmation
+          passwordConfirmation,
         }),
         () => ({}),
         (error: string) => ({ error }),
@@ -105,7 +105,8 @@ export namespace FluxAccounts {
 
     type SetAuthStep = (authStep: Models.AuthStep) => Action;
 
-    export const SetAuthStep: SetAuthStep = createAction('SET_AUTH_STEP', (authStep: Models.AuthStep) => ({ authStep }));
+    export const SetAuthStep: SetAuthStep = createAction('SET_AUTH_STEP',
+      (authStep: Models.AuthStep) => ({ authStep }));
 
     interface IAllActions {
       createAccount: Actions.CreateAccount.IActions;
@@ -115,11 +116,11 @@ export namespace FluxAccounts {
   }
 
   const createDefaultState = (): IState => {
-    const token                                    = CustomStorage.getItem('token');
+    const token                                 = CustomStorage.getItem('token');
     // noinspection TsLint
-    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.common.authorization = `Bearer ${token}`;
     return {
-      user: { email: '', user: '', token: token ? token : '' },
+      user: { email: '', name: '', token: token ? token : '' },
       error: '',
       authStep: Models.AuthStep.LOGIN,
       checkCodeSuccess: false,

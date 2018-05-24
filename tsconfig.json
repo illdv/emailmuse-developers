@@ -8,8 +8,9 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "outDir": "build_ts",
-    "module": "esnext",
+    "outDir": "build",
+    "rootDir": "src",
+    "module": "commonjs",
     "target": "es6",
     "lib": [
       "es6",
@@ -19,7 +20,6 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -33,6 +33,9 @@
     "experimentalDecorators": true
 
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
     "build",
@@ -40,6 +43,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "config/**/*.js"
+    "config/**/*.js",
+    "init.js",
+    "webpack.config.js"
   ]
 }

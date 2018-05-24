@@ -5,9 +5,8 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Layout } from 'src/renderer/component/Authorization/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
-import './Application.css';
+import './Application.scss';
 import { Toast } from 'src/renderer/component/Toast/Toast';
-
 
 export namespace MainLayoutScope {
 
@@ -23,7 +22,6 @@ export namespace MainLayoutScope {
 const mapStateToProps = (state: IGlobalState) => ({
   accounts: state.accounts,
 });
-
 
 @(connect(mapStateToProps))
 class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScope.IState> {

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { TextField } from '@material-ui/core/';
-import { ChangeEvent, Component } from 'react';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindActionCreators } from 'redux';
@@ -29,14 +29,17 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators({
     ...FluxValidation.Actions.AllAction,
-  }, dispatch)
+  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 export class TextValidator extends Component<TextValidatorSpace.IProps & TextFieldProps, TextValidatorSpace.IState> {
 
   state = { value: this.props.value as any, id: '' };
-  static getDerivedStateFromProps(nextProps: TextValidatorSpace.IProps & TextFieldProps, prevState: TextValidatorSpace.IState): TextValidatorSpace.IState {
+
+  static getDerivedStateFromProps(
+    nextProps: TextValidatorSpace.IProps & TextFieldProps,
+    prevState: TextValidatorSpace.IState): TextValidatorSpace.IState {
     const { id } = nextProps;
     if (id !== prevState.id) {
       return {
@@ -62,8 +65,8 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
   }
 
   render() {
-    const { validation, inputRef , id, ...otherProps } = this.props;
-    const { isWasBlur, resultValidation }   = validation;
+    const { validation, inputRef, id, ...otherProps } = this.props;
+    const { isWasBlur, resultValidation }             = validation;
 
     const error = isWasBlur[id] && useOrDefault(() => (resultValidation[id][0]), '');
 

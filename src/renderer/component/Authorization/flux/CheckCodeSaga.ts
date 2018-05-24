@@ -8,7 +8,7 @@ function* onCheckCode(action): IterableIterator<any> {
     yield checkCode(action.payload.code);
     yield put(FluxAccounts.Actions.CreateAccount.checkCode.SUCCESS());
     yield put(FluxToast.Actions.showToast('Account activation successfully', ToastType.Success));
-  } catch(error) {
+  } catch (error) {
     yield put(FluxToast.Actions.showToast('The code is invalid!', ToastType.Error));
     yield put(FluxAccounts.Actions.CreateAccount.checkCode.FAILURE());
   }

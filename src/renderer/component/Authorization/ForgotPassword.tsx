@@ -1,15 +1,15 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
+import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import AuthStep = FluxAccounts.Models.AuthStep;
 import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import { bindActionCreators } from 'redux';
+import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import AuthStep = FluxAccounts.Models.AuthStep;
 
 enum Step {
   EMAIL,
@@ -34,7 +34,7 @@ export namespace ForgotPasswordSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation
+  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   actions: bindActionCreators({
     ...FluxValidation.Actions.AllAction,
-  }, dispatch)
+  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -69,10 +69,10 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     const validationSchema = {
       email: {
         presence: true,
-        email: true
+        email: true,
       },
       password: {
-        length: { minimum: 6 }
+        length: { minimum: 6 },
       },
       secret_code: {
         presence: true,
@@ -83,7 +83,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           attribute: 'password',
           message: 'Those passwords didn\'t match. Try again',
           comparator: (v1, v2) => v1 === v2,
-        }
+        },
       },
     };
 
@@ -145,7 +145,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           });
         },
         validation: {},
-      }
+      },
     };
   }
 
@@ -173,7 +173,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     );
   }
 
-  createSecretCodeForm = (validationSchema: {secret_code: object}): any => {
+  createSecretCodeForm = (validationSchema: { secret_code: object }): any => {
     return (
       <TextValidator
         fullWidth

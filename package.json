@@ -1,12 +1,29 @@
 {
   "name": "Emailer",
   "version": "0.1.1",
+  "author": {
+    "name": "Nikita Kamyshenko",
+    "email": "kamyshenko.n@cronix.ms"
+  },
+  "homepage": "homepage.example",
+  "description": "Emailr demo",
   "private": true,
+  "main": "init.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "test": "jest",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "clear:project": "rm -rf node_modules build dist"
+  },
   "dependencies": {
     "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0",
     "axios": "^0.18.0",
-    "chalk": "1.1.3",
+    "bem-ts": "^0.6.0",
+    "chalk": "^1.1.3",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.5",
     "draft-js-dnd-plugin": "^2.0.0-beta1",
@@ -19,8 +36,10 @@
     "jodit-react": "^1.0.14",
     "log4js": "^2.6.1",
     "moment": "^2.22.1",
-    "raf": "3.4.0",
+    "node-sass": "^4.9.0",
     "react": "^16.3.2",
+    "react-dnd": "^2.6.0",
+    "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.3.2",
     "react-draft-wysiwyg": "^1.12.13",
     "react-redux": "^5.0.7",
@@ -29,97 +48,70 @@
     "redux-actions": "^2.3.2",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "resolve": "1.6.0",
-    "server-destroy": "^1.0.1",
+    "resolve": "^1.6.0",
     "validate.js": "^0.12.0"
   },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "start:electron": "npx tsc ./src/main/**/*.ts; npx tsc ./src/main/*.ts; electron ./src/main/startElectron.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "lint": "tslint -c tslint.json -p tsconfig.json",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
-  },
   "devDependencies": {
-    "@types/chai": "^4.1.3",
+    "@types/enzyme": "^3.1.10",
     "@types/jest": "^22.2.3",
-    "@types/node": "^9.6.15",
-    "@types/react": "^16.3.13",
+    "@types/node": "^10.1.2",
+    "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
-    "autoprefixer": "7.1.6",
-    "babel-jest": "^22.1.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-react-app": "^3.1.1",
-    "bem-ts": "^0.6.0",
-    "case-sensitive-paths-webpack-plugin": "2.1.1",
-    "chai": "^4.1.2",
-    "css-loader": "0.28.7",
-    "dotenv": "4.0.0",
-    "dotenv-expand": "4.2.0",
-    "electron": "1.8.6",
-    "electron-builder": "^20.13.4",
+    "awesome-typescript-loader": "^5.0.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "electron": "^2.0.2",
     "electron-load-devtool": "^1.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
-    "eslint-plugin-react": "^7.7.0",
-    "extract-text-webpack-plugin": "3.0.2",
-    "file-loader": "0.11.2",
-    "fork-ts-checker-webpack-plugin": "^0.2.8",
-    "fs-extra": "3.0.1",
-    "html-webpack-plugin": "2.29.0",
-    "ignore-styles": "^5.0.1",
-    "jest": "22.1.4",
-    "lodash": "^4.17.10",
-    "node-sass": "^4.9.0",
-    "object-assign": "4.1.1",
-    "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-loader": "2.0.8",
-    "promise": "8.0.1",
+    "eslint-plugin-react": "^7.8.2",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^22.4.4",
+    "mini-css-extract-plugin": "^0.4.0",
     "react-dev-utils": "^5.0.1",
-    "react-dnd": "^2.6.0",
-    "react-dnd-html5-backend": "^2.6.0",
+    "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "redux-devtools-extension": "^2.13.2",
     "sass-loader": "^7.0.1",
-    "source-map-loader": "^0.2.1",
-    "style-loader": "0.19.0",
-    "sw-precache-webpack-plugin": "0.11.4",
-    "ts-jest": "22.0.1",
-    "ts-loader": "^2.3.7",
-    "ts-node": "^6.0.3",
-    "tsconfig-paths-webpack-plugin": "^2.0.0",
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.10.0",
-    "tslint-react": "^3.2.0",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.21.0",
+    "tslint": "^5.10.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^2.8.3",
-    "uglifyjs-webpack-plugin": "^1.1.8",
-    "url-loader": "0.6.2",
-    "webpack": "3.8.1",
-    "webpack-dev-server": "2.9.4",
-    "webpack-manifest-plugin": "1.3.2",
-    "whatwg-fetch": "2.0.3"
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "homepage": "./",
-  "author": {
-    "name": "Nikita Kamyshenko",
-    "email": "kamyshenko.n@cronix.ms"
-  },
-  "description": "Emailr demo v2",
-  "main": "init.js",
   "build": {
     "appId": "cronix.ms.emailer",
     "linux": {
       "target": "deb",
       "category": "Office"
+    }
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/jest/test-shim.js",
+      "<rootDir>/config/jest/test-setup.js"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/config/jest/test-preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/*.(ts|tsx|js)"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/__mocks__/fileMock.js",
+      "\\.(css|less|scss)$": "<rootDir>/config/jest/__mocks__/fileMock.js"
     }
   }
 }
