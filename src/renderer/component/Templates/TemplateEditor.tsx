@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { AddAPhoto, Close, ContentCopy, Delete, GetApp, Save } from '@material-ui/icons';
+import { AddAPhoto, Close, ContentCopy, Delete, Save, SelectAll } from '@material-ui/icons';
 import { AppBar, IconButton, Paper, TextField, Toolbar, Typography } from '@material-ui/core/';
 import { AtomicBlockUtils, ContentState, convertToRaw, EditorState, Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
@@ -298,14 +298,14 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, Templat
               ref={(ref) => this.editorNode = ref}
               plugins={plugins}
               toolbarCustomButtons={[
-                <IconButton key={1} color='inherit' aria-label='AddToPhotos' onClick={this.onAddImage}>
+                <IconButton key={1} color='inherit' aria-label='Add photos' onClick={this.onAddImage}>
                   <AddAPhoto/>
                 </IconButton>,
-                <IconButton key={2} color='inherit' aria-label='Delete' onClick={this.onGetHtml}>
+                <IconButton key={2} color='inherit' aria-label='Copy content' onClick={this.onGetHtml}>
                   <ContentCopy/>
                 </IconButton>,
-                <IconButton key={3} color='inherit' arial-label='Delete' onClick={this.pickHtmlContent}>
-                  <GetApp/>
+                <IconButton key={3} color='inherit' arial-label='Select all' onClick={this.pickHtmlContent}>
+                  <SelectAll/>
                 </IconButton>,
               ]}
             />
