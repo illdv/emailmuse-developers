@@ -1,7 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { useOrDefault } from 'src/renderer/utils';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { sendCode } from 'src/renderer/API/Auth';
 
 const actions       = FluxAccounts.Actions;

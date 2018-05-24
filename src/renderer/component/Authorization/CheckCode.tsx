@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import PaperDialog from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import AuthStep = FluxAccounts.Models.AuthStep;
 
 export namespace CheckCodeSpace {

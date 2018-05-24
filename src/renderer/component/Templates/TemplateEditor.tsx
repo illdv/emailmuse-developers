@@ -20,8 +20,8 @@ import {
 import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
-import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
 

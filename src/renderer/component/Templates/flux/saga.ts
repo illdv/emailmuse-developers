@@ -11,7 +11,7 @@ import {
   clearPages
 } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 export function* loadingTemplates(action) {
   try {

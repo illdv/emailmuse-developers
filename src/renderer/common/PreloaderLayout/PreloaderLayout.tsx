@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as constants from 'src/renderer/component/PreloaderLayout/Status/constants';
+import * as constants from 'src/renderer/common/PreloaderLayout/Status/constants';
 import { connect } from 'react-redux';
-import { statusSelector } from 'src/renderer/component/PreloaderLayout/Status/selectors';
-import { Preloader } from 'src/renderer/component/PreloaderLayout/Preloader';
+import { statusSelector } from 'src/renderer/common/PreloaderLayout/Status/selectors';
+import { Preloader } from 'src/renderer/common/PreloaderLayout/Preloader';
 
 export namespace PreloaderLayoutSpace {
   export interface IProps {

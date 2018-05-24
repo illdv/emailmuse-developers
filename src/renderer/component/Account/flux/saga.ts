@@ -2,7 +2,7 @@ import { call, put, take } from 'redux-saga/effects';
 import { AccountSpace, IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 function* getProfileSaga() {
   try {

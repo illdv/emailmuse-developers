@@ -4,7 +4,7 @@ import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';
 import { createAccountSaga } from 'src/renderer/component/Authorization/flux/CreateAccountSaga';
 import { sendCodeOnMailSaga } from 'src/renderer/component/Authorization/flux/SendCodeOnMailSaga';
 import { resetPasswordSaga } from 'src/renderer/component/Authorization/flux/ResetPasswordSaga';
-import { toastSaga } from 'src/renderer/component/Toast/flux/saga';
+import { toastSaga } from 'src/renderer/common/Toast/flux/saga';
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
 import { loginSaga, watcherSetToken } from 'src/renderer/component/Authorization/flux/LoginSaga';
 import { watcherGetProfile, watcherChangePassword } from '../component/Account/flux/saga';

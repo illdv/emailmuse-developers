@@ -6,7 +6,7 @@ import { Layout } from 'src/renderer/component/Authorization/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
-import { Toast } from 'src/renderer/component/Toast/Toast';
+import { Toast } from 'src/renderer/common/Toast/Toast';
 
 export namespace MainLayoutScope {
 

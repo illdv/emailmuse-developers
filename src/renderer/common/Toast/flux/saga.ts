@@ -1,5 +1,5 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { delay } from 'redux-saga';
 
 function* onSetError(action): IterableIterator<any> {

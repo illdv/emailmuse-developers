@@ -13,7 +13,7 @@ import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Account/Settings';
 import Templates from '../Templates/TemplatesRouter';
-import { PreloaderLayout } from 'src/renderer/component/PreloaderLayout/PreloaderLayout';
+import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 
 const styles: IStyle = {
   root: {
