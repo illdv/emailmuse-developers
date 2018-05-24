@@ -1,4 +1,4 @@
-import { handleActions, createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import { Action } from 'redux';
 
 import { IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
@@ -108,6 +108,8 @@ export namespace FluxAccounts {
     export const SetAuthStep: SetAuthStep = createAction('SET_AUTH_STEP',
       (authStep: Models.AuthStep) => ({ authStep }));
 
+    export const Logout = createAction('LOGOUT');
+
     interface IAllActions {
       createAccount: Actions.CreateAccount.IActions;
       login: Actions.Login.IActions;
@@ -115,8 +117,7 @@ export namespace FluxAccounts {
     }
   }
 
-  const createDefaultState = (): IState => {
-    const token                                 = CustomStorage.getItem('token');
+  const createDefaultState = (token?: string): IState => {
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
     return {
@@ -152,7 +153,10 @@ export namespace FluxAccounts {
     SET_AUTH_STEP: (state, action) => {
       return { ...state, ...action.payload };
     },
-  }, createDefaultState());
+    LOGOUT: (state): IState => {
+      return createDefaultState();
+    },
+  }, createDefaultState(CustomStorage.getItem('token')));
 
   export interface IState {
     user: Models.IUser;

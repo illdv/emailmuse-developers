@@ -20,6 +20,15 @@ export function* watcherSetToken() {
   }
 }
 
+export function* watcherLogout() {
+  while (true) {
+    yield take('LOGOUT');
+    CustomStorage.clear();
+    // noinspection TsLint
+    axios.defaults.headers.common['authorization'] = ``;
+  }
+}
+
 function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterator<any> {
   try {
     yield put(actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOADING));
