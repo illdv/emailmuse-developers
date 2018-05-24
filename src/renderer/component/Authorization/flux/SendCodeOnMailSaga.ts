@@ -1,7 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
+import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
+import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { sendCodeOnMail } from '../../../API/Auth';
 
 function* onSendCodeOnMail(action: { payload: { email: string } }): IterableIterator<any> {

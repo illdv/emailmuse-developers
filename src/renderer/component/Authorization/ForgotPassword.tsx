@@ -5,9 +5,9 @@ import { Email } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
+import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
 

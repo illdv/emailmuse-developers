@@ -5,10 +5,11 @@ import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { getCurrentPageSelector, getTotalImages, getPerPageSelector, getLastPageSelector } from
     'src/renderer/component/ImageLibrary/store/selectors';
+import { deleteImages } from 'src/renderer/API/ImageLibrary';
 
 function* deleteImagesWorker(action: IActionPayload<number[]>): IterableIterator<any> {
   try {
-    const response = yield call(EmailerAPI.ImageLibrary.deleteImages, action.payload);
+    const response = yield call(deleteImages, action.payload);
     yield put(actions.deleteImagesSuccess());
     // If page should change after deleting then change currentPage
     let currentPage = yield select(getCurrentPageSelector);

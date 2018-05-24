@@ -1,7 +1,7 @@
 import * as constants from './constants';
 import { createAction } from 'redux-actions';
 import { IFileInfo, IGetImagesResponse } from 'src/renderer/component/ImageLibrary/store/models';
-import * as Status from 'src/renderer/component/PreloaderLayout/Status/constants';
+import * as Status from 'src/renderer/common/PreloaderLayout/Status/constants';
 
 export const getImagesRequest = (pageId = 1) => ({
   type: constants.GET_IMAGES_REQUEST,

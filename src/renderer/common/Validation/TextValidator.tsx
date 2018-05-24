@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core/';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindActionCreators } from 'redux';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
+import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
 
 export namespace TextValidatorSpace {

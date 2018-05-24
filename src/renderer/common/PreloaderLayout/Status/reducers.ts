@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import * as constants from 'src/renderer/component/PreloaderLayout/Status/constants';
+import * as constants from 'src/renderer/common/PreloaderLayout/Status/constants';
 
 export namespace Status {
   export const reducer = (state: constants.TStatus = constants.LOADED, action): constants.TStatus => {

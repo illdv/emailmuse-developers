@@ -4,10 +4,11 @@ import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { getCurrentPageSelector } from 'src/renderer/component/ImageLibrary/store/selectors';
+import { updateImage } from 'src/renderer/API/ImageLibrary';
 
 function* updateImageWorker(action: IActionPayload<{ imageId: number, name: string }>): IterableIterator<any> {
   try {
-    const response = yield call(EmailerAPI.ImageLibrary.updateImage, action.payload.imageId, action.payload.name);
+    const response = yield call(updateImage, action.payload.imageId, action.payload.name);
     yield put(actions.updateImageSuccess());
     const currentPage = yield select(getCurrentPageSelector);
     // Checks for currentPage being correct are implemented in getImagesWorker saga

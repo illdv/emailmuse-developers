@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { AddAPhoto, Close, Code, ContentCopy, Delete, Save, SelectAll } from '@material-ui/icons';
-import { AppBar, Divider, IconButton, Paper, TextField, Toolbar, Typography } from '@material-ui/core/';
-import { AtomicBlockUtils, ContentState, convertToRaw, EditorState, Entity, genKey, ContentBlock} from 'draft-js';
+import { AddAPhoto, Close, ContentCopy, Delete, Save, SelectAll } from '@material-ui/icons';
+import { AppBar, IconButton, Paper, TextField, Toolbar, Typography } from '@material-ui/core/';
+import { AtomicBlockUtils, ContentState, convertToRaw, EditorState, Entity } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import htmlToDraft from 'html-to-draftjs';
 import * as draftToHtml from 'draftjs-to-html';
@@ -15,8 +15,7 @@ import { IDataForCreateTemplate, IDataForDeleteTemplates, IDataForEditTemplate, 
 import { create, edit, remove } from 'src/renderer/component/Templates/flux/module';
 import { Fab } from 'src/renderer/common/Fab';
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
-import { WithStyles } from '@material-ui/core/es';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 const imagePlugin = createImagePlugin();
 const plugins     = [imagePlugin];
@@ -52,7 +51,6 @@ export namespace TemplateEditorSpace {
 
   export interface IState {
     isEdit: boolean;
-    isViewCode: boolean;
     title: string;
     content: any;
     description: string;
@@ -72,7 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithStyles, TemplateEditorSpace.IState> {
+class TemplateEditor extends React.Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
   editorNode: any;
 
   constructor(props: TemplateEditorSpace.IProps, context?: object) {
@@ -89,7 +87,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
           title: this.props.template.title,
           content: editorState,
           description: this.props.template.description,
-          isViewCode: false,
         };
       } else {
         this.state = {
@@ -98,7 +95,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
           title: this.props.template.title,
           content: EditorState.createEmpty(),
           description: this.props.template.description,
-          isViewCode: false,
         };
       }
     } else {
@@ -108,7 +104,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
         title: `Image`,
         content: EditorState.createEmpty(),
         description: '',
-        isViewCode: false,
       };
     }
   }
@@ -128,7 +123,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
   onAddImage          = () => {
     this.setState({ selectImageOpen: true });
   }
-
   copyTextToClipboard = (text: string): boolean => {
     // Find the dummy text area or create it if it doesn't exist
     const dummyTextAreaID                  = 'utilities-copyTextToClipboard-hidden-TextArea-ID';
@@ -137,7 +131,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
       console.log('Creating dummy textarea for clipboard copy.');
 
       const textArea = document.createElement('textarea');
-      textArea.id    = dummyTextAreaID;
+      textArea.id  = dummyTextAreaID;
 
       // Place in top-left corner of screen regardless of scroll position.
       textArea.style.position = 'fixed';
@@ -185,33 +179,18 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
       return false;
     }
   }
-
   pickHtmlContent     = () => {
     window
       .getSelection()
       .selectAllChildren(this.editorNode.editor.editorContainer.children[0].children[0]);
     this.props.onShowToast('Content selected', ToastType.Success);
   }
-
-  getCurrentHtml = () => {
-    return draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
-  }
-
   onGetHtml           = () => {
-    const html   = this.getCurrentHtml();
+    const status = document.execCommand('copy');
+    const html = draftToHtml(convertToRaw(this.state.content.getCurrentContent()));
     this.copyTextToClipboard(html);
     this.props.onShowToast('Content copied to clipboard', ToastType.Success);
   }
-
-  newEmptyBlock = () => {
-    return new ContentBlock({
-      key: genKey(),
-      type: 'unstyled',
-      text: '',
-      /*characterList: List(),*/
-    });
-  }
-
   insertImage         = (url: string) => {
     const { content }            = this.state;
     const contentState           = content.getCurrentContent();
@@ -240,17 +219,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
     this.setState({ selectImageOpen: false });
   }
 
-  remove = () => {
-    this.props.remove({ id: [this.props.template.id] });
-    this.props.closeTemplate();
-  }
-
-  toggleCode = () => {
-    this.setState({
-      isViewCode: !this.state.isViewCode,
-    });
-  }
-
   render() {
     const { classes } = this.props;
     const save        = () => {
@@ -275,6 +243,11 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
       }
     };
 
+    const remove = () => {
+      this.props.remove({ id: [this.props.template.id] });
+      this.props.closeTemplate();
+    };
+
     return (
       <div style={{ height: '100%' }} className={classes.root}>
         <AppBar position='static'>
@@ -294,7 +267,7 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
             </Typography>
             {
               this.state.isEdit &&
-              <IconButton color='inherit' aria-label='Delete' onClick={this.remove}>
+              <IconButton color='inherit' aria-label='Delete' onClick={remove}>
                 <Delete/>
               </IconButton>
             }
@@ -337,9 +310,6 @@ class TemplateEditor extends React.Component<TemplateEditorSpace.IProps & WithSt
                 </IconButton>,
                 <IconButton key={3} color='inherit' arial-label='Select all' onClick={this.pickHtmlContent}>
                   <SelectAll/>
-                </IconButton>,
-                <IconButton key={3} color='inherit' arial-label='Code' onClick={this.toggleCode}>
-                  <Code/>
                 </IconButton>,
               ]}
             />

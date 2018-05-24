@@ -10,7 +10,7 @@ import { LOADING, FAILURE, loading } from 'src/renderer/component/Templates/flux
 import { getPages, getStatus } from 'src/renderer/component/Templates/flux/selectors';
 import { Button } from '@material-ui/core';
 import { Loading } from 'src/renderer/common/Loading';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 
 export namespace MailListSpace {

@@ -2,11 +2,11 @@ import { combineReducers} from 'redux';
 
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import { FluxToast } from 'src/renderer/component/Toast/flux/actions';
+import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
+import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
-import { Status } from 'src/renderer/component/PreloaderLayout/Status/reducers';
-import * as StatusConstants from 'src/renderer/component/PreloaderLayout/Status/constants';
+import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
+import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
 
 import templates from 'src/renderer/component/Templates/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/models';

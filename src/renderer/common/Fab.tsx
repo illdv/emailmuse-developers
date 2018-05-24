@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Button, PropTypes, Zoom } from '@material-ui/core/';
 
-export function Fab(props: {onClick: any, className: string, icon: ReactElement<any>, color?: PropTypes.Color}) {
+export function Fab(props: { onClick: any, className: string, icon: ReactElement<any>, color?: PropTypes.Color }) {
   return (
     <Zoom
       in={true}
@@ -11,10 +11,10 @@ export function Fab(props: {onClick: any, className: string, icon: ReactElement<
       unmountOnExit
     >
       <Button
-        style={{zIndex: 99}}
+        style={{ zIndex: 99 }}
         className={props.className}
         color={props.color || 'primary'}
-        variant="fab"
+        variant='fab'
         onClick={props.onClick}
       >
         {props.icon}

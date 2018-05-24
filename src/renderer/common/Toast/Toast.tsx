@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Snackbar } from '@material-ui/core';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import './Toast.scss';
 
 const style = {
