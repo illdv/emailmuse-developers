@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { add, closeTemplate, create, loading, remove, select, set } from 'src/renderer/component/Templates/flux/module';
@@ -9,6 +9,8 @@ import { Loading } from 'src/renderer/common/Loading';
 import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
 import { ITemplate, ITemplateState, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
 import { createEmptyTemplate } from 'src/renderer/component/Templates/utils';
+import { Fab } from 'src/renderer/common/Fab';
+import { Add } from '@material-ui/icons';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -112,13 +114,17 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
 
     return (
       <div>
-        <Button variant='raised' color='primary' style={{ marginBottom: 5 }} onClick={this.selectNewTemplate}>
-          Add
-        </Button>
         <TemplatesList
           templates={templates}
           selectTemplate={this.editTemplate}
         />
+        <div>
+          <Fab
+            onClick={this.selectNewTemplate}
+            icon={<Add/>}
+            position={0}
+          />
+        </div>
       </div>
     );
   }
