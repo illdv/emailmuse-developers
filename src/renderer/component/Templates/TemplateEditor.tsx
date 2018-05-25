@@ -99,6 +99,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
         <JoditEditor onChangeValue={this.onChange} value={this.state.value}/>
         <div>
           <Fab
+            color={'secondary'}
             onClick={remove}
             icon={<Delete/>}
             position={2}
