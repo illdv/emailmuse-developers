@@ -5,8 +5,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
   Button,
   Divider,
-  Grid,
-  List,
+  Grid, List,
   ListItem,
   ListItemIcon,
   Paper,
@@ -32,6 +31,8 @@ const styles: IStyle = (theme) => ({
   root: {
     width: '100%',
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -116,21 +117,22 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
 
     return (
       <Paper elevation={4} className={classes.root}>
-          <List component='nav'>
-            {toItem(menuSchema)}
-          </List>
-          <Grid
-            container
-            direction={'column'}
-            justify={'flex-end'}
-            alignItems={'center'}
-          >
-            <Grid item>
-              <Button variant='raised' color='primary' onClick={logout}>
-                Logout
-              </Button>
-            </Grid>
+        <List component='nav'>
+          {toItem(menuSchema)}
+        </List>
+        <Grid
+          style={{ height: '100%', marginBottom: 10 }}
+          container
+          direction={'column'}
+          justify={'flex-end'}
+          alignItems={'center'}
+        >
+          <Grid item>
+            <Button variant='raised' color='primary' onClick={logout}>
+              Logout
+            </Button>
           </Grid>
+        </Grid>
       </Paper>
     );
   }
