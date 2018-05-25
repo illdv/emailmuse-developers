@@ -2,7 +2,7 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ITemplateState } from 'src/renderer/component/Templates/models';
+import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
 import {
   Button,
   Dialog,
@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getImagesRequest,
     uploadImagesRequest,
     deleteImagesRequest,
-    updateImageRequest
+    updateImageRequest,
   }, dispatch),
 });
 
@@ -69,7 +69,7 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
   }
 
   componentDidMount() {
-    this.props.actions.getImagesRequest();
+   // this.props.actions.getImagesRequest();
   }
 
   render() {

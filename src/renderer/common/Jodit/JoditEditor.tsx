@@ -1,26 +1,28 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import * as Jodit from 'jodit';
 
 import { DialogSelectImage } from 'src/renderer/component/Templates/DialogSelectImage';
 
 import 'jodit/build/jodit.min.css';
+import './JoditEditor.scss';
 
 export namespace JoditEditorSpace {
   export interface IState {
-
+    selectImageOpen: boolean;
   }
 
   export interface IProps {
     value: string;
-    option: object;
     onChangeValue: (value: string) => void;
   }
 }
 
 export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState> {
 
-  state = {};
+  state = {
+    selectImageOpen: false,
+  };
 
   private readonly textArea;
   private editor;
@@ -46,7 +48,15 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   createEditor = () => {
     this.destructEditor();
-    const config = {
+    if (this.textArea) {
+      this.editor = new Jodit(this.textArea.current, this.createOption());
+      this.editor.value = this.props.value;
+      this.editor.events.on('change', this.props.onChangeValue);
+    }
+  }
+
+  createOption = () => {
+    return {
       extraButtons: [
         {
           name: 'insertImage',
@@ -56,19 +66,24 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
         },
       ],
     };
-    if (this.textArea) {
-      console.log('new Jodit ', this.textArea);
-      this.editor = new Jodit(this.textArea.current, config);
-    }
+  }
+
+  handleCloseSelectImage = () => {
+    this.setState({ selectImageOpen: false });
+  }
+
+  insertImage = (url: string) => {
+    this.editor.selection.insertHTML(`<img src="${url}"/>`);
   }
 
   render() {
+    const { selectImageOpen } = this.state;
     return (
       <>
         <textarea ref={this.textArea}/>
         <DialogSelectImage
           handleClose={this.handleCloseSelectImage}
-          isOpen={this.state.selectImageOpen}
+          isOpen={selectImageOpen}
           insertImage={this.insertImage}
         />
       </>

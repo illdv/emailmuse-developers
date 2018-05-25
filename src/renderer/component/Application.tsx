@@ -7,7 +7,7 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
-import { TemplateEditorJodit } from 'src/renderer/component/Templates/TemplateEditorJodit';
+import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 
 export namespace MainLayoutScope {
 

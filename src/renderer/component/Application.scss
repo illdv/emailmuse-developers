@@ -23,16 +23,5 @@ html, body {
     bottom: 20px;
     left: auto;
     position: fixed !important;
-}
-
-.fab_2 {
-    right: 81px;
-}
-
-.fab_3 {
-    right: 143px;
-}
-
-.fab_4 {
-    right: 205px;
+    z-index: 100;
 }

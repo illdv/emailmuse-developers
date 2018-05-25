@@ -2,7 +2,6 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, WithStyles, withStyles } from '@material-ui/core/';
-import { Bookmark} from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -12,7 +11,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Account/Settings';
-import Templates from '../Templates/TemplatesRouter';
+import TemplatesRouter from '../Templates/TemplatesRouter';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 
 const styles: IStyle = {
@@ -46,7 +45,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   /*
     onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
+     dispatch(Mail.Actions.onLoadingMail.LOADING());
    },
   */
 });
@@ -61,7 +60,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       case MenuItemType.ACCOUNT:
         return <Settings/>;
       case MenuItemType.TEMPLATES:
-        return <Templates/>;
+        return <TemplatesRouter/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
       default:

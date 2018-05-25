@@ -9,7 +9,7 @@ import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
 import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
 
 import templates from 'src/renderer/component/Templates/flux/module';
-import { ITemplateState } from 'src/renderer/component/Templates/models';
+import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
 
 export interface IGlobalState {
   accounts: FluxAccounts.IState;

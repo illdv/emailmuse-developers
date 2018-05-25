@@ -1,11 +1,7 @@
 import { API_ENDPOINT } from 'src/common/api.config';
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
-import {
-  IDataForCreateTemplate,
-  IDataForDeleteTemplates,
-  IDataForEditTemplate,
-} from 'src/renderer/component/Templates/models';
+import { ITemplate } from 'src/renderer/component/Templates/flux/models';
 
 // TODO: Move in file
 export namespace Accounts {
@@ -30,16 +26,20 @@ export namespace Templates {
     return axios.get(`${API_ENDPOINT}/templates`);
   }
 
-  export function editTemplate(data: IDataForEditTemplate) {
-    const { id, ...remainingData } = data;
+  export function editTemplate(template: ITemplate) {
+    const { id, ...remainingData } = template;
     return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
   }
 
-  export function createTemplate(data: IDataForCreateTemplate) {
-    return axios.post(`${API_ENDPOINT}/templates`, data);
+  export function createTemplate(template: ITemplate) {
+    return axios.post(`${API_ENDPOINT}/templates`, template);
   }
 
-  export function removeTempates(data: IDataForDeleteTemplates) {
-    return axios.delete(`${API_ENDPOINT}/templates`, { data });
+  export function removeTemplate(templateId: string) {
+    return axios.delete(`${API_ENDPOINT}/templates`, {
+      data: {
+        id: [templateId],
+      },
+    });
   }
 }
