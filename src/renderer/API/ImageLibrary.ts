@@ -1,4 +1,4 @@
-import { API_ENDPOINT } from 'src/common/api.config';
+import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios from 'axios';
 
 export function uploadImages(files: File | File[]);

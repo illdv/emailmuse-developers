@@ -1,4 +1,4 @@
-import { API_ENDPOINT } from 'src/common/api.config';
+import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
 import { ITemplate } from 'src/renderer/component/Templates/flux/models';
