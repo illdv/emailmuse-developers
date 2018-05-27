@@ -3,13 +3,15 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
+import { bindActionCreators } from 'redux';
 
 import { Navigation, Title } from 'src/renderer/component/Authorization/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
@@ -27,7 +29,8 @@ export namespace CreateAccountSpace {
   }
 
   export interface IProps {
-    validation?: FluxValidation.IState;
+    validation?: IValidationState;
+    actions?: IValidationActions;
     onClickBackToLogin?: () => void;
     onCreateAccount?: (user: IRequest) => () => void;
   }
@@ -43,11 +46,18 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }, onCreateAccount: (user: IRequest) => () => {
     dispatch(action.Step.REQUEST(user));
   },
+  actions: bindActionCreators({
+    ...ValidationActions,
+  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class CreateAccount
   extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
+
+  componentWillUnmount(): void {
+    this.props.actions.clear();
+  }
 
   render() {
     const { classes, onClickBackToLogin, onCreateAccount, validation } = this.props;
@@ -70,59 +80,59 @@ class CreateAccount
 
     return (
       <InCenter>
-      <Paper square className={classes.paper}>
-        <Grid container className={classes.root}>
-          <Title title={'Create your Emailer Account'}/>
-          <Grow in timeout={1000}>
-            <Grid container>
-              <Grid item xs={6}>
-                <TextValidator
-                  id='name'
-                  label='User name'
-                  margin='normal'
-                  schema={validationSchema.name}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Grid container justify={'flex-end'}>
+        <Paper square className={classes.paper}>
+          <Grid container className={classes.root}>
+            <Title title={'Create your Emailer Account'}/>
+            <Grow in timeout={1000}>
+              <Grid container>
+                <Grid item xs={6}>
                   <TextValidator
-                    id='email'
-                    label='Email'
+                    id='name'
+                    label='User name'
                     margin='normal'
-                    schema={validationSchema.email}
+                    schema={validationSchema}
                   />
                 </Grid>
-              </Grid>
-              <Grid item xs={6}>
-                <TextValidator
-                  id='password'
-                  type='password'
-                  label='Password'
-                  margin='normal'
-                  schema={validationSchema.password}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Grid container justify={'flex-end'}>
+                <Grid item xs={6}>
+                  <Grid container justify={'flex-end'}>
+                    <TextValidator
+                      id='email'
+                      label='Email'
+                      margin='normal'
+                      schema={validationSchema}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={6}>
                   <TextValidator
-                    id='password_confirmation'
+                    id='password'
                     type='password'
-                    label='Confirm password'
+                    label='Password'
                     margin='normal'
-                    schema={validationSchema.password_confirmation}
+                    schema={validationSchema}
                   />
                 </Grid>
+                <Grid item xs={6}>
+                  <Grid container justify={'flex-end'}>
+                    <TextValidator
+                      id='password_confirmation'
+                      type='password'
+                      label='Confirm password'
+                      margin='normal'
+                      schema={validationSchema}
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grow>
-          <Navigation
-            onBack={onClickBackToLogin}
-            onNext={onCreateAccount(validation.value as any)}
-            canNext={validation.isValid}
-          />
-        </Grid>
-      </Paper>
-    </InCenter>
+            </Grow>
+            <Navigation
+              onBack={onClickBackToLogin}
+              onNext={onCreateAccount(validation.value as any)}
+              canNext={validation.isValid}
+            />
+          </Grid>
+        </Paper>
+      </InCenter>
     );
   }
 }

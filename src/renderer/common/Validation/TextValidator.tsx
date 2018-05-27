@@ -3,10 +3,12 @@ import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { TextField } from '@material-ui/core/';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindActionCreators } from 'redux';
-import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
+
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { useOrDefault } from 'src/renderer/utils';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 
 export namespace TextValidatorSpace {
   export interface IState {
@@ -15,8 +17,8 @@ export namespace TextValidatorSpace {
   }
 
   export interface IProps {
-    actions?: FluxValidation.Actions.IAllAction;
-    validation?: FluxValidation.IState;
+    actions?: IValidationActions;
+    validation?: IValidationState;
     schema: object;
     inputRef?: (ref) => void;
   }
@@ -28,7 +30,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators({
-    ...FluxValidation.Actions.AllAction,
+    ...ValidationActions,
   }, dispatch),
 });
 
@@ -52,23 +54,26 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
 
   componentDidMount(): void {
     const { actions, id, schema } = this.props;
-    actions.setScheme({ key: id, value: schema });
+    if (!schema[id]) {
+      throw new Error(`Not exist validation schema for TextValidator id = ${id}`);
+    }
+    actions.setScheme({ key: id, value: schema[id] });
   }
 
   onBlur = (value: any) => () => {
     const { actions, id } = this.props;
     actions.setValue({ key: id, value });
-  }
+  };
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
-  }
+  };
 
   render() {
     const { validation, inputRef, id, ...otherProps } = this.props;
-    const { isWasBlur, resultValidation }             = validation;
+    const { isWasBlur, result }                       = validation;
 
-    const error = isWasBlur[id] && useOrDefault(() => (resultValidation[id][0]), '');
+    const error = isWasBlur[id] && useOrDefault(() => (result[id][0]), '');
 
     return (
       <TextField

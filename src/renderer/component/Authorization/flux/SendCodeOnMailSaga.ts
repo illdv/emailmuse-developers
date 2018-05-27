@@ -1,12 +1,12 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { sendCodeOnMail } from '../../../API/Auth';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 
 function* onSendCodeOnMail(action: { payload: { email: string } }): IterableIterator<any> {
   try {
-    yield put(FluxValidation.Actions.setScheme({ key: 'secret_code', value: { presence: true } }));
+    yield put(ValidationActions.setScheme({ key: 'secret_code', value: { presence: true } }));
     yield sendCodeOnMail(action.payload.email);
     yield put(FluxAccounts.Actions.ForgotPassword.sendCodeOnMail.SUCCESS());
   } catch (error) {

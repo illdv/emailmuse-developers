@@ -7,8 +7,9 @@ import { bindActionCreators } from 'redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
-import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import AuthStep = FluxAccounts.Models.AuthStep;
 
 enum Step {
@@ -24,8 +25,8 @@ export namespace ForgotPasswordSpace {
 
   export interface IProps {
     classes?: any;
-    actions?: FluxValidation.Actions.IAllAction;
-    validation?: FluxValidation.IState;
+    actions?: IValidationActions;
+    validation?: IValidationState;
     onSendCode?: (mail: string) => void;
     resetPassword?: (email: string, token: string, password: string, passwordConfirmation: string) => void;
     onClickBackToLogin?: () => void;
@@ -48,7 +49,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST(email, token, password, passwordConfirmation));
   },
   actions: bindActionCreators({
-    ...FluxValidation.Actions.AllAction,
+    ...ValidationActions,
   }, dispatch),
 });
 
@@ -62,6 +63,10 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     confirmPassword: '',
     step: Step.EMAIL,
   };
+
+  componentWillUnmount(): void {
+    this.props.actions.clear();
+  }
 
   stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
     const { onClickBackToLogin, validation } = this.props;

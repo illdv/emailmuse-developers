@@ -4,8 +4,8 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import PaperDialog from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { FluxValidation } from 'src/renderer/common/Validation/flux/actions';
 import AuthStep = FluxAccounts.Models.AuthStep;
+import { IValidationState } from 'src/renderer/common/Validation/flux/models';
 
 export namespace CheckCodeSpace {
   export interface IState {
@@ -14,7 +14,7 @@ export namespace CheckCodeSpace {
 
   export interface IProps {
     accounts?: FluxAccounts.IState;
-    validation?: FluxValidation.IState;
+    validation?: IValidationState;
     onClickBack?: () => void;
     onCheckCode?: (code: string) => void;
   }
