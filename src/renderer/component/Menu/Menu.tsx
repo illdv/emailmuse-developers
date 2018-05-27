@@ -8,7 +8,7 @@ import {
   Grid, List,
   ListItem,
   ListItemIcon,
-  Paper,
+  Paper, Slide,
   Typography,
   WithStyles,
   withStyles,
@@ -116,24 +116,26 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
     };
 
     return (
-      <Paper elevation={4} className={classes.root}>
-        <List component='nav'>
-          {toItem(menuSchema)}
-        </List>
-        <Grid
-          style={{ height: '100%', marginBottom: 10 }}
-          container
-          direction={'column'}
-          justify={'flex-end'}
-          alignItems={'center'}
-        >
-          <Grid item>
-            <Button variant='raised' color='primary' onClick={logout}>
-              Logout
-            </Button>
+      <Slide direction='right' in mountOnEnter unmountOnExit>
+        <Paper elevation={4} className={classes.root}>
+          <List component='nav'>
+            {toItem(menuSchema)}
+          </List>
+          <Grid
+            style={{ height: '100%', marginBottom: 10 }}
+            container
+            direction={'column'}
+            justify={'flex-end'}
+            alignItems={'center'}
+          >
+            <Grid item>
+              <Button variant='raised' color='primary' onClick={logout}>
+                Logout
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </Slide>
     );
   }
 
