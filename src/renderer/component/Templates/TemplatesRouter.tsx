@@ -13,6 +13,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { Add } from '@material-ui/icons';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+import { useOrDefault } from 'src/renderer/utils';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -53,7 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
   componentDidMount() {
-    this.props.loading();
+    this.props.loading( useOrDefault(() => (this.props.templates.pagination.current_page), 1));
   }
 
   onEditTemplate = (template: ITemplate) => {
@@ -108,7 +109,7 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
       );
     }
 
-    if (status === TemplateStatus.EditTemplate) {
+    if (status === TemplateStatus.EditTemplate && selectedTemplate) {
       return (
         <TemplateEditor
           template={selectedTemplate}

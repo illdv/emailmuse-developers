@@ -42,33 +42,40 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
     this.props.selectTemplate(template);
   }
 
-  render() {
-    const {templates, pagination} = this.props;
-
+  list = () => {
+    const { templates } = this.props;
     if (!templates || templates.length === 0) {
       return (
         <Typography variant='headline' noWrap align='center'>Templates list empty</Typography>
       );
+    } else {
+      return (
+        <List component='nav'>
+          {templates.map((template: ITemplate, index) => (
+            <div
+              key={template.id}
+              onClick={this.onSelectTemplate(template)}
+            >
+              <TemplateItem
+                title={template.title}
+                description={template.description}
+                time={template.updated_at}
+              />
+              <Divider/>
+            </div>
+          ))}
+        </List>
+      );
     }
+  }
+
+  render() {
+    const { pagination } = this.props;
 
     return (
       <Paper elevation={4} style={{ height: '100%' }}>
         <div>
-          <List component='nav'>
-            {templates.map((template: ITemplate, index) => (
-              <div
-                key={template.id}
-                onClick={this.onSelectTemplate(template)}
-              >
-                <TemplateItem
-                  title={template.title}
-                  description={template.description}
-                  time={template.updated_at}
-                />
-                <Divider/>
-              </div>
-            ))}
-          </List>
+          {this.list()}
           <InCenter>
             {
               pagination.total &&
@@ -76,7 +83,7 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
                 component='div'
                 count={pagination.total}
                 rowsPerPage={pagination.per_page}
-                rowsPerPageOptions={[16]}
+                rowsPerPageOptions={[15]}
                 page={pagination.current_page - 1}
                 backIconButtonProps={{
                   'aria-label': 'Previous Page',

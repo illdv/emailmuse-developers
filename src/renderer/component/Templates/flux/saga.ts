@@ -1,10 +1,10 @@
 import { call, put, take } from 'redux-saga/effects';
+import { AxiosResponse } from 'axios';
 
-import { CREATE, createSuccess, failure, loaded, LOADING, remove, REMOVE, SET, set } from './module';
+import { CREATE, createSuccess, failure, loaded, LOADING, remove, REMOVE, removeSuccess, SET, set } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/entity';
-import { AxiosResponse } from 'axios';
 
 export function* loadingTemplates(action) {
   try {
@@ -58,8 +58,8 @@ export function* createTemplate(action) {
 
 export function* removeTemplates(action) {
   try {
-    const response = yield call(Templates.removeTemplate, action.payload);
-    yield put(remove(response.data));
+    yield call(Templates.removeTemplate, action.payload);
+    yield put(removeSuccess(action.payload));
     yield put(FluxToast.Actions.showToast('Remove template success.', ToastType.Success));
   } catch (error) {
     console.log(error);

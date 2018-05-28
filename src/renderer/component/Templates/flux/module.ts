@@ -14,11 +14,12 @@ export const LOADED  = `${NS}LOADED`;
 export const CREATE         = `${NS}CREATE`;
 export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
 
-export const REMOVE = `${NS}REMOVE`;
-export const SET    = `${NS}SET`;
-export const SELECT = `${NS}SELECT`;
-export const ADD    = `${NS}ADD`;
-export const CLOSE  = `${NS}CLOSE`;
+export const REMOVE         = `${NS}REMOVE`;
+export const REMOVE_SUCCESS = `${NS}REMOVE_SUCCESS`;
+export const SET            = `${NS}SET`;
+export const SELECT         = `${NS}SELECT`;
+export const ADD            = `${NS}ADD`;
+export const CLOSE          = `${NS}CLOSE`;
 
 export const loading = createAction(LOADING, (page: number = 1) => ({ page }));
 export const failure = createAction(FAILURE);
@@ -30,6 +31,7 @@ export const set           = createAction(SET, (template: ITemplate) => template
 export const add           = createAction(ADD, (template: ITemplate) => template);
 export const select        = createAction(SELECT, (template: ITemplate) => template);
 export const remove        = createAction(REMOVE, (templateId: number) => templateId);
+export const removeSuccess = createAction(REMOVE_SUCCESS, (templateId: number) => templateId);
 export const closeTemplate = createAction(CLOSE);
 
 const initialState: ITemplateState = {
@@ -75,9 +77,14 @@ reducer.on(select, (state, template): ITemplateState => ({
   status: TemplateStatus.EditTemplate,
 }));
 
-reducer.on(remove, (state, templateId: number): ITemplateState => ({
+reducer.on(removeSuccess, (state, templateId: number): ITemplateState => ({
   ...state,
   templates: state.templates.filter((template) => template.id !== templateId),
+  pagination: {
+    ...state.pagination,
+    total: state.pagination.total - 1,
+    current_page: state.pagination.current_page,
+  },
   status: TemplateStatus.Success,
 }));
 
