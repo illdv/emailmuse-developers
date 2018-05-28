@@ -135,7 +135,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
           {
-            pagination.total ?
+            pagination.total &&
               <TablePagination
                 component='div'
                 count={pagination.total}
@@ -150,7 +150,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
                 }}
                 onChangePage={this.onChangePage}
                 onChangeRowsPerPage={this.onChangeRowsPerPage}
-              /> : null
+              />
           }
           <DragAndDropTarget
             onDrop={this.onDropFile}
@@ -158,14 +158,14 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             overlayMessage={'Drop files here to add them to your image library'}
           >
             <div className={b('container')}>
-              {this.state.chosenImage ?
-                <ImageLibraryDialog
-                  item={this.state.chosenImage}
-                  onDeleteItem={this.deleteItem}
-                  onUpdateItem={this.updateItem}
-                  onClose={this.closeDialog}
-                /> :
-                null
+              {
+                this.state.chosenImage &&
+                  <ImageLibraryDialog
+                    item={this.state.chosenImage}
+                    onDeleteItem={this.deleteItem}
+                    onUpdateItem={this.updateItem}
+                    onClose={this.closeDialog}
+                  />
               }
               <ImageLibraryListComponent
                 items={this.props.items}

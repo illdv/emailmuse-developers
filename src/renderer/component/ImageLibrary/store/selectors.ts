@@ -36,6 +36,7 @@ export const getImagesURLSelector = createSelector(
         id: file.id,
         url: file.url,
         name: file.name,
+        thumb_url: file.thumb_url,
       };
     }),
 );

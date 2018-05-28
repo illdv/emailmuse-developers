@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GridList, GridListTile, GridListTileBar } from '@material-ui/core';
+import { GridList, GridListTile, GridListTileBar, Grow } from '@material-ui/core';
 import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
 import block from 'bem-ts';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
@@ -35,24 +35,23 @@ export class ImageLibraryListComponent
           cols={3}
           spacing={20}
         >
-          {this.props.items.map((item) =>
-            <GridListTile
-              className={b('tile')}
-              key={item.id}
-            >
-              <img
-                src={item.url}
-                onClick={this.props.onOpenDialog(item)}
-                className={b('tile-img')}
-              />
-              <GridListTileBar
-                title={item.name}
-                actionIcon={
-                  <IconButton onClick={this.props.onDelete(item)}>
-                    <Delete nativeColor='white'/>
-                  </IconButton>}
-              />
-            </GridListTile>,
+          {this.props.items.map((item, index) =>
+            <Grow key={item.id} in timeout={(index * 500) + 500}>
+              <GridListTile className={b('tile')}  >
+                <img
+                  src={item.thumb_url}
+                  onClick={this.props.onOpenDialog(item)}
+                  className={b('tile-img')}
+                />
+                <GridListTileBar
+                  title={item.name}
+                  actionIcon={
+                    <IconButton onClick={this.props.onDelete(item)}>
+                      <Delete nativeColor='white'/>
+                    </IconButton>}
+                />
+              </GridListTile>
+            </Grow>,
           )}
         </GridList>
       </>
