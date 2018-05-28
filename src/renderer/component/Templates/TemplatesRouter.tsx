@@ -24,7 +24,7 @@ export namespace MailListSpace {
     add?: (template: ITemplate) => void;
     select?: (template: ITemplate) => void;
     close?: () => void;
-    onShowToast: (messages: string, type: ToastType) => void;
+    onShowToast?: (messages: string, type: ToastType) => void;
   }
 
   export interface IState {
