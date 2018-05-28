@@ -1,20 +1,23 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, select, take } from 'redux-saga/effects';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
-import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
-import { Toast } from 'src/renderer/component/Toast/Toast';
+import { getCurrentPageSelector } from 'src/renderer/component/ImageLibrary/store/selectors';
+import { uploadImages } from 'src/renderer/API/ImageLibrary';
 
 function* uploadImagesWorker(action: IActionPayload<File[]>): IterableIterator<any> {
   try {
-    const response = yield call(EmailerAPI.ImageLibrary.uploadImages, action.payload);
+    yield call(uploadImages, action.payload);
     yield put(actions.uploadImagesSuccess());
-    yield put(actions.getImagesRequest());
+    const currentPage = yield select(getCurrentPageSelector);
+    // Checks for currentPage being correct are implemented in getImagesWorker saga
+    yield put(actions.getImagesRequest(currentPage));
     yield put(FluxToast.Actions.showToast('Image loading success'));
   } catch (error) {
     console.log('Uploading images failed: ', error);
+    // TODO: Check this
     const messages = useOrDefault(() => (error.response.data.errors['images.0']['0']), null);
     if (messages) {
       yield put(FluxToast.Actions.showToast(messages, ToastType.Error));

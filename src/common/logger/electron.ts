@@ -5,7 +5,6 @@ import * as electron from 'electron';
 import { getLogger, configure, Layout } from 'log4js';
 
 import {  ILog, IJsonLogFormat, Level, Cause, levelsOrder } from './shared';
-import { resolve } from 'url';
 
 /* Block configs */
 const LOG_STORAGE_PERIOD_UNIX = 60 * 60 * 24 * 7;

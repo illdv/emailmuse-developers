@@ -1,89 +1,103 @@
 import { createAction, createReducer } from 'redux-act';
 
-import {
-  ITemplate,
-  ITemplateState,
-  IResponseTemplates,
-  IDataForEditTemplate,
-  IDataForCreateTemplate,
-  IDataForDeleteTemplates,
-} from '../models';
+import { ITemplateState } from './models';
+import { ILoadingTemplatePayload, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
 
-export const UPDATE_CHANGED  = `${NS}UPDATE_CHANGED`;
-export const CLEAR_PAGES     = `${NS}CLEAR_PAGES`;
-export const LOADING         = `${NS}LOADING`;
-export const FAILURE         = `${NS}FAILURE`;
-export const LOADED          = `${NS}LOADED`;
-export const CREATE          = `${NS}CREATE`;
-export const REMOVE          = `${NS}REMOVE`;
-export const EDIT            = `${NS}EDIT`;
-export const SET_OPEN_DIALOG = `${NS}SET_OPEN_DIALOG`;
+export const LOADING = `${NS}LOADING`;
+export const FAILURE = `${NS}FAILURE`;
+export const LOADED  = `${NS}LOADED`;
 
+export const CREATE = `${NS}CREATE`;
+export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
 
-export const loading       = createAction(LOADING);
-export const failure       = createAction(FAILURE);
-export const loaded        = createAction(LOADED, response => response);
-export const create        = createAction(CREATE, (data: IDataForCreateTemplate) => data);
-export const edit          = createAction(EDIT, (data: IDataForEditTemplate) => data);
-export const remove        = createAction(REMOVE, (data: IDataForDeleteTemplates) => data);
-export const clearPages    = createAction(CLEAR_PAGES, (data: ITemplate) => data);
-export const updateChanged = createAction(UPDATE_CHANGED, (data: ITemplate) => data);
-export const setOpenDialog = createAction(SET_OPEN_DIALOG, (isOpen: boolean) => ({ isDialogSelectImageOpen: isOpen }));
+export const REMOVE = `${NS}REMOVE`;
+export const SET    = `${NS}SET`;
+export const SELECT = `${NS}SELECT`;
+export const ADD    = `${NS}ADD`;
+export const CLOSE    = `${NS}CLOSE`;
+
+export const loading = createAction(LOADING, (page: number = 1) => ({page}));
+export const failure = createAction(FAILURE);
+export const loaded  = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
+
+export const create = createAction(CREATE, (template: ITemplate) => template);
+export const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
+export const set    = createAction(SET, (template: ITemplate) => template);
+export const add    = createAction(ADD, (template: ITemplate) => template);
+export const select = createAction(SELECT, (template: ITemplate) => template);
+export const remove = createAction(REMOVE, (templateId: number) => templateId);
+export const closeTemplate = createAction(CLOSE);
 
 const initialState: ITemplateState = {
-  status: undefined,
-  pages: {},
-  isDialogSelectImageOpen: false,
+  status: TemplateStatus.Loading,
+  templates: [],
+  selectedTemplate: null,
+  pagination: null,
 };
 
 const reducer = createReducer({}, initialState);
 
-reducer.on(setOpenDialog, (state, response) => ({
-  ...state,
-  ...response,
-}));
-
 reducer.on(loading, (state) => ({
   ...state,
-  status: LOADING
+  status: TemplateStatus.Loading,
 }));
 
-reducer.on(loaded, (state, response: IResponseTemplates) => ({
+reducer.on(loaded, (state, response): ITemplateState => ({
   ...state,
-  status: LOADED,
-  pages: { ...state.pages, [response.current_page]: response.data }
+  ...response,
+  status: TemplateStatus.Success,
 }));
 
-reducer.on(failure, (state) => ({
+reducer.on(failure, (state): ITemplateState => ({
   ...state,
-  status: FAILURE
+  status: TemplateStatus.Failed,
 }));
 
-reducer.on(updateChanged, (state, updatedTemplate: IDataForEditTemplate) => {
-  const updatedPages = Object.keys(state.pages).reduce((acc: any, key: any): any => {
-    acc[key] = state.pages[key].map((trmplate: ITemplate) => {
-      if (trmplate.id === updatedTemplate.id) {
-        return updatedTemplate;
-      }
-      return trmplate;
-    });
-    return acc;
-  }, {});
+reducer.on(add, (state, template): ITemplateState => ({
+  ...state,
+  selectedTemplate: template,
+  status: TemplateStatus.CreateTemplate,
+}));
+
+reducer.on(closeTemplate, (state, template): ITemplateState => ({
+  ...state,
+  selectedTemplate: null,
+  status: TemplateStatus.Success,
+}));
+
+reducer.on(select, (state, template): ITemplateState => ({
+  ...state,
+  selectedTemplate: template,
+  status: TemplateStatus.EditTemplate,
+}));
+
+reducer.on(remove, (state, templateId: number): ITemplateState => ({
+  ...state,
+  templates: state.templates.filter((template) => template.id !== templateId),
+  status: TemplateStatus.Success,
+}));
+
+reducer.on(createSuccess, (state, template: ITemplate): ITemplateState => ({
+  ...state,
+  templates: [...state.templates, template],
+  status: TemplateStatus.Success,
+}));
+
+reducer.on(set, (state, newTemplate: ITemplate) => {
+  const newTemplates = state.templates.map((template) => {
+    if (template.id === newTemplate.id) {
+      return newTemplate;
+    }
+    return template;
+  });
 
   return {
     ...state,
-    pages: updatedPages
-  };
-});
-
-reducer.on(clearPages, (state, newTempate: ITemplate) => {
-  // refactor
-  return {
-    ...state,
-    pages: {}
+    templates: newTemplates,
   };
 });
 

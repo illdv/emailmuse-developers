@@ -8,6 +8,7 @@ export interface IFileInfo {
   updated_at: string;
   deleted_at?: string;
   url: string;
+  thumb_url: string;
 }
 
 export interface IGetImagesResponse {
@@ -27,7 +28,14 @@ export interface IGetImagesResponse {
 
 export interface IImageLibraryItem {
   id: number;
+  /**
+   * Original image.
+   */
   url: string;
+  /**
+   * Use for preview image.
+   */
+  thumb_url: string;
   name: string;
 }
 
