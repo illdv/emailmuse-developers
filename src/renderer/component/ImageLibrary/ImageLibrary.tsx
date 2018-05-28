@@ -124,7 +124,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     this.props.actions.getImagesRequest(page + 1);
   }
 
-  // TODO: implement properly when there is capability to change rows per page
+  // TODO: implement properly when there is capability to change rows per currentPage
   onChangeRowsPerPage = (e) => {
     console.log('Change rows', e.target.value);
   }

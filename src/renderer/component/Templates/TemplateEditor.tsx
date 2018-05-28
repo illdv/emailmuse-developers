@@ -4,10 +4,10 @@ import { Close, Delete, Save } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
-import { ITemplate } from 'src/renderer/component/Templates/flux/models';
 import { Fab } from 'src/renderer/common/Fab';
 import { Grid, TextField } from '@material-ui/core';
 import './TemplateEditor.scss';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
 const b = block('template-editor');
 

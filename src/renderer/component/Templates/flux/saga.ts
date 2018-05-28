@@ -1,19 +1,26 @@
-import { take, call, put } from 'redux-saga/effects';
+import { call, put, take } from 'redux-saga/effects';
 
-import {
-  LOADING,
-  REMOVE,
-  CREATE,
-  failure,
-  loaded, set, create, remove, SET, createSuccess,
-} from './module';
+import { CREATE, createSuccess, failure, loaded, LOADING, remove, REMOVE, SET, set } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/entity';
+import { AxiosResponse } from 'axios';
 
 export function* loadingTemplates(action) {
   try {
-    const response = yield call(Templates.getTemplates);
-    yield put(loaded({page: 1, templates: response.data.data}));
+    const response: AxiosResponse<ITemplatesResponse> = yield call(Templates.getTemplates, action.payload.page);
+
+    const { total, current_page, data, last_page, per_page } = response.data;
+
+    yield put(loaded({
+      templates: data,
+      pagination: {
+        current_page,
+        total,
+        last_page,
+        per_page,
+      },
+    }));
   } catch (error) {
     console.log(error);
     yield put(failure());

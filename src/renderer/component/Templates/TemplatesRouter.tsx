@@ -7,21 +7,24 @@ import { add, closeTemplate, create, loading, remove, select, set } from 'src/re
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
 import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
-import { ITemplate, ITemplateState, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
+import { ITemplateState, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
 import { createEmptyTemplate } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { Add } from '@material-ui/icons';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
-    loading?: () => void;
+    loading?: (page?: number) => void;
     remove?: (templateId: number) => void;
     set?: (template: ITemplate) => void;
     create?: (template: ITemplate) => void;
     add?: (template: ITemplate) => void;
     select?: (template: ITemplate) => void;
     close?: () => void;
+    onShowToast: (messages: string, type: ToastType) => void;
   }
 
   export interface IState {
@@ -34,19 +37,26 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  loading: () => dispatch(loading()),
+  loading: () => dispatch(loading(1)),
   remove: (templateId: number) => dispatch(remove(templateId)),
   set: (template: ITemplate) => dispatch(set(template)),
   create: (template: ITemplate) => dispatch(create(template)),
   add: (template: ITemplate) => dispatch(add(template)),
   select: (template: ITemplate) => dispatch(select(template)),
   close: () => dispatch(closeTemplate()),
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
-  editTemplate = (template: ITemplate) => {
+  componentDidMount() {
+    this.props.loading();
+  }
+
+  onEditTemplate = (template: ITemplate) => {
     this.props.select(template);
   }
 
@@ -64,19 +74,27 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
   }
 
   onCreateTemplate = (template: ITemplate) => {
+    if (!template.body && template.body.length === 0) {
+      this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
+      return;
+    }
+    if (!template.title && template.title.length === 0) {
+      this.props.onShowToast(`Title can't be empty`, ToastType.Warning);
+      return;
+    }
     this.props.create(template);
   }
 
-  selectNewTemplate = () => {
+  onSelectNewTemplate = () => {
     this.props.add(createEmptyTemplate());
   }
 
-  componentDidMount() {
-    this.props.loading();
+  onChangePage = (e, page) => {
+    this.props.loading(page + 1);
   }
 
   render() {
-    const { status, templates, selectedTemplate } = this.props.templates;
+    const { status, templates, selectedTemplate, pagination } = this.props.templates;
 
     if (status === TemplateStatus.Loading) {
       return <Loading/>;
@@ -116,11 +134,13 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
       <div>
         <TemplatesList
           templates={templates}
-          selectTemplate={this.editTemplate}
+          selectTemplate={this.onEditTemplate}
+          onChangePage={this.onChangePage}
+          pagination={pagination}
         />
         <div>
           <Fab
-            onClick={this.selectNewTemplate}
+            onClick={this.onSelectNewTemplate}
             icon={<Add/>}
             position={0}
           />

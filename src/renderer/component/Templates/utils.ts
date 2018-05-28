@@ -1,4 +1,4 @@
-import { ITemplate } from 'src/renderer/component/Templates/flux/models';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
 export function createEmptyTemplate(): ITemplate {
   return {

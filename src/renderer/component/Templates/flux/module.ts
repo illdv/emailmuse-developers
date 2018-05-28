@@ -1,7 +1,8 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { IResponseTemplates, ITemplate, ITemplateState } from './models';
-import { TemplateStatus } from 'src/renderer/component/Templates/flux/models';
+import { ITemplateState } from './models';
+import { ILoadingTemplatePayload, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
@@ -19,9 +20,9 @@ export const SELECT = `${NS}SELECT`;
 export const ADD    = `${NS}ADD`;
 export const CLOSE    = `${NS}CLOSE`;
 
-export const loading = createAction(LOADING);
+export const loading = createAction(LOADING, (page: number = 1) => ({page}));
 export const failure = createAction(FAILURE);
-export const loaded  = createAction(LOADED, (response) => response);
+export const loaded  = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
 export const create = createAction(CREATE, (template: ITemplate) => template);
 export const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
@@ -33,9 +34,9 @@ export const closeTemplate = createAction(CLOSE);
 
 const initialState: ITemplateState = {
   status: TemplateStatus.Loading,
-  page: 1,
   templates: [],
   selectedTemplate: null,
+  pagination: null,
 };
 
 const reducer = createReducer({}, initialState);
@@ -45,7 +46,7 @@ reducer.on(loading, (state) => ({
   status: TemplateStatus.Loading,
 }));
 
-reducer.on(loaded, (state, response: IResponseTemplates): ITemplateState => ({
+reducer.on(loaded, (state, response): ITemplateState => ({
   ...state,
   ...response,
   status: TemplateStatus.Success,

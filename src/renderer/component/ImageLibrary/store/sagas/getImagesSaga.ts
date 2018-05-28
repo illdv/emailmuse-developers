@@ -6,16 +6,16 @@ import { getImages } from 'src/renderer/API/ImageLibrary';
 
 function* getImagesWorker(action: IActionPayload<number>): IterableIterator<any> {
   try {
-    // Check for page === undefined || null
+    // Check for currentPage === undefined || null
     let requestedPage = action.payload || 1;
-    // Check for page < 1
+    // Check for currentPage < 1
     if (requestedPage < 1) {
       requestedPage = 1;
     }
     let response = yield call(getImages, requestedPage);
     const currentPage = response.data.current_page;
     const lastPage = response.data.last_page;
-    // Check for current page > last page
+    // Check for current currentPage > last currentPage
     if (currentPage > lastPage) {
       response = yield call (getImages, lastPage || 1);
     }

@@ -14,7 +14,7 @@ function* deleteImagesWorker(action: IActionPayload<number[]>): IterableIterator
   try {
     yield call(deleteImages, action.payload);
     yield put(actions.deleteImagesSuccess());
-    // If page should change after deleting then change currentPage
+    // If currentPage should change after deleting then change currentPage
     let currentPage   = yield select(getCurrentPageSelector);
     const lastPage    = yield select(getLastPageSelector);
     const totalImages = yield select(getTotalImages);

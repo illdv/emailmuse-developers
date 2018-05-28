@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core/';
-import { ITemplate } from './flux/models';
+import { Divider, Grid, List, ListItem, Paper, TablePagination, Typography } from '@material-ui/core/';
+import InCenter from 'src/renderer/common/InCenter';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { IPagination } from 'src/renderer/component/ImageLibrary/store/models';
 
 function TemplateItem(props: { title: string, description: string, time: string }) {
   const { title, description, time } = props;
@@ -24,7 +26,9 @@ function TemplateItem(props: { title: string, description: string, time: string 
 export namespace TemplatesListSpace {
   export interface IProps {
     templates: ITemplate[];
+    pagination: IPagination;
     selectTemplate: (template: ITemplate) => void;
+    onChangePage: (e, page: number) => void;
   }
 }
 
@@ -39,7 +43,7 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
   }
 
   render() {
-    const templates: ITemplate[] = this.props.templates;
+    const {templates, pagination} = this.props;
 
     if (!templates || templates.length === 0) {
       return (
@@ -61,10 +65,29 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
                   description={template.description}
                   time={template.updated_at}
                 />
-                {index !== templates.length - 1 && <Divider/>}
+                <Divider/>
               </div>
             ))}
           </List>
+          <InCenter>
+            {
+              pagination.total &&
+              <TablePagination
+                component='div'
+                count={pagination.total}
+                rowsPerPage={pagination.per_page}
+                rowsPerPageOptions={[16]}
+                page={pagination.current_page - 1}
+                backIconButtonProps={{
+                  'aria-label': 'Previous Page',
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'Next Page',
+                }}
+                onChangePage={this.props.onChangePage}
+              />
+            }
+          </InCenter>
         </div>
       </Paper>
     );

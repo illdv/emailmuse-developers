@@ -1,7 +1,8 @@
 import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
-import { ITemplate } from 'src/renderer/component/Templates/flux/models';
+import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
 // TODO: Move in file
 export namespace Accounts {
@@ -22,8 +23,8 @@ export namespace Accounts {
 
 // TODO: Move in file
 export namespace Templates {
-  export function getTemplates() {
-    return axios.get(`${API_ENDPOINT}/templates`);
+  export function getTemplates(page): any {
+    return AxiosWrapper.get(`/templates/`, {page});
   }
 
   export function editTemplate(template: ITemplate) {
