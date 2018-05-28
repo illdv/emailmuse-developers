@@ -3,6 +3,7 @@ import { Divider, Grid, List, ListItem, Paper, TablePagination, Typography } fro
 import InCenter from 'src/renderer/common/InCenter';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 import { IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { useOrDefault } from 'src/renderer/utils';
 
 function TemplateItem(props: { title: string, description: string, time: string }) {
   const { title, description, time } = props;
@@ -70,19 +71,22 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
   }
 
   render() {
-    const { pagination } = this.props;
+    let { pagination } = this.props;
+
+    if (!pagination) {
+      pagination = {current_page: 0, total: 0, last_page: 0, per_page: 0};
+    }
 
     return (
-      <Paper elevation={4} style={{ height: '100%' }}>
+      <Paper elevation={4} style={{ height: '100%' }} className={'template-list'}>
         <div>
           {this.list()}
           <InCenter>
             {
-              pagination.total &&
               <TablePagination
                 component='div'
-                count={pagination.total}
-                rowsPerPage={pagination.per_page}
+                count={pagination.total || 0}
+                rowsPerPage={pagination.per_page || 0}
                 rowsPerPageOptions={[15]}
                 page={pagination.current_page - 1}
                 backIconButtonProps={{
