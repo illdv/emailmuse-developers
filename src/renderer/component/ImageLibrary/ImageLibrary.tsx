@@ -24,7 +24,7 @@ import {
 import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
-import { ImageLibraryListComponent } from './ImageLibraryList';
+import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 
 const b = block('image-library');
@@ -102,7 +102,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     }
   }
 
-  openDialog = (item: IImageLibraryItem) => () => {
+  onOpenImageInfo = (item: IImageLibraryItem) => () => {
     this.setState({ openDialog: true, chosenImage: item });
   }
 
@@ -167,10 +167,10 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
                     onClose={this.closeDialog}
                   />
               }
-              <ImageLibraryListComponent
+              <ImageLibraryList
                 items={this.props.items}
                 onDelete={this.deleteItem}
-                onOpenDialog={this.openDialog}
+                onSelect={this.onOpenImageInfo}
               />
             </div>
           </DragAndDropTarget>
