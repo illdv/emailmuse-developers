@@ -2,20 +2,30 @@ import * as React from 'react';
 import { IStyle } from 'type/materialUI';
 import { Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
-import { DragAndDropTarget } from './DragAndDropTarget';
-import { ImageLibraryListComponent } from './ImageLibraryList';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest } from
-    'src/renderer/component/ImageLibrary/store/actions';
-import { getImagesURLSelector, getCurrentPageSelector, getTotalImages, getLastPageSelector, getPerPageSelector } from
-    'src/renderer/component/ImageLibrary/store/selectors';
-import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
-import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
-import block from 'bem-ts';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import Button from '@material-ui/core/Button';
 import TablePagination from '@material-ui/core/TablePagination';
+import block from 'bem-ts';
+
+import {
+  deleteImagesRequest,
+  getImagesRequest,
+  updateImageRequest,
+  uploadImagesRequest,
+} from 'src/renderer/component/ImageLibrary/store/actions';
+import {
+  getCurrentPageSelector,
+  getImagesURLSelector,
+  getLastPageSelector,
+  getPerPageSelector,
+  getTotalImages,
+} from 'src/renderer/component/ImageLibrary/store/selectors';
+import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
+import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import { ImageLibraryListComponent } from './ImageLibraryList';
+import { DragAndDropTarget } from './DragAndDropTarget';
 
 const b = block('image-library');
 
@@ -31,54 +41,55 @@ namespace ImageLibrarySpace {
     items: IImageLibraryItem[];
     pagination: IPagination;
   }
+
   export interface IState {
     openDialog: boolean;
     chosenImage: IImageLibraryItem;
   }
 }
 
-const styles: IStyle = theme => ({
+const styles: IStyle = (theme) => ({
   root: {
     width: '100%',
     height: '100%',
     backgroundColor: theme.palette.background.paper,
-  }
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: getImagesURLSelector(state),
   pagination: {
     current_page: getCurrentPageSelector(state),
     total: getTotalImages(state),
     last_page: getLastPageSelector(state),
     per_page: getPerPageSelector(state),
-  }
+  },
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(
     { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
-    dispatch)
+    dispatch),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
 class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.state = { openDialog:false, chosenImage: null };
+    this.state = { openDialog: false, chosenImage: null };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.actions.getImagesRequest();
   }
 
-  onDropFile = item => {
+  onDropFile = (item) => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
   }
 
-  onUploadFiles = e => {
+  onUploadFiles = (e) => {
     if (e.target.files) {
       let files = [];
       // tslint:disable-next-line
@@ -91,31 +102,31 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     }
   }
 
-  openDialog = (item:IImageLibraryItem) => () => {
-    this.setState({openDialog: true, chosenImage: item});
+  openDialog = (item: IImageLibraryItem) => () => {
+    this.setState({ openDialog: true, chosenImage: item });
   }
 
   closeDialog = () => {
-    this.setState({openDialog: false, chosenImage: null});
+    this.setState({ openDialog: false, chosenImage: null });
   }
 
-  deleteItem = (item:IImageLibraryItem) => () => {
+  deleteItem = (item: IImageLibraryItem) => () => {
     this.props.actions.deleteImagesRequest(item.id);
   }
 
-  updateItem = (item:IImageLibraryItem, name) => {
+  updateItem = (item: IImageLibraryItem, name) => {
     this.props.actions.updateImageRequest({ imageId: item.id, name });
   }
 
   // TODO implement onProgress
 
   onChangePage = (e, page) => {
-    this.props.actions.getImagesRequest(page+1);
+    this.props.actions.getImagesRequest(page + 1);
   }
 
   // TODO: implement properly when there is capability to change rows per page
-  onChangeRowsPerPage = e => {
-    console.log('Change rows',e.target.value);
+  onChangeRowsPerPage = (e) => {
+    console.log('Change rows', e.target.value);
   }
 
   render() {
@@ -126,11 +137,11 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
           {
             pagination.total ?
               <TablePagination
-                component="div"
+                component='div'
                 count={pagination.total}
                 rowsPerPage={pagination.per_page}
                 rowsPerPageOptions={[15]}
-                page={pagination.current_page-1}
+                page={pagination.current_page - 1}
                 backIconButtonProps={{
                   'aria-label': 'Previous Page',
                 }}
@@ -164,7 +175,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             </div>
           </DragAndDropTarget>
           <div className={b('footer')}>
-            <Button color="primary">
+            <Button color='primary'>
               <label htmlFor='upload'>
                 Upload images
               </label>

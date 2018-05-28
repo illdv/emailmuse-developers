@@ -9,7 +9,7 @@ import { uploadImages } from 'src/renderer/API/ImageLibrary';
 
 function* uploadImagesWorker(action: IActionPayload<File[]>): IterableIterator<any> {
   try {
-    const response = yield call(uploadImages, action.payload);
+    yield call(uploadImages, action.payload);
     yield put(actions.uploadImagesSuccess());
     const currentPage = yield select(getCurrentPageSelector);
     // Checks for currentPage being correct are implemented in getImagesWorker saga

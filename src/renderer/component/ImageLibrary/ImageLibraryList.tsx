@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {GridList, GridListTile, GridListTileBar} from '@material-ui/core';
+import { GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
 import block from 'bem-ts';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
@@ -11,18 +11,19 @@ const b = block('image-library-list');
 namespace ImageLibraryListSpace {
   export interface IProps {
     items: IImageLibraryItem[];
-    onDelete: (item:IImageLibraryItem) => () => void;
-    onOpenDialog: (item:IImageLibraryItem) => () => void;
+    onDelete: (item: IImageLibraryItem) => () => void;
+    onOpenDialog: (item: IImageLibraryItem) => () => void;
   }
+
   export interface IState {
 
   }
 }
 
-export class ImageLibraryListComponent extends
-  React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
+export class ImageLibraryListComponent
+  extends React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -34,7 +35,7 @@ export class ImageLibraryListComponent extends
           cols={3}
           spacing={20}
         >
-          {this.props.items.map(item =>
+          {this.props.items.map((item) =>
             <GridListTile
               className={b('tile')}
               key={item.id}
@@ -49,10 +50,9 @@ export class ImageLibraryListComponent extends
                 actionIcon={
                   <IconButton onClick={this.props.onDelete(item)}>
                     <Delete nativeColor='white'/>
-                  </IconButton>
-                }
+                  </IconButton>}
               />
-            </GridListTile>
+            </GridListTile>,
           )}
         </GridList>
       </>
