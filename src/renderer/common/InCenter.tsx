@@ -1,12 +1,12 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, withStyles } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     height: '100%',
-  }
+  },
 });
 
 export namespace InCenterSpace {

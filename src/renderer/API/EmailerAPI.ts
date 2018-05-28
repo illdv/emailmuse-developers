@@ -1,88 +1,46 @@
-import { API_ENDPOINT } from 'src/common/api.config';
-import axios from 'axios';
-import { AxiosPromise } from 'axios';
+import { API_ENDPOINT } from 'src/renderer/API/api.config';
+import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
-import {
-  IDataForDeleteTemplates,
-  IDataForCreateTemplate,
-  IDataForEditTemplate
-} from 'src/renderer/component/Templates/models';
+import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
+import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
+// TODO: Move in file
 export namespace Accounts {
   export function changePassword(data: IChangePasswordPayload): AxiosPromise<IChangePasswordPayload> {
-    return axios.put('/profile/change-password',data);
+    return axios.put('/profile/change-password', data);
   }
-  export function changeName({name:sting}): AxiosPromise<{name:string}> {
+
+  export function changeName({ name: sting }): AxiosPromise<{ name: string }> {
     return axios.put('/profile', {
-      name
+      name,
     });
   }
+
   export function getProfile(): AxiosPromise<any> {
     return axios.get('/profile');
   }
 }
 
-  export namespace ImageLibrary {
-    // TODO change type
-    export function uploadImages(
-      files: File | File[],
-      onProgress?: (percent: number) => void
-    );
-
-    export function uploadImages(files, onProgress = _ => void 0) {
-      // If files is a single file (not an array) - wrap it into an array
-      // files = [].concat(files);
-
-      const fd = new FormData();
-      for (let i=0; i<files.length; i++) {
-        fd.append(`images[${i}]`, files[i]);
-      }
-      return axios.post(`${API_ENDPOINT}/images`, fd, {
-        onUploadProgress: (progressEvent) => {
-          const totalLength = progressEvent.lengthComputable
-            ? progressEvent.total
-            : progressEvent.target.getResponseHeader('content-length')
-            || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-          if (totalLength !== null) {
-            onProgress(Math.round((progressEvent.loaded * 100) / totalLength));
-          }
-        }
-      });
-    }
-
-    export function getImages(pageId:number = 1) {
-      return axios.get(`${API_ENDPOINT}/images/?page=${pageId}`);
-    }
-
-    export function updateImage(imageId: number, name: string) {
-      return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name });
-    }
-
-    // TODO change type
-    export function deleteImages(imageIds: number | number[]) {
-      // If imageIds is a single file (not an array) - wrap it into an array
-      // imageIds = [].concat(imageIds);
-
-      return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' });
-    }
+// TODO: Move in file
+export namespace Templates {
+  export function getTemplates(page): any {
+    return AxiosWrapper.get(`/templates/`, {page});
   }
 
-  export namespace Templates{
-    export function getTemplates(){
-      return axios.get(`${API_ENDPOINT}/templates`);
-    }
-
-    export function editTemplate(data: IDataForEditTemplate){
-      const {id, ...remainingData} = data;
-      return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
-    }
-
-    export function createTemplate(data: IDataForCreateTemplate){
-      return axios.post(`${API_ENDPOINT}/templates`, data);
-    }
-
-    export function removeTempates(data: IDataForDeleteTemplates){
-        return axios.delete(`${API_ENDPOINT}/templates`, { data });
-    }
+  export function editTemplate(template: ITemplate) {
+    const { id, ...remainingData } = template;
+    return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
   }
-  /* export default ImageLibrary; */
+
+  export function createTemplate(template: ITemplate) {
+    return axios.post(`${API_ENDPOINT}/templates`, template);
+  }
+
+  export function removeTemplate(templateId: string) {
+    return axios.delete(`${API_ENDPOINT}/templates`, {
+      data: {
+        id: [templateId],
+      },
+    });
+  }
+}

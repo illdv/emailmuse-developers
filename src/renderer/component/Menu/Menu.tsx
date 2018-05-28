@@ -5,11 +5,10 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
   Button,
   Divider,
-  Grid,
-  List,
+  Grid, List,
   ListItem,
   ListItemIcon,
-  Paper,
+  Paper, Slide,
   Typography,
   WithStyles,
   withStyles,
@@ -32,6 +31,8 @@ const styles: IStyle = (theme) => ({
   root: {
     width: '100%',
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -94,7 +95,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
   selectItem = (type: MenuItemType) => () => {
     this.props.actions.selectMenuItem(type);
-  };
+  }
 
   render() {
     const { classes, logout } = this.props;
@@ -115,11 +116,13 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
     };
 
     return (
-      <Paper elevation={4} className={classes.root}>
+      <Slide direction='right' in mountOnEnter unmountOnExit>
+        <Paper elevation={4} className={classes.root}>
           <List component='nav'>
             {toItem(menuSchema)}
           </List>
           <Grid
+            style={{ height: '100%', marginBottom: 10 }}
             container
             direction={'column'}
             justify={'flex-end'}
@@ -131,7 +134,8 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
               </Button>
             </Grid>
           </Grid>
-      </Paper>
+        </Paper>
+      </Slide>
     );
   }
 

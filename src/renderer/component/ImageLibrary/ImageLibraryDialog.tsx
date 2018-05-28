@@ -1,28 +1,34 @@
 import * as React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Language from '@material-ui/icons/Language';
-import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import block from 'bem-ts';
-const b = block('image-library-dialog');
-import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
 import { connect, Dispatch } from 'react-redux';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  InputAdornment,
+  TextField,
+} from '@material-ui/core';
+
+import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+
+import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
+
+const b = block('image-library-dialog');
 
 namespace ImageLibraryDialogSpace {
   export interface IProps {
     item: IImageLibraryItem;
-    onUpdateItem: (item:IImageLibraryItem, newName:string) => void;
-    onDeleteItem: (item:IImageLibraryItem) => () => void;
+    onUpdateItem: (item: IImageLibraryItem, newName: string) => void;
+    onDeleteItem: (item: IImageLibraryItem) => () => void;
     onClose: () => void;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
+
   export interface IState {
     newName: string;
   }
@@ -31,7 +37,7 @@ namespace ImageLibraryDialogSpace {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
-  }
+  },
 });
 
 @connect(null, mapDispatchToProps)
@@ -40,7 +46,7 @@ export class ImageLibraryDialog
   constructor(props) {
     super(props);
     this.state = {
-      newName: props.item.name
+      newName: props.item.name,
     };
   }
 
@@ -84,10 +90,10 @@ export class ImageLibraryDialog
       <Dialog
         open={true}
         onClose={this.handleDialogClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby='form-dialog-title'
       >
         <form onSubmit={this.handleUpdateItem}>
-          <DialogTitle id="form-dialog-title">Edit image</DialogTitle>
+          <DialogTitle id='form-dialog-title'>Edit image</DialogTitle>
           <DialogContent className={b('content')}>
             <DialogContentText>Enter new name of this image and click 'Update' to apply changes.</DialogContentText>
             <DialogContentText>Or click 'Delete' to delete this image from library.</DialogContentText>
@@ -97,19 +103,19 @@ export class ImageLibraryDialog
             />
             <TextField
               autoFocus
-              margin="dense"
-              id="name"
-              label="Image name"
-              type="input"
+              margin='dense'
+              id='name'
+              label='Image name'
+              type='input'
               value={this.state.newName}
               fullWidth
               onChange={this.handleInput}
             />
             <TextField
-              margin="dense"
-              id="url"
-              label="Image URL"
-              type="input"
+              margin='dense'
+              id='url'
+              label='Image URL'
+              type='input'
               value={this.props.item.url}
               fullWidth
               onClick={this.inputClick}
@@ -117,26 +123,26 @@ export class ImageLibraryDialog
               InputProps={{
                 startAdornment: (
                   <InputAdornment
-                    position="start"
+                    position='start'
                     className={b('url-field')}
                   >
-                    <Language />
+                    <Language/>
                   </InputAdornment>
                 ),
               }}
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDialogClose} color="primary">
+            <Button onClick={this.handleDialogClose} color='primary'>
               Cancel
             </Button>
             <Button
-              color="primary"
-              type="submit"
+              color='primary'
+              type='submit'
             >
               Update
             </Button>
-            <Button onClick={this.handleDeleteItem} color="primary">
+            <Button onClick={this.handleDeleteItem} color='primary'>
               Delete
             </Button>
           </DialogActions>

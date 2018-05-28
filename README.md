@@ -1,25 +1,24 @@
 # Emailer electron 
 
+### For login
+```
+navayah.tuba@itis0k.org
+```
 ### Start project
 
 ### Install dependencies
 ```
-npm install
+npm ci
 ```
 
 ### Start React.JS
 ```
 npm start
 
-```
-### Start Electron.JS
-```
-npm start:electron
-```
-
 ### Style
 This project adheres to next sources:
 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript#types)
+
 [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react#basic-rules)
 
 ##### Used commit message convention

@@ -4,7 +4,7 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import CustomStorage from '../../../../common/CustomStorage';
-import { FluxToast, ToastType } from 'src/renderer/component/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { login } from 'src/renderer/API/Auth';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 

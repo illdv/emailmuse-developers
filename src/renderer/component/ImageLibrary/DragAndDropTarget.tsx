@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DropTarget } from 'react-dnd';
+
 import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
 import block from 'bem-ts';
 
@@ -7,20 +8,21 @@ const b = block('dnd-target');
 
 namespace DragAndDropTargetSpace {
   export interface IProps {
-    onDrop: (item:any) => void;
+    onDrop: (item: any) => void;
     showOverlay?: boolean;
     overlayMessage?: string;
     connectDropTarget?: any;
     canDrop?: boolean;
     dragOver?: boolean;
   }
+
   export interface IState {
 
   }
 }
 
 const types = {
-  FILE: '__NATIVE_FILE__'
+  FILE: '__NATIVE_FILE__',
 };
 
 const specs = {
@@ -31,7 +33,7 @@ const specs = {
         props.onDrop(item);
       }
     }
-  }
+  },
 };
 
 const collect = (connect, monitor) => ({
@@ -42,22 +44,22 @@ const collect = (connect, monitor) => ({
 
 @DropTarget(types.FILE, specs, collect)
 export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IProps, DragAndDropTargetSpace.IState> {
-  constructor (props) {
+  constructor(props) {
     super(props);
   }
 
   render() {
-    const {connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children} = this.props;
+    const { connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children } = this.props;
     return connectDropTarget(
       <div className={b()}>
         {showOverlay ?
-          <div className={b('overlay', {'can-drop': canDrop, 'drag-over': dragOver})}>
+          <div className={b('overlay', { 'can-drop': canDrop, 'drag-over': dragOver })}>
             {overlayMessage ? <span>{overlayMessage}</span> : null}
           </div> :
           null
         }
         {children}
-      </div>
+      </div>,
     );
   }
 }

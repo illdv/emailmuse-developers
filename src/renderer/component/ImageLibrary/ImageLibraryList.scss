@@ -8,5 +8,7 @@
 }
 
 .image-library-list__tile-img {
+  width: 100%;
+  min-height: 300px;
   cursor: pointer;
 }

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
+import { bindActionCreators } from 'redux';
+
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
 import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { TextValidator } from 'src/renderer/component/Validation/TextValidator';
-import { FluxValidation } from 'src/renderer/component/Validation/flux/actions';
-import { bindActionCreators } from 'redux';
+import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 
@@ -46,11 +48,11 @@ export namespace AuthorizationSpace {
 
   export interface IProps {
     classes?: any;
-    validation: FluxValidation.IState;
+    validation: IValidationState;
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
     onClickNext: (request: IRequest) => () => void;
-    actions?: FluxValidation.Actions.IAllAction;
+    actions?: IValidationActions;
   }
 }
 
@@ -69,7 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
   },
   actions: bindActionCreators({
-    ...FluxValidation.Actions.AllAction,
+    ...ValidationActions,
   }, dispatch),
 });
 
@@ -82,7 +84,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
   }
 
   componentWillUnmount(): void {
-    this.props.actions.initScheme();
+    this.props.actions.clear();
   }
 
   render() {
@@ -113,7 +115,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                       id='email'
                       label='Email'
                       margin='normal'
-                      schema={validationSchema.email}
+                      schema={validationSchema}
                     />
                     <TextValidator
                       fullWidth
@@ -121,7 +123,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                       label='Password'
                       type='password'
                       margin='normal'
-                      schema={validationSchema.password}
+                      schema={validationSchema}
                     />
                   </Grid>
                 </Grid>
