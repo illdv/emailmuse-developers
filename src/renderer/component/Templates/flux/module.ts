@@ -11,25 +11,25 @@ export const LOADING = `${NS}LOADING`;
 export const FAILURE = `${NS}FAILURE`;
 export const LOADED  = `${NS}LOADED`;
 
-export const CREATE = `${NS}CREATE`;
+export const CREATE         = `${NS}CREATE`;
 export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
 
 export const REMOVE = `${NS}REMOVE`;
 export const SET    = `${NS}SET`;
 export const SELECT = `${NS}SELECT`;
 export const ADD    = `${NS}ADD`;
-export const CLOSE    = `${NS}CLOSE`;
+export const CLOSE  = `${NS}CLOSE`;
 
-export const loading = createAction(LOADING, (page: number = 1) => ({page}));
+export const loading = createAction(LOADING, (page: number = 1) => ({ page }));
 export const failure = createAction(FAILURE);
 export const loaded  = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
-export const create = createAction(CREATE, (template: ITemplate) => template);
+export const create        = createAction(CREATE, (template: ITemplate) => template);
 export const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
-export const set    = createAction(SET, (template: ITemplate) => template);
-export const add    = createAction(ADD, (template: ITemplate) => template);
-export const select = createAction(SELECT, (template: ITemplate) => template);
-export const remove = createAction(REMOVE, (templateId: number) => templateId);
+export const set           = createAction(SET, (template: ITemplate) => template);
+export const add           = createAction(ADD, (template: ITemplate) => template);
+export const select        = createAction(SELECT, (template: ITemplate) => template);
+export const remove        = createAction(REMOVE, (templateId: number) => templateId);
 export const closeTemplate = createAction(CLOSE);
 
 const initialState: ITemplateState = {
@@ -83,6 +83,10 @@ reducer.on(remove, (state, templateId: number): ITemplateState => ({
 
 reducer.on(createSuccess, (state, template: ITemplate): ITemplateState => ({
   ...state,
+  pagination: {
+    ...state.pagination,
+    total: state.pagination.total + 1,
+  },
   templates: [...state.templates, template],
   status: TemplateStatus.Success,
 }));

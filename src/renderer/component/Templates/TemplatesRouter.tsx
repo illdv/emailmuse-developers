@@ -37,7 +37,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  loading: () => dispatch(loading(1)),
+  loading: (page: number = 1) => dispatch(loading(page)),
   remove: (templateId: number) => dispatch(remove(templateId)),
   set: (template: ITemplate) => dispatch(set(template)),
   create: (template: ITemplate) => dispatch(create(template)),
