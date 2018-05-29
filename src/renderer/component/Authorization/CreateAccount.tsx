@@ -65,11 +65,14 @@ class CreateAccount
     const validationSchema = {
       name: {
         presence: true, length: { minimum: 3, message: 'minimum is 3 characters' },
-      }, email: {
+      },
+      email: {
         presence: true, email: true,
-      }, password: {
+      },
+      password: {
         presence: true, length: { minimum: 6, message: 'minimum is 6 characters' },
-      }, password_confirmation: {
+      },
+      password_confirmation: {
         presence: true, length: { minimum: 6, message: 'minimum is 6 characters' }, equality: {
           attribute: 'password',
           message: 'Passwords didn\'t match.',

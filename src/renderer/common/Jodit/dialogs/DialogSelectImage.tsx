@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { AppBar, Dialog, IconButton, Paper, TablePagination, Toolbar, Typography } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogActions, DialogContent, Paper, TablePagination } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 import block from 'bem-ts';
 
@@ -23,7 +22,9 @@ import {
   uploadImagesRequest,
 } from 'src/renderer/component/ImageLibrary/store/actions';
 
-const b = block('dialog-image-library-list');
+import './DialogSelectImage.scss';
+
+const b = block('dialogs-select-image');
 
 export namespace DialogSelectImageSpace {
   export interface IState {
@@ -102,29 +103,36 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
         aria-labelledby='responsive-dialog-title'
       >
         <Paper elevation={4}>
-          <div className={b('container')}>
-            {
-              pagination.total &&
-              <TablePagination
-                component='div'
-                count={pagination.total}
-                rowsPerPage={pagination.per_page}
-                rowsPerPageOptions={[16]}
-                page={pagination.current_page - 1}
-                backIconButtonProps={{
-                  'aria-label': 'Previous Page',
-                }}
-                nextIconButtonProps={{
-                  'aria-label': 'Next Page',
-                }}
-                onChangePage={this.onChangePage}
+          <DialogContent>
+            <div className={b('container')}>
+              {
+                pagination.total &&
+                <TablePagination
+                  component='div'
+                  count={pagination.total}
+                  rowsPerPage={pagination.per_page}
+                  rowsPerPageOptions={[16]}
+                  page={pagination.current_page - 1}
+                  backIconButtonProps={{
+                    'aria-label': 'Previous Page',
+                  }}
+                  nextIconButtonProps={{
+                    'aria-label': 'Next Page',
+                  }}
+                  onChangePage={this.onChangePage}
+                />
+              }
+              <ImageLibraryList
+                items={this.props.items}
+                onSelect={this.onSelectImage}
               />
-            }
-            <ImageLibraryList
-              items={this.props.items}
-              onSelect={this.onSelectImage}
-            />
-          </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color='primary'>
+              Close
+            </Button>
+          </DialogActions>
         </Paper>
       </Dialog>
     );

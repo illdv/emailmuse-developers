@@ -18,7 +18,7 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
 
-const b = block('image-library-dialog');
+const b = block('image-library-dialogs');
 
 namespace ImageLibraryDialogSpace {
   export interface IProps {
@@ -89,6 +89,7 @@ export class ImageLibraryDialog
     return (
       <Dialog
         open={true}
+        maxWidth={false}
         onClose={this.handleDialogClose}
         aria-labelledby='form-dialog-title'
       >

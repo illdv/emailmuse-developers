@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
     template: './index.html',
@@ -37,17 +38,23 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: [{
-                    loader: styleLoader,
-                }, {
-                    loader: "css-loader", options: {
-                        sourceMap: true,
+                use: [
+                    {
+                        loader: styleLoader,
                     },
-                }, {
-                    loader: "sass-loader", options: {
-                        sourceMap: true,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                        },
                     },
-                }],
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.css$/,
@@ -73,7 +80,7 @@ module.exports = {
         modules: ['node_modules', sourcePath],
         alias: {
             src: sourcePath,
-        }
+        },
     },
     plugins: [
         HtmlWebpackPluginConfig,
@@ -81,5 +88,8 @@ module.exports = {
             filename: "[name].css",
             chunkFilename: "[id].css",
         }),
+        new CopyWebpackPlugin([
+            { from: '../assets', to: '../dist/assets' }
+        ])
     ],
 }

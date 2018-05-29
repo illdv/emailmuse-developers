@@ -54,10 +54,7 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
 
   componentDidMount(): void {
     const { actions, id, schema } = this.props;
-    if (!schema[id]) {
-      throw new Error(`Not exist validation schema for TextValidator id = ${id}`);
-    }
-    actions.setScheme({ key: id, value: schema[id] });
+    actions.setScheme({ key: id, value: schema[id] || {} });
   }
 
   onBlur = (value: any) => () => {

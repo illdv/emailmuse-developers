@@ -39,11 +39,3 @@ export function createActionSteps(actionName: string, requestHandling, successHa
     FAILURE: createAction(type.FAILURE, failureHandling),
   };
 }
-
-export function useOrDefault(func: () => any, defaultValue: string) {
-  try {
-    return func();
-  } catch (e) {
-    return defaultValue;
-  }
-}

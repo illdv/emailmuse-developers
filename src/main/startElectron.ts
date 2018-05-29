@@ -1,7 +1,7 @@
 const url                                  = require('url');
 const path2                                = require('path');
 const loadDevTool                          = require('electron-load-devtool');
-const { app, ipcMain, BrowserWindow }      = require('electron');
+const { app, Menu, BrowserWindow }      = require('electron');
 let mainWindow: any;
 
 function createWindow() {
@@ -15,7 +15,7 @@ function createWindow() {
   const loadUrl = url.format({
     pathname: path2.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
   });
 
   // mainWindow.loadURL(loadUrl);

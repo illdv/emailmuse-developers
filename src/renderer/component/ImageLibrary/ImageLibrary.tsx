@@ -87,7 +87,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
-  }
+  };
 
   onUploadFiles = (e) => {
     if (e.target.files) {
@@ -100,58 +100,55 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
         this.props.actions.uploadImagesRequest(files);
       }
     }
-  }
+  };
 
   onOpenImageInfo = (item: IImageLibraryItem) => () => {
     this.setState({ openDialog: true, chosenImage: item });
-  }
+  };
 
   closeDialog = () => {
     this.setState({ openDialog: false, chosenImage: null });
-  }
+  };
 
   deleteItem = (item: IImageLibraryItem) => () => {
     this.props.actions.deleteImagesRequest(item.id);
-  }
+  };
 
   updateItem = (item: IImageLibraryItem, name) => {
     this.props.actions.updateImageRequest({ imageId: item.id, name });
-  }
+  };
 
   // TODO implement onProgress
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  }
+  };
 
   // TODO: implement properly when there is capability to change rows per currentPage
   onChangeRowsPerPage = (e) => {
     console.log('Change rows', e.target.value);
-  }
+  };
 
   render() {
     const { classes, pagination } = this.props;
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
-          {
-            pagination.total &&
-              <TablePagination
-                component='div'
-                count={pagination.total}
-                rowsPerPage={pagination.per_page}
-                rowsPerPageOptions={[15]}
-                page={pagination.current_page - 1}
-                backIconButtonProps={{
-                  'aria-label': 'Previous Page',
-                }}
-                nextIconButtonProps={{
-                  'aria-label': 'Next Page',
-                }}
-                onChangePage={this.onChangePage}
-                onChangeRowsPerPage={this.onChangeRowsPerPage}
-              />
-          }
+          <TablePagination
+            component='div'
+            count={pagination.total || 0}
+            rowsPerPage={pagination.per_page || 0}
+            rowsPerPageOptions={[15]}
+            page={pagination.current_page - 1}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.onChangePage}
+            onChangeRowsPerPage={this.onChangeRowsPerPage}
+          />
           <DragAndDropTarget
             onDrop={this.onDropFile}
             showOverlay={true}
@@ -160,12 +157,12 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             <div className={b('container')}>
               {
                 this.state.chosenImage &&
-                  <ImageLibraryDialog
-                    item={this.state.chosenImage}
-                    onDeleteItem={this.deleteItem}
-                    onUpdateItem={this.updateItem}
-                    onClose={this.closeDialog}
-                  />
+                <ImageLibraryDialog
+                  item={this.state.chosenImage}
+                  onDeleteItem={this.deleteItem}
+                  onUpdateItem={this.updateItem}
+                  onClose={this.closeDialog}
+                />
               }
               <ImageLibraryList
                 items={this.props.items}
