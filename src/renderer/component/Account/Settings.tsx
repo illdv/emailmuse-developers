@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Divider, Grid, Paper, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import ChangePassword from 'src/renderer/component/Account/ChangePassword';
@@ -8,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { AccountSpace } from './flux/actions';
 import { Loading } from 'src/renderer/common/Loading';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { AccountsDialog } from 'src/renderer/component/Account/AccountsDialog';
 
 const styles: IStyle = (theme) => ({
   root: {
@@ -32,6 +34,7 @@ export namespace AccountSettingsSpace {
   }
 
   export interface IState {
+    openDialog: boolean;
   }
 }
 const mapStateToProps = (state) => ({
@@ -45,10 +48,28 @@ const mapDispathToProps = (dispatch) => ({
 @connect(mapStateToProps, mapDispathToProps)
 class AccountSettings extends React.Component<AccountSettingsSpace.IProps & WithStyles<any>,
   AccountSettingsSpace.IState> {
+  constructor(props) {
+    super(props);
+    this.state = { openDialog: false};
+  }
+
   componentDidMount() {
     if (this.props.accounts.user) {
       this.props.getProfile();
     }
+  }
+
+  handleOpenDialog = () => {
+    this.setState({ openDialog: true});
+  }
+
+  handleCloseDialog = () => {
+    this.setState({ openDialog: false});
+  }
+
+  handleItemClick = (selected: string) => {
+    // tslint:disable-next-line
+    console.log(selected);
   }
 
   render() {
@@ -80,6 +101,14 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
             </Grid>
           </Grid>
           <ChangePassword/>
+          <Button onClick={this.handleOpenDialog}>
+            Manage email accounts
+          </Button>
+          <AccountsDialog
+            open={this.state.openDialog}
+            onClose={this.handleCloseDialog}
+            onItemClick={this.handleItemClick}
+          />
         </Paper>
       </div>
     );
