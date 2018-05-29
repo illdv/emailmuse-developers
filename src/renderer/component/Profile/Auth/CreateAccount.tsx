@@ -5,16 +5,18 @@ import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { Grow } from '@material-ui/core/es';
 import { bindActionCreators } from 'redux';
 
-import { Navigation, Title } from 'src/renderer/component/Authorization/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
-import action = FluxAccounts.Actions.CreateAccount;
-import IRequest = action.IRequest;
-import AuthStep = FluxAccounts.Models.AuthStep;
+import {
+  createAccountActions,
+  ICreateAccountRequest,
+  setAuthStepAction,
+} from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
 const styles = () => ({
   root: {
@@ -32,7 +34,7 @@ export namespace CreateAccountSpace {
     validation?: IValidationState;
     actions?: IValidationActions;
     onClickBackToLogin?: () => void;
-    onCreateAccount?: (user: IRequest) => () => void;
+    onCreateAccount?: (user: ICreateAccountRequest) => () => void;
   }
 }
 
@@ -42,9 +44,9 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
-  }, onCreateAccount: (user: IRequest) => () => {
-    dispatch(action.Step.REQUEST(user));
+    dispatch(setAuthStepAction(AuthStep.LOGIN));
+  }, onCreateAccount: (user: ICreateAccountRequest) => () => {
+    dispatch(createAccountActions.REQUEST(user));
   },
   actions: bindActionCreators({
     ...ValidationActions,

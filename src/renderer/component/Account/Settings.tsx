@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AccountSpace } from './flux/actions';
 import { Loading } from 'src/renderer/common/Loading';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { AccountsDialog } from 'src/renderer/component/Account/AccountsDialog';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
-const styles: IStyle = (theme) => ({
+const styles: IStyle = theme => ({
   root: {
     width: '95%',
     height: '95%',
@@ -30,18 +30,18 @@ export namespace AccountSettingsSpace {
   export interface IProps {
     classes?: any;
     getProfile?: any;
-    accounts?: FluxAccounts.IState;
+    profile?: IProfileState;
   }
 
   export interface IState {
     openDialog: boolean;
   }
 }
-const mapStateToProps = (state) => ({
-  accounts: state.accounts,
+const mapStateToProps = state => ({
+  profile: state.profile,
 });
 
-const mapDispathToProps = (dispatch) => ({
+const mapDispathToProps = dispatch => ({
   getProfile: bindActionCreators(AccountSpace.Actions.getProfile.REQUEST, dispatch),
 });
 
@@ -54,7 +54,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
   }
 
   componentDidMount() {
-    if (this.props.accounts.user) {
+    if (this.props.profile.auth.user) {
       this.props.getProfile();
     }
   }
@@ -73,8 +73,8 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
   }
 
   render() {
-    const { classes, accounts } = this.props;
-    const { name, email }       = accounts.user;
+    const { classes, profile } = this.props;
+    const { name, email }       = profile.auth.user;
 
     if (!name) {
       return <Loading/>;

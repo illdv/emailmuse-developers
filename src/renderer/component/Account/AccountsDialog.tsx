@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import { AccountItemNew } from 'src/renderer/component/Account/AccountItemNew';
 import { AccountItemExtising } from 'src/renderer/component/Account/AccountItemExisting';
 import { IEmailAccount } from 'src/renderer/component/Account/flux/models';
+import { connect } from 'react-redux';
 
 const emails: IEmailAccount[] = [
   {
@@ -29,11 +30,17 @@ export namespace AccountsDialogSpace {
     onClose: () => void;
     onItemClick: (selected: string) => void;
     open: boolean;
+    emailAccounts?: IEmailAccount[];
   }
   export interface IState {
   }
 }
 
+const mapStateToProps = state => ({
+  emailAccounts: emails,
+});
+
+@connect(mapStateToProps)
 export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, AccountsDialogSpace.IState> {
   constructor(props) {
     super(props);
@@ -52,7 +59,7 @@ export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, 
   }
 
   render() {
-    const { open } = this.props;
+    const { open, emailAccounts } = this.props;
 
     return (
       <Dialog open={open} onClose={this.handleClose} aria-labelledby='simple-dialog-title'>
@@ -61,8 +68,8 @@ export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, 
         </DialogTitle>
         <div>
           <List>
-            {emails.map((email) => (
-              <AccountItemExtising displayName={email.email} onRemove={this.handleRemove(email)} key={email.id}/>
+            {emailAccounts.map(account => (
+              <AccountItemExtising displayName={account.email} onRemove={this.handleRemove(account)} key={account.id}/>
             ))}
             <AccountItemNew onAddNew={this.handleAddNew}/>
           </List>

@@ -39,7 +39,7 @@ export namespace FluxDrawerMenu {
   }
 
   export const Actions: IActions = {
-    selectMenuItem: selectMenuItem,
+    selectMenuItem,
   };
 
   export interface IState {
