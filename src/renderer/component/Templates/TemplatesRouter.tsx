@@ -3,7 +3,6 @@ import { connect, Dispatch } from 'react-redux';
 import { Typography } from '@material-ui/core';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { add, closeTemplate, create, loading, remove, select, set } from 'src/renderer/component/Templates/flux/module';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
 import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
@@ -14,6 +13,7 @@ import { Add } from '@material-ui/icons';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
+import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -38,13 +38,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  loading: (page: number = 1) => dispatch(loading(page)),
-  remove: (templateId: number) => dispatch(remove(templateId)),
-  set: (template: ITemplate) => dispatch(set(template)),
-  create: (template: ITemplate) => dispatch(create(template)),
-  add: (template: ITemplate) => dispatch(add(template)),
-  select: (template: ITemplate) => dispatch(select(template)),
-  close: () => dispatch(closeTemplate()),
+  loading: (page: number = 1) => dispatch(TemplateAction.loading(page)),
+  remove: (templateId: number) => dispatch(TemplateAction.remove(templateId)),
+  set: (template: ITemplate) => dispatch(TemplateAction.set(template)),
+  create: (template: ITemplate) => dispatch(TemplateAction.create(template)),
+  add: (template: ITemplate) => dispatch(TemplateAction.add(template)),
+  select: (template: ITemplate) => dispatch(TemplateAction.select(template)),
+  close: () => dispatch(TemplateAction.closeTemplate()),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },

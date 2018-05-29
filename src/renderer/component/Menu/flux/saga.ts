@@ -1,11 +1,10 @@
-import { call, put, take, select } from 'redux-saga/effects';
+import { call, put, take } from 'redux-saga/effects';
 
-import { IActionPayload } from 'src/renderer/flux/utils';
-import { updateImage } from 'src/renderer/API/ImageLibrary';
 import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
+import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 
-function* selectMenuItemWorker(action: IActionPayload<{ imageId: number, name: string }>): IterableIterator<any> {
-  yield call(updateImage, action.payload.imageId, action.payload.name);
+function* selectMenuItemWorker(): IterableIterator<any> {
+  yield put(TemplateAction.select(null));
 }
 
 export function* selectMenuItemWatcher(): IterableIterator<any> {

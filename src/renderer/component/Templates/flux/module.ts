@@ -21,18 +21,32 @@ export const SELECT         = `${NS}SELECT`;
 export const ADD            = `${NS}ADD`;
 export const CLOSE          = `${NS}CLOSE`;
 
-export const loading = createAction(LOADING, (page: number = 1) => ({ page }));
-export const failure = createAction(FAILURE);
-export const loaded  = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
+const loading = createAction(LOADING, (page: number = 1) => ({ page }));
+const failure = createAction(FAILURE);
+const loaded  = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
-export const create        = createAction(CREATE, (template: ITemplate) => template);
-export const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
-export const set           = createAction(SET, (template: ITemplate) => template);
-export const add           = createAction(ADD, (template: ITemplate) => template);
-export const select        = createAction(SELECT, (template: ITemplate) => template);
-export const remove        = createAction(REMOVE, (templateId: number) => templateId);
-export const removeSuccess = createAction(REMOVE_SUCCESS, (templateId: number) => templateId);
-export const closeTemplate = createAction(CLOSE);
+const create        = createAction(CREATE, (template: ITemplate) => template);
+const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
+const set           = createAction(SET, (template: ITemplate) => template);
+const add           = createAction(ADD, (template: ITemplate) => template);
+const select        = createAction(SELECT, (template: ITemplate) => template);
+const remove        = createAction(REMOVE, (templateId: number) => templateId);
+const removeSuccess = createAction(REMOVE_SUCCESS, (templateId: number) => templateId);
+const closeTemplate = createAction(CLOSE);
+
+export const TemplateAction = {
+  loading,
+  failure,
+  loaded,
+  create,
+  createSuccess,
+  set,
+  add,
+  select,
+  remove,
+  removeSuccess,
+  closeTemplate,
+};
 
 const initialState: ITemplateState = {
   status: TemplateStatus.Loading,

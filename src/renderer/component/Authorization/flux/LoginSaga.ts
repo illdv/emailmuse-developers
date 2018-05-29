@@ -7,7 +7,7 @@ import CustomStorage from '../../../../common/CustomStorage';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { login } from 'src/renderer/API/Auth';
 import IRequest = FluxAccounts.Actions.Login.IRequest;
-import { select } from 'src/renderer/component/Templates/flux/module';
+import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 
 const actions      = FluxAccounts.Actions;
 const LoginAccount = actions.Login;
@@ -16,7 +16,7 @@ export function* watcherSetToken() {
   while (true) {
     const { payload } = yield take('SET_TOKEN');
     CustomStorage.setItem('token', payload.token, false);
-    yield put(select(null));
+    yield put(TemplateAction.select(null));
     // noinspection TsLint
     axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
   }
