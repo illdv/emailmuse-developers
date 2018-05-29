@@ -1,6 +1,6 @@
 const url = require('url');
 const path2 = require('path');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -29,7 +29,7 @@ app.on('activate', () => {
 app.on('ready', () => {
     createWindow();
     if (process.platform === 'darwin') {
-        createMenuForMac()
+        createMenuForMac();
     }
 });
 app.on('window-all-closed', () => {

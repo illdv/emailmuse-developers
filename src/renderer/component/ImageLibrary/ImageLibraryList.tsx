@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { GridList, GridListTile, GridListTileBar, Grow, IconButton } from '@material-ui/core';
-import Delete from '@material-ui/icons/Delete';
+import { GridList, Grow} from '@material-ui/core';
 import block from 'bem-ts';
 
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
@@ -13,7 +12,6 @@ namespace ImageLibraryListSpace {
     items: IImageLibraryItem[];
     onDelete?: (item: IImageLibraryItem) => () => void;
     onSelect: (item: IImageLibraryItem) => () => void;
-    showTitle?: boolean;
   }
 
   export interface IState {
@@ -41,25 +39,11 @@ export class ImageLibraryList
           {
             items.map((item, index) => (
                 <Grow key={item.id} in timeout={(index * 500) + 500}>
-                  <GridListTile className={b('container-img')}>
-                      <img
-                        src={item.thumb_url}
-                        onClick={onSelect(item)}
-                        className={b('tile-img')}
-                      />
-                    {this.props.showTitle &&
-                    <GridListTileBar
-                      title={item.name}
-                      actionIcon={
-                        onDelete && (
-                          <IconButton onClick={onDelete(item)}>
-                            <Delete nativeColor='white'/>
-                          </IconButton>
-                        )
-                      }
-                    />
-                    }
-                  </GridListTile>
+                  <img
+                    src={item.thumb_url}
+                    onClick={onSelect(item)}
+                    className={b('tile-img')}
+                  />
                 </Grow>
               ),
             )}
