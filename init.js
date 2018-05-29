@@ -1,6 +1,6 @@
 const url = require('url');
 const path2 = require('path');
-const { app, ipcMain, BrowserWindow } = require('electron');
+const { app, BrowserWindow } = require('electron');
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -26,10 +26,33 @@ app.on('activate', () => {
         createWindow();
     }
 });
-app.on('ready', createWindow);
+app.on('ready', () => {
+    createWindow();
+    if (process.platform === 'darwin') {
+        createMenuForMac()
+    }
+});
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
-//# sourceMappingURL=startElectron.js.map
+
+function createMenuForMac() {
+    Menu.setApplicationMenu(Menu.buildFromTemplate([
+        {
+            label: 'Edit',
+            submenu: [
+                {role: 'undo'},
+                {role: 'redo'},
+                {type: 'separator'},
+                {role: 'cut'},
+                {role: 'copy'},
+                {role: 'paste'},
+                {role: 'pasteandmatchstyle'},
+                {role: 'delete'},
+                {role: 'selectall'},
+            ],
+        },
+    ]))
+}
