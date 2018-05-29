@@ -1,4 +1,4 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, select, take } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import { CREATE, LOADING, REMOVE, SET } from './module';
@@ -6,6 +6,11 @@ import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/entity';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
+
+function getCurrentPageSelector(state: IGlobalState) {
+  return state.templates.pagination.current_page;
+}
 
 export function* loadingTemplates(action) {
   try {
@@ -13,7 +18,7 @@ export function* loadingTemplates(action) {
 
     const { total, current_page, data, last_page, per_page } = response.data;
 
-    yield put(TemplateAction.loaded({
+    yield put(TemplateAction.successfully({
       templates: data,
       pagination: {
         current_page,
@@ -28,18 +33,12 @@ export function* loadingTemplates(action) {
   }
 }
 
-export function* watchLoading() {
-  while (true) {
-    const data = yield take(LOADING);
-    yield call(loadingTemplates, data);
-  }
-}
-
 export function* editTemplate(action) {
   try {
-    const response = yield call(Templates.editTemplate, action.payload);
-    yield put(TemplateAction.set(response.data));
+    yield call(Templates.editTemplate, action.payload);
+
     yield put(FluxToast.Actions.showToast('Save template success.', ToastType.Success));
+    yield put(TemplateAction.loading(yield select(getCurrentPageSelector)));
   } catch (error) {
     console.log(error);
     yield put(FluxToast.Actions.showToast('Save template failed.', ToastType.Error));
@@ -48,9 +47,10 @@ export function* editTemplate(action) {
 
 export function* createTemplate(action) {
   try {
-    const response = yield call(Templates.createTemplate, action.payload);
-    yield put(TemplateAction.createSuccess(response.data));
+    yield call(Templates.createTemplate, action.payload);
+
     yield put(FluxToast.Actions.showToast('Create template success.', ToastType.Success));
+    yield put(TemplateAction.loading(yield select(getCurrentPageSelector)));
   } catch (error) {
     console.log(error);
     yield put(FluxToast.Actions.showToast('Create template failed', ToastType.Error));
@@ -60,11 +60,19 @@ export function* createTemplate(action) {
 export function* removeTemplates(action) {
   try {
     yield call(Templates.removeTemplate, action.payload);
-    yield put(TemplateAction.removeSuccess(action.payload));
+
     yield put(FluxToast.Actions.showToast('Remove template success.', ToastType.Success));
+    yield put(TemplateAction.loading(yield select(getCurrentPageSelector)));
   } catch (error) {
     console.log(error);
     yield put(FluxToast.Actions.showToast('Remove template failed', ToastType.Error));
+  }
+}
+
+export function* watchLoading() {
+  while (true) {
+    const data = yield take(LOADING);
+    yield call(loadingTemplates, data);
   }
 }
 
