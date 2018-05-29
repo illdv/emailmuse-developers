@@ -32,10 +32,10 @@ export class ImageLibraryList
     return (
       <>
         <GridList
-          cellHeight={180}
+          cellHeight={100}
           className={b()}
-          cols={5}
-          spacing={20}
+          cols={15}
+          spacing={10}
         >
           {
             items.map((item, index) => (
