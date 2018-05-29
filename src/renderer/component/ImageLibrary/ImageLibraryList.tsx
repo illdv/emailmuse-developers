@@ -13,6 +13,7 @@ namespace ImageLibraryListSpace {
     items: IImageLibraryItem[];
     onDelete?: (item: IImageLibraryItem) => () => void;
     onSelect: (item: IImageLibraryItem) => () => void;
+    showTitle?: boolean;
   }
 
   export interface IState {
@@ -40,12 +41,13 @@ export class ImageLibraryList
           {
             items.map((item, index) => (
                 <Grow key={item.id} in timeout={(index * 500) + 500}>
-                  <GridListTile className={b('tile')}>
-                    <img
-                      src={item.thumb_url}
-                      onClick={onSelect(item)}
-                      className={b('tile-img')}
-                    />
+                  <GridListTile className={b('container-img')}>
+                      <img
+                        src={item.thumb_url}
+                        onClick={onSelect(item)}
+                        className={b('tile-img')}
+                      />
+                    {this.props.showTitle &&
                     <GridListTileBar
                       title={item.name}
                       actionIcon={
@@ -56,6 +58,7 @@ export class ImageLibraryList
                         )
                       }
                     />
+                    }
                   </GridListTile>
                 </Grow>
               ),
