@@ -6,14 +6,17 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { Action, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import IRequest = FluxAccounts.Actions.Login.IRequest;
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
-const styles = (theme) => ({
+const styles = theme => ({
   root: {
     height: '100%',
   },
@@ -49,7 +52,7 @@ export namespace AuthorizationSpace {
     classes?: any;
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
-    onClickNext: (request: IRequest) => () => void;
+    onClickNext: (request: ILoginRequest) => () => void;
   }
 }
 
@@ -58,13 +61,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.FORGOT_PASSWORD));
+    dispatch(setAuthStepAction(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.CREATE_ACCOUNT));
+    dispatch(setAuthStepAction(AuthStep.CREATE_ACCOUNT));
   },
-  onClickNext: (request: IRequest) => {
-    dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
+  onClickNext: (request: ILoginRequest) => {
+    dispatch(loginActions.REQUEST(request));
   },
 });
 

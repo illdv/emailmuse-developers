@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Divider, Grid, Paper, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import ChangePassword from 'src/renderer/component/Account/ChangePassword';
@@ -7,9 +8,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AccountSpace } from './flux/actions';
 import { Loading } from 'src/renderer/common/Loading';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { AccountsDialog } from 'src/renderer/component/Account/AccountsDialog';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
-const styles: IStyle = (theme) => ({
+const styles: IStyle = theme => ({
   root: {
     width: '95%',
     height: '95%',
@@ -28,32 +30,51 @@ export namespace AccountSettingsSpace {
   export interface IProps {
     classes?: any;
     getProfile?: any;
-    accounts?: FluxAccounts.IState;
+    profile?: IProfileState;
   }
 
   export interface IState {
+    openDialog: boolean;
   }
 }
-const mapStateToProps = (state) => ({
-  accounts: state.accounts,
+const mapStateToProps = state => ({
+  profile: state.profile,
 });
 
-const mapDispathToProps = (dispatch) => ({
+const mapDispathToProps = dispatch => ({
   getProfile: bindActionCreators(AccountSpace.Actions.getProfile.REQUEST, dispatch),
 });
 
 @connect(mapStateToProps, mapDispathToProps)
 class AccountSettings extends React.Component<AccountSettingsSpace.IProps & WithStyles<any>,
   AccountSettingsSpace.IState> {
+  constructor(props) {
+    super(props);
+    this.state = { openDialog: false};
+  }
+
   componentDidMount() {
-    if (this.props.accounts.user) {
+    if (this.props.profile.auth.user) {
       this.props.getProfile();
     }
   }
 
+  handleOpenDialog = () => {
+    this.setState({ openDialog: true});
+  }
+
+  handleCloseDialog = () => {
+    this.setState({ openDialog: false});
+  }
+
+  handleItemClick = (selected: string) => {
+    // tslint:disable-next-line
+    console.log(selected);
+  }
+
   render() {
-    const { classes, accounts } = this.props;
-    const { name, email }       = accounts.user;
+    const { classes, profile } = this.props;
+    const { name, email }       = profile.auth.user;
 
     if (!name) {
       return <Loading/>;
@@ -80,6 +101,14 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
             </Grid>
           </Grid>
           <ChangePassword/>
+          <Button onClick={this.handleOpenDialog}>
+            Manage email accounts
+          </Button>
+          <AccountsDialog
+            open={this.state.openDialog}
+            onClose={this.handleCloseDialog}
+            onItemClick={this.handleItemClick}
+          />
         </Paper>
       </div>
     );

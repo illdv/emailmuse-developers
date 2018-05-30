@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 
+import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import InCenter from 'src/renderer/common/InCenter';
@@ -12,6 +13,14 @@ import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/V
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import {
+  createAccountActions,
+  ICreateAccountRequest,
+  setAuthStepAction,
+} from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
 const styles = () => ({
   root: {
@@ -27,7 +36,7 @@ export namespace CreateAccountSpace {
 
   export interface IProps {
     onClickBackToLogin?: () => void;
-    onCreateAccount?: (user: IRequest) => () => void;
+    onCreateAccount?: (user: ICreateAccountRequest) => () => void;
   }
 }
 
@@ -35,9 +44,9 @@ const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
-  }, onCreateAccount: (user: IRequest) => {
-    dispatch(action.Step.REQUEST(user));
+    dispatch(setAuthStepAction(AuthStep.LOGIN));
+  }, onCreateAccount: (user: ICreateAccountRequest) => {
+    dispatch(createAccountActions.REQUEST(user));
   },
 });
 
@@ -124,8 +133,7 @@ class CreateAccount
         </FormValidation>
       </Paper>
   </InCenter>
-  )
-    ;
+  );
   }
 }
 

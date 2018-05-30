@@ -14,8 +14,8 @@ const changePassword: IActionsChangePassword = {
 };
 const getProfile                             = {
   REQUEST: createAction('GET_PROFILE_REQUEST'),
-  SUCCESS: createAction('GET_PROFILE_SUCCESS', (data) => data),
-  FAILURE: createAction('GET_PROFILE_FAIL', (error) => error),
+  SUCCESS: createAction('GET_PROFILE_SUCCESS', data => data),
+  FAILURE: createAction('GET_PROFILE_FAIL', error => error),
 };
 
 interface IActionsChangePassword {

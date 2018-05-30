@@ -23,9 +23,11 @@ export const uploadImagesRequest = (files: File | File[]) => ({
   meta: { status: Status.LOADING },
 });
 
-export const uploadImagesSuccess = createAction(constants.UPLOAD_IMAGES_SUCCESS, null, () => ({ status: Status.LOADED }));
+export const uploadImagesSuccess =
+  createAction(constants.UPLOAD_IMAGES_SUCCESS, null, () => ({ status: Status.LOADED }));
 
-export const uploadImagesFailure = createAction(constants.UPLOAD_IMAGES_FAILURE, null, () => ({ status: Status.FAILED }));
+export const uploadImagesFailure =
+  createAction(constants.UPLOAD_IMAGES_FAILURE, null, () => ({ status: Status.FAILED }));
 
 export const updateImageRequest = (payload: { imageId: number, name: string }) => ({
   type: constants.UPDATE_IMAGE_REQUEST,
@@ -33,9 +35,11 @@ export const updateImageRequest = (payload: { imageId: number, name: string }) =
   meta: { status: Status.LOADING },
 });
 
-export const updateImageSuccess = createAction(constants.UPDATE_IMAGE_SUCCESS, null, () => ({ status: Status.LOADED }));
+export const updateImageSuccess =
+  createAction(constants.UPDATE_IMAGE_SUCCESS, null, () => ({ status: Status.LOADED }));
 
-export const updateImageFailure = createAction(constants.UPDATE_IMAGE_FAILURE, null, () => ({ status: Status.FAILED }));
+export const updateImageFailure =
+  createAction(constants.UPDATE_IMAGE_FAILURE, null, () => ({ status: Status.FAILED }));
 
 export const deleteImagesRequest = (ids: number | number[]) => ({
   type: constants.DELETE_IMAGES_REQUEST,
@@ -43,6 +47,8 @@ export const deleteImagesRequest = (ids: number | number[]) => ({
   meta: { status: Status.LOADING },
 });
 
-export const deleteImagesSuccess = createAction(constants.DELETE_IMAGES_SUCCESS, null, () => ({ status: Status.LOADED }));
+export const deleteImagesSuccess =
+  createAction(constants.DELETE_IMAGES_SUCCESS, null, () => ({ status: Status.LOADED }));
 
-export const deleteImagesFailure = createAction(constants.DELETE_IMAGES_FAILURE, null, () => ({ status: Status.FAILED }));
+export const deleteImagesFailure =
+  createAction(constants.DELETE_IMAGES_FAILURE, null, () => ({ status: Status.FAILED }));

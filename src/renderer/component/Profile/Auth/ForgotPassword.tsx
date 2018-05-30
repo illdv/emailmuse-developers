@@ -4,11 +4,16 @@ import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import AuthStep = FluxAccounts.Models.AuthStep;
+import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Profile/Auth/common/PaperDialog';
+import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import {
+  resetPasswordActions,
+  sendCodeOnMailActions,
+  setAuthStepAction,
+} from 'src/renderer/component/Profile/Auth/flux/module';
 
 enum Step {
   EMAIL,
@@ -63,13 +68,13 @@ const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
+    dispatch(setAuthStepAction(AuthStep.LOGIN));
   },
   onSendCode: (mail: string) => {
-    dispatch(FluxAccounts.Actions.ForgotPassword.sendCodeOnMail.REQUEST(mail));
+    dispatch(sendCodeOnMailActions.REQUEST(mail));
   },
   resetPassword: (email: string, token: string, password: string, passwordConfirmation: string) => {
-    dispatch(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST(email, token, password, passwordConfirmation));
+    dispatch(resetPasswordActions.REQUEST(email, token, password, passwordConfirmation));
   },
 });
 

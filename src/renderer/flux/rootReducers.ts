@@ -1,6 +1,4 @@
 import { combineReducers} from 'redux';
-
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxDrawerMenu } from 'src/renderer/component/Menu/flux/action';
 import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
@@ -9,9 +7,13 @@ import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/con
 
 import templates from 'src/renderer/component/Templates/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
+import { IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { ValidationReducer } from 'src/renderer/common/Validation/flux/module';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
+import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 
 export interface IGlobalState {
-  accounts: FluxAccounts.IState;
+  profile: IProfileState;
   drawerMenu: FluxDrawerMenu.IState;
   toast: FluxToast.IState;
   templates: ITemplateState;
@@ -20,7 +22,7 @@ export interface IGlobalState {
 }
 
 export default combineReducers({
-  accounts: FluxAccounts.reducer,
+  profile: profileReducer,
   drawerMenu: FluxDrawerMenu.reducer,
   toast: FluxToast.reducer,
   templates,

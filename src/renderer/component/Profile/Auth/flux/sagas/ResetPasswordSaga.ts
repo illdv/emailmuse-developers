@@ -1,7 +1,8 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { resetPassword } from 'src/renderer/API/Auth';
+import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { resetPasswordActions } from 'src/renderer/component/Profile/Auth/flux/module';
 
 interface IResetPasswordAction {
   payload: {
@@ -14,9 +15,8 @@ interface IResetPasswordAction {
 
 function* onResetPassword(action: IResetPasswordAction): IterableIterator<any> {
   try {
-    /*yield put(ValidationActions.setScheme({ key: 'secret_code', value: { presence: true } }));*/
     yield resetPassword(action.payload);
-    yield put(FluxAccounts.Actions.ForgotPassword.resetPassword.SUCCESS());
+    yield put(resetPasswordActions.SUCCESS());
     yield put(FluxToast.Actions.showToast('Reset password success.', ToastType.Success));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Reset password failed.', ToastType.Error));
@@ -26,7 +26,7 @@ function* onResetPassword(action: IResetPasswordAction): IterableIterator<any> {
 
 export function* resetPasswordSaga(): IterableIterator<any> {
   while (true) {
-    const action = yield take(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST().type);
+    const action = yield take(resetPasswordActions.type.REQUEST);
     yield call(onResetPassword, action);
   }
 }

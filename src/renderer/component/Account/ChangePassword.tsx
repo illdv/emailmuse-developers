@@ -94,79 +94,79 @@ class ChangePassword extends React.Component<ChangePasswordSpace.IProps & WithSt
             <Grid item>
               <FormControl className={classNames(classes.margin, classes.textField)}>
                 <InputLabel htmlFor='old_password'>Old Password</InputLabel>
-                      <Input
-                        id='old_password'
-                        type={this.state.showPassword ? 'text' : 'password'}
-                        value={this.state.fields.old_password}
-                        onChange={this.handleChange('old_password')}
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <IconButton
-                              aria-label='Toggle password visibility'
-                              onClick={this.handleClickShowPassword('showPassword')}
-                              onMouseDown={this.handleMouseDownPassword}
-                            >
-                              {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                      />
+                  <Input
+                    id='old_password'
+                    type={this.state.showPassword ? 'text' : 'password'}
+                    value={this.state.fields.old_password}
+                    onChange={this.handleChange('old_password')}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='Toggle password visibility'
+                          onClick={this.handleClickShowPassword('showPassword')}
+                          onMouseDown={this.handleMouseDownPassword}
+                        >
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
               </FormControl>
             </Grid>
-            <Grid container spacing={24} alignItems={'center'} justify={'center'}>
-              <Grid item>
-                <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor='password'>New password</InputLabel>
-                      <Input
-                        id='password'
-                        type={this.state.showPasswordN ? 'text' : 'password'}
-                        value={this.state.fields.password}
-                        onChange={this.handleChange('password')}
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <IconButton
-                              aria-label='Toggle password visibility'
-                              onClick={this.handleClickShowPassword('showPasswordN')}
-                              onMouseDown={this.handleMouseDownPassword}
-                            >
-                              {this.state.showPasswordN ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                      />
-                </FormControl>
-              </Grid>
+          </Grid>
+          <Grid container spacing={24} alignItems={'center'} justify={'center'}>
+            <Grid item>
+              <FormControl className={classNames(classes.margin, classes.textField)}>
+                <InputLabel htmlFor='password'>New password</InputLabel>
+                  <Input
+                    id='password'
+                    type={this.state.showPasswordN ? 'text' : 'password'}
+                    value={this.state.fields.password}
+                    onChange={this.handleChange('password')}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='Toggle password visibility'
+                          onClick={this.handleClickShowPassword('showPasswordN')}
+                          onMouseDown={this.handleMouseDownPassword}
+                        >
+                          {this.state.showPasswordN ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+              </FormControl>
             </Grid>
-            <Grid container spacing={24} alignItems={'center'} justify={'center'}>
-              <Grid item>
-                <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor='password_confirmation'>Confirm new password</InputLabel>
-                      <Input
-                        id='password_confirmation'
-                        type={this.state.showPasswordC ? 'text' : 'password'}
-                        value={this.state.fields.password_confirmation}
-                        onChange={this.handleChange('password_confirmation')}
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <IconButton
-                              aria-label='Toggle password visibility'
-                              onClick={this.handleClickShowPassword('showPasswordC')}
-                              onMouseDown={this.handleMouseDownPassword}
-                            >
-                              {this.state.showPasswordC ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                      />
-                </FormControl>
-              </Grid>
+          </Grid>
+          <Grid container spacing={24} alignItems={'center'} justify={'center'}>
+            <Grid item>
+              <FormControl className={classNames(classes.margin, classes.textField)}>
+                <InputLabel htmlFor='password_confirmation'>Confirm new password</InputLabel>
+                  <Input
+                    id='password_confirmation'
+                    type={this.state.showPasswordC ? 'text' : 'password'}
+                    value={this.state.fields.password_confirmation}
+                    onChange={this.handleChange('password_confirmation')}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='Toggle password visibility'
+                          onClick={this.handleClickShowPassword('showPasswordC')}
+                          onMouseDown={this.handleMouseDownPassword}
+                        >
+                          {this.state.showPasswordC ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+              </FormControl>
             </Grid>
-            <Grid container spacing={24} alignItems={'center'} justify={'center'} className={classes.lastRow}>
-              <Grid item>
-                <Button variant='raised' color='primary' className={classes.button} onClick={this.submit}>
-                    Send
-                </Button>
-              </Grid>
+          </Grid>
+          <Grid container spacing={24} alignItems={'center'} justify={'center'} className={classes.lastRow}>
+            <Grid item>
+              <Button variant='raised' color='primary' className={classes.button} onClick={this.submit}>
+                Send
+              </Button>
             </Grid>
           </Grid>
         </Grid>
