@@ -5,16 +5,9 @@ import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 
 import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import InCenter from 'src/renderer/common/InCenter';
-import { Navigation, Title } from 'src/renderer/component/Authorization/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/Validation/FormValidation';
-import action = FluxAccounts.Actions.CreateAccount;
-import IRequest = action.IRequest;
-import AuthStep = FluxAccounts.Models.AuthStep;
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
 import {
   createAccountActions,
   ICreateAccountRequest,

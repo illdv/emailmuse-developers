@@ -6,14 +6,13 @@ import { Email } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Profile/Auth/common/PaperDialog';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 import {
   resetPasswordActions,
   sendCodeOnMailActions,
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Auth/flux/module';
+import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/Validation/FormValidation';
 
 enum Step {
   EMAIL,
@@ -162,7 +161,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     );
   }
 
-  onEnterMail = (value) => {
+  onEnterMail = value => {
     const mail = value.email;
     this.props.onSendCode(mail);
     this.setState({
@@ -171,14 +170,14 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     });
   }
 
-  onEnterCode = (value) => {
+  onEnterCode = value => {
     this.setState({
       step: Step.NEW_PASSWORD,
       secretCode: value.secret_code,
     });
   }
 
-  onEnterNewPassword = (value) => {
+  onEnterNewPassword = value => {
     const { mail, secretCode } = this.state;
     this.props.resetPassword(
       mail,

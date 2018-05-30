@@ -1,7 +1,6 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { resetPassword } from 'src/renderer/API/Auth';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import { resetPasswordActions } from 'src/renderer/component/Profile/Auth/flux/module';
 
 interface IResetPasswordAction {

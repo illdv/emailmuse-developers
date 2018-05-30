@@ -2,17 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
-import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import AuthStep = FluxAccounts.Models.AuthStep;
-import IRequest = FluxAccounts.Actions.Login.IRequest;
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 

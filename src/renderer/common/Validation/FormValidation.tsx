@@ -34,7 +34,7 @@ export class FormValidation extends Component<FormValidationSpace.IProps, FormVa
     const { schema } = this.props;
 
     const activeField = {};
-    Object.keys(schema).forEach((key) => activeField[key] = true);
+    Object.keys(schema).forEach(key => activeField[key] = true);
     const errors = validate(values, schema);
 
     if (errors === undefined) {

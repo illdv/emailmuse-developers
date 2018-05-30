@@ -7,8 +7,6 @@ import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/con
 
 import templates from 'src/renderer/component/Templates/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
-import { IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationReducer } from 'src/renderer/common/Validation/flux/module';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 
