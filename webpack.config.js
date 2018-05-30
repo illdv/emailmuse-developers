@@ -69,7 +69,7 @@ module.exports = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: './images/[name].[hash].[ext]'
+                        name: './images/[indicator].[hash].[ext]'
                     }
                 }]
             }
@@ -85,7 +85,7 @@ module.exports = {
     plugins: [
         HtmlWebpackPluginConfig,
         new MiniCssExtractPlugin({
-            filename: "[name].css",
+            filename: "[indicator].css",
             chunkFilename: "[id].css",
         }),
         new CopyWebpackPlugin([

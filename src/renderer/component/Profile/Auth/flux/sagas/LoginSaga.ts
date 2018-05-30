@@ -12,6 +12,7 @@ import {
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Auth/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 
 export function* watcherSetToken() {
   while (true) {
@@ -40,6 +41,7 @@ function* onLogin(action: IActionPayload<{ request: ILoginRequest }>): IterableI
     yield put(loginSetToken(token));
     yield put(loginActions.SUCCESS({ email: user.email, name: user.name, token }));
   } catch (error) {
+    yield put(loginActions.FAILURE(''));
     if (error.response === undefined) {
       yield put(FluxToast.Actions.showToast(error.message, ToastType.Error));
     } else {

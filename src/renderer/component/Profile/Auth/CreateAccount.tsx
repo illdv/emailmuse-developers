@@ -1,16 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
-import { Grow } from '@material-ui/core/es';
-import { bindActionCreators } from 'redux';
+import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 
 import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/Validation/FormValidation';
 import {
   createAccountActions,
   ICreateAccountRequest,
@@ -31,38 +28,27 @@ export namespace CreateAccountSpace {
   }
 
   export interface IProps {
-    validation?: IValidationState;
-    actions?: IValidationActions;
     onClickBackToLogin?: () => void;
     onCreateAccount?: (user: ICreateAccountRequest) => () => void;
   }
 }
 
-const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation,
-});
+const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBackToLogin: () => {
     dispatch(setAuthStepAction(AuthStep.LOGIN));
-  }, onCreateAccount: (user: ICreateAccountRequest) => () => {
+  }, onCreateAccount: (user: ICreateAccountRequest) => {
     dispatch(createAccountActions.REQUEST(user));
   },
-  actions: bindActionCreators({
-    ...ValidationActions,
-  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class CreateAccount
   extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
 
-  componentWillUnmount(): void {
-    this.props.actions.clear();
-  }
-
   render() {
-    const { classes, onClickBackToLogin, onCreateAccount, validation } = this.props;
+    const { classes, onClickBackToLogin, onCreateAccount } = this.props;
 
     const validationSchema = {
       name: {
@@ -86,59 +72,61 @@ class CreateAccount
     return (
       <InCenter>
         <Paper square className={classes.paper}>
+          <FormValidation onValidationSuccessful={onCreateAccount} schema={validationSchema}>
           <Grid container className={classes.root}>
             <Title title={'Create your Emailer Account'}/>
-            <Grow in timeout={1000}>
-              <Grid container>
-                <Grid item xs={6}>
-                  <TextValidator
-                    id='name'
-                    label='User name'
-                    margin='normal'
-                    schema={validationSchema}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Grid container justify={'flex-end'}>
+              <Grow in timeout={1000}>
+                <Grid container>
+                  <Grid item xs={6}>
                     <TextValidator
-                      id='email'
-                      label='Email'
+                      id='name'
+                      label='User name'
                       margin='normal'
-                      schema={validationSchema}
                     />
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextValidator
-                    id='password'
-                    type='password'
-                    label='Password'
-                    margin='normal'
-                    schema={validationSchema}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Grid container justify={'flex-end'}>
+                  <Grid item xs={6}>
+                    <Grid container justify={'flex-end'}>
+                      <TextValidator
+                        id='email'
+                        label='Email'
+                        margin='normal'
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextValidator
-                      id='password_confirmation'
+                      id='password'
                       type='password'
-                      label='Confirm password'
+                      label='Password'
                       margin='normal'
-                      schema={validationSchema}
                     />
                   </Grid>
+                  <Grid item xs={6}>
+                    <Grid container justify={'flex-end'}>
+                      <TextValidator
+                        id='password_confirmation'
+                        type='password'
+                        label='Confirm password'
+                        margin='normal'
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Grow>
-            <Navigation
-              onBack={onClickBackToLogin}
-              onNext={onCreateAccount(validation.value as any)}
-              canNext={validation.isValid}
-            />
+              </Grow>
+              <FormContext.Consumer>
+                {(context: IFormContext) => (
+                  <Navigation
+                    onBack={onClickBackToLogin}
+                    onNext={context.onSubmit}
+                    canNext={true}
+                  />
+                )}
+              </FormContext.Consumer>
           </Grid>
-        </Paper>
-      </InCenter>
-    );
+        </FormValidation>
+      </Paper>
+  </InCenter>
+  );
   }
 }
 

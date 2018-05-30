@@ -1,6 +1,5 @@
 import { fork } from 'redux-saga/effects';
 
-import { menuItem } from 'src/renderer/component/Menu/flux/menuItemSaga';
 import { createAccountSaga } from 'src/renderer/component/Profile/Auth/flux/sagas/CreateAccountSaga';
 import { sendCodeOnMailSaga } from 'src/renderer/component/Profile/Auth/flux/sagas/SendCodeOnMailSaga';
 import { resetPasswordSaga } from 'src/renderer/component/Profile/Auth/flux/sagas/ResetPasswordSaga';
