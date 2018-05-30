@@ -42,7 +42,7 @@ export namespace DialogSelectImageSpace {
       updateImageRequest: typeof updateImageRequest,
     };
     handleClose: () => void;
-    insertImage: (url: string) => void;
+    insertHTML: (html: string, callback: () => void) => void;
   }
 }
 
@@ -75,7 +75,7 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
   }
 
   handleClickOpen = (url: string) => () => {
-    this.props.insertImage(url);
+    this.props.insertHTML(`<img width="300px" src="${url}" />`, this.props.handleClose);
   }
 
   componentDidMount() {
@@ -83,7 +83,7 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
   }
 
   onSelectImage = (item: IImageLibraryItem) => () => {
-    this.props.insertImage(item.url);
+    this.props.insertHTML(`<img width="300px" src="${item.url}" />`, this.props.handleClose);
   }
 
   onChangePage = (e, page) => {
@@ -92,7 +92,6 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
 
   render() {
     const { pagination, items } = this.props;
-    console.log(items);
     return (
       <Dialog
         fullWidth
