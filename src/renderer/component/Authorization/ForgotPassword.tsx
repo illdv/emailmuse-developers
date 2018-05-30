@@ -76,11 +76,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswordSpace.IState> {
 
-  state = {
+  state: ForgotPasswordSpace.IState = {
     secretCode: '',
     mail: '',
-    password: '',
-    confirmPassword: '',
     step: Step.EMAIL,
   };
 
@@ -128,7 +126,6 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   }
 
   createPasswordForm = (): any => {
-
     return (
       <div>
         <TextValidator
