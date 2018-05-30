@@ -14,7 +14,6 @@ export namespace TextValidatorSpace {
   }
 
   export interface IProps {
-    schema: object;
   }
 }
 

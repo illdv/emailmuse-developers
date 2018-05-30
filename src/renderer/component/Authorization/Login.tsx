@@ -94,7 +94,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
               <Title title={'Sign in'} subtitle={'to continue to Emailer'}/>
               <FormValidation
                 schema={validationSchema}
-                formId={'login'}
                 onValidationSuccessful={onClickNext}
               >
                 <Grow in timeout={1500}>
@@ -105,7 +104,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                         id='email'
                         label='Email'
                         margin='normal'
-                        schema={validationSchema}
                       />
                       <TextValidator
                         fullWidth
@@ -113,7 +111,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                         label='Password'
                         type='password'
                         margin='normal'
-                        schema={validationSchema}
                       />
                     </Grid>
                   </Grid>

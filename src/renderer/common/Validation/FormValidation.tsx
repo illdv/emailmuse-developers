@@ -22,7 +22,6 @@ export namespace FormValidationSpace {
   export interface IProps {
     onValidationSuccessful: (value) => void;
     schema: object;
-    formId: string;
   }
 }
 
