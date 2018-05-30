@@ -30,11 +30,12 @@ export const AccountItemExtising:
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary={displayName} />
-        {onRemove ?
+        {
+          onRemove &&
           <IconButton color='inherit' onClick={handleRemove} aria-label='Close'>
             <CloseIcon />
-          </IconButton> :
-          null}
+          </IconButton>
+        }
       </ListItem>
     );
 };

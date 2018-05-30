@@ -68,9 +68,15 @@ export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, 
         </DialogTitle>
         <div>
           <List>
-            {emailAccounts.map(account => (
-              <AccountItemExtising displayName={account.email} onRemove={this.handleRemove(account)} key={account.id}/>
-            ))}
+            {
+              emailAccounts.map(account => (
+              <AccountItemExtising
+                displayName={account.email}
+                onRemove={this.handleRemove(account)}
+                key={account.id}
+              />
+            ))
+            }
             <AccountItemNew onAddNew={this.handleAddNew}/>
           </List>
         </div>
