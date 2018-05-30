@@ -42,7 +42,6 @@ export namespace PaperDialogSpace {
      * Happened if indicator click onBack.
      */
     onBack?: () => void;
-    validation: object;
   }
 }
 
@@ -77,10 +76,10 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
   }
 
   render() {
-    const { classes, title, label, subtitle, body, validation, id } = this.props;
+    const { classes, title, label, subtitle, body, id } = this.props;
 
     return (
-      {/*<InCenter>
+      <InCenter>
         <Paper square className={classes.paper}>
           <Grid container spacing={24} className={classes.root}>
             <Title title={title} subtitle={subtitle}/>
@@ -93,7 +92,6 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
                     id={id}
                     label={label}
                     margin='normal'
-                    schema={validation}
                   />
                   }
                 </Grid>
@@ -102,7 +100,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
             <Navigation onBack={this.onBack} onNext={this.onNext} canNext={this.props.canNext}/>
           </Grid>
         </Paper>
-      </InCenter>*/}
+      </InCenter>
     );
   }
 }
