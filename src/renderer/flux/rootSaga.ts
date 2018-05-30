@@ -9,19 +9,20 @@ import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/
 import { loginSaga, watcherLogout, watcherSetToken } from 'src/renderer/component/Profile/Auth/flux/sagas/LoginSaga';
 import { watcherChangePassword, watcherGetProfile } from '../component/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
+import { selectMenuItemWatcher } from 'src/renderer/component/Menu/flux/saga';
 import { checkCodeSaga } from 'src/renderer/component/Profile/Auth/flux/sagas/CheckCodeSaga';
 
 export default function* rootSaga() {
   yield [
     fork(createAccountSaga),
     fork(loginSaga),
-    fork(menuItem),
     fork(sendCodeOnMailSaga),
     fork(resetPasswordSaga),
     fork(toastSaga),
     fork(imageLibraryRootSaga),
     fork(watcherSetToken),
     fork(watcherChangePassword),
+    fork(selectMenuItemWatcher),
     ...templates.map(fork),
     fork(watcherGetProfile),
     fork(checkCodeSaga),

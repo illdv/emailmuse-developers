@@ -17,6 +17,7 @@ export function* watcherSetToken() {
   while (true) {
     const { payload } = yield take('SET_TOKEN');
     CustomStorage.setItem('token', payload.token, false);
+    yield put(TemplateAction.select(null));
     // noinspection TsLint
     axios.defaults.headers.common['authorization'] = `Bearer ${payload.token}`;
   }

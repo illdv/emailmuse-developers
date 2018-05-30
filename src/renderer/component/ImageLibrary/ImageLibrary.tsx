@@ -134,24 +134,21 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
-          {
-            pagination.total > 0 &&
-              <TablePagination
-                component='div'
-                count={pagination.total}
-                rowsPerPage={pagination.per_page}
-                rowsPerPageOptions={[15]}
-                page={pagination.current_page - 1}
-                backIconButtonProps={{
-                  'aria-label': 'Previous Page',
-                }}
-                nextIconButtonProps={{
-                  'aria-label': 'Next Page',
-                }}
-                onChangePage={this.onChangePage}
-                onChangeRowsPerPage={this.onChangeRowsPerPage}
-              />
-          }
+          <TablePagination
+            component='div'
+            count={pagination.total || 0}
+            rowsPerPage={pagination.per_page || 0}
+            rowsPerPageOptions={[15]}
+            page={pagination.current_page - 1}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.onChangePage}
+            onChangeRowsPerPage={this.onChangeRowsPerPage}
+          />
           <DragAndDropTarget
             onDrop={this.onDropFile}
             showOverlay={true}
@@ -160,12 +157,12 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
             <div className={b('container')}>
               {
                 this.state.chosenImage &&
-                  <ImageLibraryDialog
-                    item={this.state.chosenImage}
-                    onDeleteItem={this.deleteItem}
-                    onUpdateItem={this.updateItem}
-                    onClose={this.closeDialog}
-                  />
+                <ImageLibraryDialog
+                  item={this.state.chosenImage}
+                  onDeleteItem={this.deleteItem}
+                  onUpdateItem={this.updateItem}
+                  onClose={this.closeDialog}
+                />
               }
               <ImageLibraryList
                 items={this.props.items}

@@ -8,10 +8,7 @@ const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
  */
 export enum MenuItemType {
   ACCOUNT,
-  COMPOSE,
   TEMPLATES,
-  TRAINING,
-  RESEARCH,
   IMAGE_LIBRARY,
 }
 

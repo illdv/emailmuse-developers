@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as Jodit from 'jodit';
 
-import { DialogSelectImage } from 'src/renderer/component/Templates/dialog/DialogSelectImage';
+import { DialogSelectImage } from 'src/renderer/common/Jodit/dialogs/DialogSelectImage';
 
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
