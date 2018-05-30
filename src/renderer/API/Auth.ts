@@ -1,9 +1,10 @@
 import { ILoginResponse } from 'type/EmailerAPI';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { AxiosPromise } from 'axios';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { ICreateAccountRequest, ILoginRequest } from 'src/renderer/component/Profile/Auth/flux/module';
+// import { FluxAccounts } from 'src/renderer/component/Profile/Auth/flux/FluxAccounts';
 
-export function login(request: FluxAccounts.Actions.Login.IRequest): AxiosPromise<ILoginResponse> {
+export function login(request: ILoginRequest): AxiosPromise<ILoginResponse> {
   return AxiosWrapper.post('/login', request);
 }
 
@@ -11,7 +12,7 @@ export function checkCode(code: string) {
   return AxiosWrapper.post(`/register/confirm/${code}`, {});
 }
 
-export function sendCode(user: FluxAccounts.Actions.CreateAccount.IRequest) {
+export function sendCode(user: ICreateAccountRequest) {
   return AxiosWrapper.post('/register', user);
 }
 

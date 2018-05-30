@@ -2,27 +2,26 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import Login from 'src/renderer/component/Authorization/Login';
-import ForgotPassword from 'src/renderer/component/Authorization/ForgotPassword';
-import CreateAccount from 'src/renderer/component/Authorization/CreateAccount';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import Login from 'src/renderer/component/Profile/Auth/Login';
+import ForgotPassword from 'src/renderer/component/Profile/Auth/ForgotPassword';
+import CreateAccount from 'src/renderer/component/Profile/Auth/CreateAccount';
 import { Loading } from 'src/renderer/common/Loading';
-import { CreateAccountSuccess } from 'src/renderer/component/Authorization/CreateAccountSuccess';
-import { CheckCode } from 'src/renderer/component/Authorization/CheckCode';
-import AuthStep = FluxAccounts.Models.AuthStep;
+import { CreateAccountSuccess } from 'src/renderer/component/Profile/Auth/CreateAccountSuccess';
+import { CheckCode } from 'src/renderer/component/Profile/Auth/CheckCode';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
 
   }
-
   export interface IProps {
-    accounts?: any;
+    profile?: IProfileState;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
@@ -33,7 +32,7 @@ export class Layout extends Component<AuthorizationLayoutSpace.IProps, Authoriza
   state = {};
 
   render() {
-    const { authStep } = this.props.accounts;
+    const { authStep } = this.props.profile.auth;
 
     switch (authStep) {
       case AuthStep.CREATE_ACCOUNT:

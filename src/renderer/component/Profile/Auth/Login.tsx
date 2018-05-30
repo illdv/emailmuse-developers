@@ -6,15 +6,17 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { Action, Title } from 'src/renderer/component/Profile/Auth/common/Common';
+// import { FluxAccounts } from 'src/renderer/component/Profile/Auth/flux/FluxAccounts';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
 import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
-import AuthStep = FluxAccounts.Models.AuthStep;
-import IRequest = FluxAccounts.Actions.Login.IRequest;
+import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+// import AuthStep = FluxAccounts.Models.AuthStep;
+// import IRequest = FluxAccounts.Actions.Login.IRequest;
 
-const styles = (theme) => ({
+const styles = theme => ({
   root: {
     height: '100%',
   },
@@ -51,7 +53,7 @@ export namespace AuthorizationSpace {
     validation: IValidationState;
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
-    onClickNext: (request: IRequest) => () => void;
+    onClickNext: (request: ILoginRequest) => () => void;
     actions?: IValidationActions;
   }
 }
@@ -62,13 +64,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.FORGOT_PASSWORD));
+    dispatch(setAuthStepAction(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.CREATE_ACCOUNT));
+    dispatch(setAuthStepAction(AuthStep.CREATE_ACCOUNT));
   },
-  onClickNext: (request: IRequest) => () => {
-    dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
+  onClickNext: (request: ILoginRequest) => () => {
+    dispatch(loginActions.REQUEST(request));
   },
   actions: bindActionCreators({
     ...ValidationActions,

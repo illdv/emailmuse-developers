@@ -2,11 +2,13 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import PaperInCenter from 'src/renderer/component/Authorization/common/PaperInCenter';
+import PaperInCenter from 'src/renderer/component/Profile/Auth/common/PaperInCenter';
 import { Button, Grow, Typography } from '@material-ui/core';
-import { Title } from 'src/renderer/component/Authorization/common/Common';
+import { Title } from 'src/renderer/component/Profile/Auth/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
+import { setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
 export namespace CreateAccountSuccessSpace {
   export interface IState {
@@ -14,18 +16,18 @@ export namespace CreateAccountSuccessSpace {
   }
 
   export interface IProps {
-    accounts?: FluxAccounts.IState;
+    profile?: IProfileState;
     onBackLogin?: () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onBackLogin: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(FluxAccounts.Models.AuthStep.LOGIN));
+    dispatch(setAuthStepAction(AuthStep.LOGIN));
   },
 });
 
@@ -36,11 +38,11 @@ export class CreateAccountSuccess
   state = {};
 
   render() {
-    const { accounts } = this.props;
-    const error        = accounts.error;
+    const { profile } = this.props;
+    const error        = profile.auth.error;
 
-    const title = error ? 'Failed create account' : 'Create account success';
-    const body  = error || `A message was sent to ${accounts.user.email}. Check your email and follow the link.`;
+    const title = error ? 'Failed to create account' : 'Account has been successfully created';
+    const body  = error || `A message was sent to ${profile.auth.user.email}. Check your email and follow the link.`;
 
     return (
       <PaperInCenter>

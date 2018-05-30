@@ -1,5 +1,4 @@
-import { API_ENDPOINT } from 'src/renderer/API/api.config';
-import axios from 'axios';
+import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 
 export function uploadImages(files: File | File[]);
 
@@ -8,18 +7,17 @@ export function uploadImages(files) {
   for (let i = 0; i < files.length; i++) {
     fd.append(`images[${i}]`, files[i]);
   }
-  return axios.post(`${API_ENDPOINT}/images`, fd);
+  return AxiosWrapper.post('/images', fd);
 }
 
 export function getImages(pageId: number = 1) {
-  return axios.get(`${API_ENDPOINT}/images/?page=${pageId}`);
+  return AxiosWrapper.get(`/images/?page=${pageId}`);
 }
 
 export function updateImage(imageId: number, name: string) {
-  return axios.put(`${API_ENDPOINT}/images/${imageId}`, { name });
+  return AxiosWrapper.put(`/images/${imageId}`, { name });
 }
 
-// TODO change type
-export function deleteImages(imageIds: number | number[]) {
-  return axios.post(`${API_ENDPOINT}/images`, { id: imageIds, _method: 'DELETE' });
+export function deleteImages(imageIds: number[]) {
+  return AxiosWrapper.deleteRequest('/images', { id: imageIds });
 }

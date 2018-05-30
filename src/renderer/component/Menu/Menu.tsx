@@ -17,7 +17,9 @@ import { Collections, Drafts, SupervisorAccount } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IStyle } from 'type/materialUI';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { logoutAction } from 'src/renderer/component/Profile/Auth/flux/module';
+// import { FluxAccounts } from 'src/renderer/component/Profile/Auth/flux/FluxAccounts';
+// import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
 const createMenuSchema = (): IItem[] => {
   return [
@@ -27,7 +29,7 @@ const createMenuSchema = (): IItem[] => {
   ];
 };
 
-const styles: IStyle = (theme) => ({
+const styles: IStyle = theme => ({
   root: {
     width: '100%',
     height: '100%',
@@ -57,7 +59,7 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
 
 export namespace MenuSpace {
   export interface IProps {
-    accounts: any;
+    // profile: IProfileState;
     actions: FluxDrawerMenu.IActions;
     logout: () => void;
   }
@@ -78,7 +80,7 @@ interface IItem {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
+  // profile: state.profile,
   menu: state.drawerMenu,
 });
 
@@ -87,7 +89,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     ...FluxDrawerMenu.Actions,
   }, dispatch),
   logout: () => {
-    dispatch(FluxAccounts.Actions.Logout());
+    dispatch(logoutAction());
   },
 });
 
@@ -102,7 +104,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
     const menuSchema          = createMenuSchema();
 
     const toItem = (items: IItem[]) => {
-      return items.map((item) => (
+      return items.map(item => (
         <div key={item.title}>
           <Item
             title={item.title}

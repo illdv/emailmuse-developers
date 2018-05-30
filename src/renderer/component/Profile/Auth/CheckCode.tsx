@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import PaperDialog from 'src/renderer/component/Authorization/common/PaperDialog';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import AuthStep = FluxAccounts.Models.AuthStep;
+import PaperDialog from 'src/renderer/component/Profile/Auth/common/PaperDialog';
 import { IValidationState } from 'src/renderer/common/Validation/flux/models';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
+import { checkCodeActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
 
 export namespace CheckCodeSpace {
   export interface IState {
@@ -13,7 +14,7 @@ export namespace CheckCodeSpace {
   }
 
   export interface IProps {
-    accounts?: FluxAccounts.IState;
+    profile?: IProfileState;
     validation?: IValidationState;
     onClickBack?: () => void;
     onCheckCode?: (code: string) => void;
@@ -21,16 +22,16 @@ export namespace CheckCodeSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
+  profile: state.profile,
   validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickBack: () => {
-    dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.LOGIN));
+    dispatch(setAuthStepAction(AuthStep.LOGIN));
   },
   onCheckCode: (code: string) => {
-    dispatch(FluxAccounts.Actions.CreateAccount.checkCode.REQUEST(code));
+    dispatch(checkCodeActions.REQUEST(code));
   },
 });
 
@@ -45,12 +46,12 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
   }
 
   render() {
-    const { accounts, onClickBack } = this.props;
+    const { profile, onClickBack } = this.props;
 
     return (
       <PaperDialog
         title={'Check your email and enter code.'}
-        subtitle={`A message was sent to ${accounts.user.email}.`}
+        subtitle={`A message was sent to ${profile.auth.user.email}.`}
         canNext={true}
         onEnterCompleted={this.onCheckCode}
         onBack={onClickBack}
