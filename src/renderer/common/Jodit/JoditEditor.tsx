@@ -74,6 +74,15 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   createOption = () => {
     return {
+      buttons: [
+        'source',
+        '|', 'bold', 'italic', 'underline', 'strikethrough',
+        '|', 'font', 'fontsize', 'brush', 'paragraph',
+        '|', 'ul', 'ol', 'outdent', 'indent', 'align',
+        '|', 'cut', 'hr', 'eraser', 'copyformat',
+        '|', 'undo', 'redo',
+        '|', 'table', 'link',
+      ],
       extraButtons: [
         {
           name: 'insertImage',
