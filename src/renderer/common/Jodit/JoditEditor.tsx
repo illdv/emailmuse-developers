@@ -3,13 +3,27 @@ import { Component } from 'react';
 import * as Jodit from 'jodit';
 
 import { DialogSelectImage } from 'src/renderer/common/Jodit/dialogs/DialogSelectImage';
+import { DialogEditLinkButton } from 'src/renderer/common/Jodit/dialogs/DialogEditLinkButton';
 
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
+import { Button } from '@material-ui/core/es';
+
+interface IDialog {
+  open: boolean;
+}
+
+enum DialogName {
+  selectImage = 'selectImage',
+  linkButton = 'linkButton',
+}
 
 export namespace JoditEditorSpace {
-  export interface IState {
-    selectImageOpen: boolean;
+
+  export interface IState<T extends string> {
+    dialogs: {
+      [keys in T]?: IDialog;
+    };
   }
 
   export interface IProps {
@@ -18,10 +32,13 @@ export namespace JoditEditorSpace {
   }
 }
 
-export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState> {
+export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
 
   state = {
-    selectImageOpen: false,
+    dialogs: {
+      [DialogName.linkButton]: { open: false },
+      [DialogName.selectImage]: { open: false },
+    },
   };
 
   private readonly textArea;
@@ -57,35 +74,65 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   createOption = () => {
     return {
+      buttons: [
+        'source',
+        '|', 'bold', 'italic', 'underline', 'strikethrough',
+        '|', 'font', 'fontsize', 'brush', 'paragraph',
+        '|', 'ul', 'ol', 'outdent', 'indent', 'align',
+        '|', 'cut', 'hr', 'eraser', 'copyformat',
+        '|', 'undo', 'redo',
+        '|', 'table', 'link',
+      ],
       extraButtons: [
         {
           name: 'insertImage',
-          exec: (editor) => {
-            this.setState({ selectImageOpen: true });
-          },
+          exec: this.handleOpenDialog(DialogName.selectImage),
+        },
+        {
+          name: 'insertLinkButton',
+          exec: this.handleOpenDialog(DialogName.linkButton),
         },
       ],
     };
   }
 
-  handleCloseSelectImage = () => {
-    this.setState({ selectImageOpen: false });
+  handleOpenDialog = (nameDialog: DialogName) => () => {
+    this.setState({
+      dialogs: {
+        ...this.state.dialogs,
+        [nameDialog]: { open: true }
+      },
+    });
   }
 
-  insertImage = (url: string) => {
-    this.editor.selection.insertHTML(`<img src="${url}"/>`);
-    this.setState({selectImageOpen: false});
+  handleCloseDialog = (nameDialog: DialogName) => () => {
+    this.setState({
+      dialogs: {
+        ...this.state.dialogs,
+        [nameDialog]: { open: false }
+      },
+    });
+  }
+
+  insertHTML = (html: string, callback: () => void) => {
+    this.editor.selection.insertHTML(html);
+    callback();
   }
 
   render() {
-    const { selectImageOpen } = this.state;
+    const dialogs = this.state.dialogs;
     return (
       <>
         <textarea ref={this.textArea}/>
         <DialogSelectImage
-          handleClose={this.handleCloseSelectImage}
-          isOpen={selectImageOpen}
-          insertImage={this.insertImage}
+          isOpen={dialogs[DialogName.selectImage].open}
+          insertHTML={this.insertHTML}
+          handleClose={this.handleCloseDialog(DialogName.selectImage)}
+        />
+        <DialogEditLinkButton
+          isOpen={dialogs[DialogName.linkButton].open}
+          insertHTML={this.insertHTML}
+          handleClose={this.handleCloseDialog(DialogName.linkButton)}
         />
       </>
     );
