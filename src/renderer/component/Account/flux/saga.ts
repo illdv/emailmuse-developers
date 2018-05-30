@@ -34,7 +34,7 @@ function* changeNameSaga(action: IActionPayload<{ name: string }>): IterableIter
   } catch (error) {
     yield put(FluxToast.Actions.showToast(error.message, ToastType.Success));
   }
-  yield put(FluxToast.Actions.showToast('Your name has been successfully changed', ToastType.Success));
+  yield put(FluxToast.Actions.showToast('Your indicator has been successfully changed', ToastType.Success));
 }
 
 export function* watcherGetProfile() {

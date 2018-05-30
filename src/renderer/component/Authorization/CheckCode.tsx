@@ -5,7 +5,6 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import PaperDialog from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import AuthStep = FluxAccounts.Models.AuthStep;
-import { IValidationState } from 'src/renderer/common/Validation/flux/models';
 
 export namespace CheckCodeSpace {
   export interface IState {
@@ -14,7 +13,6 @@ export namespace CheckCodeSpace {
 
   export interface IProps {
     accounts?: FluxAccounts.IState;
-    validation?: IValidationState;
     onClickBack?: () => void;
     onCheckCode?: (code: string) => void;
   }
@@ -22,7 +20,6 @@ export namespace CheckCodeSpace {
 
 const mapStateToProps = (state: IGlobalState) => ({
   accounts: state.accounts,
-  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -41,7 +38,7 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
 
   onCheckCode = () => {
     // noinspection TsLint
-    this.props.onCheckCode(this.props.validation.value['check_code']);
+    // this.props.onCheckCode(this.props.validation.value['check_code']);
   }
 
   render() {

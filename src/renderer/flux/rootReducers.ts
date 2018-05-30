@@ -9,13 +9,10 @@ import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/con
 
 import templates from 'src/renderer/component/Templates/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
-import { IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationReducer } from 'src/renderer/common/Validation/flux/module';
 
 export interface IGlobalState {
   accounts: FluxAccounts.IState;
   drawerMenu: FluxDrawerMenu.IState;
-  validation: IValidationState;
   toast: FluxToast.IState;
   templates: ITemplateState;
   images: ImageLibrary.IState;
@@ -25,7 +22,6 @@ export interface IGlobalState {
 export default combineReducers({
   accounts: FluxAccounts.reducer,
   drawerMenu: FluxDrawerMenu.reducer,
-  validation: ValidationReducer,
   toast: FluxToast.reducer,
   templates,
   images: ImageLibrary.reducer,

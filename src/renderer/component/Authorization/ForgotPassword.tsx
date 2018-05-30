@@ -2,14 +2,10 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Email } from '@material-ui/icons';
-import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Authorization/common/PaperDialog';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
 import AuthStep = FluxAccounts.Models.AuthStep;
 
 enum Step {
@@ -25,8 +21,6 @@ export namespace ForgotPasswordSpace {
 
   export interface IProps {
     classes?: any;
-    actions?: IValidationActions;
-    validation?: IValidationState;
     onSendCode?: (mail: string) => void;
     resetPassword?: (email: string, token: string, password: string, passwordConfirmation: string) => void;
     onClickBackToLogin?: () => void;
@@ -35,7 +29,6 @@ export namespace ForgotPasswordSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -48,9 +41,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   resetPassword: (email: string, token: string, password: string, passwordConfirmation: string) => {
     dispatch(FluxAccounts.Actions.ForgotPassword.resetPassword.REQUEST(email, token, password, passwordConfirmation));
   },
-  actions: bindActionCreators({
-    ...ValidationActions,
-  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -64,12 +54,8 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     step: Step.EMAIL,
   };
 
-  componentWillUnmount(): void {
-    this.props.actions.clear();
-  }
-
-  stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin, validation } = this.props;
+  /*stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
+    const { onClickBackToLogin } = this.props;
 
     const validationSchema = {
       email: {
@@ -152,12 +138,12 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         validation: {},
       },
     };
-  }
+  }*/
 
   createPasswordForm = (validationSchema: { password: object, password_confirmation: object }): any => {
 
     return (
-      <div>
+      {/*<div>
         <TextValidator
           fullWidth
           type='password'
@@ -174,31 +160,31 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
           margin='normal'
           schema={validationSchema.password_confirmation}
         />
-      </div>
+      </div>*/}
     );
   }
 
   createSecretCodeForm = (validationSchema: { secret_code: object }): any => {
     return (
-      <TextValidator
+      {/*<TextValidator
         fullWidth
         id={'secret_code'}
         label={'Secret code'}
         margin='normal'
         schema={validationSchema.secret_code}
-      />
+      />*/}
     );
   }
 
   render() {
 
-    const step  = this.state.step;
+    /*const step  = this.state.step;
     const steps = this.stepsRecoveriesPassword();
 
-    const currentStep = steps[step];
+    const currentStep = steps[step];*/
 
     return (
-      <PaperDialog {...currentStep}/>
+      {/*<PaperDialog {...currentStep}/>*/}
     );
   }
 }

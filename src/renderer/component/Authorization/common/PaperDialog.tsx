@@ -35,11 +35,11 @@ export namespace PaperDialogSpace {
     id: string;
     canNext?: boolean;
     /**
-     * Happened if name enter value and click next.
+     * Happened if indicator enter value and click next.
      */
     onEnterCompleted?: (value: string) => void;
     /**
-     * Happened if name click onBack.
+     * Happened if indicator click onBack.
      */
     onBack?: () => void;
     validation: object;
@@ -80,7 +80,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
     const { classes, title, label, subtitle, body, validation, id } = this.props;
 
     return (
-      <InCenter>
+      {/*<InCenter>
         <Paper square className={classes.paper}>
           <Grid container spacing={24} className={classes.root}>
             <Title title={title} subtitle={subtitle}/>
@@ -102,7 +102,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
             <Navigation onBack={this.onBack} onNext={this.onNext} canNext={this.props.canNext}/>
           </Grid>
         </Paper>
-      </InCenter>
+      </InCenter>*/}
     );
   }
 }

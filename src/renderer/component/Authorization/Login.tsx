@@ -9,8 +9,7 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Authorization/common/Common';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
+import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import AuthStep = FluxAccounts.Models.AuthStep;
 import IRequest = FluxAccounts.Actions.Login.IRequest;
 
@@ -48,16 +47,13 @@ export namespace AuthorizationSpace {
 
   export interface IProps {
     classes?: any;
-    validation: IValidationState;
     onClickForgotPassword: () => void;
     onCreateAccount: () => void;
     onClickNext: (request: IRequest) => () => void;
-    actions?: IValidationActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -67,28 +63,17 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCreateAccount: () => {
     dispatch(FluxAccounts.Actions.SetAuthStep(AuthStep.CREATE_ACCOUNT));
   },
-  onClickNext: (request: IRequest) => () => {
+  onClickNext: (request: IRequest) => {
     dispatch(FluxAccounts.Actions.Login.Step.REQUEST(request));
   },
-  actions: bindActionCreators({
-    ...ValidationActions,
-  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.validation.isValid !== this.props.validation.isValid;
-  }
-
-  componentWillUnmount(): void {
-    this.props.actions.clear();
-  }
-
   render() {
-    const { classes, onClickForgotPassword, onCreateAccount, onClickNext, validation } = this.props;
+    const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
 
     const validationSchema = {
       email: {
@@ -107,33 +92,43 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
           <Paper className={classes.paper}>
             <Grid container spacing={24} className={classes.root}>
               <Title title={'Sign in'} subtitle={'to continue to Emailer'}/>
-              <Grow in timeout={1500}>
-                <Grid item xs={12} style={{ paddingTop: 0 }}>
-                  <Grid item xs={12}>
-                    <TextValidator
-                      fullWidth
-                      id='email'
-                      label='Email'
-                      margin='normal'
-                      schema={validationSchema}
-                    />
-                    <TextValidator
-                      fullWidth
-                      id='password'
-                      label='Password'
-                      type='password'
-                      margin='normal'
-                      schema={validationSchema}
-                    />
+              <FormValidation
+                schema={validationSchema}
+                formId={'login'}
+                onValidationSuccessful={onClickNext}
+              >
+                <Grow in timeout={1500}>
+                  <Grid item xs={12} style={{ paddingTop: 0 }}>
+                    <Grid item xs={12}>
+                      <TextValidator
+                        fullWidth
+                        id='email'
+                        label='Email'
+                        margin='normal'
+                        schema={validationSchema}
+                      />
+                      <TextValidator
+                        fullWidth
+                        id='password'
+                        label='Password'
+                        type='password'
+                        margin='normal'
+                        schema={validationSchema}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Grow>
-              <Action
-                onClickForgotPassword={onClickForgotPassword}
-                onCreateAccount={onCreateAccount}
-                onClickNext={onClickNext(validation.value as any)}
-                canNext={true}
-              />
+                </Grow>
+                <FormContext.Consumer>
+                  {(context: IFormContext) => (
+                    <Action
+                      onClickForgotPassword={onClickForgotPassword}
+                      onCreateAccount={onCreateAccount}
+                      onClickNext={context.onSubmit}
+                      canNext={true}
+                    />
+                  )}
+                </FormContext.Consumer>
+              </FormValidation>
             </Grid>
           </Paper>
         </InCenter>

@@ -40,6 +40,7 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
     yield put(LoginAccount.SetToken(token));
     yield put(LoginAccount.Step.SUCCESS({ email: user.email, name: user.name, token }));
   } catch (error) {
+    yield put(LoginAccount.Step.FAILURE(''));
     if (error.response === undefined) {
       yield put(FluxToast.Actions.showToast(error.message, ToastType.Error));
     } else {
@@ -47,7 +48,6 @@ function* onLogin(action: IActionPayload<{ request: IRequest }>): IterableIterat
         yield put(FluxToast.Actions.showToast(error.response.data.message, ToastType.Error));
       }
     }
-    yield put(LoginAccount.Step.FAILURE(''));
   }
 }
 

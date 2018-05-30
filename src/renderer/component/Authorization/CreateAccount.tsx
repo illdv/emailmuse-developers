@@ -1,17 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Grid, Paper, WithStyles, withStyles } from '@material-ui/core/';
-import { Grow } from '@material-ui/core/es';
-import { bindActionCreators } from 'redux';
+import { WithStyles, withStyles } from '@material-ui/core/';
 
-import { Navigation, Title } from 'src/renderer/component/Authorization/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import InCenter from 'src/renderer/common/InCenter';
-import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
-import { ValidationActions } from 'src/renderer/common/Validation/flux/module';
-import { IValidationActions, IValidationState } from 'src/renderer/common/Validation/flux/models';
 import action = FluxAccounts.Actions.CreateAccount;
 import IRequest = action.IRequest;
 import AuthStep = FluxAccounts.Models.AuthStep;
@@ -29,15 +22,12 @@ export namespace CreateAccountSpace {
   }
 
   export interface IProps {
-    validation?: IValidationState;
-    actions?: IValidationActions;
     onClickBackToLogin?: () => void;
     onCreateAccount?: (user: IRequest) => () => void;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  validation: state.validation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -46,21 +36,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }, onCreateAccount: (user: IRequest) => () => {
     dispatch(action.Step.REQUEST(user));
   },
-  actions: bindActionCreators({
-    ...ValidationActions,
-  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class CreateAccount
   extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
 
-  componentWillUnmount(): void {
-    this.props.actions.clear();
-  }
-
   render() {
-    const { classes, onClickBackToLogin, onCreateAccount, validation } = this.props;
+    const { classes, onClickBackToLogin, onCreateAccount } = this.props;
 
     const validationSchema = {
       name: {
@@ -82,7 +65,7 @@ class CreateAccount
     };
 
     return (
-      <InCenter>
+      {/*<InCenter>
         <Paper square className={classes.paper}>
           <Grid container className={classes.root}>
             <Title title={'Create your Emailer Account'}/>
@@ -135,7 +118,7 @@ class CreateAccount
             />
           </Grid>
         </Paper>
-      </InCenter>
+      </InCenter>*/}
     );
   }
 }

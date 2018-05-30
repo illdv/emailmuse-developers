@@ -7,6 +7,9 @@ export enum ActionStatus {
   FAILURE = 'FAILURE',
 }
 
+/**
+ * @deprecated use import { Action } from 'redux-act';
+ */
 export interface IActionPayload<T> extends Action {
   payload: T;
 }
