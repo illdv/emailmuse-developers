@@ -48,7 +48,7 @@ namespace ImageLibrarySpace {
   }
 }
 
-const styles: IStyle = (theme) => ({
+const styles: IStyle = theme => ({
   root: {
     width: '100%',
     height: '100%',
@@ -56,7 +56,7 @@ const styles: IStyle = (theme) => ({
   },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   items: getImagesURLSelector(state),
   pagination: {
     current_page: getCurrentPageSelector(state),
@@ -66,7 +66,7 @@ const mapStateToProps = (state) => ({
   },
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
     dispatch),
@@ -83,13 +83,13 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
     this.props.actions.getImagesRequest();
   }
 
-  onDropFile = (item) => {
+  onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
   }
 
-  onUploadFiles = (e) => {
+  onUploadFiles = e => {
     if (e.target.files) {
       let files = [];
       // tslint:disable-next-line
@@ -125,7 +125,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   }
 
   // TODO: implement properly when there is capability to change rows per currentPage
-  onChangeRowsPerPage = (e) => {
+  onChangeRowsPerPage = e => {
     console.log('Change rows', e.target.value);
   }
 
@@ -135,7 +135,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
           {
-            pagination.total &&
+            pagination.total > 0 &&
               <TablePagination
                 component='div'
                 count={pagination.total}
