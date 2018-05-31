@@ -1,6 +1,7 @@
-import { IFileInfo, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IFileInfo } from 'src/renderer/component/ImageLibrary/store/models';
 import { handleActions } from 'redux-actions';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 export namespace ImageLibrary {
   export interface IState {
@@ -12,10 +13,10 @@ export namespace ImageLibrary {
     return {
       all: [],
       pagination: {
-        current_page: null,
-        last_page: null,
-        per_page: null,
-        total: null,
+        current_page: 0,
+        last_page: 0,
+        per_page: 0,
+        total: 0,
       },
     };
   };

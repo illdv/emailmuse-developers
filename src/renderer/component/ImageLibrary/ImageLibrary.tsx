@@ -21,11 +21,12 @@ import {
   getPerPageSelector,
   getTotalImages,
 } from 'src/renderer/component/ImageLibrary/store/selectors';
-import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
 import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 const b = block('image-library');
 

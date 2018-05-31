@@ -13,8 +13,8 @@ function* getImagesWorker(action: IActionPayload<number>): IterableIterator<any>
       requestedPage = 1;
     }
     let response = yield call(getImages, requestedPage);
-    const currentPage = response.data.current_page;
-    const lastPage = response.data.last_page;
+    const currentPage = response.data.currentPage;
+    const lastPage = response.data.lastPage;
     // Check for current currentPage > last currentPage
     if (currentPage > lastPage) {
       response = yield call (getImages, lastPage || 1);

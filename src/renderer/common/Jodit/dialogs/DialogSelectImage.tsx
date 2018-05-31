@@ -5,7 +5,7 @@ import { Button, Dialog, DialogActions, DialogContent, Paper, TablePagination } 
 import { bindActionCreators } from 'redux';
 import block from 'bem-ts';
 
-import { IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ImageLibraryList } from 'src/renderer/component/ImageLibrary/ImageLibraryList';
 import {
@@ -23,6 +23,7 @@ import {
 } from 'src/renderer/component/ImageLibrary/store/actions';
 
 import './DialogSelectImage.scss';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 const b = block('dialogs-select-image');
 
