@@ -56,6 +56,7 @@ export function Action(props: IActionProps) {
   const { onClickForgotPassword, onCreateAccount, onClickNext, canNext } = props;
 
   const button = {
+    marginTop: 25,
     marginBottom: 25,
   };
 
