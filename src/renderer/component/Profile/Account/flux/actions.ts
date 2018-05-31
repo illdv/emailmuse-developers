@@ -1,6 +1,5 @@
 import { handleActions, createAction } from 'redux-actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
-import { Action } from 'redux-act';
 
 export interface IChangePasswordPayload {
   old_password: string;

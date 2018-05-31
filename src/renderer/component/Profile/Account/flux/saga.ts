@@ -3,7 +3,6 @@ import { AccountSpace, IChangePasswordPayload } from 'src/renderer/component/Pro
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { setName } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 function* getProfileSaga() {
   try {

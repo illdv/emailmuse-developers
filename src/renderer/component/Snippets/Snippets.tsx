@@ -4,17 +4,13 @@ import { connect, Dispatch } from 'react-redux';
 import { Paper } from '@material-ui/core';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISnippet } from 'src/renderer/component/Snippets/flux/modules';
+import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ICustomItem, ListElement } from 'src/renderer/common/List/ListElement';
-
-const testData: ISnippet[] = [
-  { id: '1', code: ':snippet1', body: 'Hello world!' },
-  { id: '2', code: ':snippet2', body: 'Hello world!' },
-  { id: '3', code: ':snippet3', body: 'Hello world!' },
-  { id: '4', code: ':snippet4', body: 'Hello world!' },
-  { id: '5', code: ':snippet5', body: 'Hello world!' },
-  { id: '6', code: ':snippet6', body: 'Hello world!' },
-];
+import { bindActionCreators } from 'redux';
+import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
+import { ActionStatus } from 'src/renderer/flux/utils';
+import { Loading } from 'src/renderer/common/Loading';
+import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -22,20 +18,19 @@ export namespace SnippetsSpace {
   }
 
   export interface IProps {
-
+    actions?: ISnippetsAction;
+    snippets?: ISnippetsState;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  snippets: state.snippets,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
+  actions: bindActionCreators({
+    ...SnippetsAction,
+  }, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -43,12 +38,21 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
 
   state = {};
 
+  componentDidMount(): void {
+    this.props.actions.loading();
+  }
+
   onSelectSnippet = (snippet: ISnippet) => () => {
     console.log('Select ', snippet);
   }
 
   toItem = (snippet: ISnippet): ICustomItem => {
-    return { id: snippet.id, title: snippet.code, description: '---', rightText: '---' };
+    return {
+      id: snippet.id.toString(),
+      title: snippet.shortcut,
+      description: snippet.description,
+      rightText: snippet.updated_at,
+    };
   }
 
   onChangePage = (event, page: number): void => {
@@ -56,13 +60,19 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   }
 
   render() {
+    const { snippet, status, pagination } = this.props.snippets;
+
+    if (status === ActionStatus.LOADING) {
+      return <Loading/>;
+    }
+
     return (
       <Paper elevation={4} className={'template-list'}>
         <ListElement
-          entities={testData}
+          entities={snippet}
           toItem={this.toItem}
           selectItem={this.onSelectSnippet}
-          pagination={{current_page: 1, per_page: testData.length, last_page: 5, total: testData.length }}
+          pagination={pagination}
           onChangePage={this.onChangePage}
         />
       </Paper>

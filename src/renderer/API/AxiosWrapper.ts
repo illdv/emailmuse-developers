@@ -11,19 +11,19 @@ export namespace AxiosWrapper {
     });
   }
 
-  export function post(apiMethod: string, body: any): AxiosPromise<any> {
+  export function post(apiMethod: string, body: any = {}): AxiosPromise<any> {
     return axios.post(EMAILER_API_URL + apiMethod,
       body,
     );
   }
 
-  export function put(apiMethod: string, body: any): AxiosPromise<any> {
+  export function put(apiMethod: string, body: any = {}): AxiosPromise<any> {
     return axios.put(EMAILER_API_URL + apiMethod,
       body,
     );
   }
 
-  export function deleteRequest(apiMethod: string, body: any): AxiosPromise<any> {
+  export function deleteRequest(apiMethod: string, body: any = {}): AxiosPromise<any> {
     return axios.post(EMAILER_API_URL + apiMethod,
       { ...body, _method: 'DELETE'},
     );
