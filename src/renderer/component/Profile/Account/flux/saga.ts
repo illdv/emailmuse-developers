@@ -3,6 +3,7 @@ import { AccountSpace, IChangePasswordPayload } from 'src/renderer/component/Pro
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+import { setName } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 function* getProfileSaga() {
   try {
@@ -19,22 +20,12 @@ function* getProfileSaga() {
 function* changePasswordSaga(action: IActionPayload<IChangePasswordPayload>): IterableIterator<any> {
   const data = action.payload;
   try {
-    const res = yield call(EmailerAPI.Accounts.changePassword, data);
+    yield call(EmailerAPI.Accounts.changePassword, data);
     yield put(FluxToast.Actions.showToast('Your password has been successfully changed', ToastType.Success));
   } catch (error) {
     console.log(error);
     yield put(FluxToast.Actions.showToast('Failed reset password', ToastType.Error));
   }
-}
-
-function* changeNameSaga(action: IActionPayload<{ name: string }>): IterableIterator<any> {
-  const data = action.payload;
-  try {
-    const res = yield call(EmailerAPI.Accounts.changeName, data);
-  } catch (error) {
-    yield put(FluxToast.Actions.showToast(error.message, ToastType.Success));
-  }
-  yield put(FluxToast.Actions.showToast('Your indicator has been successfully changed', ToastType.Success));
 }
 
 export function* watcherGetProfile() {
@@ -45,16 +36,26 @@ export function* watcherGetProfile() {
   }
 }
 
-export function* watcherChangeName() {
-  while (true) {
-    const data = yield take('CHANGE_NAME_REQUEST');
-    yield call(changeNameSaga, data);
-  }
-}
-
 export function* watcherChangePassword() {
   while (true) {
     const data = yield take('CHANGE_PASSWORD_REQUEST');
     yield call(changePasswordSaga, data);
+  }
+}
+
+function* changeNameSaga(action): IterableIterator<any> {
+  try {
+    yield call(EmailerAPI.Accounts.changeName, action.payload);
+    yield put(FluxToast.Actions.showToast('Name change success', ToastType.Success));
+    yield put(AccountSpace.Actions.getProfile.REQUEST());
+  } catch (error) {
+    yield put(FluxToast.Actions.showToast('Name change failed', ToastType.Error));
+  }
+}
+
+export function* watcherName() {
+  while (true) {
+    const action = yield take('CHANGE_NAME_REQUEST');
+    yield call(changeNameSaga, action);
   }
 }

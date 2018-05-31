@@ -10,7 +10,7 @@ export namespace Accounts {
     return axios.put('/profile/change-password', data);
   }
 
-  export function changeName({ name: sting }): AxiosPromise<{ name: string }> {
+  export function changeName(name: string): AxiosPromise<{ name: string }> {
     return axios.put('/profile', {
       name,
     });

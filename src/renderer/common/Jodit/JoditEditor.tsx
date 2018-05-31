@@ -7,7 +7,6 @@ import { DialogEditLinkButton } from 'src/renderer/common/Jodit/dialogs/DialogEd
 
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
-import { Button } from '@material-ui/core/es';
 
 interface IDialog {
   open: boolean;
@@ -100,7 +99,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.setState({
       dialogs: {
         ...this.state.dialogs,
-        [nameDialog]: { open: true }
+        [nameDialog]: { open: true },
       },
     });
   }
@@ -109,7 +108,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.setState({
       dialogs: {
         ...this.state.dialogs,
-        [nameDialog]: { open: false }
+        [nameDialog]: { open: false },
       },
     });
   }

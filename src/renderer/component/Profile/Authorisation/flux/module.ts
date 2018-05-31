@@ -88,6 +88,7 @@ export const setAuthStepAction: TSetAuthStep = createAction('SET_AUTH_STEP',
  * Logout
  */
 export const logoutAction = createAction('LOGOUT');
+export const setName = createAction('SET_NAME');
 
 const createDefaultAuthState = (token?: string): IAuthState => {
   // noinspection TsLint
@@ -126,5 +127,8 @@ export const authReducer = handleActions({
   },
   LOGOUT: (state): IAuthState => {
     return createDefaultAuthState();
+  },
+  SET_NAME: (state, action): IAuthState => {
+    return { ...state, name: action.payload };
   },
 }, createDefaultAuthState(CustomStorage.getItem('token')));

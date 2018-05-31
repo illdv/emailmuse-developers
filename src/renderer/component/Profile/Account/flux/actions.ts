@@ -1,10 +1,15 @@
 import { handleActions, createAction } from 'redux-actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
+import { Action } from 'redux-act';
 
 export interface IChangePasswordPayload {
   old_password: string;
   password: string;
   password_confirmation: string;
+}
+
+export interface IChangeNamePayload {
+  name: string;
 }
 
 const changePassword: IActionsChangePassword = {
@@ -17,6 +22,17 @@ const getProfile                             = {
   SUCCESS: createAction('GET_PROFILE_SUCCESS', data => data),
   FAILURE: createAction('GET_PROFILE_FAIL', error => error),
 };
+const changeName                             = {
+  REQUEST: createAction('CHANGE_NAME_REQUEST', name => name),
+  SUCCESS: createAction('CHANGE_NAME_SUCCESS', data => data),
+  FAILURE: createAction('CHANGE_NAME_FAIL', error => error),
+};
+
+interface IActionsChangePassword {
+  REQUEST: (data?: IChangePasswordPayload) => IActionPayload<IChangePasswordPayload>;
+  SUCCESS: () => IActionPayload<any>;
+  FAILURE: (error) => IActionPayload<{ error: string }>;
+}
 
 interface IActionsChangePassword {
   REQUEST: (data?: IChangePasswordPayload) => IActionPayload<IChangePasswordPayload>;
@@ -40,10 +56,12 @@ export namespace AccountSpace {
   interface IActions {
     changePassword: IActionsChangePassword;
     getProfile: IActionsProfile;
+    changeName: any;
   }
 
   export const Actions: IActions = {
     changePassword,
     getProfile,
+    changeName,
   };
 }
