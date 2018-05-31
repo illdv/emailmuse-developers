@@ -13,19 +13,18 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core/';
-import { Collections, Drafts, SupervisorAccount } from '@material-ui/icons';
+import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IStyle } from 'type/materialUI';
 import { logoutAction } from 'src/renderer/component/Profile/Auth/flux/module';
-// import { FluxAccounts } from 'src/renderer/component/Profile/Auth/flux/FluxAccounts';
-// import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
 const createMenuSchema = (): IItem[] => {
   return [
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
+    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.IMAGE_LIBRARY },
   ];
 };
 
@@ -59,7 +58,6 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
 
 export namespace MenuSpace {
   export interface IProps {
-    // profile: IProfileState;
     actions: FluxDrawerMenu.IActions;
     logout: () => void;
   }
@@ -80,7 +78,6 @@ interface IItem {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  // profile: state.profile,
   menu: state.drawerMenu,
 });
 

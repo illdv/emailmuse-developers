@@ -56,7 +56,8 @@ export function Action(props: IActionProps) {
   const { onClickForgotPassword, onCreateAccount, onClickNext, canNext } = props;
 
   const button = {
-    margin: 20,
+    marginTop: 25,
+    marginBottom: 25,
   };
 
   const url = {
@@ -72,7 +73,7 @@ export function Action(props: IActionProps) {
 
   return (
     <Grow in timeout={2000}>
-      <Grid item xs={12}>
+      <>
         <Grid item xs={12}>
           <Grid container direction={'row'} justify={'flex-end'}>
             <Button
@@ -113,7 +114,7 @@ export function Action(props: IActionProps) {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </>
     </Grow>
   );
 }

@@ -34,7 +34,7 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
     return null;
   }
 
-  onChange = (context) => (event: ChangeEvent<HTMLInputElement>) => {
+  onChange = context => (event: ChangeEvent<HTMLInputElement>) => {
     context.onSetValue(this.props.id, event.target.value);
   }
 
@@ -45,12 +45,12 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
       <FormContext.Consumer>
         {(context: IFormContext) => {
           const errorMessage = useOrDefault(() => (context.errors[id][0]), '');
-          const showError = !!errorMessage && context.activeField[id];
+          const showError    = !!errorMessage && context.activeField[id];
 
           return (
             <TextField
               error={showError}
-              helperText={showError && errorMessage}
+              helperText={showError ? errorMessage : ' '}
               onChange={this.onChange(context)}
               value={context.values[id] || ''}
               autoComplete='off'
