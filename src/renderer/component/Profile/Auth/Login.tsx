@@ -16,8 +16,8 @@ const styles = theme => ({
     height: '100%',
   },
   paper: {
-    width: 400,
-    height: 416,
+    width: 430,
+    height: 446,
     paddingLeft: 40,
     paddingRight: 40,
     paddingTop: 48,
@@ -101,28 +101,28 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                         fullWidth
                         id='email'
                         label='Email'
-                        margin='normal'
+                        margin='dense'
                       />
                       <TextValidator
                         fullWidth
                         id='password'
                         label='Password'
                         type='password'
-                        margin='normal'
+                        margin='dense'
                       />
                     </Grid>
+                    <FormContext.Consumer>
+                      {(context: IFormContext) => (
+                        <Action
+                          onClickForgotPassword={onClickForgotPassword}
+                          onCreateAccount={onCreateAccount}
+                          onClickNext={context.onSubmit}
+                          canNext={true}
+                        />
+                      )}
+                    </FormContext.Consumer>
                   </Grid>
                 </Grow>
-                <FormContext.Consumer>
-                  {(context: IFormContext) => (
-                    <Action
-                      onClickForgotPassword={onClickForgotPassword}
-                      onCreateAccount={onCreateAccount}
-                      onClickNext={context.onSubmit}
-                      canNext={true}
-                    />
-                  )}
-                </FormContext.Consumer>
               </FormValidation>
             </Grid>
           </Paper>
