@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createActionSteps, IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
 import axios from 'axios';
-import { AuthStep, IAuthState, IUser } from 'src/renderer/component/Profile/Auth/flux/models';
+import { AuthStep, IAuthState, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import CustomStorage from 'src/common/CustomStorage';
 import { Action } from 'redux';
 
@@ -110,7 +110,7 @@ export const authReducer = handleActions({
     return { ...state, ...action.payload, authStep: AuthStep.CHECK_CODE };
   },
   [createAccountActions.type.FAILURE]: (state, action): IAuthState => {
-    return { ...state, ...action.payload, authStep: AuthStep.CREATE_ACCOUNT };
+    return { ...state, ...action.payload, authStep: AuthStep.REGISTRATION };
   },
   [checkCodeActions.type.SUCCESS]: (state): IAuthState => {
     return { ...state, authStep: AuthStep.LOGIN };

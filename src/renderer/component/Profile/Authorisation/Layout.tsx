@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import Login from 'src/renderer/component/Profile/Auth/Login';
-import ForgotPassword from 'src/renderer/component/Profile/Auth/ForgotPassword';
-import CreateAccount from 'src/renderer/component/Profile/Auth/CreateAccount';
+import Login from 'src/renderer/component/Profile/Authorisation/Login';
+import ForgotPassword from 'src/renderer/component/Profile/Authorisation/ForgotPassword';
+import CreateAccount from 'src/renderer/component/Profile/Authorisation/Registration';
 import { Loading } from 'src/renderer/common/Loading';
-import { CreateAccountSuccess } from 'src/renderer/component/Profile/Auth/CreateAccountSuccess';
-import { CheckCode } from 'src/renderer/component/Profile/Auth/CheckCode';
+import { RegistrationSuccess } from 'src/renderer/component/Profile/Authorisation/RegistrationSuccess';
+import { CheckCode } from 'src/renderer/component/Profile/Authorisation/CheckCode';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -35,7 +35,7 @@ export class Layout extends Component<AuthorizationLayoutSpace.IProps, Authoriza
     const { authStep } = this.props.profile.auth;
 
     switch (authStep) {
-      case AuthStep.CREATE_ACCOUNT:
+      case AuthStep.REGISTRATION:
         return <CreateAccount/>;
       case AuthStep.FORGOT_PASSWORD:
         return <ForgotPassword/>;
@@ -43,8 +43,8 @@ export class Layout extends Component<AuthorizationLayoutSpace.IProps, Authoriza
         return <Loading/>;
       case AuthStep.CHECK_CODE:
         return <CheckCode/>;
-      case AuthStep.CREATE_ACCOUNT_SUCCESS:
-        return <CreateAccountSuccess/>;
+      case AuthStep.REGISTRATION_SUCCESS:
+        return <RegistrationSuccess/>;
       default:
         return <Login/>;
     }

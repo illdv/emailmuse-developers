@@ -3,11 +3,11 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import PaperDialog from 'src/renderer/component/Profile/Auth/common/PaperDialog';
+import PaperDialog from 'src/renderer/component/Profile/Authorisation/common/PaperDialog';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { checkCodeActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { checkCodeActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 export namespace CheckCodeSpace {
   export interface IState {

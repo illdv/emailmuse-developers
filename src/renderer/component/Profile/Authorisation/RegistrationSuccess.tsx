@@ -2,15 +2,15 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import PaperInCenter from 'src/renderer/component/Profile/Auth/common/PaperInCenter';
+import PaperInCenter from 'src/renderer/component/Profile/Authorisation/common/PaperInCenter';
 import { Button, Grow, Typography } from '@material-ui/core';
-import { Title } from 'src/renderer/component/Profile/Auth/common/Common';
+import { Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
-export namespace CreateAccountSuccessSpace {
+export namespace RegistrationSuccessSpace {
   export interface IState {
 
   }
@@ -32,8 +32,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-export class CreateAccountSuccess
-  extends Component<CreateAccountSuccessSpace.IProps, CreateAccountSuccessSpace.IState> {
+export class RegistrationSuccess
+  extends Component<RegistrationSuccessSpace.IProps, RegistrationSuccessSpace.IState> {
 
   state = {};
 

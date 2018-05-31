@@ -5,11 +5,11 @@ import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Action, Title } from 'src/renderer/component/Profile/Auth/common/Common';
+import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 const styles = theme => ({
   root: {
@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setAuthStepAction(AuthStep.FORGOT_PASSWORD));
   },
   onCreateAccount: () => {
-    dispatch(setAuthStepAction(AuthStep.CREATE_ACCOUNT));
+    dispatch(setAuthStepAction(AuthStep.REGISTRATION));
   },
   onClickNext: (request: ILoginRequest) => {
     dispatch(loginActions.REQUEST(request));

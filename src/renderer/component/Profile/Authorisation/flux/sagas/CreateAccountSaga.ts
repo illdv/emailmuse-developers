@@ -2,8 +2,8 @@ import { call, put, take } from 'redux-saga/effects';
 import { useOrDefault } from 'src/renderer/utils';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { sendCode } from 'src/renderer/API/Auth';
-import { createAccountActions, setAuthStepAction } from 'src/renderer/component/Profile/Auth/flux/module';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+import { createAccountActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 function* onCreateAccount(action): IterableIterator<any> {
   const requestUser = action.payload.user;

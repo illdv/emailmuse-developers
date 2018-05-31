@@ -6,7 +6,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
-import { AccountSpace } from 'src/renderer/component/Account/flux/actions';
+import { AccountSpace } from 'src/renderer/component/Profile/Account/flux/actions';
 import { bindActionCreators } from 'redux';
 
 export namespace ChangePasswordSpace {

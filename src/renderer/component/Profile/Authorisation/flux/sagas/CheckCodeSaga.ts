@@ -1,7 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { checkCode } from 'src/renderer/API/Auth';
-import { checkCodeActions } from 'src/renderer/component/Profile/Auth/flux/module';
+import { checkCodeActions } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 function* onCheckCode(action): IterableIterator<any> {
   try {

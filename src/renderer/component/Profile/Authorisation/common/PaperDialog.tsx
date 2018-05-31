@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 
 const styles = () => ({
   root: {

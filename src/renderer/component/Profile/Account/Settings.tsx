@@ -3,12 +3,12 @@ import { Divider, Grid, Paper, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
-import ChangePassword from 'src/renderer/component/Account/ChangePassword';
+import ChangePassword from 'src/renderer/component/Profile/Account/ChangePassword';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AccountSpace } from './flux/actions';
 import { Loading } from 'src/renderer/common/Loading';
-import { AccountsDialog } from 'src/renderer/component/Account/AccountsDialog';
+import { AccountsDialog } from 'src/renderer/component/Profile/Account/AccountsDialog';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
 const styles: IStyle = theme => ({

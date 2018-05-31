@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 
-import { Navigation, Title } from 'src/renderer/component/Profile/Auth/common/Common';
+import { Navigation, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
@@ -12,8 +12,8 @@ import {
   createAccountActions,
   ICreateAccountRequest,
   setAuthStepAction,
-} from 'src/renderer/component/Profile/Auth/flux/module';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+} from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 const styles = () => ({
   root: {
@@ -23,7 +23,7 @@ const styles = () => ({
   },
 });
 
-export namespace CreateAccountSpace {
+export namespace RegistrationSpace {
   export interface IState {
   }
 
@@ -44,8 +44,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-class CreateAccount
-  extends Component<CreateAccountSpace.IProps & WithStyles<'root' | 'paper'>, CreateAccountSpace.IState> {
+class Registration
+  extends Component<RegistrationSpace.IProps & WithStyles<'root' | 'paper'>, RegistrationSpace.IState> {
 
   render() {
     const { classes, onClickBackToLogin, onCreateAccount } = this.props;
@@ -130,4 +130,4 @@ class CreateAccount
   }
 }
 
-export default withStyles(styles)(CreateAccount);
+export default withStyles(styles)(Registration);

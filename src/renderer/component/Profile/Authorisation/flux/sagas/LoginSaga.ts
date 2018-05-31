@@ -10,8 +10,8 @@ import {
   loginActions,
   loginSetToken,
   setAuthStepAction,
-} from 'src/renderer/component/Profile/Auth/flux/module';
-import { AuthStep } from 'src/renderer/component/Profile/Auth/flux/models';
+} from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 
 export function* watcherSetToken() {

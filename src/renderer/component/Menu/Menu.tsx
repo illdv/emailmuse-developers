@@ -17,7 +17,7 @@ import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-u
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IStyle } from 'type/materialUI';
-import { logoutAction } from 'src/renderer/component/Profile/Auth/flux/module';
+import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 const createMenuSchema = (): IItem[] => {
   return [

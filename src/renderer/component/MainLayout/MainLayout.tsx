@@ -10,7 +10,7 @@ import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/a
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
-import Settings from '../Account/Settings';
+import Settings from '../Profile/Account/Settings';
 import TemplatesRouter from '../Templates/TemplatesRouter';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
