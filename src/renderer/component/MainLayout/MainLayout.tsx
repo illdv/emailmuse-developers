@@ -46,7 +46,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   /*
     onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.LOADING());
+     dispatch(Mail.Actions.onLoadingMail.REQUEST());
    },
   */
 });

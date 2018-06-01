@@ -6,16 +6,21 @@ function loadingSnippets(): AxiosPromise<ILoadingResponse> {
   return AxiosWrapper.get(`/snippets`);
 }
 
-function updateSnippets(snippets: ISnippet) {
-  return AxiosWrapper.post(`/snippets`, { snippets });
+function addSnippets({body, shortcut, description}: ISnippet) {
+  return AxiosWrapper.post(`/snippets`, { body, shortcut, description });
 }
 
-function deleteSnippets(snippets: ISnippet) {
-  return AxiosWrapper.deleteRequest('/snippets', { snippets });
+function editSnippets(snippets: ISnippet) {
+  return AxiosWrapper.put(`/snippets/${snippets.id}`, snippets);
+}
+
+function deleteSnippets(imageIds: number[]) {
+  return AxiosWrapper.deleteRequest('/snippets', { id: imageIds });
 }
 
 export const SnippetsAPI = {
   loadingSnippets,
-  updateSnippets,
+  addSnippets,
+  editSnippets,
   deleteSnippets,
 };

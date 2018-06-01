@@ -14,7 +14,7 @@ import { watcherChangePassword, watcherGetProfile, watcherName } from '../compon
 import templates from 'src/renderer/component/Templates/flux/saga';
 import { selectMenuItemWatcher } from 'src/renderer/component/Menu/flux/saga';
 import { checkCodeSaga } from 'src/renderer/component/Profile/Authorisation/flux/sagas/CheckCodeSaga';
-import { watchLoadingSnippets } from 'src/renderer/component/Snippets/flux/saga';
+import snippets from 'src/renderer/component/Snippets/flux/saga';
 
 export default function* rootSaga() {
   yield [
@@ -29,9 +29,9 @@ export default function* rootSaga() {
     fork(watcherName),
     fork(selectMenuItemWatcher),
     ...templates.map(fork),
+    ...snippets.map(fork),
     fork(watcherGetProfile),
     fork(checkCodeSaga),
     fork(watcherLogout),
-    fork(watchLoadingSnippets),
   ];
 }

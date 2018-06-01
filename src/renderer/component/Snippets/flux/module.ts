@@ -1,44 +1,92 @@
-import { createAction, createReducer } from 'redux-act';
-import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { ActionStatus } from 'src/renderer/flux/utils';
+import { createReducer } from 'redux-act';
+import { ISnippetsAction, ISnippetsState, ISuccessfullyPayload } from 'src/renderer/component/Snippets/flux/interface';
+import { ActionStatus, createActionSteps2 } from 'src/renderer/flux/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
-import { IPagination } from 'src/renderer/common/List/interface';
 
 const REDUCER = 'SNIPPETS';
 const NS      = `${REDUCER}__`;
 
 export const LOADING_SNIPPETS = `${NS}LOADING_SNIPPETS`;
-export const SUCCESS_SNIPPETS = `${NS}SUCCESS_SNIPPETS`;
-export const FAILURE_SNIPPETS = `${NS}FAILURE_SNIPPETS`;
+export const REMOVE_SNIPPETS  = `${NS}REMOVE_SNIPPETS`;
+export const ADD_SNIPPETS     = `${NS}ADD_SNIPPETS`;
+export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
 
-const loading      = createAction(LOADING_SNIPPETS);
-const successfully = createAction(SUCCESS_SNIPPETS,
-  (payload: {snippet: ISnippet[], pagination: IPagination}) => ({payload}));
-const failure      = createAction(FAILURE_SNIPPETS);
+const loading = createActionSteps2(
+  LOADING_SNIPPETS, {
+    REQUEST: (payload: {page: number}) => (payload),
+    SUCCESS: (payload: ISuccessfullyPayload) => (payload),
+    FAILURE: () => ({}),
+  },
+);
+
+const remove = createActionSteps2(
+  REMOVE_SNIPPETS, {
+    REQUEST: (payload: { id: string }) => (payload),
+    SUCCESS: () => ({}),
+    FAILURE: () => ({}),
+  },
+);
+
+const add = createActionSteps2(
+  ADD_SNIPPETS, {
+    REQUEST: (payload: { snippet: ISnippet }) => (payload),
+    SUCCESS: () => ({}),
+    FAILURE: () => ({}),
+  },
+);
+
+const edit = createActionSteps2(
+  EDIT_SNIPPETS, {
+    REQUEST: (payload: { snippet: ISnippet }) => (payload),
+    SUCCESS: () => ({}),
+    FAILURE: () => ({}),
+  },
+);
 
 export const SnippetsAction: ISnippetsAction = {
   loading,
-  failure,
-  successfully,
+  remove,
+  add,
+  edit,
 };
 
 const initialState: ISnippetsState = {
-  snippet: [],
+  snippets: [],
   pagination: null,
-  status: ActionStatus.LOADING,
+  status: ActionStatus.REQUEST,
 };
 
 const reducer = createReducer({}, initialState);
 
-reducer.on(successfully, (state, action) => ({
+reducer.on(SnippetsAction.loading.REQUEST, (state, action) => ({
   ...state,
-  ...action.payload,
+  status: ActionStatus.REQUEST,
+}));
+
+reducer.on(SnippetsAction.add.REQUEST, (state, action) => ({
+  ...state,
+  status: ActionStatus.REQUEST,
+}));
+
+reducer.on(SnippetsAction.edit.REQUEST, (state, action) => ({
+  ...state,
+  status: ActionStatus.REQUEST,
+}));
+
+reducer.on(SnippetsAction.remove.REQUEST, (state, action) => ({
+  ...state,
+  status: ActionStatus.REQUEST,
+}));
+
+reducer.on(SnippetsAction.loading.SUCCESS, (state, payload) => ({
+  ...state,
+  ...payload,
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(failure, (state, action) => ({
+reducer.on(SnippetsAction.loading.FAILURE, (state, action) => ({
   ...state,
-  status: ActionStatus.SUCCESS,
+  status: ActionStatus.FAILURE,
 }));
 
 export default reducer;

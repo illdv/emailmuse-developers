@@ -1,20 +1,23 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Paper } from '@material-ui/core';
-
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { ICustomItem, ListElement } from 'src/renderer/common/List/ListElement';
-import { bindActionCreators } from 'redux';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
+import { bindActionCreators } from 'redux';
+import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/utils';
 import { Loading } from 'src/renderer/common/Loading';
+import { Paper } from '@material-ui/core';
+import { ICustomItem, ListElement } from 'src/renderer/common/List/ListElement';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
+import { Add } from '@material-ui/icons';
+import { Fab } from 'src/renderer/common/Fab';
 
 export namespace SnippetsSpace {
   export interface IState {
-
+    select?: ISnippet;
+    isNew: boolean;
   }
 
   export interface IProps {
@@ -28,22 +31,46 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  actions: bindActionCreators({
-    ...SnippetsAction,
-  }, dispatch),
+  actions: {
+    loading: bindActionCreators(SnippetsAction.loading, dispatch),
+    add: bindActionCreators(SnippetsAction.add, dispatch),
+    edit: bindActionCreators(SnippetsAction.edit, dispatch),
+    remove: bindActionCreators(SnippetsAction.remove, dispatch),
+  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.IState> {
 
-  state = {};
+  state = {
+    select: null,
+    isNew: false,
+  };
 
   componentDidMount(): void {
-    this.props.actions.loading();
+    this.props.actions.loading.REQUEST({ page: 1 });
   }
 
-  onSelectSnippet = (snippet: ISnippet) => () => {
-    console.log('Select ', snippet);
+  onChangePage = (event, page: number) => {
+    this.props.actions.loading.REQUEST({ page: page + 1 });
+  }
+
+  onSelect = (snippet: ISnippet) => () => {
+    this.setState({
+      select: snippet,
+    });
+  }
+
+  onClose = () => {
+    this.setState({
+      select: null,
+    });
+  }
+
+  onRemove = () => {
+    const select = this.state.select;
+    this.props.actions.remove.REQUEST({ id: select.id });
+    this.onClose();
   }
 
   toItem = (snippet: ISnippet): ICustomItem => {
@@ -55,25 +82,67 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     };
   }
 
-  onChangePage = (event, page: number): void => {
-    console.log('Change page');
+  onSave = (newSnippet: ISnippet) => {
+    if (this.state.isNew) {
+      this.props.actions.add.REQUEST({ snippet: newSnippet });
+    } else {
+      this.props.actions.edit.REQUEST({ snippet: newSnippet });
+    }
+    this.setState({
+      select: null,
+      isNew: false,
+    });
+  }
+
+  onEditNew = () => {
+    this.setState({
+      isNew: true,
+      select: {
+        user_id: -1,
+        id: -1,
+        shortcut: '',
+        description: '',
+        body: '',
+        updated_at: '',
+        created_at: '',
+      },
+    });
   }
 
   render() {
-    const { snippet, status, pagination } = this.props.snippets;
 
-    if (status === ActionStatus.LOADING) {
+    const { status, snippets, pagination } = this.props.snippets;
+
+    if (status === ActionStatus.REQUEST) {
       return <Loading/>;
+    }
+
+    const selectSnippet = this.state.select;
+
+    if (selectSnippet) {
+      return (
+        <SnippetsEditor
+          onRemove={this.onRemove}
+          onClose={this.onClose}
+          snippet={selectSnippet}
+          onSave={this.onSave}
+        />
+      );
     }
 
     return (
       <Paper elevation={4} className={'template-list'}>
         <ListElement
-          entities={snippet}
+          entities={snippets}
           toItem={this.toItem}
-          selectItem={this.onSelectSnippet}
+          selectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
+        />
+        <Fab
+          onClick={this.onEditNew}
+          icon={<Add/>}
+          position={0}
         />
       </Paper>
     );

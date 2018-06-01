@@ -18,7 +18,7 @@ import {
 
 import './DialogEditLinkButton.scss';
 
-const b = block('dialog-edit-link-button');
+const b = block('dialog-snippet-link-button');
 
 const defaultButtonStyle = {
   border: 'none',
