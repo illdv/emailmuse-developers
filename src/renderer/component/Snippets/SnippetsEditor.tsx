@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { Grid, TextField } from '@material-ui/core';
-import block from 'bem-ts';
+import { connect, Dispatch } from 'react-redux';
 import { Close, Delete, Save } from '@material-ui/icons';
+import block from 'bem-ts';
 
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { Fab } from 'src/renderer/common/Fab';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
-import { AccountSettingsSpace } from 'src/renderer/component/Profile/Account/Settings';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 const b = block('template-editor');
 
@@ -24,9 +26,21 @@ export namespace SnippetsEditorSpace {
     onClose: () => void;
     onSave: (newSnippet: ISnippet) => void;
     snippet: ISnippet;
+    onShowToast?: (messages: string, type: ToastType) => void;
   }
 }
 
+const mapStateToProps = (state: IGlobalState) => ({
+  templates: state.templates,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  },
+});
+
+@(connect(mapStateToProps, mapDispatchToProps))
 export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, SnippetsEditorSpace.IState> {
 
   state: SnippetsEditorSpace.IState = {
@@ -42,7 +56,7 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
 
     const { snippet } = nextProps;
     if (snippet.id !== prevState.id) {
-      const {id, body, description, shortcut} = snippet;
+      const { id, body, description, shortcut } = snippet;
       return {
         body,
         description,
@@ -57,6 +71,21 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
   onSave = () => {
     const snippet                         = this.props.snippet;
     const { body, shortcut, description } = this.state;
+
+    if (!shortcut.length) {
+      this.props.onShowToast('Snippet code cannot be empty', ToastType.Warning);
+      return;
+    }
+
+    if (!body.length) {
+      this.props.onShowToast('Body cannot be empty', ToastType.Warning);
+      return;
+    }
+
+    if (!description.length) {
+      this.props.onShowToast('Description cannot be empty', ToastType.Warning);
+      return;
+    }
 
     this.props.onSave(
       {
