@@ -22,7 +22,7 @@ import {
   uploadImagesRequest,
 } from 'src/renderer/component/ImageLibrary/store/actions';
 
-import './DialogSelectImage.scss';
+import './DialogInsertImage.scss';
 import { IPagination } from 'src/renderer/common/List/interface';
 
 const b = block('dialogs-select-image');
@@ -34,6 +34,8 @@ export namespace DialogSelectImageSpace {
 
   export interface IProps {
     isOpen: boolean;
+    handleClose: () => void;
+    insertHTML: (html: string, callback: () => void) => void;
     items?: IImageLibraryItem[];
     pagination?: IPagination;
     actions?: {
@@ -42,8 +44,6 @@ export namespace DialogSelectImageSpace {
       deleteImagesRequest: typeof deleteImagesRequest,
       updateImageRequest: typeof updateImageRequest,
     };
-    handleClose: () => void;
-    insertHTML: (html: string, callback: () => void) => void;
   }
 }
 
@@ -67,17 +67,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, DialogSelectImageSpace.IState> {
+export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, DialogSelectImageSpace.IState> {
 
   state = {};
-
-  handleClose = () => {
-    this.props.handleClose();
-  }
-
-  handleClickOpen = (url: string) => () => {
-    this.props.insertHTML(`<img width="300px" src="${url}" />`, this.props.handleClose);
-  }
 
   componentDidMount() {
     this.props.actions.getImagesRequest();
@@ -92,13 +84,13 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
   }
 
   render() {
-    const { pagination, items } = this.props;
+    const { pagination } = this.props;
     return (
       <Dialog
         fullWidth
         className={b('dialog')}
         open={this.props.isOpen}
-        onClose={this.handleClose}
+        onClose={this.props.handleClose}
         maxWidth={false}
         aria-labelledby='responsive-dialog-title'
       >
@@ -129,7 +121,7 @@ export class DialogSelectImage extends Component<DialogSelectImageSpace.IProps, 
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color='primary'>
+            <Button onClick={this.props.handleClose} color='primary'>
               Close
             </Button>
           </DialogActions>

@@ -5,7 +5,7 @@ axios.defaults.baseURL = EMAILER_API_URL;
 
 export namespace AxiosWrapper {
 
-  export function get(apiMethod: string, urlParams: { [key: string]: string } = {}): AxiosPromise<any> {
+  export function get(apiMethod: string, urlParams: { [key: string]: string | number } = {}): AxiosPromise<any> {
     return axios.get(EMAILER_API_URL + apiMethod, {
       params: urlParams,
     });

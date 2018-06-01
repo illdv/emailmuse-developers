@@ -12,7 +12,8 @@ function getCurrentPageSelector(state: IGlobalState) {
 
 function* loadingSnippetsSaga(action) {
   try {
-    const response: AxiosResponse<ILoadingResponse>          = yield call(SnippetsAPI.loadingSnippets);
+    const response: AxiosResponse<ILoadingResponse> = yield call(SnippetsAPI.loadingSnippets, action.payload.page);
+
     const { data, last_page, per_page, current_page, total } = response.data;
     yield put(SnippetsAction.loading.SUCCESS(
       {

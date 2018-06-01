@@ -24,7 +24,7 @@ const createMenuSchema = (): IItem[] => {
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
-    { title: 'SnippetsList', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
+    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
   ];
 };
 

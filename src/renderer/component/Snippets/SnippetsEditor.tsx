@@ -31,7 +31,6 @@ export namespace SnippetsEditorSpace {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  templates: state.templates,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

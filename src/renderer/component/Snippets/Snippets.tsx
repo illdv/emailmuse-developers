@@ -8,11 +8,12 @@ import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets
 import { ActionStatus } from 'src/renderer/flux/utils';
 import { Loading } from 'src/renderer/common/Loading';
 import { Paper } from '@material-ui/core';
-import { ICustomItem, ListElement } from 'src/renderer/common/List/ListElement';
+import { ListElement } from 'src/renderer/common/List/ListElement';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Add } from '@material-ui/icons';
 import { Fab } from 'src/renderer/common/Fab';
+import { snippetToItem } from 'src/renderer/component/Snippets/utils';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -73,15 +74,6 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     this.onClose();
   }
 
-  toItem = (snippet: ISnippet): ICustomItem => {
-    return {
-      id: snippet.id.toString(),
-      title: snippet.shortcut,
-      description: snippet.description,
-      rightText: snippet.updated_at,
-    };
-  }
-
   onSave = (newSnippet: ISnippet) => {
     if (this.state.isNew) {
       this.props.actions.add.REQUEST({ snippet: newSnippet });
@@ -134,7 +126,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
       <Paper elevation={4} className={'template-list'}>
         <ListElement
           entities={snippets}
-          toItem={this.toItem}
+          toItem={snippetToItem}
           selectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}

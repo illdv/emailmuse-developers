@@ -1,22 +1,12 @@
 import * as React from 'react';
+import { ChangeEvent, Component } from 'react';
 import { SketchPicker } from 'react-color';
-import { Component, ChangeEvent } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import block from 'bem-ts';
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Paper,
-  TablePagination,
-  TextField,
-  Grid,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } from '@material-ui/core';
 
-import './DialogEditLinkButton.scss';
+import './DialogInsertLinkButton.scss';
 
 const b = block('dialog-snippet-link-button');
 
@@ -24,7 +14,7 @@ const defaultButtonStyle = {
   border: 'none',
 };
 
-interface rgbObj {
+interface IRGBA {
   r: number;
   g: number;
   b: number;
@@ -35,8 +25,8 @@ export namespace DialogEditLinkButtonSpace {
   export interface IState {
     text: string;
     url: string;
-    color: rgbObj;
-    background: rgbObj;
+    color: IRGBA;
+    background: IRGBA;
     displayColorPicker: boolean;
     displayBackgroundPicker: boolean;
   }
@@ -61,63 +51,64 @@ const LinkButton = (text: string, url: string, color: string, background: string
   return `<a href="${url}" style="${style}">${text}</a>`;
 };
 
-const getRgba = ({r, g, b, a}: rgbObj) => `rgba(${r}, ${g}, ${b}, ${a})`;
+const getRgba = ({ r, g, b, a }: IRGBA) => `rgba(${r}, ${g}, ${b}, ${a})`;
 
-export class DialogEditLinkButton extends Component<DialogEditLinkButtonSpace.IProps, DialogEditLinkButtonSpace.IState>{
+export class DialogInsertLinkButton
+  extends Component<DialogEditLinkButtonSpace.IProps, DialogEditLinkButtonSpace.IState> {
 
   state = {
-      text: 'Click Here',
-      url: 'http://',
-      color: {r: 255, g: 255, b: 255, a: 1},
-      background: {r: 0, g: 111, b: 239, a: 0.93},
-      displayColorPicker: false,
-      displayBackgroundPicker: false,
+    text: 'Click Here',
+    url: 'http://',
+    color: { r: 255, g: 255, b: 255, a: 1 },
+    background: { r: 0, g: 111, b: 239, a: 0.93 },
+    displayColorPicker: false,
+    displayBackgroundPicker: false,
   };
 
   changeText = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
-        text: e.target.value,
+      text: e.target.value,
     });
   }
 
   changeUrl = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
-        url: e.target.value,
+      url: e.target.value,
     });
   }
 
-  changeColor = (color) => {
+  changeColor = color => {
     this.setState({ color: color.rgb });
   }
 
-  changeBackground = (color) => {
+  changeBackground = color => {
     this.setState({ background: color.rgb });
   }
 
-  showColorPicker = (color) => {
+  showColorPicker = color => {
     this.setState({ displayColorPicker: true });
   }
 
-  showBackgroundPicker = (color) => {
+  showBackgroundPicker = color => {
     this.setState({ displayBackgroundPicker: true });
   }
 
-  hideColorPicker = (color) => {
+  hideColorPicker = color => {
     this.setState({ displayColorPicker: false });
   }
 
-  hideBackgroundPicker = (color) => {
+  hideBackgroundPicker = color => {
     this.setState({ displayBackgroundPicker: false });
   }
 
   add = () => {
-    const {text, url, color, background} = this.state;
-    const element = LinkButton(text, url, getRgba(color), getRgba(background));
+    const { text, url, color, background } = this.state;
+    const element                          = LinkButton(text, url, getRgba(color), getRgba(background));
     this.props.insertHTML(element, this.props.handleClose);
   }
 
   render() {
-    const {text, url, color, background} = this.state;
+    const { text, url, color, background } = this.state;
 
     return (
       <Dialog
@@ -151,31 +142,31 @@ export class DialogEditLinkButton extends Component<DialogEditLinkButtonSpace.IP
                     onChange={this.changeUrl}
                   />
                 </Grid>
-                <Grid item xs={5}>     
+                <Grid item xs={5}>
                   <div className={b('group')} onClick={this.showColorPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(color) }} />
+                    <div className={b('color-point')} style={{ background: getRgba(color) }}/>
                     <span className={b('color-label')}>Text color</span>
                   </div>
                   {
                     this.state.displayColorPicker &&
                     <div>
-                      <div className={b('cover')} onClick={this.hideColorPicker} />
+                      <div className={b('cover')} onClick={this.hideColorPicker}/>
                       <div className={b('color-picker')}>
-                        <SketchPicker color={color} onChange={this.changeColor} />
+                        <SketchPicker color={color} onChange={this.changeColor}/>
                       </div>
                     </div>
                   }
                   <br/>
                   <div className={b('group')} onClick={this.showBackgroundPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(background) }} />
+                    <div className={b('color-point')} style={{ background: getRgba(background) }}/>
                     <span className={b('color-label')}>Background color</span>
                   </div>
                   {
                     this.state.displayBackgroundPicker &&
                     <div>
-                      <div className={b('cover')} onClick={this.hideBackgroundPicker} />
+                      <div className={b('cover')} onClick={this.hideBackgroundPicker}/>
                       <div className={b('color-picker')}>
-                        <SketchPicker color={background} onChange={this.changeBackground} />
+                        <SketchPicker color={background} onChange={this.changeBackground}/>
                       </div>
                     </div>
                   }

@@ -51,7 +51,7 @@ export const SnippetsAction: ISnippetsAction = {
 };
 
 const initialState: ISnippetsState = {
-  snippets: [],
+  snippets: null,
   pagination: null,
   status: ActionStatus.REQUEST,
 };
