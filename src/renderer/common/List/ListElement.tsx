@@ -48,13 +48,13 @@ export class ListElement extends Component<ListElementSpace.IProps<any>, ListEle
 
   state = {};
 
-  render() {
-    const { entities, selectItem, toItem, pagination, onChangePage } = this.props;
+  list = () => {
+    const { entities, selectItem, toItem } = this.props;
 
     if (!entities.length) {
       return (
         <InCenter>
-          <Typography variant='headline' noWrap align='center'>List empty</Typography>
+          <Typography variant='headline' noWrap align='center' style={{marginTop: 10}}>List empty</Typography>
         </InCenter>
       );
     }
@@ -69,6 +69,16 @@ export class ListElement extends Component<ListElementSpace.IProps<any>, ListEle
             </div>
           ))
         }
+      </List>
+    );
+  }
+
+  render() {
+    const { pagination, onChangePage } = this.props;
+
+    return (
+      <>
+        {this.list()}
         <InCenter>
           <TablePagination
             component='div'
@@ -85,7 +95,7 @@ export class ListElement extends Component<ListElementSpace.IProps<any>, ListEle
             onChangePage={onChangePage}
           />
         </InCenter>
-      </List>
+      </>
     );
   }
 }

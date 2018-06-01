@@ -26,7 +26,6 @@ function* loadingSnippetsSaga(action) {
       },
     ));
   } catch (error) {
-    console.log(error);
     yield put(FluxToast.Actions.showToast('Loading snippets failed', ToastType.Error));
   }
 }
@@ -45,7 +44,6 @@ function* removeSnippetsSaga(action) {
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    console.log(error);
     yield put(FluxToast.Actions.showToast('Remove snippets failed', ToastType.Error));
   }
 }
@@ -64,7 +62,6 @@ function* addSnippetsSaga(action) {
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    console.log(error);
     yield put(FluxToast.Actions.showToast('Add snippets failed', ToastType.Error));
   }
 }
@@ -83,7 +80,6 @@ function* editSnippetsSaga(action) {
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    console.log(error);
     yield put(FluxToast.Actions.showToast('Edit snippets failed', ToastType.Error));
   }
 }
