@@ -2,20 +2,21 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as Jodit from 'jodit';
 
-import { DialogSelectImage } from 'src/renderer/common/Jodit/dialogs/DialogSelectImage';
-import { DialogEditLinkButton } from 'src/renderer/common/Jodit/dialogs/DialogEditLinkButton';
+import { DialogInsertImage } from 'src/renderer/common/Jodit/dialogs/insertImage/DialogInsertImage';
+import { DialogInsertLinkButton } from 'src/renderer/common/Jodit/dialogs/insertLinkButton/DialogInsertLinkButton';
+import { DialogInsertSnippet } from 'src/renderer/common/Jodit/dialogs/insertSnippet/DialogInsertSnippet';
 
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
-import { Button } from '@material-ui/core/es';
 
 interface IDialog {
   open: boolean;
 }
 
 enum DialogName {
-  selectImage = 'selectImage',
-  linkButton = 'linkButton',
+  insertImage      = 'insertImage',
+  insertLinkButton = 'insertLinkButton',
+  insertSnippet    = 'insertSnippet',
 }
 
 export namespace JoditEditorSpace {
@@ -36,8 +37,9 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   state = {
     dialogs: {
-      [DialogName.linkButton]: { open: false },
-      [DialogName.selectImage]: { open: false },
+      [DialogName.insertLinkButton]: { open: false },
+      [DialogName.insertImage]: { open: false },
+      [DialogName.insertSnippet]: { open: false },
     },
   };
 
@@ -86,11 +88,15 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       extraButtons: [
         {
           name: 'insertImage',
-          exec: this.handleOpenDialog(DialogName.selectImage),
+          exec: this.handleOpenDialog(DialogName.insertImage),
         },
         {
           name: 'insertLinkButton',
-          exec: this.handleOpenDialog(DialogName.linkButton),
+          exec: this.handleOpenDialog(DialogName.insertLinkButton),
+        },
+        {
+          name: 'insertSnippet',
+          exec: this.handleOpenDialog(DialogName.insertSnippet),
         },
       ],
     };
@@ -100,7 +106,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.setState({
       dialogs: {
         ...this.state.dialogs,
-        [nameDialog]: { open: true }
+        [nameDialog]: { open: true },
       },
     });
   }
@@ -109,7 +115,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.setState({
       dialogs: {
         ...this.state.dialogs,
-        [nameDialog]: { open: false }
+        [nameDialog]: { open: false },
       },
     });
   }
@@ -124,15 +130,20 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     return (
       <>
         <textarea ref={this.textArea}/>
-        <DialogSelectImage
-          isOpen={dialogs[DialogName.selectImage].open}
+        <DialogInsertImage
+          isOpen={dialogs[DialogName.insertImage].open}
           insertHTML={this.insertHTML}
-          handleClose={this.handleCloseDialog(DialogName.selectImage)}
+          handleClose={this.handleCloseDialog(DialogName.insertImage)}
         />
-        <DialogEditLinkButton
-          isOpen={dialogs[DialogName.linkButton].open}
+        <DialogInsertLinkButton
+          isOpen={dialogs[DialogName.insertLinkButton].open}
           insertHTML={this.insertHTML}
-          handleClose={this.handleCloseDialog(DialogName.linkButton)}
+          handleClose={this.handleCloseDialog(DialogName.insertLinkButton)}
+        />
+        <DialogInsertSnippet
+          isOpen={dialogs[DialogName.insertSnippet].open}
+          insertHTML={this.insertHTML}
+          handleClose={this.handleCloseDialog(DialogName.insertSnippet)}
         />
       </>
     );

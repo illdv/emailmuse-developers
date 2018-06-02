@@ -10,9 +10,10 @@ import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/a
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
-import Settings from '../Account/Settings';
+import Settings from '../Profile/Account/Settings';
 import TemplatesRouter from '../Templates/TemplatesRouter';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
+import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 
 const styles: IStyle = {
   root: {
@@ -45,7 +46,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   /*
     onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.LOADING());
+     dispatch(Mail.Actions.onLoadingMail.REQUEST());
    },
   */
 });
@@ -63,6 +64,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
         return <TemplatesRouter/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
+      case MenuItemType.SNIPPETS:
+        return <Snippets/>;
       default:
         return <Settings/>;
     }
@@ -74,7 +77,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       <div className={classes.root}>
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
-            {<Menu/>}
+            <Menu/>
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflow: 'auto', position: 'relative' }}>
             <PreloaderLayout/>

@@ -2,7 +2,8 @@
 
 ### For login
 ```
-navayah.tuba@itis0k.org
+Email: imaan.rayana@itis0k.org
+Passworld: imaan.rayana@itis0k.org
 ```
 ### Start project
 

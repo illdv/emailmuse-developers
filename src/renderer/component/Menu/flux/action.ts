@@ -10,6 +10,7 @@ export enum MenuItemType {
   ACCOUNT,
   TEMPLATES,
   IMAGE_LIBRARY,
+  SNIPPETS,
 }
 
 const selectMenuItem = createAction(SELECT_MENU_ITEM, (selectedItem: MenuItemType) => ({ selectedItem }));

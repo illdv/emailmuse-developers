@@ -1,4 +1,4 @@
-import { AuthStep, IUser } from 'src/renderer/component/Profile/Auth/flux/models';
+import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 export interface IProfileState {
   auth: {

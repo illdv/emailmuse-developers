@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { IFileInfo, IImageLibraryItem, IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IFileInfo, IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 const imagesSelector     = (state): IFileInfo[] => state.images.all;
 const paginationSelector = (state): IPagination => state.images.pagination;
@@ -31,7 +32,7 @@ export const getPerPageSelector = createSelector(
 export const getImagesURLSelector = createSelector(
   imagesSelector,
   (state: IFileInfo[]): IImageLibraryItem[] =>
-    state.map((file) => {
+    state.map(file => {
       return {
         id: file.id,
         url: file.url,

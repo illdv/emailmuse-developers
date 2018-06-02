@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Layout } from 'src/renderer/component/Profile/Auth/Layout';
+import { Layout } from 'src/renderer/component/Profile/Authorisation/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';

@@ -11,12 +11,12 @@ export const LOADING = `${NS}LOADING`;
 export const FAILURE = `${NS}FAILURE`;
 export const LOADED  = `${NS}LOADED`;
 
-export const CREATE         = `${NS}CREATE`;
-export const REMOVE         = `${NS}REMOVE`;
-export const SET            = `${NS}SET`;
-export const SELECT         = `${NS}SELECT`;
-export const ADD            = `${NS}ADD`;
-export const CLOSE          = `${NS}CLOSE`;
+export const CREATE = `${NS}CREATE`;
+export const REMOVE = `${NS}REMOVE`;
+export const SET    = `${NS}SET`;
+export const SELECT = `${NS}SELECT`;
+export const ADD    = `${NS}ADD`;
+export const CLOSE  = `${NS}CLOSE`;
 
 const loading      = createAction(LOADING, (page: number = 1) => ({ page }));
 const failure      = createAction(FAILURE);
@@ -50,7 +50,7 @@ const initialState: ITemplateState = {
 
 const reducer = createReducer({}, initialState);
 
-reducer.on(loading, (state) => ({
+reducer.on(loading, state => ({
   ...state,
   status: TemplateStatus.Loading,
 }));
@@ -85,7 +85,7 @@ reducer.on(select, (state, template): ITemplateState => ({
 }));
 
 reducer.on(set, (state, newTemplate: ITemplate) => {
-  const newTemplates = state.templates.map((template) => {
+  const newTemplates = state.templates.map(template => {
     if (template.id === newTemplate.id) {
       return newTemplate;
     }
