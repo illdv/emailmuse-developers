@@ -32,7 +32,7 @@ export class ImageLibraryList
     return (
       <>
         <GridList
-          cellHeight={'auto'}
+          cellHeight={240}
           cols={3}
           className={b()}
         >

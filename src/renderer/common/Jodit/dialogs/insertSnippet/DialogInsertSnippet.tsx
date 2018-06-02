@@ -61,23 +61,35 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
 
   onSelect = (snippet: ISnippet) => () => {
     this.props.insertHTML(snippet.body, this.props.handleClose);
+    this.props.actions.loading.REQUEST({});
   }
 
   onChangeSearchWord = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchWord: event.target.value });
+    this.onSearch();
   }
 
+  private timeoutId = null;
+
   onSearch = () => {
-    this.props.actions.loading.REQUEST({ shortcut: this.state.searchWord });
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+      this.props.actions.loading.REQUEST({ shortcut: this.state.searchWord });
+    }, 500);
+  }
+
+  onClose = () => {
+    this.props.handleClose();
+    this.props.actions.loading.REQUEST({});
   }
 
   render() {
-    const { isOpen, handleClose, snippets } = this.props;
+    const { isOpen, snippets } = this.props;
     return (
       <Dialog
         className={b('dialog')}
         open={isOpen}
-        onClose={handleClose}
+        onClose={this.onClose}
         maxWidth={false}
       >
         <DialogTitle id='form-dialog-title'>Select Snippet</DialogTitle>

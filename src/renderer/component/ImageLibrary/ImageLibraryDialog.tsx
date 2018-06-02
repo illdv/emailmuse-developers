@@ -54,13 +54,13 @@ export class ImageLibraryDialog
     this.props.onClose();
   }
 
-  handleUpdateItem = (e) => {
+  handleUpdateItem = e => {
     e.preventDefault();
     this.props.onUpdateItem(this.props.item, this.state.newName);
     this.handleDialogClose();
   }
 
-  handleInput = (e) => {
+  handleInput = e => {
     this.setState({ newName: e.target.value });
   }
 
@@ -69,7 +69,7 @@ export class ImageLibraryDialog
     this.handleDialogClose();
   }
 
-  inputClick = (e) => {
+  inputClick = e => {
     e.preventDefault();
     const p = document.getElementById('url') as HTMLInputElement;
     p.select();
@@ -81,7 +81,7 @@ export class ImageLibraryDialog
     }
   }
 
-  preventDefault = (e) => {
+  preventDefault = e => {
     e.preventDefault();
   }
 

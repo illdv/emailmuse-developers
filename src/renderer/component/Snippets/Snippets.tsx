@@ -105,10 +105,6 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
 
     const { status, snippets, pagination } = this.props.snippets;
 
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
-    }
-
     const selectSnippet = this.state.select;
 
     if (selectSnippet) {
@@ -120,6 +116,10 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           onSave={this.onSave}
         />
       );
+    }
+
+    if (status === ActionStatus.REQUEST) {
+      return <Loading/>;
     }
 
     return (
