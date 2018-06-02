@@ -1,12 +1,12 @@
-.dialog-edit-link-button__dialog {
+.dialog-insert-link-button__dialog {
     min-height: 400px;
 }
 
-.dialog-edit-link-button__container {
+.dialog-insert-link-button__container {
     min-height: 500px;
 }
 
-.dialog-edit-link-button__group {
+.dialog-insert-link-button__group {
     height: 48px;
     display: flex;
     align-items: center;
@@ -14,23 +14,23 @@
     margin-bottom: 8px;
 }
 
-.dialog-edit-link-button__color-point {
+.dialog-insert-link-button__color-point {
     width: 25px;
     height: 25px;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px;
 }
 
-.dialog-edit-link-button__color-label {
+.dialog-insert-link-button__color-label {
     padding: 0 0 0 15px;
 }
 
-.dialog-edit-link-button__color-picker {
+.dialog-insert-link-button__color-picker {
     position: absolute;
     z-index: 999999999;
 }
 
-.dialog-edit-link-button__cover {
+.dialog-insert-link-button__cover {
     position: fixed;
     top: 0;
     right: 0;
@@ -38,7 +38,7 @@
     left: 0;
 }
 
-.dialog-edit-link-button__link-button-container{
+.dialog-insert-link-button__link-button-container{
     width: 100%;
     padding: 150px 0 0 0;
     text-align: center;

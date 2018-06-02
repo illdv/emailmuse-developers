@@ -8,11 +8,7 @@ import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } 
 
 import './DialogInsertLinkButton.scss';
 
-const b = block('dialog-snippet-link-button');
-
-const defaultButtonStyle = {
-  border: 'none',
-};
+const b = block('dialog-insert-link-button');
 
 interface IRGBA {
   r: number;
@@ -51,7 +47,7 @@ const LinkButton = (text: string, url: string, color: string, background: string
   return `<a href="${url}" style="${style}">${text}</a>`;
 };
 
-const getRgba = ({ r, g, b, a }: IRGBA) => `rgba(${r}, ${g}, ${b}, ${a})`;
+const getRgba = (rgba: IRGBA) => `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 
 export class DialogInsertLinkButton
   extends Component<DialogEditLinkButtonSpace.IProps, DialogEditLinkButtonSpace.IState> {
@@ -85,19 +81,19 @@ export class DialogInsertLinkButton
     this.setState({ background: color.rgb });
   }
 
-  showColorPicker = color => {
+  showColorPicker = () => {
     this.setState({ displayColorPicker: true });
   }
 
-  showBackgroundPicker = color => {
+  showBackgroundPicker = () => {
     this.setState({ displayBackgroundPicker: true });
   }
 
-  hideColorPicker = color => {
+  hideColorPicker = () => {
     this.setState({ displayColorPicker: false });
   }
 
-  hideBackgroundPicker = color => {
+  hideBackgroundPicker = () => {
     this.setState({ displayBackgroundPicker: false });
   }
 
