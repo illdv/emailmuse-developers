@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { GridList, Grow} from '@material-ui/core';
+import { GridList, GridListTile, GridListTileBar, Grow, IconButton } from '@material-ui/core';
 import block from 'bem-ts';
 
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibraryList.scss';
+import { Delete } from '@material-ui/icons';
 
 const b = block('image-library-list');
 
@@ -31,19 +32,31 @@ export class ImageLibraryList
     return (
       <>
         <GridList
-          cellHeight={100}
+          cellHeight={'auto'}
+          cols={3}
           className={b()}
-          cols={15}
-          spacing={10}
         >
           {
             items.map((item, index) => (
                 <Grow key={item.id} in timeout={(index * 500) + 500}>
-                  <img
-                    src={item.thumb_url}
-                    onClick={onSelect(item)}
-                    className={b('tile-img')}
-                  />
+                  <GridListTile className={b('tile')}>
+                    <img
+                      className={b('tile-img')}
+                      src={item.thumb_url}
+                      onClick={onSelect(item)}
+                    />
+                    {
+                      onDelete &&
+                      <GridListTileBar
+                        title={item.name}
+                        actionIcon={
+                          <IconButton onClick={onDelete(item)}>
+                            <Delete nativeColor='white'/>
+                          </IconButton>
+                        }
+                      />
+                    }
+                  </GridListTile>
                 </Grow>
               ),
             )}
