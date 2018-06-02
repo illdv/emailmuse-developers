@@ -11,24 +11,24 @@ export interface ISnippetsState {
 
 export interface ISnippetsAction {
   loading: {
-    REQUEST: ComplexActionCreator1<{ page: number }, { page: number }, {}>;
-    SUCCESS: ComplexActionCreator1<ISuccessfullyPayload, ISuccessfullyPayload, {}>;
-    FAILURE: ComplexActionCreator1<{}, {}, {}>
+    REQUEST: ComplexActionCreator1<{ page?: number, shortcut?: string }, { page?: number, shortcut?: string }>;
+    SUCCESS: ComplexActionCreator1<ISuccessfullyPayload, ISuccessfullyPayload>;
+    FAILURE: ComplexActionCreator1<{}, {}>
   };
   remove: {
-    REQUEST: ComplexActionCreator1<{ id: string }, { id: string }, {}>;
-    SUCCESS: ComplexActionCreator1<{}, {}, {}>;
-    FAILURE: ComplexActionCreator1<{}, {}, {}>
+    REQUEST: ComplexActionCreator1<{ id: string }, { id: string }>;
+    SUCCESS: ComplexActionCreator1<{}, {}>;
+    FAILURE: ComplexActionCreator1<{}, {}>
   };
   add: {
-    REQUEST: ComplexActionCreator1<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
-    SUCCESS: ComplexActionCreator1<{}, {}, {}>;
-    FAILURE: ComplexActionCreator1<{}, {}, {}>
+    REQUEST: ComplexActionCreator1<{ snippet: ISnippet }, { snippet: ISnippet }>;
+    SUCCESS: ComplexActionCreator1<{}, {}>;
+    FAILURE: ComplexActionCreator1<{}, {}>
   };
   edit: {
-    REQUEST: ComplexActionCreator1<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
-    SUCCESS: ComplexActionCreator1<{}, {}, {}>;
-    FAILURE: ComplexActionCreator1<{}, {}, {}>
+    REQUEST: ComplexActionCreator1<{ snippet: ISnippet }, { snippet: ISnippet }>;
+    SUCCESS: ComplexActionCreator1<{}, {}>;
+    FAILURE: ComplexActionCreator1<{}, {}>
   };
 }
 

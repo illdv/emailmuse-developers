@@ -13,7 +13,7 @@ export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
 
 const loading = createActionSteps2(
   LOADING_SNIPPETS, {
-    REQUEST: (payload: {page: number}) => (payload),
+    REQUEST: (payload: { page?: number, shortcut?: string } = { page: 1, shortcut: '' }) => (payload),
     SUCCESS: (payload: ISuccessfullyPayload) => (payload),
     FAILURE: () => ({}),
   },
@@ -58,22 +58,22 @@ const initialState: ISnippetsState = {
 
 const reducer = createReducer({}, initialState);
 
-reducer.on(SnippetsAction.loading.REQUEST, (state, action) => ({
+reducer.on(SnippetsAction.loading.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.add.REQUEST, (state, action) => ({
+reducer.on(SnippetsAction.add.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.edit.REQUEST, (state, action) => ({
+reducer.on(SnippetsAction.edit.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.remove.REQUEST, (state, action) => ({
+reducer.on(SnippetsAction.remove.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
@@ -84,7 +84,7 @@ reducer.on(SnippetsAction.loading.SUCCESS, (state, payload) => ({
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(SnippetsAction.loading.FAILURE, (state, action) => ({
+reducer.on(SnippetsAction.loading.FAILURE, state => ({
   ...state,
   status: ActionStatus.FAILURE,
 }));

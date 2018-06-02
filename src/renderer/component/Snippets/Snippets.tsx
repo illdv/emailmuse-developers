@@ -49,11 +49,11 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   };
 
   componentDidMount(): void {
-    this.props.actions.loading.REQUEST({ page: 1 });
+    this.props.actions.loading.REQUEST({});
   }
 
   onChangePage = (event, page: number) => {
-    this.props.actions.loading.REQUEST({ page: page + 1 });
+    this.props.actions.loading.REQUEST({ page: page + 1});
   }
 
   onSelect = (snippet: ISnippet) => () => {

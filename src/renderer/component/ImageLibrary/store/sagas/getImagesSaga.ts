@@ -2,7 +2,7 @@ import { call, put, take } from 'redux-saga/effects';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
-import { getImages } from 'src/renderer/API/ImageLibrary';
+import { getImages } from 'src/renderer/API/ImageLibraryAPI';
 
 function* getImagesWorker(action: IActionPayload<number>): IterableIterator<any> {
   try {
@@ -21,7 +21,6 @@ function* getImagesWorker(action: IActionPayload<number>): IterableIterator<any>
     }
     yield put(actions.getImagesSuccess(response.data));
   } catch (e) {
-    console.log('Getting images failed: ', e);
     yield put(actions.getImagesFailure());
   }
 }

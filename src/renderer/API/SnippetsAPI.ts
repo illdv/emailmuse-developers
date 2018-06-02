@@ -2,8 +2,8 @@ import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { ILoadingResponse, ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { AxiosPromise } from 'axios';
 
-function loadingSnippets(page: number): AxiosPromise<ILoadingResponse> {
-  return AxiosWrapper.get(`/snippets`, { page });
+function loadingSnippets(page: number, shortcut: string): AxiosPromise<ILoadingResponse> {
+  return AxiosWrapper.get(`/snippets`, { page, shortcut });
 }
 
 function addSnippets({ body, shortcut, description }: ISnippet) {

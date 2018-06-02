@@ -1,7 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { useOrDefault } from 'src/renderer/utils';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { sendCode } from 'src/renderer/API/Auth';
+import { sendCode } from 'src/renderer/API/AuthAPI';
 import { createAccountActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
@@ -12,7 +12,6 @@ function* onCreateAccount(action): IterableIterator<any> {
     yield sendCode(requestUser);
     yield put(createAccountActions.SUCCESS(requestUser));
   } catch (error) {
-    console.log(error);
     const errorMessages = useOrDefault(() => (error.response.data.errors.email[0]), 'Unknown error');
     if (error.response && error.response.status) {
       yield put(FluxToast.Actions.showToast(errorMessages, ToastType.Error));

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, IconButton, TextField } from '@material-ui/core';
 import block from 'bem-ts';
 import { bindActionCreators } from 'redux';
 
@@ -11,6 +11,7 @@ import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { Search } from '@material-ui/icons';
 
 import './DialogInsertSnippet.scss';
 
@@ -18,7 +19,7 @@ const b = block('dialogs-select-image');
 
 export namespace DialogInsertSnippetSpace {
   export interface IState {
-
+    searchWord: string;
   }
 
   export interface IProps {
@@ -46,20 +47,28 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IProps, DialogInsertSnippetSpace.IState> {
 
-  state = {};
+  state = { searchWord: '' };
 
   componentDidMount(): void {
     if (!this.props.snippets.snippets) {
-      this.props.actions.loading.REQUEST({ page: 1 });
+      this.props.actions.loading.REQUEST({});
     }
   }
 
   onChangePage = (event, page: number) => {
-    this.props.actions.loading.REQUEST({ page: page + 1 });
+    this.props.actions.loading.REQUEST({ page: page + 1, shortcut: this.state.searchWord });
   }
 
   onSelect = (snippet: ISnippet) => () => {
     this.props.insertHTML(snippet.body, this.props.handleClose);
+  }
+
+  onChangeSearchWord = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchWord: event.target.value });
+  }
+
+  onSearch = () => {
+    this.props.actions.loading.REQUEST({ shortcut: this.state.searchWord });
   }
 
   render() {
@@ -70,11 +79,18 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
         open={isOpen}
         onClose={handleClose}
         maxWidth={false}
-        aria-labelledby='responsive-dialog-title'
       >
         <DialogTitle id='form-dialog-title'>Select Snippet</DialogTitle>
         <DialogContent>
           <div className={b('container')}>
+            <TextField
+              label='Search'
+              margin='normal'
+              onChange={this.onChangeSearchWord}
+            />
+            <IconButton onClick={this.onSearch} color='primary'>
+              <Search/>
+            </IconButton>
             <ListElement
               entities={snippets.snippets}
               toItem={snippetToItem}

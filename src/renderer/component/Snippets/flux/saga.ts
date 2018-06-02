@@ -1,7 +1,7 @@
 import { call, put, select, take } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
-import { SnippetsAPI } from 'src/renderer/API/Snippets';
+import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
 import { AxiosResponse } from 'axios';
 import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -12,7 +12,8 @@ function getCurrentPageSelector(state: IGlobalState) {
 
 function* loadingSnippetsSaga(action) {
   try {
-    const response: AxiosResponse<ILoadingResponse> = yield call(SnippetsAPI.loadingSnippets, action.payload.page);
+    const { page, shortcut } = action.payload;
+    const response: AxiosResponse<ILoadingResponse> = yield call(SnippetsAPI.loadingSnippets, page, shortcut);
 
     const { data, last_page, per_page, current_page, total } = response.data;
     yield put(SnippetsAction.loading.SUCCESS(

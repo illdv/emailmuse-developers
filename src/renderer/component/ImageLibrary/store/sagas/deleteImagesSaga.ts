@@ -8,7 +8,7 @@ import {
   getPerPageSelector,
   getTotalImages,
 } from 'src/renderer/component/ImageLibrary/store/selectors';
-import { deleteImages } from 'src/renderer/API/ImageLibrary';
+import { deleteImages } from 'src/renderer/API/ImageLibraryAPI';
 
 function* deleteImagesWorker(action: IActionPayload<number[]>): IterableIterator<any> {
   try {
@@ -27,7 +27,6 @@ function* deleteImagesWorker(action: IActionPayload<number[]>): IterableIterator
     // because related checks are made in getImagesWorker saga
     yield put(actions.getImagesRequest(currentPage));
   } catch (e) {
-    console.log('Deleting images failed: ', e);
     yield put(actions.deleteImagesFailure());
   }
 }

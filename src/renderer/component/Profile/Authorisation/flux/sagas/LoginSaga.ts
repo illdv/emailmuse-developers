@@ -3,7 +3,7 @@ import { IActionPayload } from 'src/renderer/flux/utils';
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { login } from 'src/renderer/API/Auth';
+import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
 import {
   ILoginRequest,
