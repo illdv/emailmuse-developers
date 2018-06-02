@@ -19,7 +19,6 @@ function* onResetPassword(action: IResetPasswordAction): IterableIterator<any> {
     yield put(FluxToast.Actions.showToast('Reset password success.', ToastType.Success));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Reset password failed.', ToastType.Error));
-    yield put(FluxToast.Actions.showToast(error.response.data.message));
   }
 }
 

@@ -7,7 +7,7 @@ import { Navigation, Title } from 'src/renderer/component/Profile/Authorisation/
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/Validation/FormValidation';
+import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import {
   createAccountActions,
   ICreateAccountRequest,
@@ -18,8 +18,14 @@ import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/mode
 const styles = () => ({
   root: {
     height: '100%',
-  }, paper: {
-    width: 500, height: 300, paddingLeft: 40, paddingRight: 40, paddingTop: 48, paddingBottom: 26,
+  },
+  paper: {
+    width: 550,
+    height: 350,
+    paddingLeft: 40,
+    paddingRight: 40,
+    paddingTop: 48,
+    paddingBottom: 26,
   },
 });
 
@@ -73,8 +79,8 @@ class Registration
       <InCenter>
         <Paper square className={classes.paper}>
           <FormValidation onValidationSuccessful={onCreateAccount} schema={validationSchema}>
-          <Grid container className={classes.root}>
-            <Title title={'Create your Emailer Account'}/>
+            <Grid container className={classes.root}>
+              <Title title={'Create your Emailer Account'}/>
               <Grow in timeout={1000}>
                 <Grid container>
                   <Grid item xs={6}>
@@ -122,11 +128,11 @@ class Registration
                   />
                 )}
               </FormContext.Consumer>
-          </Grid>
-        </FormValidation>
-      </Paper>
-  </InCenter>
-  );
+            </Grid>
+          </FormValidation>
+        </Paper>
+      </InCenter>
+    );
   }
 }
 

@@ -11,7 +11,7 @@ const styles = () => ({
     height: '100%',
   },
   paper: {
-    width: 370,
+    width: 410,
     height: 416,
     paddingLeft: 40,
     paddingRight: 40,

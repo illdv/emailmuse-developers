@@ -5,14 +5,17 @@ import { Email } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { default as PaperDialog, PaperDialogSpace } from 'src/renderer/component/Profile/Authorisation/common/PaperDialog';
+import {
+  default as PaperDialog,
+  PaperDialogSpace,
+} from 'src/renderer/component/Profile/Authorisation/common/PaperDialog';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import {
   resetPasswordActions,
   sendCodeOnMailActions,
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Authorisation/flux/module';
-import { FormValidation, IFormContext, FormContext } from 'src/renderer/common/Validation/FormValidation';
+import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 
 enum Step {
   EMAIL,
