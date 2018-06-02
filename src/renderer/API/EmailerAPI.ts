@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios, { AxiosPromise } from 'axios';
-import { IChangePasswordPayload } from 'src/renderer/component/Account/flux/actions';
+import { IChangePasswordPayload } from 'src/renderer/component/Profile/Account/flux/actions';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 
@@ -10,7 +10,7 @@ export namespace Accounts {
     return axios.put('/profile/change-password', data);
   }
 
-  export function changeName({ name: sting }): AxiosPromise<{ name: string }> {
+  export function changeName(name: string): AxiosPromise<{ name: string }> {
     return axios.put('/profile', {
       name,
     });

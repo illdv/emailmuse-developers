@@ -1,5 +1,5 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
-import { IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 export enum TemplateStatus {
   EditTemplate   = 'EditTemplate',

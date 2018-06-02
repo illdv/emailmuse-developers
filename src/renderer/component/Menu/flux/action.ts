@@ -8,11 +8,9 @@ const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
  */
 export enum MenuItemType {
   ACCOUNT,
-  COMPOSE,
   TEMPLATES,
-  TRAINING,
-  RESEARCH,
   IMAGE_LIBRARY,
+  SNIPPETS,
 }
 
 const selectMenuItem = createAction(SELECT_MENU_ITEM, (selectedItem: MenuItemType) => ({ selectedItem }));
@@ -39,7 +37,7 @@ export namespace FluxDrawerMenu {
   }
 
   export const Actions: IActions = {
-    selectMenuItem: selectMenuItem,
+    selectMenuItem,
   };
 
   export interface IState {

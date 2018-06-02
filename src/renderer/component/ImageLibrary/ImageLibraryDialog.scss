@@ -2,11 +2,11 @@
     position: relative;
 }
 
-.image-library-dialog__img {
+.image-library-dialogs__img {
+    width: 100%;
+    height: 100%;
     display: flex;
     margin: auto;
-    height: 9rem;
-    max-width: 100%;
     overflow: hidden;
     border-radius: 0.25rem;
 }

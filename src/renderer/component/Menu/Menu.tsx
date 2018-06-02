@@ -13,21 +13,22 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core/';
-import { Collections, Drafts, SupervisorAccount } from '@material-ui/icons';
+import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IStyle } from 'type/materialUI';
-import { FluxAccounts } from 'src/renderer/component/Authorization/flux/FluxAccounts';
+import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 const createMenuSchema = (): IItem[] => {
   return [
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
     { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
+    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
   ];
 };
 
-const styles: IStyle = (theme) => ({
+const styles: IStyle = theme => ({
   root: {
     width: '100%',
     height: '100%',
@@ -57,7 +58,6 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
 
 export namespace MenuSpace {
   export interface IProps {
-    accounts: any;
     actions: FluxDrawerMenu.IActions;
     logout: () => void;
   }
@@ -78,7 +78,6 @@ interface IItem {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
   menu: state.drawerMenu,
 });
 
@@ -87,7 +86,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     ...FluxDrawerMenu.Actions,
   }, dispatch),
   logout: () => {
-    dispatch(FluxAccounts.Actions.Logout());
+    dispatch(logoutAction());
   },
 });
 
@@ -102,7 +101,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
     const menuSchema          = createMenuSchema();
 
     const toItem = (items: IItem[]) => {
-      return items.map((item) => (
+      return items.map(item => (
         <div key={item.title}>
           <Item
             title={item.title}

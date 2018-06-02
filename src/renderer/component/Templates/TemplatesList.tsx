@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Divider, Grid, List, ListItem, Paper, TablePagination, Typography } from '@material-ui/core/';
 import InCenter from 'src/renderer/common/InCenter';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
-import { IPagination } from 'src/renderer/component/ImageLibrary/store/models';
+import { IPagination } from 'src/renderer/common/List/interface';
 
 function TemplateItem(props: { title: string, description: string, time: string }) {
   const { title, description, time } = props;
@@ -42,41 +42,51 @@ class TemplatesList extends React.Component<TemplatesListSpace.IProps> {
     this.props.selectTemplate(template);
   }
 
-  render() {
-    const {templates, pagination} = this.props;
-
+  list = () => {
+    const { templates } = this.props;
     if (!templates || templates.length === 0) {
       return (
         <Typography variant='headline' noWrap align='center'>Templates list empty</Typography>
       );
+    } else {
+      return (
+        <List component='nav'>
+          {templates.map((template: ITemplate, index) => (
+            <div
+              key={template.id}
+              onClick={this.onSelectTemplate(template)}
+            >
+              <TemplateItem
+                title={template.title}
+                description={template.description}
+                time={template.updated_at}
+              />
+              <Divider/>
+            </div>
+          ))}
+        </List>
+      );
+    }
+  }
+
+  render() {
+    let { pagination } = this.props;
+
+    if (!pagination) {
+      pagination = {current_page: 0, total: 0, last_page: 0, per_page: 0};
     }
 
     return (
-      <Paper elevation={4} style={{ height: '100%' }}>
+      <Paper elevation={4} style={{ height: '100%' }} className={'template-list'}>
         <div>
-          <List component='nav'>
-            {templates.map((template: ITemplate, index) => (
-              <div
-                key={template.id}
-                onClick={this.onSelectTemplate(template)}
-              >
-                <TemplateItem
-                  title={template.title}
-                  description={template.description}
-                  time={template.updated_at}
-                />
-                <Divider/>
-              </div>
-            ))}
-          </List>
+          {this.list()}
           <InCenter>
             {
-              pagination.total &&
               <TablePagination
                 component='div'
-                count={pagination.total}
-                rowsPerPage={pagination.per_page}
-                rowsPerPageOptions={[16]}
+                count={pagination.total || 0}
+                rowsPerPage={pagination.per_page || 0}
+                rowsPerPageOptions={[15]}
                 page={pagination.current_page - 1}
                 backIconButtonProps={{
                   'aria-label': 'Previous Page',

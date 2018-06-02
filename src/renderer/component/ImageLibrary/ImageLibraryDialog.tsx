@@ -18,7 +18,7 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 import 'src/renderer/component/ImageLibrary/ImageLibraryDialog.scss';
 
-const b = block('image-library-dialog');
+const b = block('image-library-dialogs');
 
 namespace ImageLibraryDialogSpace {
   export interface IProps {
@@ -54,13 +54,13 @@ export class ImageLibraryDialog
     this.props.onClose();
   }
 
-  handleUpdateItem = (e) => {
+  handleUpdateItem = e => {
     e.preventDefault();
     this.props.onUpdateItem(this.props.item, this.state.newName);
     this.handleDialogClose();
   }
 
-  handleInput = (e) => {
+  handleInput = e => {
     this.setState({ newName: e.target.value });
   }
 
@@ -69,7 +69,7 @@ export class ImageLibraryDialog
     this.handleDialogClose();
   }
 
-  inputClick = (e) => {
+  inputClick = e => {
     e.preventDefault();
     const p = document.getElementById('url') as HTMLInputElement;
     p.select();
@@ -81,7 +81,7 @@ export class ImageLibraryDialog
     }
   }
 
-  preventDefault = (e) => {
+  preventDefault = e => {
     e.preventDefault();
   }
 
@@ -89,6 +89,7 @@ export class ImageLibraryDialog
     return (
       <Dialog
         open={true}
+        maxWidth={false}
         onClose={this.handleDialogClose}
         aria-labelledby='form-dialog-title'
       >

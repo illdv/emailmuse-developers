@@ -2,12 +2,13 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Layout } from 'src/renderer/component/Authorization/Layout';
+import { Layout } from 'src/renderer/component/Profile/Authorisation/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
+import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
 export namespace MainLayoutScope {
 
@@ -15,13 +16,13 @@ export namespace MainLayoutScope {
   }
 
   export interface IProps {
-    accounts?: any;
+    profile?: IProfileState;
   }
 
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  accounts: state.accounts,
+  profile: state.profile,
 });
 
 @(connect(mapStateToProps))
@@ -38,7 +39,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   }
 
   render() {
-    const { token } = this.props.accounts.user;
+    const { token } = this.props.profile.auth.user;
     return (
       <>
         {!!token && <MainLayout/> || <Layout/>}
