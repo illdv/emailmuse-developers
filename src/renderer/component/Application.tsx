@@ -7,7 +7,6 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
-import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 
 export namespace MainLayoutScope {
