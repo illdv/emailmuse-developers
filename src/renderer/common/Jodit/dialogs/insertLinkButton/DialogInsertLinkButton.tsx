@@ -3,6 +3,7 @@ import { ChangeEvent, Component } from 'react';
 import { SketchPicker } from 'react-color';
 import { connect, Dispatch } from 'react-redux';
 import block from 'bem-ts';
+import htmlToImage from 'html-to-image';
 
 import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } from '@material-ui/core';
 
@@ -25,6 +26,10 @@ export namespace DialogEditLinkButtonSpace {
     background: IRGBA;
     displayColorPicker: boolean;
     displayBackgroundPicker: boolean;
+    width: number;
+    height: number;
+    padding: number;
+    fontSize: number;
   }
 
   export interface IProps {
@@ -33,19 +38,6 @@ export namespace DialogEditLinkButtonSpace {
     insertHTML: (url: string, callback: () => void) => void;
   }
 }
-
-const LinkButton = (text: string, url: string, color: string, background: string): string => {
-  const style = `
-    padding: 15px;
-    border: none;
-    color: ${color};
-    background-color: ${background};
-    border-radius: 4px;
-    text-decoration: none;
-  `.replace(/\t|\r/g, '');
-
-  return `<a href="${url}" style="${style}">${text}</a>`;
-};
 
 const getRgba = (rgba: IRGBA) => `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 
@@ -59,7 +51,18 @@ export class DialogInsertLinkButton
     background: { r: 0, g: 111, b: 239, a: 0.93 },
     displayColorPicker: false,
     displayBackgroundPicker: false,
+    width: 0,
+    height: 0,
+    padding: 15,
+    fontSize: 12,
   };
+
+  private buttonDOMElement: React.RefObject<HTMLInputElement>;
+
+  constructor(props, context){
+    super(props, context);
+    this.buttonDOMElement = React.createRef();
+  }
 
   changeText = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
@@ -71,6 +74,29 @@ export class DialogInsertLinkButton
     this.setState({
       url: e.target.value,
     });
+  }
+
+  GenerateLinkButton = () => {
+    const { width, height, padding, fontSize, color, background } = this.state;
+    const style: any = {
+      padding,
+      fontSize,
+      border: 'none',
+      borderRadius: '4px',
+      textDecoration: 'none',
+      color: getRgba(color),
+      backgroundColor: getRgba(background),
+    };
+
+    if (width > 0) {
+      style.width = width;
+    }
+
+    if (height > 0) {
+      style.height = height;
+    }
+
+    return <button style={style}>{this.state.text}</button>;
   }
 
   changeColor = color => {
@@ -97,14 +123,43 @@ export class DialogInsertLinkButton
     this.setState({ displayBackgroundPicker: false });
   }
 
+  changeWidth = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ width: Number(e.target.value) });
+  }
+
+  changeHeight = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ height: Number(e.target.value) });
+  }
+
+  changePadding = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ padding: Number(e.target.value) });
+  }
+
+  changeFontSize = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ fontSize: Number(e.target.value) });
+  }
+
   add = () => {
     const { text, url, color, background } = this.state;
-    const element                          = LinkButton(text, url, getRgba(color), getRgba(background));
-    this.props.insertHTML(element, this.props.handleClose);
+    
+    const node = this.buttonDOMElement.current;
+    htmlToImage.toPng(node)
+      .then(dataUrl => {
+        const img = new Image();
+        img.src = dataUrl;
+
+        const wrap = document.createElement('div');
+        wrap.appendChild(img);
+
+        const link = `<a href='${this.state.url}'>${wrap.innerHTML}</a>`;
+
+        this.props.insertHTML(link, this.props.handleClose);
+      });
   }
 
   render() {
-    const { text, url, color, background } = this.state;
+    const GenerateLinkButton = this.GenerateLinkButton;
+    const { text, url, color, background, width, height, padding, fontSize } = this.state;
 
     return (
       <Dialog
@@ -137,6 +192,22 @@ export class DialogInsertLinkButton
                     value={url}
                     onChange={this.changeUrl}
                   />
+                  <br/>
+                  <TextField
+                    id='text'
+                    label='Width'
+                    margin='normal'
+                    value={width}
+                    onChange={this.changeWidth}
+                  />
+                  <br/>
+                  <TextField
+                    id='text'
+                    label='Padding'
+                    margin='normal'
+                    value={padding}
+                    onChange={this.changePadding}
+                  />
                 </Grid>
                 <Grid item xs={5}>
                   <div className={b('group')} onClick={this.showColorPicker}>
@@ -166,14 +237,29 @@ export class DialogInsertLinkButton
                       </div>
                     </div>
                   }
+                  <br/>
+                  <TextField
+                    id='text'
+                    label='Height'
+                    margin='normal'
+                    value={height}
+                    onChange={this.changeHeight}
+                  />
+                  <br/>
+                  <TextField
+                    id='text'
+                    label='Font size'
+                    margin='normal'
+                    value={fontSize}
+                    onChange={this.changeFontSize}
+                  />
                 </Grid>
               </Grid>
-              <div
-                className={b('link-button-container')}
-                dangerouslySetInnerHTML={{
-                  __html: LinkButton(text, url, getRgba(color), getRgba(background)),
-                }}
-              />
+              <div className={b('link-button-container')}>
+                <div style={{display: 'inline-block'}} ref={this.buttonDOMElement as any}>
+                  <GenerateLinkButton />
+                </div>
+              </div>
             </div>
           </DialogContent>
           <DialogActions>
