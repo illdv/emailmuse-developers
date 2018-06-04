@@ -3,7 +3,7 @@ import { ChangeEvent, Component } from 'react';
 import { SketchPicker } from 'react-color';
 import { connect, Dispatch } from 'react-redux';
 import block from 'bem-ts';
-import htmlToImage from 'html-to-image';
+import * as domtoimage from 'dom-to-image';
 
 import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } from '@material-ui/core';
 
@@ -29,7 +29,7 @@ export namespace DialogEditLinkButtonSpace {
     width: number;
     height: number;
     padding: number;
-    fontSize: number;
+    // fontSize: number;
   }
 
   export interface IProps {
@@ -54,7 +54,7 @@ export class DialogInsertLinkButton
     width: 0,
     height: 0,
     padding: 15,
-    fontSize: 12,
+    // fontSize: 12,
   };
 
   private buttonDOMElement: React.RefObject<HTMLInputElement>;
@@ -77,10 +77,9 @@ export class DialogInsertLinkButton
   }
 
   GenerateLinkButton = () => {
-    const { width, height, padding, fontSize, color, background } = this.state;
+    const { width, height, padding, color, background } = this.state;
     const style: any = {
       padding,
-      fontSize,
       border: 'none',
       borderRadius: '4px',
       textDecoration: 'none',
@@ -135,15 +134,15 @@ export class DialogInsertLinkButton
     this.setState({ padding: Number(e.target.value) });
   }
 
-  changeFontSize = (e: ChangeEvent<HTMLInputElement>) => {
+  /*changeFontSize = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ fontSize: Number(e.target.value) });
-  }
+  } */
 
   add = () => {
     const { text, url, color, background } = this.state;
     
     const node = this.buttonDOMElement.current;
-    htmlToImage.toPng(node)
+    domtoimage.toPng(node)
       .then(dataUrl => {
         const img = new Image();
         img.src = dataUrl;
@@ -159,7 +158,7 @@ export class DialogInsertLinkButton
 
   render() {
     const GenerateLinkButton = this.GenerateLinkButton;
-    const { text, url, color, background, width, height, padding, fontSize } = this.state;
+    const { text, url, color, background, width, height, padding } = this.state;
 
     return (
       <Dialog
@@ -245,14 +244,14 @@ export class DialogInsertLinkButton
                     value={height}
                     onChange={this.changeHeight}
                   />
-                  <br/>
+                  {/* <br/>
                   <TextField
                     id='text'
                     label='Font size'
                     margin='normal'
                     value={fontSize}
                     onChange={this.changeFontSize}
-                  />
+                  /> */}
                 </Grid>
               </Grid>
               <div className={b('link-button-container')}>

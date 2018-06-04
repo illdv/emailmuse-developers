@@ -24,6 +24,7 @@
     "axios": "^0.18.0",
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",
+    "dom-to-image": "^2.6.0",
     "html-to-image": "0.0.2",
     "jodit": "^3.1.95",
     "log4js": "^2.6.1",
