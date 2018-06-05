@@ -69,7 +69,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.destructEditor();
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
-      this.editor.value = this.props.value;
+      this.editor.value = this.props.value || '';
       this.editor.events.on('change', this.props.onChangeValue);
     }
   }
