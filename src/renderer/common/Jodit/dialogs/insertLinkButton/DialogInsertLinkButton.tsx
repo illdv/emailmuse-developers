@@ -36,12 +36,17 @@ export namespace DialogEditLinkButtonSpace {
 
 const LinkButton = (text: string, url: string, color: string, background: string): string => {
   const style = `
-    padding: 15px;
-    border: none;
+    padding: 5px;
+    width: 150px;
+    border: 1px solid rgb(251, 251, 251);
+    border-radius: 5px;
+    display: inline-block;
+    font-family: sans-serif;
+    line-height: 44px;
+    text-align: center;
+    text-decoration: none;
     color: ${color};
     background-color: ${background};
-    border-radius: 4px;
-    text-decoration: none;
   `.replace(/\t|\r/g, '');
 
   return `<a href="${url}" style="${style}">${text}</a>`;
@@ -54,7 +59,7 @@ export class DialogInsertLinkButton
 
   state = {
     text: 'Click Here',
-    url: 'http://',
+    url: 'https://',
     color: { r: 255, g: 255, b: 255, a: 1 },
     background: { r: 0, g: 111, b: 239, a: 0.93 },
     displayColorPicker: false,
