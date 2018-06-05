@@ -161,12 +161,12 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                 Change password
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            {/*<Grid item xs={12}>
               <Button onClick={this.onOpenManageAccounts} variant='raised' color='primary'>
                 <Email/>
                 Manage Gmail accounts
               </Button>
-            </Grid>
+            </Grid>*/}
             <Grid item xs={12}>
               <InCenter>
                 <Button onClick={this.onSave} variant='raised' color='primary'>

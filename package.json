@@ -1,6 +1,6 @@
 {
   "name": "Emailer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": {
     "name": "Nikita Kamyshenko",
     "email": "kamyshenko.n@cronix.ms"
@@ -12,10 +12,9 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
+    "build:electron": "webpack; electron-builder ./dist",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
     "clear:project": "rm -rf node_modules build dist"
   },
   "dependencies": {
@@ -53,6 +52,7 @@
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "electron": "^2.0.2",
+    "electron-builder": "^20.15.1",
     "electron-load-devtool": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -79,10 +79,14 @@
     "webpack-dev-server": "^3.1.4"
   },
   "build": {
+    "productName": "Emailer",
     "appId": "cronix.ms.emailer",
     "linux": {
       "target": "deb",
       "category": "Office"
+    },
+    "mac": {
+      "category": "public.app-category.utilities"
     }
   },
   "jest": {
