@@ -38,9 +38,8 @@ const LinkButton = (text: string, url: string, color: string, background: string
   const style = `
     padding: 5px;
     width: 150px;
-    border: 1px solid rgb(251, 251, 251);
     border-radius: 5px;
-    display: inline-block;
+    display: block;
     font-family: sans-serif;
     line-height: 44px;
     text-align: center;
