@@ -8,7 +8,8 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { ILoginRequest, loginActions, setAuthStepAction,
+} from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 const styles = theme => ({

@@ -1,0 +1,632 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`>>>ImageLibrary render ImageLibrary component 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ImageLibrary2
+    actions={[MockFunction]}
+    items={Array []}
+    pagination={
+      Object {
+        "current_page": 1,
+        "last_page": 3,
+        "per_page": 15,
+        "total": 39,
+      }
+    }
+  >
+     0 
+  </ImageLibrary2>,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": <div
+        className="image-library"
+      >
+        <WithStyles(TablePagination)
+          backIconButtonProps={
+            Object {
+              "aria-label": "Previous Page",
+            }
+          }
+          component="div"
+          count={39}
+          nextIconButtonProps={
+            Object {
+              "aria-label": "Next Page",
+            }
+          }
+          onChangePage={[Function]}
+          onChangeRowsPerPage={[Function]}
+          page={0}
+          rowsPerPage={15}
+          rowsPerPageOptions={
+            Array [
+              15,
+            ]
+          }
+        />
+        <DropTarget(DragAndDropTarget)
+          onDrop={[Function]}
+          overlayMessage="Drop files here to add them to your image library"
+          showOverlay={true}
+        >
+          <div
+            className="image-library__container"
+          >
+            <ImageLibraryList
+              items={Array []}
+              onDelete={[Function]}
+              onSelect={[Function]}
+            />
+          </div>
+        </DropTarget(DragAndDropTarget)>
+        <div
+          className="image-library__footer"
+        >
+          <WithStyles(Button)
+            color="primary"
+          >
+            <label
+              htmlFor="upload"
+            >
+              Upload images
+            </label>
+            <input
+              className="image-library__upload-input"
+              id="upload"
+              multiple={true}
+              onChange={[Function]}
+              type="file"
+            />
+          </WithStyles(Button)>
+        </div>
+      </div>,
+      "elevation": 4,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <WithStyles(TablePagination)
+            backIconButtonProps={
+              Object {
+                "aria-label": "Previous Page",
+              }
+            }
+            component="div"
+            count={39}
+            nextIconButtonProps={
+              Object {
+                "aria-label": "Next Page",
+              }
+            }
+            onChangePage={[Function]}
+            onChangeRowsPerPage={[Function]}
+            page={0}
+            rowsPerPage={15}
+            rowsPerPageOptions={
+              Array [
+                15,
+              ]
+            }
+          />,
+          <DropTarget(DragAndDropTarget)
+            onDrop={[Function]}
+            overlayMessage="Drop files here to add them to your image library"
+            showOverlay={true}
+          >
+            <div
+              className="image-library__container"
+            >
+              <ImageLibraryList
+                items={Array []}
+                onDelete={[Function]}
+                onSelect={[Function]}
+              />
+            </div>
+          </DropTarget(DragAndDropTarget)>,
+          <div
+            className="image-library__footer"
+          >
+            <WithStyles(Button)
+              color="primary"
+            >
+              <label
+                htmlFor="upload"
+              >
+                Upload images
+              </label>
+              <input
+                className="image-library__upload-input"
+                id="upload"
+                multiple={true}
+                onChange={[Function]}
+                type="file"
+              />
+            </WithStyles(Button)>
+          </div>,
+        ],
+        "className": "image-library",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "backIconButtonProps": Object {
+              "aria-label": "Previous Page",
+            },
+            "component": "div",
+            "count": 39,
+            "nextIconButtonProps": Object {
+              "aria-label": "Next Page",
+            },
+            "onChangePage": [Function],
+            "onChangeRowsPerPage": [Function],
+            "page": 0,
+            "rowsPerPage": 15,
+            "rowsPerPageOptions": Array [
+              15,
+            ],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div
+              className="image-library__container"
+            >
+              <ImageLibraryList
+                items={Array []}
+                onDelete={[Function]}
+                onSelect={[Function]}
+              />
+            </div>,
+            "onDrop": [Function],
+            "overlayMessage": "Drop files here to add them to your image library",
+            "showOverlay": true,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <ImageLibraryList
+                items={Array []}
+                onDelete={[Function]}
+                onSelect={[Function]}
+              />,
+              "className": "image-library__container",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "items": Array [],
+                "onDelete": [Function],
+                "onSelect": [Function],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <WithStyles(Button)
+              color="primary"
+            >
+              <label
+                htmlFor="upload"
+              >
+                Upload images
+              </label>
+              <input
+                className="image-library__upload-input"
+                id="upload"
+                multiple={true}
+                onChange={[Function]}
+                type="file"
+              />
+            </WithStyles(Button)>,
+            "className": "image-library__footer",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <label
+                  htmlFor="upload"
+                >
+                  Upload images
+                </label>,
+                <input
+                  className="image-library__upload-input"
+                  id="upload"
+                  multiple={true}
+                  onChange={[Function]}
+                  type="file"
+                />,
+              ],
+              "color": "primary",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Upload images",
+                  "htmlFor": "upload",
+                },
+                "ref": null,
+                "rendered": "Upload images",
+                "type": "label",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "className": "image-library__upload-input",
+                  "id": "upload",
+                  "multiple": true,
+                  "onChange": [Function],
+                  "type": "file",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "input",
+              },
+            ],
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <div
+          className="image-library"
+        >
+          <WithStyles(TablePagination)
+            backIconButtonProps={
+              Object {
+                "aria-label": "Previous Page",
+              }
+            }
+            component="div"
+            count={39}
+            nextIconButtonProps={
+              Object {
+                "aria-label": "Next Page",
+              }
+            }
+            onChangePage={[Function]}
+            onChangeRowsPerPage={[Function]}
+            page={0}
+            rowsPerPage={15}
+            rowsPerPageOptions={
+              Array [
+                15,
+              ]
+            }
+          />
+          <DropTarget(DragAndDropTarget)
+            onDrop={[Function]}
+            overlayMessage="Drop files here to add them to your image library"
+            showOverlay={true}
+          >
+            <div
+              className="image-library__container"
+            >
+              <ImageLibraryList
+                items={Array []}
+                onDelete={[Function]}
+                onSelect={[Function]}
+              />
+            </div>
+          </DropTarget(DragAndDropTarget)>
+          <div
+            className="image-library__footer"
+          >
+            <WithStyles(Button)
+              color="primary"
+            >
+              <label
+                htmlFor="upload"
+              >
+                Upload images
+              </label>
+              <input
+                className="image-library__upload-input"
+                id="upload"
+                multiple={true}
+                onChange={[Function]}
+                type="file"
+              />
+            </WithStyles(Button)>
+          </div>
+        </div>,
+        "elevation": 4,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <WithStyles(TablePagination)
+              backIconButtonProps={
+                Object {
+                  "aria-label": "Previous Page",
+                }
+              }
+              component="div"
+              count={39}
+              nextIconButtonProps={
+                Object {
+                  "aria-label": "Next Page",
+                }
+              }
+              onChangePage={[Function]}
+              onChangeRowsPerPage={[Function]}
+              page={0}
+              rowsPerPage={15}
+              rowsPerPageOptions={
+                Array [
+                  15,
+                ]
+              }
+            />,
+            <DropTarget(DragAndDropTarget)
+              onDrop={[Function]}
+              overlayMessage="Drop files here to add them to your image library"
+              showOverlay={true}
+            >
+              <div
+                className="image-library__container"
+              >
+                <ImageLibraryList
+                  items={Array []}
+                  onDelete={[Function]}
+                  onSelect={[Function]}
+                />
+              </div>
+            </DropTarget(DragAndDropTarget)>,
+            <div
+              className="image-library__footer"
+            >
+              <WithStyles(Button)
+                color="primary"
+              >
+                <label
+                  htmlFor="upload"
+                >
+                  Upload images
+                </label>
+                <input
+                  className="image-library__upload-input"
+                  id="upload"
+                  multiple={true}
+                  onChange={[Function]}
+                  type="file"
+                />
+              </WithStyles(Button)>
+            </div>,
+          ],
+          "className": "image-library",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "backIconButtonProps": Object {
+                "aria-label": "Previous Page",
+              },
+              "component": "div",
+              "count": 39,
+              "nextIconButtonProps": Object {
+                "aria-label": "Next Page",
+              },
+              "onChangePage": [Function],
+              "onChangeRowsPerPage": [Function],
+              "page": 0,
+              "rowsPerPage": 15,
+              "rowsPerPageOptions": Array [
+                15,
+              ],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div
+                className="image-library__container"
+              >
+                <ImageLibraryList
+                  items={Array []}
+                  onDelete={[Function]}
+                  onSelect={[Function]}
+                />
+              </div>,
+              "onDrop": [Function],
+              "overlayMessage": "Drop files here to add them to your image library",
+              "showOverlay": true,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <ImageLibraryList
+                  items={Array []}
+                  onDelete={[Function]}
+                  onSelect={[Function]}
+                />,
+                "className": "image-library__container",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "items": Array [],
+                  "onDelete": [Function],
+                  "onSelect": [Function],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <WithStyles(Button)
+                color="primary"
+              >
+                <label
+                  htmlFor="upload"
+                >
+                  Upload images
+                </label>
+                <input
+                  className="image-library__upload-input"
+                  id="upload"
+                  multiple={true}
+                  onChange={[Function]}
+                  type="file"
+                />
+              </WithStyles(Button)>,
+              "className": "image-library__footer",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <label
+                    htmlFor="upload"
+                  >
+                    Upload images
+                  </label>,
+                  <input
+                    className="image-library__upload-input"
+                    id="upload"
+                    multiple={true}
+                    onChange={[Function]}
+                    type="file"
+                  />,
+                ],
+                "color": "primary",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Upload images",
+                    "htmlFor": "upload",
+                  },
+                  "ref": null,
+                  "rendered": "Upload images",
+                  "type": "label",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "className": "image-library__upload-input",
+                    "id": "upload",
+                    "multiple": true,
+                    "onChange": [Function],
+                    "type": "file",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "input",
+                },
+              ],
+              "type": [Function],
+            },
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
