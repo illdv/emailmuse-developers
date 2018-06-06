@@ -22,6 +22,7 @@ enum DialogName {
 export namespace JoditEditorSpace {
 
   export interface IState<T extends string> {
+    current: any;
     dialogs: {
       [keys in T]?: IDialog;
     };
@@ -35,7 +36,8 @@ export namespace JoditEditorSpace {
 
 export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
 
-  state = {
+  state: JoditEditorSpace.IState<DialogName> = {
+    current: null,
     dialogs: {
       [DialogName.insertLinkButton]: { open: false },
       [DialogName.insertImage]: { open: false },
@@ -68,7 +70,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
-      this.editor = new Jodit(this.textArea.current, this.createOption());
+      this.editor       = new Jodit(this.textArea.current, this.createOption());
       this.editor.value = this.props.value || '';
       this.editor.events.on('change', this.props.onChangeValue);
     }
@@ -103,7 +105,9 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   }
 
   handleOpenDialog = (nameDialog: DialogName) => () => {
+    const current = this.editor.selection.current();
     this.setState({
+      current,
       dialogs: {
         ...this.state.dialogs,
         [nameDialog]: { open: true },
@@ -121,6 +125,10 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   }
 
   insertHTML = (html: string, callback: () => void) => {
+    const current = this.state.current;
+    if (current) {
+      this.editor.selection.select(current);
+    }
     this.editor.selection.insertHTML(html);
     callback();
   }
