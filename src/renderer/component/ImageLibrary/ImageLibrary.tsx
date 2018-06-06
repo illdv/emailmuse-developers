@@ -73,7 +73,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
 export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
   constructor(props) {
     super(props);
@@ -192,4 +191,6 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
   }
 }
 
-export default withStyles(styles)(ImageLibrary as any);
+export default withStyles(styles)
+(connect(mapStateToProps, mapDispatchToProps)
+(ImageLibrary as any));

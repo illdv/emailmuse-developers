@@ -4,8 +4,20 @@ exports[`>>>ImageLibrary render ImageLibrary component 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ImageLibrary2
-    actions={[MockFunction]}
+  Symbol(enzyme.__unrendered__): <ImageLibrary
+    actions={
+      Object {
+        "deleteImagesRequest": [Function],
+        "getImagesRequest": [Function],
+        "updateImageRequest": [Function],
+        "uploadImagesRequest": [Function],
+      }
+    }
+    classes={
+      Object {
+        "root": "lib",
+      }
+    }
     items={Array []}
     pagination={
       Object {
@@ -17,7 +29,7 @@ ShallowWrapper {
     }
   >
      0 
-  </ImageLibrary2>,
+  </ImageLibrary>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -92,6 +104,7 @@ ShallowWrapper {
           </WithStyles(Button)>
         </div>
       </div>,
+      "className": "lib",
       "elevation": 4,
     },
     "ref": null,
@@ -213,27 +226,33 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": <ImageLibraryList
-                items={Array []}
-                onDelete={[Function]}
-                onSelect={[Function]}
-              />,
+              "children": Array [
+                null,
+                <ImageLibraryList
+                  items={Array []}
+                  onDelete={[Function]}
+                  onSelect={[Function]}
+                />,
+              ],
               "className": "image-library__container",
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "items": Array [],
-                "onDelete": [Function],
-                "onSelect": [Function],
+            "rendered": Array [
+              null,
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "items": Array [],
+                  "onDelete": [Function],
+                  "onSelect": [Function],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
               },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
+            ],
             "type": "div",
           },
           "type": [Function],
@@ -390,6 +409,7 @@ ShallowWrapper {
             </WithStyles(Button)>
           </div>
         </div>,
+        "className": "lib",
         "elevation": 4,
       },
       "ref": null,
@@ -511,27 +531,33 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": <ImageLibraryList
-                  items={Array []}
-                  onDelete={[Function]}
-                  onSelect={[Function]}
-                />,
+                "children": Array [
+                  null,
+                  <ImageLibraryList
+                    items={Array []}
+                    onDelete={[Function]}
+                    onSelect={[Function]}
+                  />,
+                ],
                 "className": "image-library__container",
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "items": Array [],
-                  "onDelete": [Function],
-                  "onSelect": [Function],
+              "rendered": Array [
+                null,
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "items": Array [],
+                    "onDelete": [Function],
+                    "onSelect": [Function],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
+              ],
               "type": "div",
             },
             "type": [Function],

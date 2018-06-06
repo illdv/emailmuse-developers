@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount, shallow} from 'enzyme';
-import { ImageLibrary2 as ImageLibrary} from '../ImageLibrary2';
+import { ImageLibrary as ImageLibrary} from '../ImageLibrary';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -15,7 +15,8 @@ describe('>>>ImageLibrary', () => {
             per_page: 15,
             total: 39,
         },
-         actions: jest.fn(),
+        classes: {root: 'lib'},
+        actions: { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
     };
     let store, props, imageLibrary;
 
@@ -35,4 +36,6 @@ describe('>>>ImageLibrary', () => {
     it('render ImageLibrary component', () => {
         expect(imageLibrary).toMatchSnapshot();
     });
+
+
 });
