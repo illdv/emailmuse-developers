@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`>>>ImageLibrary render ImageLibrary component 1`] = `
+exports[`>>>ImageLibrary ImageLibrary initialization render ImageLibrary component 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
@@ -24,12 +24,10 @@ ShallowWrapper {
         "current_page": 1,
         "last_page": 3,
         "per_page": 15,
-        "total": 39,
+        "total": 40,
       }
     }
-  >
-     0 
-  </ImageLibrary>,
+  />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -52,7 +50,7 @@ ShallowWrapper {
             }
           }
           component="div"
-          count={39}
+          count={40}
           nextIconButtonProps={
             Object {
               "aria-label": "Next Page",
@@ -121,7 +119,7 @@ ShallowWrapper {
               }
             }
             component="div"
-            count={39}
+            count={40}
             nextIconButtonProps={
               Object {
                 "aria-label": "Next Page",
@@ -186,7 +184,7 @@ ShallowWrapper {
               "aria-label": "Previous Page",
             },
             "component": "div",
-            "count": 39,
+            "count": 40,
             "nextIconButtonProps": Object {
               "aria-label": "Next Page",
             },
@@ -357,7 +355,7 @@ ShallowWrapper {
               }
             }
             component="div"
-            count={39}
+            count={40}
             nextIconButtonProps={
               Object {
                 "aria-label": "Next Page",
@@ -426,7 +424,7 @@ ShallowWrapper {
                 }
               }
               component="div"
-              count={39}
+              count={40}
               nextIconButtonProps={
                 Object {
                   "aria-label": "Next Page",
@@ -491,7 +489,7 @@ ShallowWrapper {
                 "aria-label": "Previous Page",
               },
               "component": "div",
-              "count": 39,
+              "count": 40,
               "nextIconButtonProps": Object {
                 "aria-label": "Next Page",
               },

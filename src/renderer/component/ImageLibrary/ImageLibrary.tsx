@@ -32,7 +32,7 @@ const b = block('image-library');
 
 namespace ImageLibrarySpace {
   export interface IProps {
-    classes?: any;
+    classes?: {root};
     actions?: {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,

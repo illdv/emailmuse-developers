@@ -20,8 +20,7 @@ namespace ImageLibraryListSpace {
   }
 }
 
-export class ImageLibraryList
-  extends React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
+export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
 
   constructor(props) {
     super(props);
@@ -59,7 +58,8 @@ export class ImageLibraryList
                   </GridListTile>
                 </Grow>
               ),
-            )}
+            )
+          }
         </GridList>
       </>
     );

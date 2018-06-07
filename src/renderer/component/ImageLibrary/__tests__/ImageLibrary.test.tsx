@@ -18,24 +18,35 @@ describe('>>>ImageLibrary', () => {
         classes: {root: 'lib'},
         actions: { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
     };
-    let store, props, imageLibrary;
+    let imageLibrary;
 
-    // //First way
+    describe('ImageLibrary initialization', () => {
+         const props = {
+            items: [],
+            pagination: {
+                current_page: 1,
+                last_page: 3,
+                per_page: 15,
+                total: 40,
+            },
+            classes: {root: 'lib'},
+            actions: { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+        };
+
+         beforeEach(() => {
+            imageLibrary = shallow( <ImageLibrary {...props} />  );
+         });
+
+         it('render ImageLibrary component', () => {
+            expect(imageLibrary).toMatchSnapshot();
+         });
+    });
+
+    // //Second way
     // const mockStore = configureStore();
     // beforeEach(() => {
-    //     store = mockStore(initialState);
+    //     let store = mockStore(initialState);
     //     imageLibrary = mount( <Provider store={store}><ImageLibrary2 /> </Provider> );
     // });
-
-    // Second way
-    beforeEach(() => {
-        props = initialState;
-        imageLibrary = shallow( <ImageLibrary {...props} > 0 </ImageLibrary> );
-    });
-
-    it('render ImageLibrary component', () => {
-        expect(imageLibrary).toMatchSnapshot();
-    });
-
 
 });
