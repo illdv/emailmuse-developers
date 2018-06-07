@@ -25,7 +25,6 @@ export class ImageLibraryList
 
   constructor(props) {
     super(props);
-    throw new Error('Failed ImageLibraryList');
   }
 
   render() {
