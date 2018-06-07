@@ -7,6 +7,7 @@ import block from 'bem-ts';
 import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } from '@material-ui/core';
 
 import './DialogInsertLinkButton.scss';
+import InCenter from 'src/renderer/common/InCenter';
 
 const b = block('dialog-insert-link-button');
 
@@ -36,7 +37,6 @@ export namespace DialogEditLinkButtonSpace {
 
 const LinkButton = (text: string, url: string, color: string, background: string): string => {
   const style = `
-    padding: 5px;
     width: 150px;
     border-radius: 5px;
     display: block;
@@ -121,64 +121,63 @@ export class DialogInsertLinkButton
       >
         <Paper elevation={4}>
           <DialogContent>
-            <div className={b('container')}>
-              <h3>Call to Action Button</h3>
-              <Grid container spacing={24}>
-                <Grid item xs={7}>
-                  <TextField
-                    id='text'
-                    label='Text'
-                    value={text}
-                    margin='normal'
-                    placeholder='Click Here'
-                    onChange={this.changeText}
-                  />
-                  <br/>
-                  <TextField
-                    id='text'
-                    label='URL'
-                    margin='normal'
-                    value={url}
-                    onChange={this.changeUrl}
-                  />
-                </Grid>
-                <Grid item xs={5}>
-                  <div className={b('group')} onClick={this.showColorPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(color) }}/>
-                    <span className={b('color-label')}>Text color</span>
-                  </div>
-                  {
-                    this.state.displayColorPicker &&
-                    <div>
-                      <div className={b('cover')} onClick={this.hideColorPicker}/>
-                      <div className={b('color-picker')}>
-                        <SketchPicker color={color} onChange={this.changeColor}/>
-                      </div>
-                    </div>
-                  }
-                  <br/>
-                  <div className={b('group')} onClick={this.showBackgroundPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(background) }}/>
-                    <span className={b('color-label')}>Background color</span>
-                  </div>
-                  {
-                    this.state.displayBackgroundPicker &&
-                    <div>
-                      <div className={b('cover')} onClick={this.hideBackgroundPicker}/>
-                      <div className={b('color-picker')}>
-                        <SketchPicker color={background} onChange={this.changeBackground}/>
-                      </div>
-                    </div>
-                  }
-                </Grid>
+            <h3>Call to Action Button</h3>
+            <Grid container spacing={24}>
+              <Grid item xs={7}>
+                <TextField
+                  id='text'
+                  label='Text'
+                  value={text}
+                  margin='normal'
+                  placeholder='Click Here'
+                  onChange={this.changeText}
+                />
+                <br/>
+                <TextField
+                  id='text'
+                  label='URL'
+                  margin='normal'
+                  value={url}
+                  onChange={this.changeUrl}
+                />
               </Grid>
-              <div
-                className={b('link-button-container')}
-                dangerouslySetInnerHTML={{
-                  __html: LinkButton(text, url, getRgba(color), getRgba(background)),
-                }}
-              />
-            </div>
+              <Grid item xs={5}>
+                <div className={b('group')} onClick={this.showColorPicker}>
+                  <div className={b('color-point')} style={{ background: getRgba(color) }}/>
+                  <span className={b('color-label')}>Text color</span>
+                </div>
+                {
+                  this.state.displayColorPicker &&
+                  <div>
+                    <div className={b('cover')} onClick={this.hideColorPicker}/>
+                    <div className={b('color-picker')}>
+                      <SketchPicker color={color} onChange={this.changeColor}/>
+                    </div>
+                  </div>
+                }
+                <br/>
+                <div className={b('group')} onClick={this.showBackgroundPicker}>
+                  <div className={b('color-point')} style={{ background: getRgba(background) }}/>
+                  <span className={b('color-label')}>Background color</span>
+                </div>
+                {
+                  this.state.displayBackgroundPicker &&
+                  <div>
+                    <div className={b('cover')} onClick={this.hideBackgroundPicker}/>
+                    <div className={b('color-picker')}>
+                      <SketchPicker color={background} onChange={this.changeBackground}/>
+                    </div>
+                  </div>
+                }
+              </Grid>
+              <InCenter>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: LinkButton(text, url, getRgba(color), getRgba(background)),
+                  }}
+                />
+              </InCenter>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.add} color='primary'>
