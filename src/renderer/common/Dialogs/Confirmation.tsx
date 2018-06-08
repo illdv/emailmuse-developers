@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import Transition from 'react-transition-group/Transition';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@material-ui/core';
+
+function Transition(props) {
+  return <Slide direction='up' {...props} />;
+}
 
 export namespace ConfirmationSpace {
   export interface IState {
@@ -44,10 +47,10 @@ export class Confirmation extends Component<ConfirmationSpace.IProps, Confirmati
         </DialogContent>
         <DialogActions>
           <Button onClick={onSelectNo} color='primary'>
-            Disagree
+            No
           </Button>
           <Button onClick={onSelectYes} color='secondary'>
-            Agree
+            Yes
           </Button>
         </DialogActions>
       </Dialog>

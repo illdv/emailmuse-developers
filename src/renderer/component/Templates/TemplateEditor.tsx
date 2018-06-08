@@ -18,8 +18,9 @@ export namespace TemplateEditorSpace {
     value: string;
     title: string;
     description: string;
-    isOpenConfirmationClose: boolean;
     hasChange: boolean;
+    isOpenConfirmationClose: boolean;
+    isOpenConfirmationDelete: boolean;
   }
 
   export interface IProps {
@@ -33,12 +34,13 @@ export namespace TemplateEditorSpace {
 export class TemplateEditor extends Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
 
   state: TemplateEditorSpace.IState = {
-    isOpenConfirmationClose: false,
     value: '',
     templateId: -1,
     description: '',
     title: '',
     hasChange: false,
+    isOpenConfirmationClose: false,
+    isOpenConfirmationDelete: false,
   };
 
   static getDerivedStateFromProps(
@@ -52,8 +54,9 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
         value: template.body,
         title: template.title,
         description: template.description || '',
-        isOpenConfirmationClose: false,
         hasChange: false,
+        isOpenConfirmationClose: false,
+        isOpenConfirmationDelete: false,
       };
 
     }
@@ -89,6 +92,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
 
   onSave = () => {
     this.props.save(this.getNewTemplate());
+    this.setState({ hasChange: false });
   }
 
   onCloseDialogClose = () => {
@@ -103,8 +107,15 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
     }
   }
 
+  onCloseDialogDelete = () => {
+    this.setState({ isOpenConfirmationDelete: false });
+  }
+
+  onRemove = () => {
+    this.setState({ isOpenConfirmationDelete: true });
+  }
+
   render() {
-    const { remove } = this.props;
     return (
       <>
         <Grid item xs={12}>
@@ -133,12 +144,18 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
           onSelectYes={this.props.close}
           question={'The changes are not saved. Are you want to close this template?'}
         />
+        <Confirmation
+          isOpen={this.state.isOpenConfirmationDelete}
+          onClose={this.onCloseDialogDelete}
+          onSelectYes={this.props.remove}
+          question={'Are you want to delete this template?'}
+        />
         <div>
           <Fab
             color={'secondary'}
-            onClick={remove}
+            onClick={this.onRemove}
             icon={<Delete/>}
-            position={2}
+            position={0}
           />
           <Fab
             onClick={this.onSave}
@@ -148,7 +165,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
           <Fab
             onClick={this.onClose}
             icon={<Close/>}
-            position={0}
+            position={2}
           />
         </div>
       </>

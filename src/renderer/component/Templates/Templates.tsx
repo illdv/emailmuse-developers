@@ -29,8 +29,6 @@ export namespace MailListSpace {
   }
 
   export interface IState {
-    isOpenConfirmationClose: boolean;
-    isOpenConfirmationDelete: boolean;
     newTemplate: ITemplate;
   }
 }
@@ -55,8 +53,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
   state: MailListSpace.IState = {
-    isOpenConfirmationClose: false,
-    isOpenConfirmationDelete: false,
     newTemplate: null,
   };
 
