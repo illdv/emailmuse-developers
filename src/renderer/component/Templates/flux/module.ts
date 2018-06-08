@@ -18,8 +18,8 @@ export const SELECT         = `${NS}SELECT`;
 export const REMOVE         = `${NS}REMOVE`;
 export const SAVE           = `${NS}SAVE`;
 
-const loading      = createAction(LOADING,
-  (payload: {page: number, hidePreloader?: boolean} = {page: 1, hidePreloader: false}) => payload);
+const loading = createAction(LOADING,
+  (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
 
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
@@ -55,7 +55,7 @@ reducer.on(loading, (state, payload) => ({
   status: payload.hidePreloader ? ActionStatus.SUCCESS : ActionStatus.REQUEST,
 }));
 
-reducer.on(save, (state, payload) => ({
+reducer.on(save, state => ({
   ...state,
   lastCreatedId: null,
 }));

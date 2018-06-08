@@ -78,8 +78,8 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     return true;
   }
 
-  onChangePage = (e, page) => {
-    this.props.loading(page + 1);
+  onChangePage = (e, page: number) => {
+    this.props.loading({page: page + 1});
   }
 
   onSelectNewTemplate = () => {
