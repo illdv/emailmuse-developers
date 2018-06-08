@@ -7,8 +7,8 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
-import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
+import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 
 export namespace MainLayoutScope {
 
@@ -41,10 +41,10 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   render() {
     const { token } = this.props.profile.auth.user;
     return (
-      <>
+      <ErrorBoundary>
         {!!token && <MainLayout/> || <Layout/>}
         <Toast/>
-      </>
+      </ErrorBoundary>
   );
   }
 }

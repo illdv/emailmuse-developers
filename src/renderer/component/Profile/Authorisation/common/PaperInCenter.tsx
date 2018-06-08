@@ -15,15 +15,24 @@ const styles = () => ({
   },
 });
 
-class PaperInCenter extends Component<WithStyles<'paper'>, any> {
+export namespace PaperInCenterSpace {
+  export interface IState {
+  }
+
+  export interface IProps {
+    stylePaper?: React.CSSProperties;
+  }
+}
+
+class PaperInCenter extends Component<PaperInCenterSpace.IProps & WithStyles<'paper'>, PaperInCenterSpace.IState> {
 
   state = {};
 
   render() {
-    const {children, classes} = this.props;
+    const {children, classes, stylePaper} = this.props;
     return (
       <InCenter>
-        <Paper square className={classes.paper}>
+        <Paper square className={classes.paper} style={stylePaper}>
           {children}
         </Paper>
       </InCenter>

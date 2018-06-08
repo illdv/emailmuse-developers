@@ -22,7 +22,7 @@ export interface IGlobalState {
   status: StatusConstants.TStatus;
 }
 
-export default combineReducers({
+const appReducers = combineReducers({
   profile: profileReducer,
   drawerMenu: FluxDrawerMenu.reducer,
   toast: FluxToast.reducer,
@@ -31,3 +31,12 @@ export default combineReducers({
   images: ImageLibrary.reducer,
   status: Status.reducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT') {
+    state = undefined;
+  }
+  return appReducers(state, action);
+};
+
+export default rootReducer;

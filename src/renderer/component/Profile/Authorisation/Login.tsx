@@ -8,7 +8,11 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import { ILoginRequest, loginActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import {
+  ILoginRequest,
+  loginActions,
+  setAuthStepAction,
+} from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 const styles = theme => ({
@@ -51,8 +55,7 @@ export namespace AuthorizationSpace {
   }
 }
 
-const mapStateToProps = (state: IGlobalState) => ({
-});
+const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onClickForgotPassword: () => {
@@ -70,6 +73,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
+  handleEnterPress = (onSubmit: () => void) => e => {
+    if (e.key === 'Enter') {
+      onSubmit();
+    }
+  }
+
   render() {
     const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
 
@@ -85,49 +94,49 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
     };
 
     return (
-      <div className={classes.root}>
-        <InCenter>
-          <Paper className={classes.paper}>
-            <Grid container spacing={24} className={classes.root}>
-              <Title title={'Sign in'} subtitle={'to continue to Emailer'}/>
-              <FormValidation
-                schema={validationSchema}
-                onValidationSuccessful={onClickNext}
-              >
-                <Grow in timeout={1500}>
-                  <Grid item xs={12} style={{ paddingTop: 0 }}>
-                    <Grid item xs={12}>
-                      <TextValidator
-                        fullWidth
-                        id='email'
-                        label='Email'
-                        margin='dense'
-                      />
-                      <TextValidator
-                        fullWidth
-                        id='password'
-                        label='Password'
-                        type='password'
-                        margin='dense'
-                      />
-                    </Grid>
-                    <FormContext.Consumer>
-                      {(context: IFormContext) => (
+      <FormValidation
+        schema={validationSchema}
+        onValidationSuccessful={onClickNext}
+      >
+        <FormContext.Consumer>
+          {(context: IFormContext) => (
+            <div className={classes.root} onKeyPress={this.handleEnterPress(context.onSubmit)}>
+              <InCenter>
+                <Paper className={classes.paper}>
+                  <Grid container spacing={24} className={classes.root}>
+                    <Title title={'Sign in'} subtitle={'to continue to Emailer'}/>
+                    <Grow in timeout={1500}>
+                      <Grid item xs={12} style={{ paddingTop: 0 }}>
+                        <Grid item xs={12}>
+                          <TextValidator
+                            fullWidth
+                            id='email'
+                            label='Email'
+                            margin='dense'
+                          />
+                          <TextValidator
+                            fullWidth
+                            id='password'
+                            label='Password'
+                            type='password'
+                            margin='dense'
+                          />
+                        </Grid>
                         <Action
                           onClickForgotPassword={onClickForgotPassword}
                           onCreateAccount={onCreateAccount}
                           onClickNext={context.onSubmit}
                           canNext={true}
                         />
-                      )}
-                    </FormContext.Consumer>
+                      </Grid>
+                    </Grow>
                   </Grid>
-                </Grow>
-              </FormValidation>
-            </Grid>
-          </Paper>
-        </InCenter>
-      </div>
+                </Paper>
+              </InCenter>
+            </div>
+          )}
+        </FormContext.Consumer>
+      </FormValidation>
     );
   }
 }

@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import { AccountItemNew } from 'src/renderer/component/Profile/Account/AccountItemNew';
 import { AccountItemExtising } from 'src/renderer/component/Profile/Account/AccountItemExisting';
-import { IEmailAccount } from 'src/renderer/component/Profile/Account/flux/models';
+import { IEmailAccount } from 'src/renderer/component/Profile/Account/flux/interface';
 import { connect } from 'react-redux';
 
 const emails: IEmailAccount[] = [
