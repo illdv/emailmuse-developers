@@ -15,6 +15,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
 import { ActionStatus } from 'src/renderer/flux/utils';
+import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -28,6 +29,9 @@ export namespace MailListSpace {
   }
 
   export interface IState {
+    isOpenConfirmationClose: boolean;
+    isOpenConfirmationDelete: boolean;
+    newTemplate: ITemplate;
   }
 }
 
@@ -50,7 +54,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 @(connect(mapStateToProps, mapDispatchToProps))
 class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
-  state: MailListSpace.IState = {};
+  state: MailListSpace.IState = {
+    isOpenConfirmationClose: false,
+    isOpenConfirmationDelete: false,
+    newTemplate: null,
+  };
 
   componentDidMount() {
     const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
@@ -59,10 +67,6 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
 
   onSelectTemplate = (template: ITemplate) => {
     this.props.select(template);
-  }
-
-  onClose = () => {
-    this.props.select(null);
   }
 
   // TODO: for validation use TextValidator
@@ -79,23 +83,27 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onChangePage = (e, page: number) => {
-    this.props.loading({page: page + 1});
+    this.props.loading({ page: page + 1 });
   }
 
   onSelectNewTemplate = () => {
     this.props.select(createEmptyTemplate());
   }
 
-  onSaveOrCreate = (template: ITemplate) => {
-    if (!this.validation(template)) {
+  onSaveOrCreate = (newTemplate: ITemplate) => {
+    if (!this.validation(newTemplate)) {
       return;
     }
 
     if (this.props.templates.selectedTemplate.id) {
-      this.props.save(template);
+      this.onSave(newTemplate);
     } else {
-      this.props.create(template);
+      this.props.create(newTemplate);
     }
+  }
+
+  onSave = (newTemplate: ITemplate) => {
+    this.props.save(newTemplate);
   }
 
   onCloseOrRemove = () => {
@@ -106,6 +114,10 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     } else {
       this.props.select(null);
     }
+  }
+
+  onClose = () => {
+      this.props.select(null);
   }
 
   render() {

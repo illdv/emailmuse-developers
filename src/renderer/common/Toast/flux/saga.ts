@@ -3,7 +3,7 @@ import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { delay } from 'redux-saga';
 
 function* onSetError(action): IterableIterator<any> {
-  yield delay(5000);
+  yield delay(2000);
   yield put(FluxToast.Actions.clear());
 }
 

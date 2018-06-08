@@ -8,6 +8,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { Grid, TextField } from '@material-ui/core';
 import './TemplateEditor.scss';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 const b = block('template-editor');
 
@@ -17,6 +18,8 @@ export namespace TemplateEditorSpace {
     value: string;
     title: string;
     description: string;
+    isOpenConfirmationClose: boolean;
+    hasChange: boolean;
   }
 
   export interface IProps {
@@ -29,7 +32,14 @@ export namespace TemplateEditorSpace {
 
 export class TemplateEditor extends Component<TemplateEditorSpace.IProps, TemplateEditorSpace.IState> {
 
-  state: TemplateEditorSpace.IState = { value: '', templateId: -1, description: '', title: '' };
+  state: TemplateEditorSpace.IState = {
+    isOpenConfirmationClose: false,
+    value: '',
+    templateId: -1,
+    description: '',
+    title: '',
+    hasChange: false,
+  };
 
   static getDerivedStateFromProps(
     nextProps: TemplateEditorSpace.IProps,
@@ -42,6 +52,8 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
         value: template.body,
         title: template.title,
         description: template.description || '',
+        isOpenConfirmationClose: false,
+        hasChange: false,
       };
 
     }
@@ -55,26 +67,44 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
   onChange = (value: string) => {
     this.setState({
       value,
+      hasChange: true,
     });
   }
 
   onChangeField = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    this.setState({ [id]: value } as any);
+    this.setState({ [id]: value, hasChange: true } as any);
+  }
+
+  getNewTemplate = (): ITemplate => {
+    const { value, title, description } = this.state;
+
+    return {
+      ...this.props.template,
+      body: value,
+      title,
+      description,
+    };
   }
 
   onSave = () => {
-    const template                      = this.props.template;
-    const { value, title, description } = this.state;
+    this.props.save(this.getNewTemplate());
+  }
 
-    template.body        = value;
-    template.title       = title;
-    template.description = description;
-    this.props.save(template);
+  onCloseDialogClose = () => {
+    this.setState({ isOpenConfirmationClose: false });
+  }
+
+  onClose = () => {
+    if (this.state.hasChange) {
+      this.setState({ isOpenConfirmationClose: true });
+    } else {
+      this.props.close();
+    }
   }
 
   render() {
-    const { close, remove } = this.props;
+    const { remove } = this.props;
     return (
       <>
         <Grid item xs={12}>
@@ -97,6 +127,12 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
           />
         </Grid>
         <JoditEditor onChangeValue={this.onChange} value={this.state.value}/>
+        <Confirmation
+          isOpen={this.state.isOpenConfirmationClose}
+          onClose={this.onCloseDialogClose}
+          onSelectYes={this.props.close}
+          question={'The changes are not saved. Are you want to close this template?'}
+        />
         <div>
           <Fab
             color={'secondary'}
@@ -110,7 +146,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             position={1}
           />
           <Fab
-            onClick={close}
+            onClick={this.onClose}
             icon={<Close/>}
             position={0}
           />
