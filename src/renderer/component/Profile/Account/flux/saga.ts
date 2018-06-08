@@ -1,13 +1,12 @@
 import { call, put, take } from 'redux-saga/effects';
-import { AccountSpace, IChangePasswordPayload } from 'src/renderer/component/Profile/Account/flux/actions';
+import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
-import { IActionPayload } from 'src/renderer/flux/utils';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 function* getProfileSaga() {
   try {
     const res = yield call(EmailerAPI.Accounts.getProfile);
-    yield put(AccountSpace.Actions.getProfile.SUCCESS({
+    yield put(AccountActions.getProfile.SUCCESS({
       name: res.data.name,
       email: res.data.email,
     }));
@@ -16,7 +15,7 @@ function* getProfileSaga() {
   }
 }
 
-function* changePasswordSaga(action: IActionPayload<IChangePasswordPayload>): IterableIterator<any> {
+function* changePasswordSaga(action): IterableIterator<any> {
   const data = action.payload;
   try {
     yield call(EmailerAPI.Accounts.changePassword, data);
@@ -46,7 +45,7 @@ function* changeNameSaga(action): IterableIterator<any> {
   try {
     yield call(EmailerAPI.Accounts.changeName, action.payload);
     yield put(FluxToast.Actions.showToast('Name change success', ToastType.Success));
-    yield put(AccountSpace.Actions.getProfile.REQUEST());
+    yield put(AccountActions.getProfile.REQUEST());
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Name change failed', ToastType.Error));
   }

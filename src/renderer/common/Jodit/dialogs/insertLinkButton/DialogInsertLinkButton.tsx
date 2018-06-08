@@ -3,11 +3,11 @@ import { ChangeEvent, Component } from 'react';
 import { SketchPicker } from 'react-color';
 import { connect, Dispatch } from 'react-redux';
 import block from 'bem-ts';
-import * as domtoimage from 'dom-to-image';
 
 import { Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField } from '@material-ui/core';
 
 import './DialogInsertLinkButton.scss';
+import InCenter from 'src/renderer/common/InCenter';
 
 const b = block('dialog-insert-link-button');
 
@@ -26,10 +26,6 @@ export namespace DialogEditLinkButtonSpace {
     background: IRGBA;
     displayColorPicker: boolean;
     displayBackgroundPicker: boolean;
-    width: number;
-    height: number;
-    padding: number;
-    // fontSize: number;
   }
 
   export interface IProps {
@@ -39,6 +35,22 @@ export namespace DialogEditLinkButtonSpace {
   }
 }
 
+const LinkButton = (text: string, url: string, color: string, background: string): string => {
+  const style = `
+    width: 150px;
+    border-radius: 5px;
+    display: block;
+    font-family: sans-serif;
+    line-height: 44px;
+    text-align: center;
+    text-decoration: none;
+    color: ${color};
+    background-color: ${background};
+  `.replace(/\t|\r/g, '');
+
+  return `<a href="${url}" style="${style}">${text}</a>`;
+};
+
 const getRgba = (rgba: IRGBA) => `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 
 export class DialogInsertLinkButton
@@ -46,23 +58,12 @@ export class DialogInsertLinkButton
 
   state = {
     text: 'Click Here',
-    url: 'http://',
+    url: 'https://',
     color: { r: 255, g: 255, b: 255, a: 1 },
     background: { r: 0, g: 111, b: 239, a: 0.93 },
     displayColorPicker: false,
     displayBackgroundPicker: false,
-    width: 0,
-    height: 0,
-    padding: 15,
-    // fontSize: 12,
   };
-
-  private buttonDOMElement: React.RefObject<HTMLInputElement>;
-
-  constructor(props, context){
-    super(props, context);
-    this.buttonDOMElement = React.createRef();
-  }
 
   changeText = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
@@ -74,28 +75,6 @@ export class DialogInsertLinkButton
     this.setState({
       url: e.target.value,
     });
-  }
-
-  GenerateLinkButton = () => {
-    const { width, height, padding, color, background } = this.state;
-    const style: any = {
-      padding,
-      border: 'none',
-      borderRadius: '4px',
-      textDecoration: 'none',
-      color: getRgba(color),
-      backgroundColor: getRgba(background),
-    };
-
-    if (width > 0) {
-      style.width = width;
-    }
-
-    if (height > 0) {
-      style.height = height;
-    }
-
-    return <button style={style}>{this.state.text}</button>;
   }
 
   changeColor = color => {
@@ -122,43 +101,14 @@ export class DialogInsertLinkButton
     this.setState({ displayBackgroundPicker: false });
   }
 
-  changeWidth = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ width: Number(e.target.value) });
-  }
-
-  changeHeight = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ height: Number(e.target.value) });
-  }
-
-  changePadding = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ padding: Number(e.target.value) });
-  }
-
-  /*changeFontSize = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ fontSize: Number(e.target.value) });
-  } */
-
   add = () => {
     const { text, url, color, background } = this.state;
-    
-    const node = this.buttonDOMElement.current;
-    domtoimage.toPng(node)
-      .then(dataUrl => {
-        const img = new Image();
-        img.src = dataUrl;
-
-        const wrap = document.createElement('div');
-        wrap.appendChild(img);
-
-        const link = `<a href='${this.state.url}'>${wrap.innerHTML}</a>`;
-
-        this.props.insertHTML(link, this.props.handleClose);
-      });
+    const element                          = LinkButton(text, url, getRgba(color), getRgba(background));
+    this.props.insertHTML(element, this.props.handleClose);
   }
 
   render() {
-    const GenerateLinkButton = this.GenerateLinkButton;
-    const { text, url, color, background, width, height, padding } = this.state;
+    const { text, url, color, background } = this.state;
 
     return (
       <Dialog
@@ -171,95 +121,63 @@ export class DialogInsertLinkButton
       >
         <Paper elevation={4}>
           <DialogContent>
-            <div className={b('container')}>
-              <h3>Call to Action Button</h3>
-              <Grid container spacing={24}>
-                <Grid item xs={7}>
-                  <TextField
-                    id='text'
-                    label='Text'
-                    value={text}
-                    margin='normal'
-                    placeholder='Click Here'
-                    onChange={this.changeText}
-                  />
-                  <br/>
-                  <TextField
-                    id='text'
-                    label='URL'
-                    margin='normal'
-                    value={url}
-                    onChange={this.changeUrl}
-                  />
-                  <br/>
-                  <TextField
-                    id='text'
-                    label='Width'
-                    margin='normal'
-                    value={width}
-                    onChange={this.changeWidth}
-                  />
-                  <br/>
-                  <TextField
-                    id='text'
-                    label='Padding'
-                    margin='normal'
-                    value={padding}
-                    onChange={this.changePadding}
-                  />
-                </Grid>
-                <Grid item xs={5}>
-                  <div className={b('group')} onClick={this.showColorPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(color) }}/>
-                    <span className={b('color-label')}>Text color</span>
-                  </div>
-                  {
-                    this.state.displayColorPicker &&
-                    <div>
-                      <div className={b('cover')} onClick={this.hideColorPicker}/>
-                      <div className={b('color-picker')}>
-                        <SketchPicker color={color} onChange={this.changeColor}/>
-                      </div>
-                    </div>
-                  }
-                  <br/>
-                  <div className={b('group')} onClick={this.showBackgroundPicker}>
-                    <div className={b('color-point')} style={{ background: getRgba(background) }}/>
-                    <span className={b('color-label')}>Background color</span>
-                  </div>
-                  {
-                    this.state.displayBackgroundPicker &&
-                    <div>
-                      <div className={b('cover')} onClick={this.hideBackgroundPicker}/>
-                      <div className={b('color-picker')}>
-                        <SketchPicker color={background} onChange={this.changeBackground}/>
-                      </div>
-                    </div>
-                  }
-                  <br/>
-                  <TextField
-                    id='text'
-                    label='Height'
-                    margin='normal'
-                    value={height}
-                    onChange={this.changeHeight}
-                  />
-                  {/* <br/>
-                  <TextField
-                    id='text'
-                    label='Font size'
-                    margin='normal'
-                    value={fontSize}
-                    onChange={this.changeFontSize}
-                  /> */}
-                </Grid>
+            <h3>Call to Action Button</h3>
+            <Grid container spacing={24}>
+              <Grid item xs={7}>
+                <TextField
+                  id='text'
+                  label='Text'
+                  value={text}
+                  margin='normal'
+                  placeholder='Click Here'
+                  onChange={this.changeText}
+                />
+                <br/>
+                <TextField
+                  id='text'
+                  label='URL'
+                  margin='normal'
+                  value={url}
+                  onChange={this.changeUrl}
+                />
               </Grid>
-              <div className={b('link-button-container')}>
-                <div style={{display: 'inline-block'}} ref={this.buttonDOMElement as any}>
-                  <GenerateLinkButton />
+              <Grid item xs={5}>
+                <div className={b('group')} onClick={this.showColorPicker}>
+                  <div className={b('color-point')} style={{ background: getRgba(color) }}/>
+                  <span className={b('color-label')}>Text color</span>
                 </div>
-              </div>
-            </div>
+                {
+                  this.state.displayColorPicker &&
+                  <div>
+                    <div className={b('cover')} onClick={this.hideColorPicker}/>
+                    <div className={b('color-picker')}>
+                      <SketchPicker color={color} onChange={this.changeColor}/>
+                    </div>
+                  </div>
+                }
+                <br/>
+                <div className={b('group')} onClick={this.showBackgroundPicker}>
+                  <div className={b('color-point')} style={{ background: getRgba(background) }}/>
+                  <span className={b('color-label')}>Background color</span>
+                </div>
+                {
+                  this.state.displayBackgroundPicker &&
+                  <div>
+                    <div className={b('cover')} onClick={this.hideBackgroundPicker}/>
+                    <div className={b('color-picker')}>
+                      <SketchPicker color={background} onChange={this.changeBackground}/>
+                    </div>
+                  </div>
+                }
+              </Grid>
+              <InCenter>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: LinkButton(text, url, getRgba(color), getRgba(background)),
+                  }}
+                />
+              </InCenter>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.add} color='primary'>

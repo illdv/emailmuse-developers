@@ -20,7 +20,6 @@ export const AccountItemNew: React.SFC<AccountItemNewSpace.IProps> = (props: Acc
   };
 
   return (
-    // TODO: key should be a unique id
     <ListItem button key={'add-new'} onClick={handleAddNew}>
       <ListItemAvatar>
         <Avatar>

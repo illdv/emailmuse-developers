@@ -2,17 +2,18 @@ import * as React from 'react';
 import { ChangeEvent } from 'react';
 import { Grid, Paper, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import { connect } from 'react-redux';
+import { Email } from '@material-ui/icons';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { bindActionCreators } from 'redux';
-import { AccountSpace } from './flux/actions';
+
 import { Loading } from 'src/renderer/common/Loading';
 import { AccountsDialog } from 'src/renderer/component/Profile/Account/AccountsDialog';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { Email } from '@material-ui/icons';
 import InCenter from 'src/renderer/common/InCenter';
 import ChangePasswordDialog from './ChangePasswordDialog';
+import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 
 const styles: IStyle = theme => ({
   root: {
@@ -49,8 +50,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispathToProps = dispatch => ({
-  getProfile: bindActionCreators(AccountSpace.Actions.getProfile.REQUEST, dispatch),
-  changeName: bindActionCreators(AccountSpace.Actions.changeName.REQUEST, dispatch),
+  getProfile: bindActionCreators(AccountActions.getProfile.REQUEST, dispatch),
+  changeName: bindActionCreators(AccountActions.changeName.REQUEST, dispatch),
 });
 
 @connect(mapStateToProps, mapDispathToProps)
