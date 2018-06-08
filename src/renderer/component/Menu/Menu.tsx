@@ -22,7 +22,7 @@ import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/
 const createMenuSchema = (): IItem[] => {
   return [
     { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
-    { title: 'Templates', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
+    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
   ];

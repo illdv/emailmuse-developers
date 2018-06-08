@@ -11,7 +11,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Profile/Account/Settings';
-import TemplatesRouter from '../Templates/TemplatesRouter';
+import Templates from '../Templates/Templates';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 
@@ -61,7 +61,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       case MenuItemType.ACCOUNT:
         return <Settings/>;
       case MenuItemType.TEMPLATES:
-        return <TemplatesRouter/>;
+        return <Templates/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
       case MenuItemType.SNIPPETS:

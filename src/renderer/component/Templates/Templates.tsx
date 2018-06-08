@@ -1,35 +1,33 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Typography } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
 import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
-import { ITemplateState, TemplateStatus } from 'src/renderer/component/Templates/flux/models';
 import { createEmptyTemplate } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
-import { Add } from '@material-ui/icons';
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
+import { ActionStatus } from 'src/renderer/flux/utils';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
-    loading?: (page?: number) => void;
+    loading?: (payload: { page: number, hidePreloader?: boolean }) => void;
     remove?: (templateId: number) => void;
-    set?: (template: ITemplate) => void;
+    save?: (template: ITemplate) => void;
     create?: (template: ITemplate) => void;
-    add?: (template: ITemplate) => void;
     select?: (template: ITemplate) => void;
-    close?: () => void;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 
   export interface IState {
-
   }
 }
 
@@ -37,71 +35,87 @@ const mapStateToProps = (state: IGlobalState) => ({
   templates: state.templates,
 });
 
+// TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  loading: (page: number = 1) => dispatch(TemplateAction.loading(page)),
+  loading: (payload: { page: number, hidePreloader?: boolean }) => dispatch(TemplateAction.loading(payload)),
   remove: (templateId: number) => dispatch(TemplateAction.remove(templateId)),
-  set: (template: ITemplate) => dispatch(TemplateAction.set(template)),
+  save: (template: ITemplate) => dispatch(TemplateAction.save(template)),
   create: (template: ITemplate) => dispatch(TemplateAction.create(template)),
-  add: (template: ITemplate) => dispatch(TemplateAction.add(template)),
   select: (template: ITemplate) => dispatch(TemplateAction.select(template)),
-  close: () => dispatch(TemplateAction.closeTemplate()),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
-class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
+class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
+
+  state: MailListSpace.IState = {};
 
   componentDidMount() {
-    this.props.loading( useOrDefault(() => (this.props.templates.pagination.current_page), 1));
+    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    this.props.loading({ page });
   }
 
-  onEditTemplate = (template: ITemplate) => {
+  onSelectTemplate = (template: ITemplate) => {
     this.props.select(template);
   }
 
-  onCloseTemplate = () => {
-    this.props.close();
+  onClose = () => {
+    this.props.select(null);
   }
 
-  onRemoveTemplate = () => {
-    const templates = this.props.templates;
-    this.props.remove(templates.selectedTemplate.id);
-  }
-
-  onSaveTemplate = (template: ITemplate) => {
-    this.props.set(template);
-  }
-
-  onCreateTemplate = (template: ITemplate) => {
+  // TODO: for validation use TextValidator
+  validation = (template: ITemplate): boolean => {
     if (!template.body && template.body.length === 0) {
       this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
-      return;
+      return false;
     }
     if (!template.title && template.title.length === 0) {
       this.props.onShowToast(`Title can't be empty`, ToastType.Warning);
-      return;
+      return false;
     }
-    this.props.create(template);
-  }
-
-  onSelectNewTemplate = () => {
-    this.props.add(createEmptyTemplate());
+    return true;
   }
 
   onChangePage = (e, page) => {
     this.props.loading(page + 1);
   }
 
-  render() {
-    const { status, templates, selectedTemplate, pagination } = this.props.templates;
+  onSelectNewTemplate = () => {
+    this.props.select(createEmptyTemplate());
+  }
 
-    if (status === TemplateStatus.Loading) {
+  onSaveOrCreate = (template: ITemplate) => {
+    if (!this.validation(template)) {
+      return;
+    }
+
+    if (this.props.templates.selectedTemplate.id) {
+      this.props.save(template);
+    } else {
+      this.props.create(template);
+    }
+  }
+
+  onCloseOrRemove = () => {
+    const id = this.props.templates.selectedTemplate.id;
+
+    if (id) {
+      this.props.remove(id);
+    } else {
+      this.props.select(null);
+    }
+  }
+
+  render() {
+    const { status, templates, pagination, selectedTemplate } = this.props.templates;
+
+    if (status === ActionStatus.REQUEST) {
       return <Loading/>;
     }
 
-    if (status === TemplateStatus.Failed) {
+    if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
           Sorry but we couldn't download the templates.
@@ -109,24 +123,13 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
       );
     }
 
-    if (status === TemplateStatus.EditTemplate && selectedTemplate) {
+    if (selectedTemplate) {
       return (
         <TemplateEditor
           template={selectedTemplate}
-          close={this.onCloseTemplate}
-          remove={this.onRemoveTemplate}
-          save={this.onSaveTemplate}
-        />
-      );
-    }
-
-    if (status === TemplateStatus.CreateTemplate) {
-      return (
-        <TemplateEditor
-          template={createEmptyTemplate()}
-          close={this.onCloseTemplate}
-          remove={this.onCloseTemplate}
-          save={this.onCreateTemplate}
+          close={this.onClose}
+          remove={this.onCloseOrRemove}
+          save={this.onSaveOrCreate}
         />
       );
     }
@@ -135,7 +138,7 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
       <div>
         <TemplatesList
           templates={templates}
-          selectTemplate={this.onEditTemplate}
+          selectTemplate={this.onSelectTemplate}
           onChangePage={this.onChangePage}
           pagination={pagination}
         />
@@ -151,4 +154,4 @@ class TemplatesRouter extends React.Component<MailListSpace.IProps, MailListSpac
   }
 }
 
-export default TemplatesRouter;
+export default Templates;

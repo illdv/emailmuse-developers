@@ -1,16 +1,9 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
 import { IPagination } from 'src/renderer/common/List/interface';
-
-export enum TemplateStatus {
-  EditTemplate   = 'EditTemplate',
-  CreateTemplate = 'CreateTemplate',
-  Success        = 'Success',
-  Loading        = 'Loading',
-  Failed         = 'Failed',
-}
+import { ActionStatus } from 'src/renderer/flux/utils';
 
 export interface ITemplateState {
-  status: TemplateStatus;
+  status: ActionStatus;
   pagination: IPagination;
   templates: ITemplate[];
   selectedTemplate: ITemplate;
