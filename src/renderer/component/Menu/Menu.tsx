@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { bindActionCreators } from 'redux';
+import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
+import { IStyle } from 'type/materialUI';
 import {
   Button,
   Divider,
-  Grid, List,
+  Grid,
+  List,
   ListItem,
   ListItemIcon,
-  Paper, Slide,
+  Paper,
+  Slide,
   Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core/';
-import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
-import { bindActionCreators } from 'redux';
-import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
-import { IStyle } from 'type/materialUI';
+
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 const createMenuSchema = (): IItem[] => {
   return [
@@ -56,10 +60,17 @@ function Item(props: { title: string, icon, className?, onClick?: any }) {
   );
 }
 
+interface IItem {
+  title: string;
+  icon: ReactElement<any>;
+  className?: string;
+  type: MenuItemType;
+}
+
 export namespace MenuSpace {
   export interface IProps {
-    actions: FluxDrawerMenu.IActions;
-    logout: () => void;
+    logout?: () => void;
+    actions?: IDrawerMenuActions;
   }
 
   export interface IState {
@@ -70,21 +81,12 @@ export namespace MenuSpace {
   }
 }
 
-interface IItem {
-  title: string;
-  icon: ReactElement<any>;
-  className?: string;
-  type: MenuItemType;
-}
-
 const mapStateToProps = (state: IGlobalState) => ({
   menu: state.drawerMenu,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  actions: bindActionCreators({
-    ...FluxDrawerMenu.Actions,
-  }, dispatch),
+  actions: bindActionCreators(DrawerMenuAction, dispatch),
   logout: () => {
     dispatch(logoutAction());
   },
@@ -92,8 +94,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
-  selectItem = (type: MenuItemType) => () => {
-    this.props.actions.selectMenuItem(type);
+  selectItem = (selectedItem: MenuItemType) => () => {
+    this.props.actions.selectMenuItem({ selectedItem });
   }
 
   render() {
@@ -137,10 +139,6 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
       </Slide>
     );
   }
-
-  static defaultProps = {
-    googleLogin: {},
-  };
 }
 
-export default withStyles(styles)(Menu as any);
+export default withStyles(styles)(Menu);

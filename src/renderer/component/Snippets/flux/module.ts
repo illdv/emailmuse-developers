@@ -1,7 +1,9 @@
 import { createReducer } from 'redux-act';
 import { ISnippetsAction, ISnippetsState, ISuccessfullyPayload } from 'src/renderer/component/Snippets/flux/interface';
-import { ActionStatus, createActionSteps2 } from 'src/renderer/flux/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { createAsyncAction } from 'src/renderer/flux/utils';
+import { ActionStatus } from 'src/renderer/flux/interface';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 const REDUCER = 'SNIPPETS';
 const NS      = `${REDUCER}__`;
@@ -11,7 +13,7 @@ export const REMOVE_SNIPPETS  = `${NS}REMOVE_SNIPPETS`;
 export const ADD_SNIPPETS     = `${NS}ADD_SNIPPETS`;
 export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
 
-const loading = createActionSteps2(
+const loading = createAsyncAction(
   LOADING_SNIPPETS, {
     REQUEST: (payload: { page?: number, shortcut?: string } = { page: 1, shortcut: '' }) => (payload),
     SUCCESS: (payload: ISuccessfullyPayload) => (payload),
@@ -19,7 +21,7 @@ const loading = createActionSteps2(
   },
 );
 
-const remove = createActionSteps2(
+const remove = createAsyncAction(
   REMOVE_SNIPPETS, {
     REQUEST: (payload: { id: string }) => (payload),
     SUCCESS: () => ({}),
@@ -27,7 +29,7 @@ const remove = createActionSteps2(
   },
 );
 
-const add = createActionSteps2(
+const add = createAsyncAction(
   ADD_SNIPPETS, {
     REQUEST: (payload: { snippet: ISnippet }) => (payload),
     SUCCESS: () => ({}),
@@ -35,7 +37,7 @@ const add = createActionSteps2(
   },
 );
 
-const edit = createActionSteps2(
+const edit = createAsyncAction(
   EDIT_SNIPPETS, {
     REQUEST: (payload: { snippet: ISnippet }) => (payload),
     SUCCESS: () => ({}),
@@ -50,13 +52,13 @@ export const SnippetsAction: ISnippetsAction = {
   edit,
 };
 
-const initialState: ISnippetsState = {
+const initialState = (): ISnippetsState  => ({
   snippets: null,
   pagination: null,
   status: ActionStatus.REQUEST,
-};
+});
 
-const reducer = createReducer({}, initialState);
+const reducer = createReducer({}, initialState());
 
 reducer.on(SnippetsAction.loading.REQUEST, state => ({
   ...state,
@@ -88,5 +90,10 @@ reducer.on(SnippetsAction.loading.FAILURE, state => ({
   ...state,
   status: ActionStatus.FAILURE,
 }));
+
+/*reducer.on(DrawerMenuAction.selectMenuItem, (state): ISnippetsState  => ({
+  ...state,
+  selectSnippet: null,
+}));*/
 
 export default reducer;

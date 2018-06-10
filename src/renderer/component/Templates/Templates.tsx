@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
@@ -9,22 +10,17 @@ import { Loading } from 'src/renderer/common/Loading';
 import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
 import { createEmptyTemplate } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
-import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateState } from 'src/renderer/component/Templates/flux/models';
-import { ActionStatus } from 'src/renderer/flux/utils';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { ActionStatus } from 'src/renderer/flux/interface';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
-    loading?: (payload: { page: number, hidePreloader?: boolean }) => void;
-    remove?: (templateId: number) => void;
-    save?: (template: ITemplate) => void;
-    create?: (template: ITemplate) => void;
-    select?: (template: ITemplate) => void;
+    action?: ITemplateAction;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 
@@ -39,11 +35,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  loading: (payload: { page: number, hidePreloader?: boolean }) => dispatch(TemplateAction.loading(payload)),
-  remove: (templateId: number) => dispatch(TemplateAction.remove(templateId)),
-  save: (template: ITemplate) => dispatch(TemplateAction.save(template)),
-  create: (template: ITemplate) => dispatch(TemplateAction.create(template)),
-  select: (template: ITemplate) => dispatch(TemplateAction.select(template)),
+  action: bindActionCreators(TemplateAction, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -58,11 +50,11 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
 
   componentDidMount() {
     const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
-    this.props.loading({ page });
+    this.props.action.loading({ page });
   }
 
   onSelectTemplate = (template: ITemplate) => {
-    this.props.select(template);
+    this.props.action.select(template);
   }
 
   // TODO: for validation use TextValidator
@@ -79,11 +71,11 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onChangePage = (e, page: number) => {
-    this.props.loading({ page: page + 1 });
+    this.props.action.loading({ page: page + 1 });
   }
 
   onSelectNewTemplate = () => {
-    this.props.select(createEmptyTemplate());
+    this.props.action.select(createEmptyTemplate());
   }
 
   onSaveOrCreate = (newTemplate: ITemplate) => {
@@ -94,26 +86,26 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     if (this.props.templates.selectedTemplate.id) {
       this.onSave(newTemplate);
     } else {
-      this.props.create(newTemplate);
+      this.props.action.create(newTemplate);
     }
   }
 
   onSave = (newTemplate: ITemplate) => {
-    this.props.save(newTemplate);
+    this.props.action.save(newTemplate);
   }
 
   onCloseOrRemove = () => {
     const id = this.props.templates.selectedTemplate.id;
 
     if (id) {
-      this.props.remove(id);
+      this.props.action.remove(id);
     } else {
-      this.props.select(null);
+      this.props.action.select(null);
     }
   }
 
   onClose = () => {
-      this.props.select(null);
+      this.props.action.select(null);
   }
 
   render() {

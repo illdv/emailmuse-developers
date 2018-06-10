@@ -1,9 +1,10 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { ITemplateState } from './models';
-import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/models';
-import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
-import { ActionStatus } from 'src/renderer/flux/utils';
+import { ITemplateAction, ITemplateState } from './interface';
+import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/interface';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
+import { ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
@@ -21,6 +22,8 @@ export const SAVE           = `${NS}SAVE`;
 const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
 
+// TODO: For async action use IAsyncAction and createAsyncAction
+
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
@@ -30,7 +33,7 @@ const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => temp
 const save          = createAction(SAVE, (template: ITemplate) => template);
 const remove        = createAction(REMOVE, (templateId: number) => templateId);
 
-export const TemplateAction = {
+export const TemplateAction: ITemplateAction = {
   loading,
   failure,
   successfully,
@@ -87,6 +90,11 @@ reducer.on(select, (state, payload) => ({
   ...state,
   selectedTemplate: payload,
   status: ActionStatus.SUCCESS,
+}));
+
+reducer.on(DrawerMenuAction.selectMenuItem, state => ({
+  ...state,
+  selectedTemplate: null,
 }));
 
 export default reducer;

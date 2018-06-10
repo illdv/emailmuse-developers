@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Paper } from '@material-ui/core';
 import { connect, Dispatch } from 'react-redux';
+import { Add } from '@material-ui/icons';
+
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
-import { bindActionCreators } from 'redux';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { ActionStatus } from 'src/renderer/flux/utils';
 import { Loading } from 'src/renderer/common/Loading';
-import { Paper } from '@material-ui/core';
 import { ListElement } from 'src/renderer/common/List/ListElement';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
-import { Add } from '@material-ui/icons';
 import { Fab } from 'src/renderer/common/Fab';
 import { snippetToItem } from 'src/renderer/component/Snippets/utils';
+import { ActionStatus } from 'src/renderer/flux/interface';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -53,7 +54,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   }
 
   onChangePage = (event, page: number) => {
-    this.props.actions.loading.REQUEST({ page: page + 1});
+    this.props.actions.loading.REQUEST({ page: page + 1 });
   }
 
   onSelect = (snippet: ISnippet) => () => {

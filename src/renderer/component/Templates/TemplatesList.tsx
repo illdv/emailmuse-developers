@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider, Grid, List, ListItem, Paper, TablePagination, Typography } from '@material-ui/core/';
 import InCenter from 'src/renderer/common/InCenter';
-import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
 
 function TemplateItem(props: { title: string, description: string, time: string }) {

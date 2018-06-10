@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { CREATE, LOADING, REMOVE, SAVE } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/entity';
+import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
