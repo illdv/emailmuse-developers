@@ -13,13 +13,11 @@ import { ListElement } from 'src/renderer/common/List/ListElement';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Fab } from 'src/renderer/common/Fab';
-import { snippetToItem } from 'src/renderer/component/Snippets/utils';
+import { createEmptySnippet, snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
 
 export namespace SnippetsSpace {
   export interface IState {
-    select?: ISnippet;
-    isNew: boolean;
   }
 
   export interface IProps {
@@ -38,16 +36,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     add: bindActionCreators(SnippetsAction.add, dispatch),
     edit: bindActionCreators(SnippetsAction.edit, dispatch),
     remove: bindActionCreators(SnippetsAction.remove, dispatch),
+    selectSnippet: bindActionCreators(SnippetsAction.selectSnippet, dispatch),
   },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.IState> {
 
-  state = {
-    select: null,
-    isNew: false,
-  };
+  state: SnippetsSpace.IState = {};
 
   componentDidMount(): void {
     this.props.actions.loading.REQUEST({});
@@ -58,57 +54,50 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   }
 
   onSelect = (snippet: ISnippet) => () => {
-    this.setState({
-      select: snippet,
-    });
+    this.props.actions.selectSnippet({selectSnippet: snippet});
   }
 
   onClose = () => {
-    this.setState({
-      select: null,
-    });
+    this.props.actions.selectSnippet({ selectSnippet: null });
   }
 
   onRemove = () => {
-    const select = this.state.select;
-    this.props.actions.remove.REQUEST({ id: select.id });
-    this.onClose();
+    const selectSnippet = this.props.snippets.selectSnippet;
+    this.props.actions.remove.REQUEST({ id: selectSnippet.id.toString() });
   }
 
   onSave = (newSnippet: ISnippet) => {
-    if (this.state.isNew) {
-      this.props.actions.add.REQUEST({ snippet: newSnippet });
+    this.props.actions.edit.REQUEST({ snippet: newSnippet });
+  }
+
+  onCreate = (newSnippet: ISnippet) => {
+    this.props.actions.add.REQUEST({ snippet: newSnippet });
+  }
+
+  selectNew = () => {
+    this.props.actions.selectSnippet({ selectSnippet: createEmptySnippet() });
+  }
+
+  /**
+   * New means that has not yet been created.
+   */
+  isNewSnippet = (): boolean => {
+    return this.props.snippets.selectSnippet.id === null;
+  }
+
+  showEditOrCreateSnippet = () => {
+    const selectSnippet = this.props.snippets.selectSnippet;
+
+    if (this.isNewSnippet()) {
+      return (
+        <SnippetsEditor
+          onRemove={this.onClose}
+          onClose={this.onClose}
+          snippet={selectSnippet}
+          onSave={this.onCreate}
+        />
+      );
     } else {
-      this.props.actions.edit.REQUEST({ snippet: newSnippet });
-    }
-    this.setState({
-      select: null,
-      isNew: false,
-    });
-  }
-
-  onEditNew = () => {
-    this.setState({
-      isNew: true,
-      select: {
-        user_id: -1,
-        id: -1,
-        shortcut: '',
-        description: '',
-        body: '',
-        updated_at: '',
-        created_at: '',
-      },
-    });
-  }
-
-  render() {
-
-    const { status, snippets, pagination } = this.props.snippets;
-
-    const selectSnippet = this.state.select;
-
-    if (selectSnippet) {
       return (
         <SnippetsEditor
           onRemove={this.onRemove}
@@ -117,6 +106,15 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           onSave={this.onSave}
         />
       );
+    }
+  }
+
+  render() {
+
+    const { status, snippets, pagination } = this.props.snippets;
+
+    if (this.props.snippets.selectSnippet) {
+      return this.showEditOrCreateSnippet();
     }
 
     if (status === ActionStatus.REQUEST) {
@@ -133,7 +131,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           onChangePage={this.onChangePage}
         />
         <Fab
-          onClick={this.onEditNew}
+          onClick={this.selectNew}
           icon={<Add/>}
           position={0}
         />
