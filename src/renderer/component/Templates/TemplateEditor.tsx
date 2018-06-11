@@ -163,21 +163,25 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             onClick={this.onRemove}
             icon={<Delete/>}
             position={0}
+            title={'Remove'}
           />
           <Fab
             onClick={this.onSave(false)}
             icon={<Save/>}
             position={1}
+            title={'Save'}
           />
           <Fab
             onClick={this.onCreateClone}
             icon={<ContentCopy/>}
             position={2}
+            title={'Create clone'}
           />
           <Fab
             onClick={this.onClose}
             icon={<Close/>}
             position={3}
+            title={'Close'}
           />
         </div>
       </>

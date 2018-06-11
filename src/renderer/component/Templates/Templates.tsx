@@ -148,6 +148,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
             onClick={this.onSelectNewTemplate}
             icon={<Add/>}
             position={0}
+            title={'Add new template'}
           />
         </div>
       </div>
