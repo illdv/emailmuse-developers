@@ -4,6 +4,7 @@ import { ISnippetsAction, ISnippetsState, ISuccessfullyPayload } from 'src/rende
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { createAsyncAction } from 'src/renderer/flux/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 const REDUCER = 'SNIPPETS';
 const NS      = `${REDUCER}__`;
@@ -117,9 +118,9 @@ reducer.on(SnippetsAction.selectSnippet, (state, payload): ISnippetsState => ({
   selectSnippet: payload.selectSnippet,
 }));
 
-/*reducer.on(DrawerMenuAction.selectMenuItem, (state): ISnippetsState  => ({
+reducer.on(DrawerMenuAction.selectMenuItem, (state): ISnippetsState  => ({
   ...state,
   selectSnippet: null,
-}));*/
+}));
 
 export default reducer;

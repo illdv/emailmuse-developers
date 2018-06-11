@@ -12,13 +12,14 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
-const b = block('template-editor');
+import './SnippetsEditor.scss';
+
+const b = block('snippets-editor');
 
 export namespace SnippetsEditorSpace {
   export interface IState {
     shortcut: string;
     id: number;
-    description: string;
     body: string;
     hasChange: boolean;
     isOpenConfirmationClose: boolean;
@@ -47,7 +48,6 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
 
   state: SnippetsEditorSpace.IState = {
     id: -1,
-    description: '',
     shortcut: '',
     body: '',
     hasChange: false,
@@ -61,10 +61,9 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
 
     const { snippet } = nextProps;
     if (snippet.id !== prevState.id) {
-      const { id, body, description, shortcut } = snippet;
+      const { id, body, shortcut } = snippet;
       return {
         body,
-        description,
         id,
         shortcut,
         hasChange: false,
@@ -78,20 +77,15 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
 
   onSave = (saveAndClose?: boolean) => () => {
     const snippet                         = this.props.snippet;
-    const { body, shortcut, description } = this.state;
+    const { body, shortcut } = this.state;
 
-    if (shortcut.length !== 0) {
-      this.props.onShowToast('Snippet code cannot be empty', ToastType.Warning);
+    if (shortcut.length === 0) {
+      this.props.onShowToast('Snippet name cannot be empty', ToastType.Warning);
       return;
     }
 
-    if (body.length !== 0) {
+    if (body.length === 0) {
       this.props.onShowToast('Body cannot be empty', ToastType.Warning);
-      return;
-    }
-
-    if (description.length !== 0) {
-      this.props.onShowToast('Description cannot be empty', ToastType.Warning);
       return;
     }
 
@@ -101,7 +95,6 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
         ...snippet,
         body,
         shortcut,
-        description,
       },
       saveAndClose,
     );
@@ -145,18 +138,9 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
           <TextField
             className={b('text-field')}
             id='shortcut'
-            label='Snippet code'
+            label='Snippet name'
             margin='normal'
             value={this.state.shortcut}
-            onChange={this.onChangeField}
-          />
-          <TextField
-            multiline
-            className={b('text-field')}
-            id='description'
-            label='Description'
-            margin='normal'
-            value={this.state.description}
             onChange={this.onChangeField}
           />
         </Grid>
