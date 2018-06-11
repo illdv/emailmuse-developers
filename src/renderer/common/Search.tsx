@@ -1,7 +1,7 @@
-import { ChangeEvent, Component } from 'react';
 import * as React from 'react';
+import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IconButton, TextField } from '@material-ui/core';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 
 export namespace SearchSpace {
@@ -36,16 +36,25 @@ export class Search extends Component<SearchSpace.IProps, SearchSpace.IState> {
 
   render() {
     return (
-      <>
-        <TextField
-          label='Search'
-          margin='normal'
+      <FormControl>
+        <InputLabel htmlFor='search'>Search</InputLabel>
+        <Input
+          id='search'
+          type={'text'}
+          value={this.state.searchWord}
           onChange={this.onChangeSearchWord}
+          endAdornment={
+            <InputAdornment position='end'>
+              <IconButton
+                aria-label='Toggle password visibility'
+                onClick={this.onSearch}
+              >
+                <SearchIcon/>
+              </IconButton>
+            </InputAdornment>
+          }
         />
-        <IconButton onClick={this.onSearch} color='primary'>
-          <SearchIcon/>
-        </IconButton>
-      </>
+      </FormControl>
     );
   }
 }

@@ -65,6 +65,7 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
     this.props.actions.loading.REQUEST({});
   }
 
+  // TODO: Use setState for searchWord bad. Add new action search (loading image and set searchWord in state redux)
   onLoadingSnippet = (searchWord: string) => {
     this.props.actions.loading.REQUEST({ shortcut: searchWord });
     this.setState({ searchWord });
