@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
-import { Close, Delete, Save } from '@material-ui/icons';
+import { Close, Delete, Save, ContentCopy } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
@@ -28,6 +28,7 @@ export namespace TemplateEditorSpace {
     save: (template: ITemplate, saveAndClose?: boolean) => void;
     remove: () => void;
     close: () => void;
+    createClone: (template: ITemplate) => void;
   }
 }
 
@@ -115,6 +116,11 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
     this.setState({ isOpenConfirmationDelete: true });
   }
 
+  onCreateClone = () => {
+    const newTemplate = this.getNewTemplate();
+    this.props.createClone({...newTemplate, title: `${newTemplate.title} (copy)`});
+  }
+
   render() {
     return (
       <>
@@ -164,9 +170,14 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             position={1}
           />
           <Fab
+            onClick={this.onCreateClone}
+            icon={<ContentCopy/>}
+            position={2}
+          />
+          <Fab
             onClick={this.onClose}
             icon={<Close/>}
-            position={2}
+            position={3}
           />
         </div>
       </>

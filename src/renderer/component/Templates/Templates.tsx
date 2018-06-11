@@ -104,6 +104,10 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.select(null);
   }
 
+  onCreateClone = (newTemplate: ITemplate) => {
+    this.props.action.create(newTemplate);
+  }
+
   render() {
     const { status, templates, pagination, selectedTemplate } = this.props.templates;
 
@@ -126,6 +130,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           close={this.onClose}
           remove={this.onCloseOrRemove}
           save={this.onSaveOrCreate}
+          createClone={this.onCreateClone}
         />
       );
     }
