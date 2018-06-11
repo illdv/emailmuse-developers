@@ -128,7 +128,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
           <TextField
             className={b('text-field')}
             id='title'
-            label='Title'
+            label='Subject'
             margin='normal'
             value={this.state.title}
             onChange={this.onChangeField}
