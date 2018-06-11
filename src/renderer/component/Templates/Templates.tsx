@@ -78,20 +78,16 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.select(createEmptyTemplate());
   }
 
-  onSaveOrCreate = (newTemplate: ITemplate) => {
+  onSaveOrCreate = (newTemplate: ITemplate, saveAndClose: boolean = false) => {
     if (!this.validation(newTemplate)) {
       return;
     }
 
     if (this.props.templates.selectedTemplate.id) {
-      this.onSave(newTemplate);
+      this.props.action.save({ template: newTemplate, saveAndClose });
     } else {
       this.props.action.create(newTemplate);
     }
-  }
-
-  onSave = (newTemplate: ITemplate) => {
-    this.props.action.save(newTemplate);
   }
 
   onCloseOrRemove = () => {
@@ -105,7 +101,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onClose = () => {
-      this.props.action.select(null);
+    this.props.action.select(null);
   }
 
   render() {

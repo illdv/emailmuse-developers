@@ -25,7 +25,7 @@ export namespace TemplateEditorSpace {
 
   export interface IProps {
     template?: ITemplate;
-    save: (template: ITemplate) => void;
+    save: (template: ITemplate, saveAndClose?: boolean) => void;
     remove: () => void;
     close: () => void;
   }
@@ -90,8 +90,8 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
     };
   }
 
-  onSave = () => {
-    this.props.save(this.getNewTemplate());
+  onSave = (saveAndClose: boolean) => () => {
+    this.props.save(this.getNewTemplate(), saveAndClose);
     this.setState({ hasChange: false });
   }
 
@@ -141,8 +141,9 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
         <Confirmation
           isOpen={this.state.isOpenConfirmationClose}
           onClose={this.onCloseDialogClose}
-          onSelectYes={this.props.close}
-          question={'The changes are not saved. Are you want to close this template?'}
+          onSelectYes={this.onSave(true)}
+          onSelectNo={this.props.close}
+          question={'The changes are not saved. Are you want save template?'}
         />
         <Confirmation
           isOpen={this.state.isOpenConfirmationDelete}
@@ -158,7 +159,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             position={0}
           />
           <Fab
-            onClick={this.onSave}
+            onClick={this.onSave(false)}
             icon={<Save/>}
             position={1}
           />

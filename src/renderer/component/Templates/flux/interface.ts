@@ -19,7 +19,7 @@ export interface ILoadingTemplatePayload {
 export interface ITemplateAction extends ActionCreatorsMapObject {
   loading?: Action<{ page: number, hidePreloader?: boolean }>;
   remove?: Action<number>;
-  save?: Action<ITemplate>;
+  save?: Action<{ template: ITemplate, saveAndClose: boolean }>;
   create?: Action<ITemplate>;
   select?: Action<ITemplate>;
   failure?: EmptyActionCreator;

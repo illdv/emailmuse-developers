@@ -135,7 +135,7 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
             color={'secondary'}
             onClick={onRemove}
             icon={<Delete/>}
-            position={2}
+            position={0}
           />
           <Fab
             onClick={this.onSave}
@@ -145,7 +145,7 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
           <Fab
             onClick={onClose}
             icon={<Close/>}
-            position={0}
+            position={2}
           />
         </div>
       </>

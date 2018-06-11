@@ -7,6 +7,7 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { ITemplateAction } from 'src/renderer/component/Templates/flux/interface';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return state.templates.pagination.current_page;
@@ -34,7 +35,11 @@ function* loadingTemplates(action) {
 
 function* saveTemplate(action) {
   try {
-    yield call(Templates.editTemplate, action.payload);
+    yield call(Templates.editTemplate, action.payload.template);
+
+    if (action.payload.saveAndClose) {
+      yield put(TemplateAction.select(null));
+    }
 
     yield put(FluxToast.Actions.showToast('Save template success.', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
