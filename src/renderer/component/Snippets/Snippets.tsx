@@ -37,6 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     edit: bindActionCreators(SnippetsAction.edit, dispatch),
     remove: bindActionCreators(SnippetsAction.remove, dispatch),
     selectSnippet: bindActionCreators(SnippetsAction.selectSnippet, dispatch),
+    saveAndClose: bindActionCreators(SnippetsAction.saveAndClose, dispatch),
   },
 });
 
@@ -54,7 +55,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   }
 
   onSelect = (snippet: ISnippet) => () => {
-    this.props.actions.selectSnippet({selectSnippet: snippet});
+    this.props.actions.selectSnippet({ selectSnippet: snippet });
   }
 
   onClose = () => {
@@ -66,7 +67,10 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     this.props.actions.remove.REQUEST({ id: selectSnippet.id.toString() });
   }
 
-  onSave = (newSnippet: ISnippet) => {
+  onSave = (newSnippet: ISnippet, saveAndClose: boolean) => {
+    if (saveAndClose) {
+      this.props.actions.saveAndClose({ snippet: newSnippet });
+    }
     this.props.actions.edit.REQUEST({ snippet: newSnippet });
   }
 

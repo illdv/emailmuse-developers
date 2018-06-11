@@ -2,6 +2,7 @@ import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Action, ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
 import { ActionCreatorsMapObject } from 'redux';
+import { EmptyActionCreator } from 'redux-act';
 
 export interface ISnippetsState {
   snippets: ISnippet[];
@@ -16,6 +17,7 @@ export interface ISnippetsAction {
   add: IAsyncAction<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
   edit: IAsyncAction<{ snippet: ISnippet }, {}, {}>;
   selectSnippet: Action<{ selectSnippet: ISnippet }>;
+  saveAndClose: Action<{ snippet: ISnippet }>;
 }
 
 export interface ISuccessfullyPayload {

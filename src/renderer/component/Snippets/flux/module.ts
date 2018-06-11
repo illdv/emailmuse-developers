@@ -13,6 +13,7 @@ export const REMOVE_SNIPPETS  = `${NS}REMOVE_SNIPPETS`;
 export const ADD_SNIPPETS     = `${NS}ADD_SNIPPETS`;
 export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
 export const SELECT_SNIPPET   = `${NS}SELECT_SNIPPET`;
+export const SAVE_AND_CLOSE   = `${NS}SAVE_AND_CLOSE`;
 
 const loading = createAsyncAction(
   LOADING_SNIPPETS, {
@@ -46,6 +47,8 @@ const edit = createAsyncAction(
   },
 );
 
+const saveAndClose = createAction(SAVE_AND_CLOSE);
+
 const selectSnippet = createAction(SELECT_SNIPPET, (payload: { selectSnippet: ISnippet }) => (payload));
 
 export const SnippetsAction: ISnippetsAction = {
@@ -54,6 +57,7 @@ export const SnippetsAction: ISnippetsAction = {
   add,
   edit,
   selectSnippet,
+  saveAndClose,
 };
 
 const initialState = (): ISnippetsState  => ({

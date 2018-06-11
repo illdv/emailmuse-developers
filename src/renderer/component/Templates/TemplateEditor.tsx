@@ -95,16 +95,16 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
     this.setState({ hasChange: false });
   }
 
-  onCloseDialogClose = () => {
-    this.setState({ isOpenConfirmationClose: false });
-  }
-
   onClose = () => {
     if (this.state.hasChange) {
       this.setState({ isOpenConfirmationClose: true });
     } else {
       this.props.close();
     }
+  }
+
+  onCloseDialogClose = () => {
+    this.setState({ isOpenConfirmationClose: false });
   }
 
   onCloseDialogDelete = () => {

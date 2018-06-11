@@ -10,6 +10,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 const b = block('template-editor');
 
@@ -19,19 +20,21 @@ export namespace SnippetsEditorSpace {
     id: number;
     description: string;
     body: string;
+    hasChange: boolean;
+    isOpenConfirmationClose: boolean;
+    isOpenConfirmationDelete: boolean;
   }
 
   export interface IProps {
-    onRemove: (snippetId: string) => void;
+    onRemove: () => void;
     onClose: () => void;
-    onSave: (newSnippet: ISnippet) => void;
+    onSave: (newSnippet: ISnippet, saveAndClose: boolean) => void;
     snippet: ISnippet;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 }
 
-const mapStateToProps = (state: IGlobalState) => ({
-});
+const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onShowToast: (messages: string, type: ToastType) => {
@@ -47,6 +50,9 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
     description: '',
     shortcut: '',
     body: '',
+    hasChange: false,
+    isOpenConfirmationClose: false,
+    isOpenConfirmationDelete: false,
   };
 
   static getDerivedStateFromProps(
@@ -61,31 +67,35 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
         description,
         id,
         shortcut,
+        hasChange: false,
+        isOpenConfirmationClose: false,
+        isOpenConfirmationDelete: false,
       };
 
     }
     return null;
   }
 
-  onSave = () => {
+  onSave = (saveAndClose?: boolean) => () => {
     const snippet                         = this.props.snippet;
     const { body, shortcut, description } = this.state;
 
-    if (!shortcut.length) {
+    if (shortcut.length !== 0) {
       this.props.onShowToast('Snippet code cannot be empty', ToastType.Warning);
       return;
     }
 
-    if (!body.length) {
+    if (body.length !== 0) {
       this.props.onShowToast('Body cannot be empty', ToastType.Warning);
       return;
     }
 
-    if (!description.length) {
+    if (description.length !== 0) {
       this.props.onShowToast('Description cannot be empty', ToastType.Warning);
       return;
     }
 
+    this.setState({hasChange: false});
     this.props.onSave(
       {
         ...snippet,
@@ -93,20 +103,41 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
         shortcut,
         description,
       },
+      saveAndClose,
     );
   }
 
   onChangeField = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    this.setState({ [id]: value } as any);
+    this.setState({ [id]: value, hasChange: true } as any);
   }
 
   onChangeBody = (body: string) => {
-    this.setState({ body });
+    this.setState({ body, hasChange: true });
+  }
+
+  onCloseDialogClose = () => {
+    this.setState({ isOpenConfirmationClose: false });
+  }
+
+  onCloseDialogDelete = () => {
+    this.setState({ isOpenConfirmationDelete: false });
+  }
+
+  onClose = () => {
+    if (this.state.hasChange) {
+      this.setState({ isOpenConfirmationClose: true });
+    } else {
+      this.props.onClose();
+    }
+  }
+
+  onRemove = () => {
+    this.setState({ isOpenConfirmationDelete: true });
   }
 
   render() {
-    const { onRemove, onClose } = this.props;
+    const { onRemove } = this.props;
 
     return (
       <>
@@ -130,20 +161,33 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
           />
         </Grid>
         <JoditEditor onChangeValue={this.onChangeBody} value={this.state.body}/>
+        <Confirmation
+          isOpen={this.state.isOpenConfirmationClose}
+          onClose={this.onCloseDialogClose}
+          onSelectYes={this.onSave(true)}
+          onSelectNo={this.props.onClose}
+          question={'The changes are not saved. Are you want save snippet?'}
+        />
+        <Confirmation
+          isOpen={this.state.isOpenConfirmationDelete}
+          onClose={this.onCloseDialogDelete}
+          onSelectYes={onRemove}
+          question={'Are you want to delete this snippet?'}
+        />
         <div>
           <Fab
             color={'secondary'}
-            onClick={onRemove}
+            onClick={this.onRemove}
             icon={<Delete/>}
             position={0}
           />
           <Fab
-            onClick={this.onSave}
+            onClick={this.onSave(false)}
             icon={<Save/>}
             position={1}
           />
           <Fab
-            onClick={onClose}
+            onClick={this.onClose}
             icon={<Close/>}
             position={2}
           />
