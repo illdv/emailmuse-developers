@@ -80,7 +80,7 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   }
 
   componentDidMount() {
-    this.props.actions.getImagesRequest();
+    this.props.actions.getImagesRequest(1, 'cat');
   }
 
   onDropFile = item => {
