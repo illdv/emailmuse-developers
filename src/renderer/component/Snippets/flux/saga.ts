@@ -3,9 +3,8 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
 import { AxiosResponse } from 'axios';
-import { ILoadingResponse, ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Action } from 'src/renderer/flux/interface';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return state.snippets.pagination.current_page;

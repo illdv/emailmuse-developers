@@ -70,50 +70,50 @@ const initialState = (): ISnippetsState  => ({
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(SnippetsAction.loading.REQUEST, state => ({
+reducer.on(loading.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.add.REQUEST, state => ({
+reducer.on(add.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.add.SUCCESS, (state, payload): ISnippetsState => ({
+reducer.on(add.SUCCESS, (state, payload): ISnippetsState => ({
   ...state,
   selectSnippet: payload.snippet,
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(SnippetsAction.edit.REQUEST, state => ({
+reducer.on(edit.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.remove.REQUEST, state => ({
+reducer.on(remove.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.remove.SUCCESS, state => ({
+reducer.on(remove.SUCCESS, state => ({
   ...state,
   selectSnippet: null,
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(SnippetsAction.loading.SUCCESS, (state, payload) => ({
+reducer.on(loading.SUCCESS, (state, payload) => ({
   ...state,
   ...payload,
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(SnippetsAction.loading.FAILURE, state => ({
+reducer.on(loading.FAILURE, state => ({
   ...state,
   status: ActionStatus.FAILURE,
 }));
 
-reducer.on(SnippetsAction.selectSnippet, (state, payload): ISnippetsState => ({
+reducer.on(selectSnippet, (state, payload): ISnippetsState => ({
   ...state,
   selectSnippet: payload.selectSnippet,
 }));
