@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
-import TemplatesList from 'src/renderer/component/Templates/TemplatesList';
-import { createEmptyTemplate } from 'src/renderer/component/Templates/utils';
+import { createEmptyTemplate, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
@@ -16,6 +15,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
+import { ListElement } from 'src/renderer/common/List/ListElement';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -53,7 +53,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.loading({ page });
   }
 
-  onSelectTemplate = (template: ITemplate) => {
+  onSelect = (template: ITemplate) => () => {
     this.props.action.select(template);
   }
 
@@ -83,20 +83,24 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
       return;
     }
 
-    if (this.props.templates.selectedTemplate.id) {
-      this.props.action.save({ template: newTemplate, saveAndClose });
+    const { templates, action } = this.props;
+
+    if (templates.selectedTemplate.id) {
+      action.save({ template: newTemplate, saveAndClose });
     } else {
-      this.props.action.create(newTemplate);
+      action.create(newTemplate);
     }
   }
 
   onCloseOrRemove = () => {
-    const id = this.props.templates.selectedTemplate.id;
+    const { templates, action } = this.props;
+
+    const id = templates.selectedTemplate.id;
 
     if (id) {
-      this.props.action.remove(id);
+      action.remove(id);
     } else {
-      this.props.action.select(null);
+      action.select(null);
     }
   }
 
@@ -136,22 +140,21 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     }
 
     return (
-      <div>
-        <TemplatesList
-          templates={templates}
-          selectTemplate={this.onSelectTemplate}
-          onChangePage={this.onChangePage}
+      <Paper>
+        <ListElement
+          entities={templates}
+          toItem={templateToItem}
+          selectItem={this.onSelect}
           pagination={pagination}
+          onChangePage={this.onChangePage}
         />
-        <div>
-          <Fab
-            onClick={this.onSelectNewTemplate}
-            icon={<Add/>}
-            position={0}
-            title={'Add new template'}
-          />
-        </div>
-      </div>
+        <Fab
+          onClick={this.onSelectNewTemplate}
+          icon={<Add/>}
+          position={0}
+          title={'Add new template'}
+        />
+      </Paper>
     );
   }
 }

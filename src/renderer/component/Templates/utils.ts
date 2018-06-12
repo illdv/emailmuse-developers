@@ -1,4 +1,5 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { ICustomItem } from 'src/renderer/common/List/ListElement';
 
 export function createEmptyTemplate(): ITemplate {
   return {
@@ -10,5 +11,14 @@ export function createEmptyTemplate(): ITemplate {
     body: '',
     created_at: '',
     deleted_at: '',
+  };
+}
+
+export function templateToItem(templates: ITemplate): ICustomItem {
+  return {
+    id: templates.id,
+    title: templates.title,
+    description: templates.description,
+    rightText: templates.updated_at,
   };
 }
