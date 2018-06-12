@@ -16,7 +16,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { Delete as DeleteIcon, FilterList as FilterListIcon } from '@material-ui/icons';
+import { ContentCopy as ContentCopyIcon, FilterList as FilterListIcon } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
@@ -70,6 +70,7 @@ export namespace ListElementSpace {
     pagination: IPagination;
     onSelectItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
+    onCopy?: (id: string) => void;
   }
 }
 
@@ -155,12 +156,19 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
     }));
   }
 
+  onCopy = () => {
+    const selectedId = this.state.selectedItemIds[0];
+    if (this.props.onCopy) {
+      this.props.onCopy(selectedId);
+    }
+  }
+
   render() {
     const { pagination, onChangePage, entities } = this.props;
 
     return (
       <>
-        <EnhancedTableToolbar numSelected={this.state.selectedItemIds.length}/>
+        <EnhancedTableToolbar onCopy={this.onCopy} numSelected={this.state.selectedItemIds.length}/>
         <div className={b()}>
           <Table aria-labelledby='tableTitle'>
             <CustomTableHead
@@ -213,7 +221,7 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
   }
 }
 
-function EnhancedTableToolbar(props) {
+function EnhancedTableToolbar(props: { numSelected: number, onCopy: () => void }) {
   const { numSelected } = props;
 
   return (
@@ -240,9 +248,10 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Tooltip>
           ||
-          <Tooltip title='Delete'>
-            <IconButton aria-label='Delete'>
-              <DeleteIcon/>
+          numSelected === 1 &&
+          <Tooltip title='Copy'>
+            <IconButton aria-label='Copy'>
+              <ContentCopyIcon/>
             </IconButton>
           </Tooltip>
         }

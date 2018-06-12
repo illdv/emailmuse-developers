@@ -28,7 +28,6 @@ export namespace TemplateEditorSpace {
     save: (template: ITemplate, saveAndClose?: boolean) => void;
     remove: () => void;
     close: () => void;
-    createClone: (template: ITemplate) => void;
   }
 }
 
@@ -116,11 +115,6 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
     this.setState({ isOpenConfirmationDelete: true });
   }
 
-  onCreateClone = () => {
-    const newTemplate = this.getNewTemplate();
-    this.props.createClone({...newTemplate, title: `${newTemplate.title} (copy)`});
-  }
-
   render() {
     return (
       <>
@@ -172,15 +166,9 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             title={'Save'}
           />
           <Fab
-            onClick={this.onCreateClone}
-            icon={<ContentCopy/>}
-            position={2}
-            title={'Create clone'}
-          />
-          <Fab
             onClick={this.onClose}
             icon={<Close/>}
-            position={3}
+            position={2}
             title={'Close'}
           />
         </div>

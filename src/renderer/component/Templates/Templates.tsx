@@ -108,8 +108,8 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.select(null);
   }
 
-  onCreateClone = (newTemplate: ITemplate) => {
-    this.props.action.create(newTemplate);
+  onCopy = (id: string) => {
+    // this.props.action.create(newTemplate);
   }
 
   render() {
@@ -134,7 +134,6 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           close={this.onClose}
           remove={this.onCloseOrRemove}
           save={this.onSaveOrCreate}
-          createClone={this.onCreateClone}
         />
       );
     }
@@ -147,6 +146,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           onSelectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
+          onCopy={this.onCopy}
         />
         <Fab
           onClick={this.onSelectNewTemplate}
