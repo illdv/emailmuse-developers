@@ -25,7 +25,7 @@
     "classnames": "^2.2.5",
     "jodit": "https://github.com/Kamys/jodit/tarball/master",
     "log4js": "^2.6.1",
-    "moment": "^2.22.1",
+    "moment-es6": "^1.0.0",
     "react": "^16.3.2",
     "react-color": "^2.14.1",
     "react-dnd": "^2.6.0",

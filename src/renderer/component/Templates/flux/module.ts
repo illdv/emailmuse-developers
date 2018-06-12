@@ -4,7 +4,7 @@ import { ITemplateAction, ITemplateState } from './interface';
 import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/interface';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
-import { ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
+import { ActionStatus } from 'src/renderer/flux/interface';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
@@ -32,7 +32,7 @@ const create        = createAction(CREATE, (template: ITemplate) => template);
 const select        = createAction(SELECT, (template: ITemplate) => template);
 const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
 const save          = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
-const remove        = createAction(REMOVE, (templateId: number) => templateId);
+const remove        = createAction(REMOVE, (templateId: string) => templateId);
 
 export const TemplateAction: ITemplateAction = {
   loading,

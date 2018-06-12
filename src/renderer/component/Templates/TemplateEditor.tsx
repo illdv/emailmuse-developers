@@ -14,7 +14,7 @@ const b = block('template-editor');
 
 export namespace TemplateEditorSpace {
   export interface IState {
-    templateId: number;
+    templateId: string;
     value: string;
     title: string;
     description: string;
@@ -36,7 +36,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
 
   state: TemplateEditorSpace.IState = {
     value: '',
-    templateId: -1,
+    templateId: null,
     description: '',
     title: '',
     hasChange: false,
