@@ -6,7 +6,7 @@ import block from 'bem-ts';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ListElement } from 'src/renderer/common/List/ListElement';
+import { ElementList } from 'src/renderer/common/List/ElementList';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { snippetToItem } from 'src/renderer/component/Snippets/utils';
@@ -89,10 +89,10 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
         <DialogContent>
           <Search search={this.onLoadingSnippet}/>
           <div className={b('container')}>
-            <ListElement
+            <ElementList
               entities={snippets.snippets}
               toItem={snippetToItem}
-              selectItem={this.onSelect}
+              onSelectItem={this.onSelect}
               pagination={snippets.pagination}
               onChangePage={this.onChangePage}
             />

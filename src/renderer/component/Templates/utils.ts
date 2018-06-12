@@ -1,5 +1,5 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import { ICustomItem } from 'src/renderer/common/List/ListElement';
+import { ICustomItem } from 'src/renderer/common/List/ElementList';
 
 export function createEmptyTemplate(): ITemplate {
   return {

@@ -9,7 +9,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';
-import { ListElement } from 'src/renderer/common/List/ListElement';
+import { ElementList } from 'src/renderer/common/List/ElementList';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Fab } from 'src/renderer/common/Fab';
@@ -127,10 +127,10 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
 
     return (
       <Paper elevation={4} className={'template-list'}>
-        <ListElement
+        <ElementList
           entities={snippets}
           toItem={snippetToItem}
-          selectItem={this.onSelect}
+          onSelectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
         />

@@ -1,4 +1,4 @@
-import { ICustomItem } from 'src/renderer/common/List/ListElement';
+import { ICustomItem } from 'src/renderer/common/List/ElementList';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 
 export const createEmptySnippet = () => ({

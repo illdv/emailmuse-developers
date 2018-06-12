@@ -15,7 +15,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ListElement } from 'src/renderer/common/List/ListElement';
+import { ElementList } from 'src/renderer/common/List/ElementList';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -141,10 +141,10 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
 
     return (
       <Paper>
-        <ListElement
+        <ElementList
           entities={templates}
           toItem={templateToItem}
-          selectItem={this.onSelect}
+          onSelectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
         />

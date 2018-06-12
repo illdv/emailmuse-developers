@@ -79,7 +79,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           <Grid item xs={12} sm={3}>
             <Menu/>
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflow: 'auto', position: 'relative' }}>
+          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden'}}>
             <PreloaderLayout/>
             {this.mainDisplay(this.props)}
           </Grid>

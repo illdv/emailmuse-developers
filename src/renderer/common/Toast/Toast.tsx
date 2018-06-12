@@ -36,6 +36,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
 });
 
+// TODO remake https://material-ui.com/demos/snackbars/
+
 @(connect(mapStateToProps, mapDispatchToProps))
 export class Toast extends Component<ToastSpace.IProps, ToastSpace.IState> {
   handleClose = () => {
