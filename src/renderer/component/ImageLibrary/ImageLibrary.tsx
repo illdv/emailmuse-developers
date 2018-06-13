@@ -23,7 +23,7 @@ import {
 } from 'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import ImageLibraryDialog from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
@@ -55,22 +55,6 @@ const styles: IStyle = theme => ({
     height: '100%',
     backgroundColor: theme.palette.background.paper,
   },
-});
-
-const mapStateToProps = state => ({
-  items: getImagesURLSelector(state),
-  pagination: {
-    current_page: getCurrentPageSelector(state),
-    total: getTotalImages(state),
-    last_page: getLastPageSelector(state),
-    per_page: getPerPageSelector(state),
-  },
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
-    dispatch),
 });
 
 export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
@@ -190,6 +174,22 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
     );
   }
 }
+
+const mapStateToProps = state => ({
+  items: getImagesURLSelector(state),
+  pagination: {
+    current_page: getCurrentPageSelector(state),
+    total: getTotalImages(state),
+    last_page: getLastPageSelector(state),
+    per_page: getPerPageSelector(state),
+  },
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+    dispatch),
+});
 
 export default withStyles(styles)
 (connect(mapStateToProps, mapDispatchToProps)

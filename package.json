@@ -114,6 +114,12 @@
       "\\.(css|less|scss)$": "<rootDir>/config/jest/__mocks__/fileMock.js"
     },
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/renderer/**/*.tsx"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "jestWebpackResolver": {
       "webpackConfig": "<rootDir>/webpack.config.js"
     },

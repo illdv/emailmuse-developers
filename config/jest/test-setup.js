@@ -6,6 +6,7 @@ const Adapter = require("enzyme-adapter-react-16");
 
 enzyme.configure({ adapter: new Adapter() });
 
+
 // Сделаем функции Enzyme доступными во всех файлах тестов без необходимости импорта importing
 // import { shallow, render, mount } from 'enzyme';
 // enzymeglobal.shallow = shallow;

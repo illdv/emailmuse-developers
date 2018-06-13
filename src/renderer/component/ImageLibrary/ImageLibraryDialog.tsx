@@ -34,15 +34,9 @@ namespace ImageLibraryDialogSpace {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onShowToast: (messages: string, type: ToastType) => {
-    dispatch(FluxToast.Actions.showToast(messages, type));
-  },
-});
-
-@connect(null, mapDispatchToProps)
-export class ImageLibraryDialog
-  extends React.Component<ImageLibraryDialogSpace.IProps, ImageLibraryDialogSpace.IState> {
+export class ImageLibraryDialog extends React.Component<
+  ImageLibraryDialogSpace.IProps,
+  ImageLibraryDialogSpace.IState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +63,7 @@ export class ImageLibraryDialog
     this.handleDialogClose();
   }
 
-  inputClick = e => {
+  copyUrlToClipboard = e => {
     e.preventDefault();
     const p = document.getElementById('url') as HTMLInputElement;
     p.select();
@@ -79,10 +73,6 @@ export class ImageLibraryDialog
     } else {
       this.props.onShowToast('URL copying failed', ToastType.Error);
     }
-  }
-
-  preventDefault = e => {
-    e.preventDefault();
   }
 
   render() {
@@ -103,6 +93,7 @@ export class ImageLibraryDialog
               className={b('img')}
             />
             <TextField
+              className={b('inputName')}
               autoFocus
               margin='dense'
               id='name'
@@ -113,14 +104,14 @@ export class ImageLibraryDialog
               onChange={this.handleInput}
             />
             <TextField
+              className={b('inputURL')}
               margin='dense'
               id='url'
               label='Image URL'
               type='input'
               value={this.props.item.url}
               fullWidth
-              onClick={this.inputClick}
-              onChange={this.preventDefault}
+              onClick={this.copyUrlToClipboard}
               InputProps={{
                 startAdornment: (
                   <InputAdornment
@@ -134,17 +125,23 @@ export class ImageLibraryDialog
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDialogClose} color='primary'>
-              Cancel
+            <Button
+              onClick={this.handleDialogClose}
+              className={b('button--cancel')}
+              color='primary'
+            >Cancel
             </Button>
             <Button
               color='primary'
               type='submit'
-            >
-              Update
+              className={b('button--update')}
+            >Update
             </Button>
-            <Button onClick={this.handleDeleteItem} color='primary'>
-              Delete
+            <Button
+              onClick={this.handleDeleteItem}
+              className={b('button--delete')}
+              color='primary'
+            >Delete
             </Button>
           </DialogActions>
         </form>
@@ -152,3 +149,9 @@ export class ImageLibraryDialog
     );
   }
 }
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  },
+});
+export default connect(null, mapDispatchToProps)(ImageLibraryDialog);
