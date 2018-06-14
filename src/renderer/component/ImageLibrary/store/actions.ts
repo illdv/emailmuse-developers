@@ -3,9 +3,9 @@ import { createAction } from 'redux-actions';
 import { IGetImagesResponse } from 'src/renderer/component/ImageLibrary/store/models';
 import * as Status from 'src/renderer/common/PreloaderLayout/Status/constants';
 
-export const getImagesRequest = (pageId = 1) => ({
+export const getImagesRequest = (page = 1, name: string = '') => ({
   type: constants.GET_IMAGES_REQUEST,
-  payload: pageId,
+  payload: { page, name},
   meta: { status: Status.LOADING },
 });
 

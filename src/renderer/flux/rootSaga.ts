@@ -12,7 +12,6 @@ import {
 } from 'src/renderer/component/Profile/Authorisation/flux/sagas/LoginSaga';
 import { watcherChangePassword, watcherGetProfile, watcherName } from '../component/Profile/Account/flux/saga';
 import templates from 'src/renderer/component/Templates/flux/saga';
-import { selectMenuItemWatcher } from 'src/renderer/component/Menu/flux/saga';
 import { checkCodeSaga } from 'src/renderer/component/Profile/Authorisation/flux/sagas/CheckCodeSaga';
 import snippets from 'src/renderer/component/Snippets/flux/saga';
 
@@ -27,7 +26,6 @@ export default function* rootSaga() {
     fork(watcherSetToken),
     fork(watcherChangePassword),
     fork(watcherName),
-    fork(selectMenuItemWatcher),
     ...templates.map(fork),
     ...snippets.map(fork),
     fork(watcherGetProfile),

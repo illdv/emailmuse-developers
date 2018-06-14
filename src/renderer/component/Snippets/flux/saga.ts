@@ -12,7 +12,7 @@ function getCurrentPageSelector(state: IGlobalState) {
 
 function* loadingSnippetsSaga(action) {
   try {
-    const { page, shortcut } = action.payload;
+    const { page, shortcut }                        = action.payload;
     const response: AxiosResponse<ILoadingResponse> = yield call(SnippetsAPI.loadingSnippets, page, shortcut);
 
     const { data, last_page, per_page, current_page, total } = response.data;
@@ -43,6 +43,8 @@ function* removeSnippetsSaga(action) {
   try {
     yield call(SnippetsAPI.deleteSnippets, [action.payload.id]);
     yield put(FluxToast.Actions.showToast('Remove snippets success', ToastType.Success));
+    yield put(SnippetsAction.remove.SUCCESS({}));
+
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
@@ -59,9 +61,11 @@ function* watchRemoveSnippets() {
 
 function* addSnippetsSaga(action) {
   try {
-    yield call(SnippetsAPI.addSnippets, action.payload.snippet);
-    yield put(FluxToast.Actions.showToast('Add snippets success', ToastType.Success));
+    const axionData = yield call(SnippetsAPI.addSnippets, action.payload.snippet);
+    yield put(SnippetsAction.add.SUCCESS({ snippet: axionData.data }));
     const currentPage = yield select(getCurrentPageSelector);
+
+    yield put(FluxToast.Actions.showToast('Add snippets success', ToastType.Success));
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Add snippets failed', ToastType.Error));
@@ -93,4 +97,22 @@ function* watchEditSnippets() {
   }
 }
 
-export default [watchLoadingSnippets, watchRemoveSnippets, watchAddSnippets, watchEditSnippets];
+function* saveAndCloseSaga(action) {
+  yield put(SnippetsAction.edit.REQUEST({ snippet: action.payload.snippet }));
+  yield put(SnippetsAction.selectSnippet({ selectSnippet: null }));
+}
+
+function* watchCloseAndSave() {
+  while (true) {
+    const action = yield take(SnippetsAction.saveAndClose(null).type);
+    yield call(saveAndCloseSaga, action);
+  }
+}
+
+export default [
+  watchLoadingSnippets,
+  watchRemoveSnippets,
+  watchAddSnippets,
+  watchEditSnippets,
+  watchCloseAndSave,
+];

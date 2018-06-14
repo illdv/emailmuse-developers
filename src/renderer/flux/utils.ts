@@ -2,12 +2,6 @@ import { Action } from 'redux';
 import { createAction } from 'redux-actions';
 import { createAction as createAction2 } from 'redux-act';
 
-export enum ActionStatus {
-  REQUEST = 'REQUEST',
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE',
-}
-
 /**
  * @deprecated use import { Action } from 'redux-act';
  */
@@ -31,7 +25,7 @@ export interface IActionSteps {
 
 /**
  * Create step action REQUEST, SUCCESS, FAILURE.
- * @deprecated use createActionSteps2
+ * @deprecated use createAsyncAction
  */
 export function createActionSteps(actionName: string, requestHandling, successHandling, failureHandling): IActionSteps {
   const type = {
@@ -54,7 +48,7 @@ export interface IActionSteps2<R, S, F> {
   FAILURE: (payload: F) => F;
 }
 
-export function createActionSteps2<R, S, F>(actionName: string, steps: IActionSteps2<R, S, F>) {
+export function createAsyncAction<R, S, F>(actionName: string, steps: IActionSteps2<R, S, F>) {
   const type = {
     REQUEST: `${actionName}_REQUEST`,
     SUCCESS: `${actionName}_SUCCESS`,
@@ -62,7 +56,6 @@ export function createActionSteps2<R, S, F>(actionName: string, steps: IActionSt
   };
 
   return {
-    type,
     REQUEST: createAction2(type.REQUEST, steps.REQUEST),
     SUCCESS: createAction2(type.SUCCESS, steps.SUCCESS),
     FAILURE: createAction2(type.FAILURE, steps.FAILURE),
