@@ -73,12 +73,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
-  handleEnterPress = (onSubmit: () => void) => e => {
-    if (e.key === 'Enter') {
-      onSubmit();
-    }
-  }
-
   render() {
     const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
 
@@ -100,7 +94,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
       >
         <FormContext.Consumer>
           {(context: IFormContext) => (
-            <div className={classes.root} onKeyPress={this.handleEnterPress(context.onSubmit)}>
+            <div className={classes.root}>
               <InCenter>
                 <Paper className={classes.paper}>
                   <Grid container spacing={24} className={classes.root}>
@@ -115,6 +109,7 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                             margin='dense'
                           />
                           <TextValidator
+
                             fullWidth
                             id='password'
                             label='Password'

@@ -43,10 +43,10 @@ export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadS
       <TableHead>
         <TableRow>
           <TableCell padding='checkbox'>
-            <Checkbox
+            {/*<Checkbox
               checked={this.state.isSelectAll}
               onChange={this.onSelectAll}
-            />
+            />*/}
           </TableCell>
           {this.props.columnData.map((column: IColumn) => {
             return (

@@ -164,36 +164,39 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
   }
 
   render() {
-    const { pagination, onChangePage, entities } = this.props;
+    const { pagination, onChangePage, entities, toItem, onSelectItem } = this.props;
 
     return (
       <>
         <EnhancedTableToolbar onCopy={this.onCopy} numSelected={this.state.selectedItemIds.length}/>
-        <div className={b()}>
+        <div>
           <Table aria-labelledby='tableTitle'>
             <CustomTableHead
               onSelectAll={this.onSelectAll}
               columnData={columnData}
             />
             <TableBody>
-              {entities.map((entity: ICustomItem) => {
-                const isSelected = this.isSelected(entity.id);
+              {entities.map((entity: {}) => {
+                const item: ICustomItem = toItem(entity);
+                const isSelected = this.isSelected(item.id);
                 return (
                   <TableRow
                     role='checkbox'
                     aria-checked={isSelected}
                     tabIndex={-1}
-                    key={entity.id}
+                    key={item.id}
                     selected={isSelected}
+                    className={b('row')}
                   >
-                    <TableCell style={{ width: 40 }} onClick={this.onSelect(entity.id)} padding='checkbox'>
+                    {/*<TableCell style={{ width: 40 }} onClick={this.onSelect(entity.id)} padding='checkbox'>
                       <Checkbox checked={isSelected}/>
+                    </TableCell>*/}
+                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                    <TableCell onClick={onSelectItem(entity)} component='th' scope='row' padding='none'>
+                      {item.title}
                     </TableCell>
-                    <TableCell onClick={this.props.onSelectItem(entity)} component='th' scope='row' padding='none'>
-                      {entity.title}
-                    </TableCell>
-                    <TableCell onClick={this.props.onSelectItem(entity)}>{entity.description || '---'}</TableCell>
-                    <TableCell onClick={this.props.onSelectItem(entity)}>{entity.rightText || '---'}</TableCell>
+                    <TableCell onClick={onSelectItem(entity)}>{item.description || '---'}</TableCell>
+                    <TableCell onClick={onSelectItem(entity)}>{item.rightText || '---'}</TableCell>
                   </TableRow>
                 );
               })}

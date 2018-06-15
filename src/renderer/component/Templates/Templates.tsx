@@ -64,7 +64,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
       return false;
     }
     if (!template.title && template.title.length === 0) {
-      this.props.onShowToast(`Title can't be empty`, ToastType.Warning);
+      this.props.onShowToast(`Subject can't be empty`, ToastType.Warning);
       return false;
     }
     return true;
@@ -153,6 +153,8 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           icon={<Add/>}
           position={0}
           title={'Add new template'}
+          whitCtrl
+          hotKey={'A'}
         />
       </Paper>
     );

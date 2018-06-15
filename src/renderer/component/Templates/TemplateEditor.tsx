@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
-import { Close, Delete, Save, ContentCopy } from '@material-ui/icons';
+import { Close, Delete, Save } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
@@ -164,6 +164,8 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             icon={<Save/>}
             position={1}
             title={'Save'}
+            whitCtrl
+            hotKey={'S'}
           />
           <Fab
             onClick={this.onClose}

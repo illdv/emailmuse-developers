@@ -139,6 +139,8 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           icon={<Add/>}
           position={0}
           title={'Add new snippet'}
+          whitCtrl
+          hotKey={'A'}
         />
       </Paper>
     );

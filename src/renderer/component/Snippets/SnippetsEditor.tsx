@@ -171,6 +171,8 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
             icon={<Save/>}
             position={1}
             title={'Save'}
+            whitCtrl
+            hotKey={'S'}
           />
           <Fab
             onClick={this.onClose}
