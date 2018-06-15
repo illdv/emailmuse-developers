@@ -158,8 +158,6 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             icon={<Delete/>}
             position={0}
             title={'Remove'}
-            whitCtrl
-            hotKey={'R'}
           />
           <Fab
             onClick={this.onSave(false)}
@@ -174,8 +172,6 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             icon={<Close/>}
             position={2}
             title={'Close'}
-            whitCtrl
-            hotKey={'C'}
           />
         </div>
       </>
