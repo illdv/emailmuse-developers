@@ -14,6 +14,7 @@ import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import InCenter from 'src/renderer/common/InCenter';
 import ChangePasswordDialog from './ChangePasswordDialog';
 import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
+import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 const styles: IStyle = theme => ({
   root: {
@@ -36,6 +37,7 @@ export namespace AccountSettingsSpace {
     getProfile?: any;
     profile?: IProfileState;
     changeName?: (name: string) => void;
+    logout?: () => void;
   }
 
   export interface IState {
@@ -52,6 +54,9 @@ const mapStateToProps = state => ({
 const mapDispathToProps = dispatch => ({
   getProfile: bindActionCreators(AccountActions.getProfile.REQUEST, dispatch),
   changeName: bindActionCreators(AccountActions.changeName.REQUEST, dispatch),
+  logout: () => {
+    dispatch(logoutAction());
+  },
 });
 
 @connect(mapStateToProps, mapDispathToProps)
@@ -122,7 +127,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
   }
 
   render() {
-    const { classes, profile } = this.props;
+    const { classes, profile, logout } = this.props;
     const { name, email }      = profile.auth.user;
 
     if (!name) {
@@ -171,6 +176,9 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
               <InCenter>
                 <Button onClick={this.onSave} variant='raised' color='primary'>
                   Save setting
+                </Button>
+                <Button variant='raised' color='secondary' onClick={logout} style={{marginLeft: 10}}>
+                  Logout
                 </Button>
               </InCenter>
             </Grid>

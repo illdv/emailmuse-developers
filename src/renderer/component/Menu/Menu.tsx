@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import {
+  Button,
   Divider,
   Grid,
   List,
@@ -12,20 +13,18 @@ import {
   ListItemIcon,
   Paper,
   Slide,
+  Tooltip,
   Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core/';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
-import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
 
 const createMenuSchema = (): IItem[] => {
   return [
-    { title: 'My account', icon: <SupervisorAccount/>, type: MenuItemType.ACCOUNT },
     { title: 'Emails', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
@@ -69,7 +68,6 @@ interface IItem {
 
 export namespace MenuSpace {
   export interface IProps {
-    logout?: () => void;
     actions?: IDrawerMenuActions;
   }
 
@@ -87,20 +85,18 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators(DrawerMenuAction, dispatch),
-  logout: () => {
-    dispatch(logoutAction());
-  },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
+
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   }
 
   render() {
-    const { classes, logout } = this.props;
-    const menuSchema          = createMenuSchema();
+    const { classes } = this.props;
+    const menuSchema  = createMenuSchema();
 
     const toItem = (items: IItem[]) => {
       return items.map(item => (
@@ -123,17 +119,21 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
             {toItem(menuSchema)}
           </List>
           <Grid
-            style={{ height: '100%', marginBottom: 10 }}
+            style={{ height: '100%', marginBottom: 10, marginLeft: 10 }}
             container
             direction={'column'}
             justify={'flex-end'}
-            alignItems={'center'}
           >
-            <Grid item>
-              <ButtonHotKey whitCtrl hotKey={'L'} variant='raised' color='primary' onClick={logout}>
-                Logout
-              </ButtonHotKey>
-            </Grid>
+            <Tooltip title={'Account'}>
+              <Button
+                variant='fab'
+                color='primary'
+                aria-label='add'
+                onClick={this.selectItem(MenuItemType.ACCOUNT)}
+              >
+                <SupervisorAccount/>
+              </Button>
+            </Tooltip>
           </Grid>
         </Paper>
       </Slide>
