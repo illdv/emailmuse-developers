@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@material-ui/core';
+import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
 
 function Transition(props) {
   return <Slide direction='up' {...props} />;
@@ -28,9 +29,12 @@ export class Confirmation extends Component<ConfirmationSpace.IProps, Confirmati
 
   render() {
     const { question, isOpen, onClose, onSelectNo = onClose, onSelectYes, title = 'Confirmation' } = this.props;
+    if (!isOpen) {
+      return <></>;
+    }
     return (
       <Dialog
-        open={isOpen}
+        open={true}
         TransitionComponent={Transition}
         keepMounted
         onClose={onClose}
@@ -46,12 +50,12 @@ export class Confirmation extends Component<ConfirmationSpace.IProps, Confirmati
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onSelectNo} color='primary'>
+          <ButtonHotKey hotKey={'Backspace'} onClick={onSelectNo} color='primary'>
             No
-          </Button>
-          <Button onClick={onSelectYes} color='secondary'>
+          </ButtonHotKey>
+          <ButtonHotKey hotKey={'Enter'} onClick={onSelectYes} color='secondary'>
             Yes
-          </Button>
+          </ButtonHotKey>
         </DialogActions>
       </Dialog>
     );

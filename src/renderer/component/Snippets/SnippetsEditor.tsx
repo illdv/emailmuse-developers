@@ -165,18 +165,24 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
             icon={<Delete/>}
             position={0}
             title={'Remove'}
+            whitCtrl
+            hotKey={'R'}
           />
           <Fab
             onClick={this.onSave(false)}
             icon={<Save/>}
             position={1}
             title={'Save'}
+            whitCtrl
+            hotKey={'S'}
           />
           <Fab
             onClick={this.onClose}
             icon={<Close/>}
             position={2}
             title={'Close'}
+            whitCtrl
+            hotKey={'C'}
           />
         </div>
       </>

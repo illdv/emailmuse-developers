@@ -153,6 +153,8 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           icon={<Add/>}
           position={0}
           title={'Add new template'}
+          whitCtrl
+          hotKey={'A'}
         />
       </Paper>
     );

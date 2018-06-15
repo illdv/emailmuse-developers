@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import {
-  Button,
   Divider,
   Grid,
   List,
@@ -22,6 +21,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
+import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
 
 const createMenuSchema = (): IItem[] => {
   return [
@@ -130,9 +130,9 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
             alignItems={'center'}
           >
             <Grid item>
-              <Button variant='raised' color='primary' onClick={logout}>
+              <ButtonHotKey whitCtrl hotKey={'L'} variant='raised' color='primary' onClick={logout}>
                 Logout
-              </Button>
+              </ButtonHotKey>
             </Grid>
           </Grid>
         </Paper>
