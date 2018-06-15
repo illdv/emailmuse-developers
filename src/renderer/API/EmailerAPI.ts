@@ -2,7 +2,7 @@ import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Profile/Account/flux/module';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
-import { ITemplate } from 'src/renderer/component/Templates/flux/entity';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 // TODO: Move in file
 export namespace Accounts {

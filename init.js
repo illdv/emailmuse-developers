@@ -1,11 +1,13 @@
 const url = require('url');
 const path = require('path');
 const { app, BrowserWindow, Menu, shell } = require('electron');
+const electron = require('electron')
 let mainWindow;
 function createWindow() {
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 650,
+        width: width - 500,
+        height: height - 200,
         title: "Emailer",
     });
     const loadUrl = url.format({

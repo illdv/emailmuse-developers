@@ -78,6 +78,16 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   createOption = () => {
     return {
+      cleanHTML: {
+        removeEmptyElements: true,
+        denyTags: {
+          meta: true,
+        },
+        replaceOldTags: {
+          i: 'em',
+          b: 'strong',
+        },
+      },
       buttons: [
         'source',
         '|', 'bold', 'italic', 'underline', 'strikethrough',
@@ -89,14 +99,17 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       ],
       extraButtons: [
         {
+          tooltip: 'Insert image',
           name: 'insertImage',
           exec: this.handleOpenDialog(DialogName.insertImage),
         },
         {
+          tooltip: 'Insert button',
           name: 'insertLinkButton',
           exec: this.handleOpenDialog(DialogName.insertLinkButton),
         },
         {
+          tooltip: 'Insert snippet',
           name: 'insertSnippet',
           exec: this.handleOpenDialog(DialogName.insertSnippet),
         },

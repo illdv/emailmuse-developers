@@ -1,51 +1,28 @@
-import { handleActions, createAction } from 'redux-actions';
-import { IActionPayload } from 'src/renderer/flux/utils';
+import { createAction, createReducer } from 'redux-act';
+import { IDrawerMenuActions, IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { ActionCreatorsMapObject } from 'redux';
 
-const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
+export const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
 
-/**
- * Types item menu.
- */
-export enum MenuItemType {
-  ACCOUNT,
-  TEMPLATES,
-  IMAGE_LIBRARY,
-  SNIPPETS,
-}
+const selectMenuItem = createAction(
+  SELECT_MENU_ITEM,
+  (payload: { selectedItem: MenuItemType }) => (payload));
 
-const selectMenuItem = createAction(SELECT_MENU_ITEM, (selectedItem: MenuItemType) => ({ selectedItem }));
+export const DrawerMenuAction: IDrawerMenuActions & ActionCreatorsMapObject = {
+  selectMenuItem,
+};
 
-const createDefaultState = (): FluxDrawerMenu.IState => {
+const initialState = (): IDrawerMenuState => {
   return {
     selectedItem: MenuItemType.TEMPLATES,
   };
 };
 
-const handle = handleActions({
-  SELECT_MENU_ITEM: (state: FluxDrawerMenu.IState, action): FluxDrawerMenu.IState => {
-    return { ...state, ...action.payload };
-  },
-}, createDefaultState());
+const reducer = createReducer({}, initialState());
 
-export namespace FluxDrawerMenu {
-  export namespace IActionsPayload {
-    export type onSelectMenuItemPayload = IActionPayload<{selectedItem: MenuItemType}>;
-  }
+reducer.on(selectMenuItem, (state, payload) => ({
+  ...state,
+  selectedItem: payload.selectedItem,
+}));
 
-  export interface IActions {
-    selectMenuItem: (selectedItem: MenuItemType) => IActionsPayload.onSelectMenuItemPayload;
-  }
-
-  export const Actions: IActions = {
-    selectMenuItem,
-  };
-
-  export interface IState {
-    /**
-     * Use for definitions selected item in menu.
-     */
-    selectedItem: MenuItemType;
-  }
-
-  export const reducer = handle;
-}
+export default reducer;

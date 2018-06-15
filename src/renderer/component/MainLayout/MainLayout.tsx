@@ -6,14 +6,14 @@ import { IStyle } from 'type/materialUI';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 
-import { FluxDrawerMenu, MenuItemType } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Settings from '../Profile/Account/Settings';
-import TemplatesRouter from '../Templates/TemplatesRouter';
+import Templates from '../Templates/Templates';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
+import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 const styles: IStyle = {
   root: {
@@ -35,7 +35,7 @@ export namespace MainLayoutSpace {
   }
 
   export interface IProps {
-    drawerMenu?: FluxDrawerMenu.IState;
+    drawerMenu?: IDrawerMenuState;
   }
 }
 
@@ -61,7 +61,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       case MenuItemType.ACCOUNT:
         return <Settings/>;
       case MenuItemType.TEMPLATES:
-        return <TemplatesRouter/>;
+        return <Templates/>;
       case MenuItemType.IMAGE_LIBRARY:
         return <ImageLibrary/>;
       case MenuItemType.SNIPPETS:
@@ -79,7 +79,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           <Grid item xs={12} sm={3}>
             <Menu/>
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflow: 'auto', position: 'relative' }}>
+          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden'}}>
             <PreloaderLayout/>
             {this.mainDisplay(this.props)}
           </Grid>

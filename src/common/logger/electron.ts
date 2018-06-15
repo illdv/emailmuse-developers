@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as moment from 'moment';
+import moment from 'moment-es6';
 import * as electron from 'electron';
 import { getLogger, configure, Layout } from 'log4js';
 
@@ -19,14 +19,14 @@ configure({
     appenders: {
         out: {
             type: 'stdout',
-            level: Level.Trace
-        }
+            level: Level.Trace,
+        },
     },
     categories: {
         [Cause.Render]: { appenders: ['out'], level: Level.Trace },
         [Cause.Default]: { appenders: ['out'], level: Level.Trace },
         [Cause.Electron]: { appenders: ['out'], level: Level.Trace },
-    }
+    },
 });
 
 namespace Logger {
