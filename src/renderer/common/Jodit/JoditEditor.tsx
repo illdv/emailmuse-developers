@@ -78,6 +78,16 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   createOption = () => {
     return {
+      cleanHTML: {
+        removeEmptyElements: true,
+        denyTags: {
+          meta: true,
+        },
+        replaceOldTags: {
+          i: 'em',
+          b: 'strong',
+        },
+      },
       buttons: [
         'source',
         '|', 'bold', 'italic', 'underline', 'strikethrough',
