@@ -39,9 +39,11 @@ export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IPro
             items.map((item, index) => (
                 <Grow key={item.id} in timeout={(index * 500) + 500}>
                   <GridListTile className={b('tile')}>
-                    <img
+                    <div
                       className={b('tile-img')}
-                      src={item.thumb_url}
+                      style={{
+                        backgroundImage: `url(${item.thumb_url})`,
+                      }}
                       onClick={onSelect(item)}
                     />
                     {

@@ -1,24 +1,23 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Paper } from '@material-ui/core';
 import { connect, Dispatch } from 'react-redux';
+import { Add } from '@material-ui/icons';
+
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
-import { bindActionCreators } from 'redux';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { ActionStatus } from 'src/renderer/flux/utils';
 import { Loading } from 'src/renderer/common/Loading';
-import { Paper } from '@material-ui/core';
-import { ListElement } from 'src/renderer/common/List/ListElement';
+import { ElementList } from 'src/renderer/common/List/ElementList';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
-import { Add } from '@material-ui/icons';
 import { Fab } from 'src/renderer/common/Fab';
-import { snippetToItem } from 'src/renderer/component/Snippets/utils';
+import { createEmptySnippet, snippetToItem } from 'src/renderer/component/Snippets/utils';
+import { ActionStatus } from 'src/renderer/flux/interface';
 
 export namespace SnippetsSpace {
   export interface IState {
-    select?: ISnippet;
-    isNew: boolean;
   }
 
   export interface IProps {
@@ -37,77 +36,72 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     add: bindActionCreators(SnippetsAction.add, dispatch),
     edit: bindActionCreators(SnippetsAction.edit, dispatch),
     remove: bindActionCreators(SnippetsAction.remove, dispatch),
+    selectSnippet: bindActionCreators(SnippetsAction.selectSnippet, dispatch),
+    saveAndClose: bindActionCreators(SnippetsAction.saveAndClose, dispatch),
   },
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.IState> {
 
-  state = {
-    select: null,
-    isNew: false,
-  };
+  state: SnippetsSpace.IState = {};
 
   componentDidMount(): void {
     this.props.actions.loading.REQUEST({});
   }
 
   onChangePage = (event, page: number) => {
-    this.props.actions.loading.REQUEST({ page: page + 1});
+    this.props.actions.loading.REQUEST({ page: page + 1 });
   }
 
   onSelect = (snippet: ISnippet) => () => {
-    this.setState({
-      select: snippet,
-    });
+    this.props.actions.selectSnippet({ selectSnippet: snippet });
   }
 
   onClose = () => {
-    this.setState({
-      select: null,
-    });
+    this.props.actions.selectSnippet({ selectSnippet: null });
   }
 
   onRemove = () => {
-    const select = this.state.select;
-    this.props.actions.remove.REQUEST({ id: select.id });
-    this.onClose();
+    const selectSnippet = this.props.snippets.selectSnippet;
+    this.props.actions.remove.REQUEST({ id: selectSnippet.id.toString() });
   }
 
-  onSave = (newSnippet: ISnippet) => {
-    if (this.state.isNew) {
-      this.props.actions.add.REQUEST({ snippet: newSnippet });
-    } else {
-      this.props.actions.edit.REQUEST({ snippet: newSnippet });
+  onSave = (newSnippet: ISnippet, saveAndClose: boolean) => {
+    if (saveAndClose) {
+      this.props.actions.saveAndClose({ snippet: newSnippet });
     }
-    this.setState({
-      select: null,
-      isNew: false,
-    });
+    this.props.actions.edit.REQUEST({ snippet: newSnippet });
   }
 
-  onEditNew = () => {
-    this.setState({
-      isNew: true,
-      select: {
-        user_id: -1,
-        id: -1,
-        shortcut: '',
-        description: '',
-        body: '',
-        updated_at: '',
-        created_at: '',
-      },
-    });
+  onCreate = (newSnippet: ISnippet) => {
+    this.props.actions.add.REQUEST({ snippet: newSnippet });
   }
 
-  render() {
+  selectNew = () => {
+    this.props.actions.selectSnippet({ selectSnippet: createEmptySnippet() });
+  }
 
-    const { status, snippets, pagination } = this.props.snippets;
+  /**
+   * New means that has not yet been created.
+   */
+  isNewSnippet = (): boolean => {
+    return this.props.snippets.selectSnippet.id === null;
+  }
 
-    const selectSnippet = this.state.select;
+  showEditOrCreateSnippet = () => {
+    const selectSnippet = this.props.snippets.selectSnippet;
 
-    if (selectSnippet) {
+    if (this.isNewSnippet()) {
+      return (
+        <SnippetsEditor
+          onRemove={this.onClose}
+          onClose={this.onClose}
+          snippet={selectSnippet}
+          onSave={this.onCreate}
+        />
+      );
+    } else {
       return (
         <SnippetsEditor
           onRemove={this.onRemove}
@@ -117,6 +111,15 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
         />
       );
     }
+  }
+
+  render() {
+
+    const { status, snippets, pagination } = this.props.snippets;
+
+    if (this.props.snippets.selectSnippet) {
+      return this.showEditOrCreateSnippet();
+    }
 
     if (status === ActionStatus.REQUEST) {
       return <Loading/>;
@@ -124,17 +127,20 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
 
     return (
       <Paper elevation={4} className={'template-list'}>
-        <ListElement
+        <ElementList
           entities={snippets}
           toItem={snippetToItem}
-          selectItem={this.onSelect}
+          onSelectItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
         />
         <Fab
-          onClick={this.onEditNew}
+          onClick={this.selectNew}
           icon={<Add/>}
           position={0}
+          title={'Add new snippet'}
+          whitCtrl
+          hotKey={'A'}
         />
       </Paper>
     );

@@ -1,15 +1,17 @@
 const url = require('url');
-const path2 = require('path');
-const { app, BrowserWindow, Menu } = require('electron');
+const path = require('path');
+const { app, BrowserWindow, Menu, shell } = require('electron');
+const electron = require('electron')
 let mainWindow;
 function createWindow() {
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 650,
+        width: width - 500,
+        height: height - 200,
         title: "Emailer",
     });
     const loadUrl = url.format({
-        pathname: path2.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
     });
@@ -17,6 +19,11 @@ function createWindow() {
     //mainWindow.loadURL('http://localhost:3000');
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+
+    mainWindow.webContents.on('will-navigate', (event, url) => {
+        event.preventDefault()
+        shell.openExternal(url)
     });
 
     // mainWindow.toggleDevTools();

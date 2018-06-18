@@ -17,8 +17,8 @@ import { WithStyles } from '@material-ui/core/styles/withStyles';
 import { IStyle } from 'type/materialUI';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
-import { AccountSpace } from 'src/renderer/component/Profile/Account/flux/actions';
 import { bindActionCreators } from 'redux';
+import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 
 const styles: IStyle = theme => ({
   root: {
@@ -49,7 +49,7 @@ export namespace ChangePasswordDialogSpace {
     onClose?: () => void;
     email?: string;
     name?: string;
-    changePassword?: typeof AccountSpace.Actions.changePassword.REQUEST;
+    changePassword?: typeof AccountActions.changePassword.REQUEST;
   }
 
   export interface IState {
@@ -70,7 +70,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changePassword: bindActionCreators(AccountSpace.Actions.changePassword.REQUEST, dispatch),
+  changePassword: bindActionCreators(AccountActions.changePassword.REQUEST, dispatch),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Button, Grid, Grow, Typography } from '@material-ui/core/';
+import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
 
 export function Title(props: { title: string, subtitle?: string }) {
   const { title, subtitle } = props;
@@ -76,7 +77,8 @@ export function Action(props: IActionProps) {
       <>
         <Grid item xs={12}>
           <Grid container direction={'row'} justify={'flex-end'}>
-            <Button
+            <ButtonHotKey
+              hotKey={'Enter'}
               variant='raised'
               color='primary'
               style={button}
@@ -84,7 +86,7 @@ export function Action(props: IActionProps) {
               disabled={!canNext}
             >
               Next
-            </Button>
+            </ButtonHotKey>
           </Grid>
         </Grid>
         <Grid item xs={12} style={{ paddingBottom: 0 }}>

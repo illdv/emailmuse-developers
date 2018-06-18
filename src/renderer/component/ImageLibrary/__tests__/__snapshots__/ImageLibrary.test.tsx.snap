@@ -1,75 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`>>>ImageLibrary ImageLibrary initialization render ImageLibrary component 1`] = `
-<WithStyles(Paper)
-  className="lib"
-  elevation={4}
->
-  <div
-    className="image-library"
-  >
-    <WithStyles(TablePagination)
-      backIconButtonProps={
-        Object {
-          "aria-label": "Previous Page",
-        }
-      }
-      component="div"
-      count={40}
-      nextIconButtonProps={
-        Object {
-          "aria-label": "Next Page",
-        }
-      }
-      onChangePage={[Function]}
-      onChangeRowsPerPage={[Function]}
-      page={0}
-      rowsPerPage={15}
-      rowsPerPageOptions={
-        Array [
-          15,
-        ]
-      }
-    />
-    <DropTarget(DragAndDropTarget)
-      onDrop={[Function]}
-      overlayMessage="Drop files here to add them to your image library"
-      showOverlay={true}
-    >
-      <div
-        className="image-library__container"
-      >
-        <ImageLibraryList
-          items={Array []}
-          onDelete={[Function]}
-          onSelect={[Function]}
-        />
-      </div>
-    </DropTarget(DragAndDropTarget)>
-    <div
-      className="image-library__footer"
-    >
-      <WithStyles(Button)
-        color="primary"
-      >
-        <label
-          htmlFor="upload"
-        >
-          Upload images
-        </label>
-        <input
-          className="image-library__upload-input"
-          id="upload"
-          multiple={true}
-          onChange={[Function]}
-          type="file"
-        />
-      </WithStyles(Button)>
-    </div>
-  </div>
-</WithStyles(Paper)>
-`;
-
 exports[`ImageLibrary >>>initialization render ImageLibrary component 1`] = `
 <WithStyles(Paper)
   className="lib"
@@ -78,6 +8,9 @@ exports[`ImageLibrary >>>initialization render ImageLibrary component 1`] = `
   <div
     className="image-library"
   >
+    <Search
+      search={[Function]}
+    />
     <WithStyles(TablePagination)
       backIconButtonProps={
         Object {

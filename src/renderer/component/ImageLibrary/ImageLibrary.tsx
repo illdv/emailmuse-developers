@@ -27,6 +27,7 @@ import ImageLibraryDialog from 'src/renderer/component/ImageLibrary/ImageLibrary
 import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
+import { Search } from 'src/renderer/common/Search';
 
 const b = block('image-library');
 
@@ -46,25 +47,31 @@ namespace ImageLibrarySpace {
   export interface IState {
     openDialog: boolean;
     chosenImage: IImageLibraryItem;
+    searchWorld: string;
   }
 }
 
 const styles: IStyle = theme => ({
   root: {
     width: '100%',
-    height: '100%',
     backgroundColor: theme.palette.background.paper,
   },
 });
 
 export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
+
+  state: ImageLibrarySpace.IState = {
+    openDialog: false,
+    searchWorld: '',
+    chosenImage: null,
+  };
+
   constructor(props) {
     super(props);
-    this.state = { openDialog: false, chosenImage: null };
   }
 
   componentDidMount() {
-    this.props.actions.getImagesRequest();
+    this.props.actions.getImagesRequest(1);
   }
 
   onDropFile = item => {
@@ -113,11 +120,17 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
     console.log('Change rows', e.target.value);
   }
 
+  onLoading = (searchWorld: string) => {
+    this.props.actions.getImagesRequest(1, searchWorld);
+    this.setState({ searchWorld });
+  }
+
   render() {
     const { classes, pagination } = this.props;
     return (
       <Paper elevation={4} className={classes.root}>
         <div className={b()}>
+          <Search search={this.onLoading}/>
           <TablePagination
             component='div'
             count={pagination.total || 0}

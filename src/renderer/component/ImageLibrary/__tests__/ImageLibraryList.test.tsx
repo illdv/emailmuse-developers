@@ -32,7 +32,7 @@ describe('<ImageLibraryList /> UI Component', () => {
     afterAll(() => { imageList.unmount(); });
 
     describe('Selecting a img', () => {
-      imageList.find('img')
+      imageList.find('.image-library-list__tile-img')
         .first()
         .simulate('click');
 

@@ -15,9 +15,13 @@ exports[`<ImageLibraryList /> UI Component Rendering UI Renders Correctly 1`] = 
       <WithStyles(GridListTile)
         className="image-library-list__tile"
       >
-        <img
+        <div
           className="image-library-list__tile-img"
-          src="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg"
+          style={
+            Object {
+              "backgroundImage": "url(https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg)",
+            }
+          }
         />
         <WithStyles(GridListTileBar)
           actionIcon={
@@ -41,9 +45,13 @@ exports[`<ImageLibraryList /> UI Component Rendering UI Renders Correctly 1`] = 
       <WithStyles(GridListTile)
         className="image-library-list__tile"
       >
-        <img
+        <div
           className="image-library-list__tile-img"
-          src="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg"
+          style={
+            Object {
+              "backgroundImage": "url(https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg)",
+            }
+          }
         />
         <WithStyles(GridListTileBar)
           actionIcon={
@@ -67,9 +75,13 @@ exports[`<ImageLibraryList /> UI Component Rendering UI Renders Correctly 1`] = 
       <WithStyles(GridListTile)
         className="image-library-list__tile"
       >
-        <img
+        <div
           className="image-library-list__tile-img"
-          src="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg"
+          style={
+            Object {
+              "backgroundImage": "url(https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg_thumb450.jpeg)",
+            }
+          }
         />
         <WithStyles(GridListTileBar)
           actionIcon={

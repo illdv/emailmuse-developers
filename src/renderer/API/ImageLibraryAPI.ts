@@ -10,8 +10,8 @@ export function uploadImages(files) {
   return AxiosWrapper.post('/images', fd);
 }
 
-export function getImages(pageId: number = 1) {
-  return AxiosWrapper.get(`/images/?page=${pageId}`);
+export function getImages(page: number = 1, name: string = '') {
+  return AxiosWrapper.get(`/images/`, { page, name });
 }
 
 export function updateImage(imageId: number, name: string) {

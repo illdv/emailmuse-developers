@@ -1,7 +1,10 @@
-import { createReducer } from 'redux-act';
+import { createAction, createReducer } from 'redux-act';
+
 import { ISnippetsAction, ISnippetsState, ISuccessfullyPayload } from 'src/renderer/component/Snippets/flux/interface';
-import { ActionStatus, createActionSteps2 } from 'src/renderer/flux/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { createAsyncAction } from 'src/renderer/flux/utils';
+import { ActionStatus } from 'src/renderer/flux/interface';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 const REDUCER = 'SNIPPETS';
 const NS      = `${REDUCER}__`;
@@ -10,8 +13,10 @@ export const LOADING_SNIPPETS = `${NS}LOADING_SNIPPETS`;
 export const REMOVE_SNIPPETS  = `${NS}REMOVE_SNIPPETS`;
 export const ADD_SNIPPETS     = `${NS}ADD_SNIPPETS`;
 export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
+export const SELECT_SNIPPET   = `${NS}SELECT_SNIPPET`;
+export const SAVE_AND_CLOSE   = `${NS}SAVE_AND_CLOSE`;
 
-const loading = createActionSteps2(
+const loading = createAsyncAction(
   LOADING_SNIPPETS, {
     REQUEST: (payload: { page?: number, shortcut?: string } = { page: 1, shortcut: '' }) => (payload),
     SUCCESS: (payload: ISuccessfullyPayload) => (payload),
@@ -19,7 +24,7 @@ const loading = createActionSteps2(
   },
 );
 
-const remove = createActionSteps2(
+const remove = createAsyncAction(
   REMOVE_SNIPPETS, {
     REQUEST: (payload: { id: string }) => (payload),
     SUCCESS: () => ({}),
@@ -27,15 +32,15 @@ const remove = createActionSteps2(
   },
 );
 
-const add = createActionSteps2(
+const add = createAsyncAction(
   ADD_SNIPPETS, {
     REQUEST: (payload: { snippet: ISnippet }) => (payload),
-    SUCCESS: () => ({}),
+    SUCCESS: (payload: { snippet: ISnippet }) => (payload),
     FAILURE: () => ({}),
   },
 );
 
-const edit = createActionSteps2(
+const edit = createAsyncAction(
   EDIT_SNIPPETS, {
     REQUEST: (payload: { snippet: ISnippet }) => (payload),
     SUCCESS: () => ({}),
@@ -43,50 +48,79 @@ const edit = createActionSteps2(
   },
 );
 
+const saveAndClose = createAction(SAVE_AND_CLOSE);
+
+const selectSnippet = createAction(SELECT_SNIPPET, (payload: { selectSnippet: ISnippet }) => (payload));
+
 export const SnippetsAction: ISnippetsAction = {
   loading,
   remove,
   add,
   edit,
+  selectSnippet,
+  saveAndClose,
 };
 
-const initialState: ISnippetsState = {
+const initialState = (): ISnippetsState  => ({
   snippets: null,
   pagination: null,
   status: ActionStatus.REQUEST,
-};
+  selectSnippet: null,
+});
 
-const reducer = createReducer({}, initialState);
+const reducer = createReducer({}, initialState());
 
-reducer.on(SnippetsAction.loading.REQUEST, state => ({
+reducer.on(loading.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.add.REQUEST, state => ({
+reducer.on(add.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.edit.REQUEST, state => ({
+reducer.on(add.SUCCESS, (state, payload): ISnippetsState => ({
+  ...state,
+  selectSnippet: payload.snippet,
+  status: ActionStatus.SUCCESS,
+}));
+
+reducer.on(edit.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.remove.REQUEST, state => ({
+reducer.on(remove.REQUEST, state => ({
   ...state,
   status: ActionStatus.REQUEST,
 }));
 
-reducer.on(SnippetsAction.loading.SUCCESS, (state, payload) => ({
+reducer.on(remove.SUCCESS, state => ({
+  ...state,
+  selectSnippet: null,
+  status: ActionStatus.SUCCESS,
+}));
+
+reducer.on(loading.SUCCESS, (state, payload) => ({
   ...state,
   ...payload,
   status: ActionStatus.SUCCESS,
 }));
 
-reducer.on(SnippetsAction.loading.FAILURE, state => ({
+reducer.on(loading.FAILURE, state => ({
   ...state,
   status: ActionStatus.FAILURE,
+}));
+
+reducer.on(selectSnippet, (state, payload): ISnippetsState => ({
+  ...state,
+  selectSnippet: payload.selectSnippet,
+}));
+
+reducer.on(DrawerMenuAction.selectMenuItem, (state): ISnippetsState  => ({
+  ...state,
+  selectSnippet: null,
 }));
 
 export default reducer;
