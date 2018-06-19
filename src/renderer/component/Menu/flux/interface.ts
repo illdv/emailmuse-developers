@@ -4,10 +4,11 @@
 import { Action } from 'src/renderer/flux/interface';
 
 export enum MenuItemType {
-  ACCOUNT,
-  TEMPLATES,
-  IMAGE_LIBRARY,
-  SNIPPETS,
+  ACCOUNT = 'ACCOUNT',
+  TEMPLATES = 'TEMPLATES',
+  IMAGE_LIBRARY = 'IMAGE_LIBRARY',
+  SNIPPETS = 'SNIPPETS',
+  LAYOUTS = 'LAYOUTS',
 }
 
 export interface IDrawerMenuState {

@@ -34,7 +34,7 @@ function* loadingSnippetsSaga(action) {
 
 function* watchLoadingSnippets() {
   while (true) {
-    const action = yield take(SnippetsAction.loading.REQUEST({ page: 0 }).type);
+    const action = yield take(SnippetsAction.loading.REQUEST(null).type);
     yield call(loadingSnippetsSaga, action);
   }
 }
