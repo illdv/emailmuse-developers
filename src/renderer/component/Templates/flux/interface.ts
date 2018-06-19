@@ -26,3 +26,7 @@ export interface ITemplateAction extends ActionCreatorsMapObject {
   successfully?: Action<ILoadingTemplatePayload>;
   createSuccess?: Action<ITemplate>;
 }
+export interface ILayout {
+  description: string;
+  body: string;
+}
