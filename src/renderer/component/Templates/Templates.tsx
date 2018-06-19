@@ -109,8 +109,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onCopy = (id: string) => {
-    console.log('Copy', id);
-    // this.props.action.create(newTemplate);
+    this.props.action.copy({id});
   }
 
   render() {
