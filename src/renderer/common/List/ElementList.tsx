@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import {
-  Checkbox,
   Divider,
   Grid,
   IconButton,
@@ -16,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { ContentCopy as ContentCopyIcon, FilterList as FilterListIcon } from '@material-ui/icons';
+import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
@@ -68,7 +67,7 @@ export namespace ListElementSpace {
     entities: T[];
     toItem: (item: T) => ICustomItem;
     pagination: IPagination;
-    onSelectItem: (T) => () => void;
+    onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
     onCopy?: (id: string) => void;
   }
@@ -79,31 +78,6 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
   state: ListElementSpace.IState = {
     selectedItemIds: [],
   };
-
-  list = () => {
-    const { entities, onSelectItem, toItem } = this.props;
-
-    if (!entities.length) {
-      return (
-        <InCenter>
-          <Typography variant='headline' noWrap align='center' style={{ marginTop: 10 }}>List empty</Typography>
-        </InCenter>
-      );
-    }
-
-    return (
-      <List component='nav'>
-        {
-          entities.map(entity => (
-            <div key={entity.id} onClick={onSelectItem(entity)}>
-              <CustomItem item={toItem(entity)}/>
-              <Divider/>
-            </div>
-          ))
-        }
-      </List>
-    );
-  }
 
   onSelect = (selectId: string) => () => {
     if (this.isSelected(selectId)) {
@@ -156,19 +130,18 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
     }));
   }
 
-  onCopy = () => {
-    const selectedId = this.state.selectedItemIds[0];
+  onCopy = (id: string) => () => {
     if (this.props.onCopy) {
-      this.props.onCopy(selectedId);
+      this.props.onCopy(id);
     }
   }
 
   render() {
-    const { pagination, onChangePage, entities, toItem, onSelectItem } = this.props;
+    const { pagination, onChangePage, entities, toItem, onOpenItem } = this.props;
 
     return (
       <>
-        <EnhancedTableToolbar onCopy={this.onCopy} numSelected={this.state.selectedItemIds.length}/>
+        <EnhancedTableToolbar numSelected={this.state.selectedItemIds.length}/>
         <div>
           <Table aria-labelledby='tableTitle'>
             <CustomTableHead
@@ -178,7 +151,7 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
             <TableBody>
               {entities.map((entity: {}) => {
                 const item: ICustomItem = toItem(entity);
-                const isSelected = this.isSelected(item.id);
+                const isSelected        = this.isSelected(item.id);
                 return (
                   <TableRow
                     role='checkbox'
@@ -188,15 +161,23 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
                     selected={isSelected}
                     className={b('row')}
                   >
-                    {/*<TableCell style={{ width: 40 }} onClick={this.onSelect(entity.id)} padding='checkbox'>
-                      <Checkbox checked={isSelected}/>
-                    </TableCell>*/}
-                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                    <TableCell onClick={onSelectItem(entity)} component='th' scope='row' padding='none'>
+                    {this.props.onCopy &&
+                    <TableCell
+                      style={{ width: 40 }}
+                      onClick={this.onCopy(item.id)}
+                      padding={'checkbox'}
+                    >
+                      <IconButton title={'Copy'}>
+                        <ContentCopyIcon/>
+                      </IconButton>
+                    </TableCell>
+                      || <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                    }
+                    <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
                       {item.title}
                     </TableCell>
-                    <TableCell onClick={onSelectItem(entity)}>{item.description || '---'}</TableCell>
-                    <TableCell onClick={onSelectItem(entity)}>{item.rightText || '---'}</TableCell>
+                    <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
+                    <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
                   </TableRow>
                 );
               })}
@@ -224,7 +205,7 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
   }
 }
 
-function EnhancedTableToolbar(props: { numSelected: number, onCopy: () => void }) {
+function EnhancedTableToolbar(props: { numSelected: number }) {
   const { numSelected } = props;
 
   return (
@@ -242,23 +223,6 @@ function EnhancedTableToolbar(props: { numSelected: number, onCopy: () => void }
         }
       </div>
       <div style={{ flex: '1 1 100%' }}/>
-      <div>
-        {
-          numSelected === 0 &&
-          <Tooltip title='Filter list'>
-            <IconButton aria-label='Filter list'>
-              <FilterListIcon/>
-            </IconButton>
-          </Tooltip>
-          ||
-          numSelected === 1 &&
-          <Tooltip title='Copy'>
-            <IconButton aria-label='Copy'>
-              <ContentCopyIcon/>
-            </IconButton>
-          </Tooltip>
-        }
-      </div>
     </Toolbar>
   );
 }

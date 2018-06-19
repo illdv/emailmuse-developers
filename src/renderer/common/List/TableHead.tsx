@@ -42,12 +42,7 @@ export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadS
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding='checkbox'>
-            {/*<Checkbox
-              checked={this.state.isSelectAll}
-              onChange={this.onSelectAll}
-            />*/}
-          </TableCell>
+          <TableCell padding='checkbox'/>
           {this.props.columnData.map((column: IColumn) => {
             return (
               <TableCell
@@ -56,19 +51,13 @@ export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadS
                 padding={column.disablePadding ? 'none' : 'default'}
                 sortDirection={'asc'}
               >
-                <Tooltip
-                  title='Sort'
-                  placement={column.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
+                <TableSortLabel
+                  active={false}
+                  direction={'asc'}
+                  onClick={this.onSortColumn(column.id)}
                 >
-                  <TableSortLabel
-                    active={false}
-                    direction={'asc'}
-                    onClick={this.onSortColumn(column.id)}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </Tooltip>
+                  {column.label}
+                </TableSortLabel>
               </TableCell>
             );
           }, this)}
