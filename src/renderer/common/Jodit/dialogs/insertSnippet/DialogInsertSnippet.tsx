@@ -92,7 +92,7 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
             <ElementList
               entities={snippets.snippets}
               toItem={snippetToItem}
-              onSelectItem={this.onSelect}
+              onOpenItem={this.onSelect}
               pagination={snippets.pagination}
               onChangePage={this.onChangePage}
             />
