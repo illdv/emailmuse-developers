@@ -55,7 +55,7 @@ interface IlayoutList {
 
 const mockTemplate2 = [
   {
-    body: '<table style="width: 453px; height: 45px;">\n' +
+    body: '<table style="width: 100%; height: 45px;">\n' +
     '   <tbody>\n' +
     '       <tr>\n' +
     '           <td>Left</td>\n' +
@@ -66,7 +66,7 @@ const mockTemplate2 = [
     title: 'Left', icon: 'FormatAlignLeft',
   },
   {
-    body: '<table style="width: 453px; height: 45px; text-align: center;">\n' +
+    body: '<table style="width: 100%; height: 45px; text-align: center;">\n' +
     '   <tbody>\n' +
     '       <tr>\n' +
     '           <td style="text-align: center;">center</td>\n' +
@@ -77,17 +77,17 @@ const mockTemplate2 = [
     title: 'Center', icon: 'FormatAlignCenter',
   },
   {
-    body: `<table style="width: 453px; height: 45px; text-align: center;">\n' 
-      <tbody>\n' 
-          <tr>\n' 
-              <td style="text-align: right;">right</td>\n' 
-          </tr>\n' 
-      </tbody>\n' 
+    body: `<table style="width: 100%; height: 45px; text-align: center;">\n
+      <tbody>\n
+          <tr>\n
+              <td style="text-align: right;">right</td>\n
+          </tr>\n
+      </tbody>\n
    </table>`,
     description: 'Right aligned layout',
     title: 'Right', icon: 'FormatAlignRight'},
   {
-    body: '<table style="width: 433px; height: 133px; text-align: center;">\n' +
+    body: '<table style="width: 100%; height: 133px; text-align: center;">\n' +
     '   <tbody>\n' +
     '       <tr>\n' +
     '           <td style="text-align: center;">\n' +
