@@ -36,11 +36,11 @@ describe('<ImageLibraryList /> UI Component', () => {
         .first()
         .simulate('click');
 
-      it('must dispatch onSelect', () => {
+      it('must dispatch selectTemplate', () => {
         expect(selectImg).toBeCalled();
       });
 
-      it('onSelect take image', () => {
+      it('selectTemplate take image', () => {
         expect(selectImg).toBeCalledWith(mockImage0);
       });
 

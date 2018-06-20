@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ImageLibrary as ImageLibrary } from '../ImageLibrary';
 import { Provider } from 'react-redux';
-import { deleteImagesRequest, getImagesRequest, updateImageRequest, uploadImagesRequest } from '../store/actions';
+import { deleteImagesRequest, updateImageRequest, uploadImagesRequest } from '../store/actions';
 import { mockImage0, mockImageArray } from '../__mock__/mock';
 
 describe('ImageLibrary', () => {
@@ -81,7 +81,7 @@ describe('ImageLibrary', () => {
       expect(mockDeleteImagesRequest).toBeCalledWith(mockImage0.id);
     });
 
-    it('onSelect method from ImageLibraryList ', () => {
+    it('selectTemplate method from ImageLibraryList ', () => {
       imageLibrary.instance().onOpenImageInfo(mockImage0)();
       expect(imageLibrary.state().openDialog).toBe(true);
       expect(imageLibrary.state().chosenImage).toEqual(mockImage0);
