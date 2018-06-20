@@ -130,7 +130,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
         <ElementList
           entities={snippets}
           toItem={snippetToItem}
-          onSelectItem={this.onSelect}
+          onOpenItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
         />

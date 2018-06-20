@@ -14,6 +14,7 @@ import Templates from '../Templates/Templates';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import Layouts from 'src/renderer/component/Layouts/Layouts';
 
 const styles: IStyle = {
   root: {
@@ -66,6 +67,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
         return <ImageLibrary/>;
       case MenuItemType.SNIPPETS:
         return <Snippets/>;
+      case MenuItemType.LAYOUTS:
+        return <Layouts/>;
       default:
         return <Settings/>;
     }

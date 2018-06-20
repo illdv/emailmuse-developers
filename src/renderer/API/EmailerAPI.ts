@@ -32,6 +32,10 @@ export namespace Templates {
     return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
   }
 
+  export function copyTemplate(id: string) {
+    return AxiosWrapper.post(`/templates/${id}/copy`);
+  }
+
   export function createTemplate(template: ITemplate) {
     return axios.post(`${API_ENDPOINT}/templates`, template);
   }

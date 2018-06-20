@@ -2,7 +2,13 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Collections, Drafts, SupervisorAccount, ViewCompact } from '@material-ui/icons';
+import {
+  Collections,
+  Drafts,
+  PictureInPictureAlt,
+  SupervisorAccount,
+  ViewCompact,
+} from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import {
   Button,
@@ -28,6 +34,7 @@ const createMenuSchema = (): IItem[] => {
     { title: 'Emails', icon: <Drafts/>, type: MenuItemType.TEMPLATES },
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
+    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS },
   ];
 };
 
