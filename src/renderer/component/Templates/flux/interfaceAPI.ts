@@ -23,3 +23,7 @@ export interface ITemplatesResponse {
   to: number;
   total: number;
 }
+export interface ILayout {
+  description: string;
+  body: string;
+}

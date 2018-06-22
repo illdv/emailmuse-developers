@@ -5,6 +5,7 @@ import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/i
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { ActionStatus } from 'src/renderer/flux/interface';
+import { createAsyncAction } from 'src/renderer/flux/utils';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
@@ -19,6 +20,7 @@ export const SELECT         = `${NS}SELECT`;
 export const REMOVE         = `${NS}REMOVE`;
 export const SAVE           = `${NS}SAVE`;
 export const SAVE_SUCCESS   = `${NS}SAVE_SUCCESS`;
+export const COPY   = `${NS}COPY`;
 
 const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
@@ -33,6 +35,7 @@ const select        = createAction(SELECT, (template: ITemplate) => template);
 const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
 const save          = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
 const remove        = createAction(REMOVE, (templateId: string) => templateId);
+const copy          = createAction(COPY, (payload: {id: string}) => payload);
 
 export const TemplateAction: ITemplateAction = {
   loading,
@@ -43,6 +46,7 @@ export const TemplateAction: ITemplateAction = {
   save,
   select,
   remove,
+  copy,
 };
 
 const initialState: ITemplateState = {
