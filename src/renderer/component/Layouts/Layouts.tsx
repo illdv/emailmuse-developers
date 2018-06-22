@@ -55,60 +55,127 @@ interface IlayoutList {
 
 const mockTemplate2 = [
   {
-    body: '<table style="width: 100%; height: 45px;">\n' +
-    '   <tbody>\n' +
-    '       <tr>\n' +
-    '           <td>Left</td>\n' +
-    '       </tr>\n' +
-    '   </tbody>\n' +
+    body: '' +
+    '<table align="left"\n' +
+    '       border="0"\n' +
+    '       cellpadding="0"\n' +
+    '       cellspacing="0"\n' +
+    '       role="presentation"\n' +
+    '       style="max-width:680px;"\n' +
+    '       width="100%">\n' +
+    '  <tbody>\n' +
+    '  <tr>\n' +
+    '    <td bgcolor="#ffffff">\n' +
+    '      <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">\n' +
+    '        <tbody>\n' +
+    '        <tr>\n' +
+    '          <td\n' +
+    '          style="\n' +
+    '            padding:9px;\n' +
+    '            font-family:sans-serif;\n' +
+    '            font-size:16px;\n' +
+    '            line-height:20px;\n' +
+    '            color:#000000"\n' +
+    '          >\n' +
+    '            Body of email here\n' +
+    '            <br>\n' +
+    '            And another line\n' +
+    '            <br><br>\n' +
+    '            Sincerely,\n' +
+    '            <br><br>\n' +
+    '            Your Name\n' +
+    '          </td>\n' +
+    '        </tr>\n' +
+    '        </tbody>\n' +
+    '      </table>\n' +
+    '    </td>\n' +
+    '  </tr>\n' +
+    '  </tbody>\n' +
     '</table>',
     description: 'Left aligned layout',
     title: 'Left', icon: 'FormatAlignLeft',
   },
   {
-    body: '<table style="width: 100%; height: 45px; text-align: center;">\n' +
-    '   <tbody>\n' +
-    '       <tr>\n' +
-    '           <td style="text-align: center;">center</td>\n' +
-    '       </tr>\n' +
-    '   </tbody>\n' +
+    body: '<table\n' +
+    '    align="center"\n' +
+    '    border="0"\n' +
+    '    cellpadding="0"\n' +
+    '    cellspacing="0"\n' +
+    '    role="presentation"\n' +
+    '    style="max-width:680px;"\n' +
+    '    width="100%"\n' +
+    '>\n' +
+    '  <tbody>\n' +
+    '  <tr>\n' +
+    '    <td bgcolor="#ffffff">\n' +
+    '      <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">\n' +
+    '        <tbody>\n' +
+    '        <tr>\n' +
+    '          <td\n' +
+    '          style="padding:9px;\n' +
+    '          font-family:sans-serif;\n' +
+    '          font-size:16px;\n' +
+    '          line-height:20px;\n' +
+    '          color:#000000"\n' +
+    '          >\n' +
+    '            Body of email here\n' +
+    '            <br>\n' +
+    '            And another line\n' +
+    '            <br>\n' +
+    '            <br>\n' +
+    '            Sincerely,\n' +
+    '            <br>\n' +
+    '            <br>\n' +
+    '            Your Name\n' +
+    '          </td>\n' +
+    '        </tr>\n' +
+    '        </tbody>\n' +
+    '      </table>\n' +
+    '    </td>\n' +
+    '  </tr>\n' +
+    '  </tbody>\n' +
     '</table>',
     description: 'Center aligned layout',
     title: 'Center', icon: 'FormatAlignCenter',
   },
   {
-    body: `<table style="width: 100%; height: 45px; text-align: center;">\n
-      <tbody>\n
-          <tr>\n
-              <td style="text-align: right;">right</td>\n
-          </tr>\n
-      </tbody>\n
-   </table>`,
-    description: 'Right aligned layout',
-    title: 'Right', icon: 'FormatAlignRight'},
-  {
-    body: '<table style="width: 100%; height: 133px; text-align: center;">\n' +
-    '   <tbody>\n' +
-    '       <tr>\n' +
-    '           <td style="text-align: center;">\n' +
-    ' <img width="300px" ' +
-    ' src="https://infocron.s3.us-east-2.amazonaws.com/user-5/UXfvr66OFICcmeUvi8hFmSJp85yQJeps5UQGFqLT.png" ' +
-    ' style="width: 79px; height: 79px;"> \n' +
-    '           </td>\n' +
-    '       </tr>\n' +
-    '       <tr>\n' +
-    '           <td style="text-align: center;">Example text</td>\n' +
-    '       </tr>\n' +
-    '   </tbody>\n' +
+    body: '<table \n' +
+    '    align="center" \n' +
+    '    border="0" \n' +
+    '    cellpadding="0" \n' +
+    '    cellspacing="0" \n' +
+    '    role="presentation" \n' +
+    '    style="max-width:680px;"\n' +
+    '    width="100%"\n' +
+    '>\n' +
+    '  <tbody>\n' +
+    '  <tr>\n' +
+    '    <td bgcolor="#ffffff" style="text-align: center;background: #fff;"> Logo here\n' +
+    '      <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">\n' +
+    '        <tbody>\n' +
+    '        <tr>\n' +
+    '        </tr>\n' +
+    '        <tr>\n' +
+    '          <td \n' +
+    '           style="\n' +
+    '              padding:9px;\n' +
+    '              font-family:sans-serif;\n' +
+    '              font-size:16px;\n' +
+    '              line-height:20px;\n' +
+    '              color:#000000;\n' +
+    '              background: #fff;"\n' +
+    '          >\n' +
+    '            Body of email here<br>And another line<br><br>Sincerely,<br><br>Your Name\n' +
+    '          </td>\n' +
+    '        </tr>\n' +
+    '        </tbody>\n' +
+    '      </table>\n' +
+    '    </td>\n' +
+    '  </tr>\n' +
+    '  </tbody>\n' +
     '</table>',
     description: 'Layout with picture top',
     title: 'Picture top', icon: 'PictureInPicture',
-  },
-  {
-    body: '<div ><h3 style="float: left;">WAAAGH!</h3><img style="float: left;" ' +
-    'src="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg.jpeg"/></div>',
-    description: 'Layout with picture bottom',
-    title: 'Picture bottom', icon: 'PictureInPictureAlt',
   },
 ];
 
@@ -130,24 +197,22 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   }
 
   skip = () => {
-    this.selectLayout({body: 'example text', description: 'empty'});
+    this.selectLayout({ body: 'Example text', description: 'empty' });
   }
 
-  alignRight    = () => {
-    this.selectLayout({ body: mockTemplate2[2].body, description: mockTemplate2[2].description });
-  }
-  alignLeft     = () => {
+  alignLeft   = () => {
     this.selectLayout({ body: mockTemplate2[0].body, description: mockTemplate2[0].description });
   }
-  alignCenter   = () => {
+
+  alignCenter = () => {
     this.selectLayout({ body: mockTemplate2[1].body, description: mockTemplate2[1].description });
   }
-  pictureTop    = () => {
-    this.selectLayout({ body: mockTemplate2[3].body, description: mockTemplate2[3].description });
+
+  pictureTop  = () => {
+    this.selectLayout({ body: mockTemplate2[2].body, description: mockTemplate2[2].description });
   }
 
   render() {
-    // const { } = this.props;
     const iconStyles = {
       fontSize: '10rem',
     };
@@ -164,13 +229,9 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
             <LayoutCard cardTitle='Center' onClick={this.alignCenter}>
               <FormatAlignCenter color='primary' style={iconStyles} onClick={this.alignCenter}/>
             </LayoutCard>
-            <LayoutCard cardTitle='Right' onClick={this.alignRight}>
-              <FormatAlignRight color='primary' style={iconStyles} onClick={this.alignRight}/>
-            </LayoutCard>
             <LayoutCard cardTitle='Logo top' onClick={this.pictureTop}>
               <PictureInPicture color='primary' style={iconStyles} onClick={this.pictureTop}/>
             </LayoutCard>
-
           </div>
           <Button
             className={b('button')}
