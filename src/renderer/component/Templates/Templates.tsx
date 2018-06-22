@@ -109,7 +109,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onCopy = (id: string) => {
-    // this.props.action.create(newTemplate);
+    this.props.action.copy({id});
   }
 
   render() {
@@ -143,7 +143,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
         <ElementList
           entities={templates}
           toItem={templateToItem}
-          onSelectItem={this.onSelect}
+          onOpenItem={this.onSelect}
           pagination={pagination}
           onChangePage={this.onChangePage}
           onCopy={this.onCopy}

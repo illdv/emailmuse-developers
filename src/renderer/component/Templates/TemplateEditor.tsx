@@ -137,7 +137,7 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
             onChange={this.onChangeField}
           />
         </Grid>
-        <JoditEditor onChangeValue={this.onChange} value={this.state.value}/>
+        {this.props.template && <JoditEditor onChangeValue={this.onChange} value={this.state.value}/>}
         <Confirmation
           isOpen={this.state.isOpenConfirmationClose}
           onClose={this.onCloseDialogClose}

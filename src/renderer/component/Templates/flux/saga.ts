@@ -7,7 +7,6 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ITemplateAction } from 'src/renderer/component/Templates/flux/interface';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return state.templates.pagination.current_page;
@@ -68,9 +67,28 @@ function* removeTemplates(action) {
 
     yield put(FluxToast.Actions.showToast('Remove template success.', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
-    yield put(TemplateAction.loading({page}));
+    yield put(TemplateAction.loading({ page }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Remove template failed', ToastType.Error));
+  }
+}
+
+function* copyTemplates(action) {
+  try {
+    yield call(Templates.copyTemplate, action.payload.id);
+
+    yield put(FluxToast.Actions.showToast('Copy template success.', ToastType.Success));
+    const page: number = yield select(getCurrentPageSelector);
+    yield put(TemplateAction.loading({ page }));
+  } catch (error) {
+    yield put(FluxToast.Actions.showToast('Copy template failed', ToastType.Error));
+  }
+}
+
+function* watchCopy() {
+  while (true) {
+    const data = yield take(TemplateAction.copy(null).type);
+    yield call(copyTemplates, data);
   }
 }
 
@@ -102,4 +120,4 @@ function* watchRemove() {
   }
 }
 
-export default [watchLoading, watchSave, watchCreate, watchRemove];
+export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy];

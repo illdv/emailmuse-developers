@@ -1,6 +1,6 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
-import { Action, ActionStatus } from 'src/renderer/flux/interface';
+import { Action, ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
 import { ActionCreatorsMapObject } from 'redux';
 import { EmptyActionCreator } from 'redux-act';
 
@@ -25,4 +25,9 @@ export interface ITemplateAction extends ActionCreatorsMapObject {
   failure?: EmptyActionCreator;
   successfully?: Action<ILoadingTemplatePayload>;
   createSuccess?: Action<ITemplate>;
+  copy?: Action<{ id: string }>;
+}
+export interface ILayout {
+  description: string;
+  body: string;
 }
