@@ -8,12 +8,14 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
+
 import {
   ILoginRequest,
   loginActions,
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { ImageLibrary } from 'src/renderer/component/ImageLibrary/ImageLibrary';
 
 const styles = theme => ({
   root: {
@@ -69,8 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
   render() {
@@ -136,4 +137,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
   }
 }
 
-export default withStyles(styles)(Login as any);
+export default withStyles(styles)
+(connect(mapStateToProps, mapDispatchToProps)
+(Login as any));

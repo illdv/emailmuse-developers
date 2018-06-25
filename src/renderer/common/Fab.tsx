@@ -5,9 +5,9 @@ import { Button, PropTypes, Zoom } from '@material-ui/core/';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 interface IFabProps {
-  onClick: any;
+  onClick?: any;
   className?: string;
-  icon: ReactElement<any>;
+  icon?: ReactElement<any>;
   color?: PropTypes.Color;
   position: number;
   title: string;

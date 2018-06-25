@@ -54,20 +54,26 @@
     "electron-load-devtool": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-context-patch": "0.0.8",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.8.2",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^22.4.4",
+    "jest-webpack-resolver": "^0.3.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.9.0",
+    "react-addons-test-utils": "^15.6.2",
     "react-dev-utils": "^5.0.1",
     "react-test-renderer": "^16.4.1",
     "redux-devtools": "^3.4.1",
     "redux-devtools-extension": "^2.13.2",
+    "redux-mock-store": "^1.5.1",
     "sass-loader": "^7.0.1",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
+    "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
     "tslint-react": "^3.6.0",
     "typescript": "^2.8.3",
@@ -88,6 +94,9 @@
     }
   },
   "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
     "setupFiles": [
       "<rootDir>/config/jest/test-shim.js",
       "<rootDir>/config/jest/test-setup.js"
@@ -95,17 +104,28 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js"
+      "js",
+      "jsx",
+      "json"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/config/jest/test-preprocessor.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "testMatch": [
-      "**/__tests__/*.(ts|tsx|js)"
-    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/__mocks__/fileMock.js",
       "\\.(css|less|scss)$": "<rootDir>/config/jest/__mocks__/fileMock.js"
-    }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/renderer/**/*.tsx"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "jestWebpackResolver": {
+      "webpackConfig": "<rootDir>/webpack.config.js"
+    },
+    "resolver": "jest-webpack-resolver"
   }
 }
