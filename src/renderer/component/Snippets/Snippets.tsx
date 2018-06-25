@@ -128,6 +128,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     return (
       <Paper elevation={4} className={'template-list'}>
         <ElementList
+          title='Snippets'
           entities={snippets}
           toItem={snippetToItem}
           onOpenItem={this.onSelect}

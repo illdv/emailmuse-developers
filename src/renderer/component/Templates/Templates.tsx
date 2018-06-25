@@ -141,6 +141,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     return (
       <Paper>
         <ElementList
+          title='Emails'
           entities={templates}
           toItem={templateToItem}
           onOpenItem={this.onSelect}
