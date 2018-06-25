@@ -15,6 +15,7 @@ import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLa
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import Layouts from 'src/renderer/component/Layouts/Layouts';
+import Swipe from 'src/renderer/component/Swipe/Swipe';
 
 const styles: IStyle = {
   root: {
@@ -69,6 +70,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
         return <Snippets/>;
       case MenuItemType.LAYOUTS:
         return <Layouts/>;
+      case MenuItemType.SWIPE:
+        return <Swipe/>;
       default:
         return <Settings/>;
     }
