@@ -41,8 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
+export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
   state: MailListSpace.IState = {
     newTemplate: null,
@@ -53,12 +52,12 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.loading({ page });
   }
 
-  onSelect = (template: ITemplate) => () => {
+  selectTemplate = (template: ITemplate) => () => {
     this.props.action.select(template);
   }
 
   // TODO: for validation use TextValidator
-  validation = (template: ITemplate): boolean => {
+  private validation = (template: ITemplate): boolean => {
     if (!template.body && template.body.length === 0) {
       this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
       return false;
@@ -144,7 +143,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
           title='Emails'
           entities={templates}
           toItem={templateToItem}
-          onOpenItem={this.onSelect}
+          onOpenItem={this.selectTemplate}
           pagination={pagination}
           onChangePage={this.onChangePage}
           onCopy={this.onCopy}
@@ -162,4 +161,4 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 }
 
-export default Templates;
+export default connect(mapStateToProps, mapDispatchToProps)(Templates);

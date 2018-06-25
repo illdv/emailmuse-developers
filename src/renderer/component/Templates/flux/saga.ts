@@ -40,11 +40,11 @@ function* saveTemplate(action) {
       yield put(TemplateAction.select(null));
     }
 
-    yield put(FluxToast.Actions.showToast('Save template success.', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
     yield put(TemplateAction.loading({ page, hidePreloader: true }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Save template failed.', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed email saved', ToastType.Error));
   }
 }
 
@@ -53,11 +53,11 @@ function* createTemplate(action) {
     const axionData = yield call(Templates.createTemplate, action.payload);
     yield put(TemplateAction.createSuccess(axionData.data));
 
-    yield put(FluxToast.Actions.showToast('Create template success.', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
     const page = yield select(getCurrentPageSelector);
     yield put(TemplateAction.loading({ page, hidePreloader: true }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Create template failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed email created', ToastType.Error));
   }
 }
 
@@ -65,11 +65,11 @@ function* removeTemplates(action) {
   try {
     yield call(Templates.removeTemplate, action.payload);
 
-    yield put(FluxToast.Actions.showToast('Remove template success.', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
     yield put(TemplateAction.loading({ page }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Remove template failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed email removed', ToastType.Error));
   }
 }
 

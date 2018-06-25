@@ -23,7 +23,7 @@ import {
 } from 'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import ImageLibraryDialog from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
@@ -33,7 +33,7 @@ const b = block('image-library');
 
 namespace ImageLibrarySpace {
   export interface IProps {
-    classes?: any;
+    classes?: {root};
     actions?: {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,
@@ -58,24 +58,7 @@ const styles: IStyle = theme => ({
   },
 });
 
-const mapStateToProps = state => ({
-  items: getImagesURLSelector(state),
-  pagination: {
-    current_page: getCurrentPageSelector(state),
-    total: getTotalImages(state),
-    last_page: getLastPageSelector(state),
-    per_page: getPerPageSelector(state),
-  },
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
-    dispatch),
-});
-
-@connect(mapStateToProps, mapDispatchToProps)
-class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
+export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
 
   state: ImageLibrarySpace.IState = {
     openDialog: false,
@@ -205,4 +188,22 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   }
 }
 
-export default withStyles(styles)(ImageLibrary as any);
+const mapStateToProps = state => ({
+  items: getImagesURLSelector(state),
+  pagination: {
+    current_page: getCurrentPageSelector(state),
+    total: getTotalImages(state),
+    last_page: getLastPageSelector(state),
+    per_page: getPerPageSelector(state),
+  },
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+    dispatch),
+});
+
+export default withStyles(styles)
+(connect(mapStateToProps, mapDispatchToProps)
+(ImageLibrary as any));

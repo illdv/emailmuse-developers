@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ImageLibraryDialog /> Rendering UI Renders Correctly 1`] = `
+<WithStyles(Dialog)
+  aria-labelledby="form-dialog-title"
+  maxWidth={false}
+  onClose={[Function]}
+  open={true}
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <WithStyles(DialogTitle)
+      id="form-dialog-title"
+    >
+      Edit image
+    </WithStyles(DialogTitle)>
+    <WithStyles(DialogContent)
+      className="image-library-dialogs__content"
+    >
+      <WithStyles(DialogContentText)>
+        Enter new name of this image and click 'Update' to apply changes.
+      </WithStyles(DialogContentText)>
+      <WithStyles(DialogContentText)>
+        Or click 'Delete' to delete this image from library.
+      </WithStyles(DialogContentText)>
+      <img
+        className="image-library-dialogs__img"
+        src="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg.jpeg"
+      />
+      <TextField
+        autoFocus={true}
+        className="image-library-dialogs__inputName"
+        fullWidth={true}
+        id="name"
+        label="Image name"
+        margin="dense"
+        onChange={[Function]}
+        required={false}
+        select={false}
+        type="input"
+        value="tesla-cat"
+      />
+      <TextField
+        InputProps={
+          Object {
+            "startAdornment": <WithStyles(InputAdornment)
+              className="image-library-dialogs__url-field"
+              position="start"
+            >
+              <pure(Language) />
+            </WithStyles(InputAdornment)>,
+          }
+        }
+        className="image-library-dialogs__inputURL"
+        fullWidth={true}
+        id="url"
+        label="Image URL"
+        margin="dense"
+        onClick={[Function]}
+        required={false}
+        select={false}
+        type="input"
+        value="https://infocron.s3.us-east-2.amazonaws.com/user-5/nc6DTVcBCpU3Vnew8QuoZkklwvN2uWukO8fPfrSg.jpeg"
+      />
+    </WithStyles(DialogContent)>
+    <WithStyles(DialogActions)>
+      <WithStyles(Button)
+        className="image-library-dialogs__button--cancel"
+        color="primary"
+        onClick={[Function]}
+      >
+        Cancel
+      </WithStyles(Button)>
+      <WithStyles(Button)
+        className="image-library-dialogs__button--update"
+        color="primary"
+        type="submit"
+      >
+        Update
+      </WithStyles(Button)>
+      <WithStyles(Button)
+        className="image-library-dialogs__button--delete"
+        color="primary"
+        onClick={[Function]}
+      >
+        Delete
+      </WithStyles(Button)>
+    </WithStyles(DialogActions)>
+  </form>
+</WithStyles(Dialog)>
+`;
