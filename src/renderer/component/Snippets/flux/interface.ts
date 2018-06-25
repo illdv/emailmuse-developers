@@ -1,6 +1,6 @@
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
-import { Action, ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
+import { CreateAction, ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
 
 export interface ISnippetsState {
   snippets: ISnippet[];
@@ -14,8 +14,8 @@ export interface ISnippetsAction {
   remove: IAsyncAction<{ id: string }, {}, {}>;
   add: IAsyncAction<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
   edit: IAsyncAction<{ snippet: ISnippet }, {}, {}>;
-  selectSnippet: Action<{ selectSnippet: ISnippet }>;
-  saveAndClose: Action<{ snippet: ISnippet }>;
+  selectSnippet: CreateAction<{ selectSnippet: ISnippet }>;
+  saveAndClose: CreateAction<{ snippet: ISnippet }>;
 }
 
 export interface ISuccessfullyPayload {
