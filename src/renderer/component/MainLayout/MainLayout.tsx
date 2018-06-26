@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
@@ -15,6 +15,7 @@ import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLa
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import Layouts from 'src/renderer/component/Layouts/Layouts';
+import Swipe from 'src/renderer/component/Swipe/Swipe';
 
 const styles: IStyle = {
   root: {
@@ -51,6 +52,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
    },
   */
 });
+
 @DragDropContext(HTML5Backend)
 @(connect(mapStateToProps, mapDispatchToProps))
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
@@ -69,6 +71,8 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
         return <Snippets/>;
       case MenuItemType.LAYOUTS:
         return <Layouts/>;
+      case MenuItemType.SWIPE:
+        return <Swipe/>;
       default:
         return <Settings/>;
     }
@@ -82,7 +86,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           <Grid item xs={12} sm={3}>
             <Menu/>
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden'}}>
+          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
             <PreloaderLayout/>
             {this.mainDisplay(this.props)}
           </Grid>

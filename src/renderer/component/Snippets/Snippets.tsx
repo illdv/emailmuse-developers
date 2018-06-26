@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Paper } from '@material-ui/core';
+import { Fade, Paper } from '@material-ui/core';
 import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';
 import { ElementList } from 'src/renderer/common/List/ElementList';
@@ -15,6 +14,7 @@ import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Fab } from 'src/renderer/common/Fab';
 import { createEmptySnippet, snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
+import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -126,24 +126,25 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     }
 
     return (
-      <Paper elevation={4} className={'template-list'}>
-        <ElementList
-          title='Snippets'
-          entities={snippets}
-          toItem={snippetToItem}
-          onOpenItem={this.onSelect}
-          pagination={pagination}
-          onChangePage={this.onChangePage}
-        />
-        <Fab
-          onClick={this.selectNew}
-          icon={<Add/>}
-          position={0}
-          title={'Add new snippet'}
-          whitCtrl
-          hotKey={'A'}
-        />
-      </Paper>
+      <Fade in timeout={1000}>
+        <Paper elevation={4} className={'template-list'}>
+          <ElementList
+            entities={snippets}
+            toItem={snippetToItem}
+            onOpenItem={this.onSelect}
+            pagination={pagination}
+            onChangePage={this.onChangePage}
+          />
+          <Fab
+            onClick={this.selectNew}
+            icon={<Add/>}
+            position={0}
+            title={'Add new snippet'}
+            whitCtrl
+            hotKey={'A'}
+          />
+        </Paper>
+      </Fade>
     );
   }
 }

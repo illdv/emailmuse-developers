@@ -30,7 +30,7 @@ export namespace JoditEditorSpace {
 
   export interface IProps {
     value: string;
-    onChangeValue: (value: string) => void;
+    onChangeValue?: (value: string) => void;
   }
 }
 
@@ -82,15 +82,19 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
-      this.editor       = new Jodit(this.textArea.current, this.createOption());
+      this.editor = new Jodit(this.textArea.current, this.createOption());
       editors.push(this.editor);
-      this.editor.value = this.props.value || '';
-      this.editor.events.on('change', this.props.onChangeValue);
+      const { value, onChangeValue } = this.props;
+      this.editor.value            = value || '';
+      if (onChangeValue) {
+        this.editor.events.on('change', onChangeValue);
+      }
     }
   }
 
   createOption = () => {
     return {
+      readonly: !this.props.onChangeValue,
       cleanHTML: {
         removeEmptyElements: true,
         denyTags: {

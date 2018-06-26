@@ -1,10 +1,11 @@
+import { AxiosResponse } from 'axios';
+
 import { call, put, select, take } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
 import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
-import { AxiosResponse } from 'axios';
 import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return state.snippets.pagination.current_page;

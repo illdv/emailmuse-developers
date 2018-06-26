@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Paper, Typography } from '@material-ui/core';
+import { Fade, Paper, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
@@ -108,7 +108,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   onCopy = (id: string) => {
-    this.props.action.copy({id});
+    this.props.action.copy({ id });
   }
 
   render() {
@@ -138,25 +138,26 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     }
 
     return (
-      <Paper>
-        <ElementList
-          title='Emails'
-          entities={templates}
-          toItem={templateToItem}
-          onOpenItem={this.selectTemplate}
-          pagination={pagination}
-          onChangePage={this.onChangePage}
-          onCopy={this.onCopy}
-        />
-        <Fab
-          onClick={this.onSelectNewTemplate}
-          icon={<Add/>}
-          position={0}
-          title={'Add new template'}
-          whitCtrl
-          hotKey={'A'}
-        />
-      </Paper>
+      <Fade in timeout={1000}>
+        <Paper>
+          <ElementList
+            entities={templates}
+            toItem={templateToItem}
+            onOpenItem={this.selectTemplate}
+            pagination={pagination}
+            onChangePage={this.onChangePage}
+            onCopy={this.onCopy}
+          />
+          <Fab
+            onClick={this.onSelectNewTemplate}
+            icon={<Add/>}
+            position={0}
+            title={'Add new template'}
+            whitCtrl
+            hotKey={'A'}
+          />
+        </Paper>
+      </Fade>
     );
   }
 }

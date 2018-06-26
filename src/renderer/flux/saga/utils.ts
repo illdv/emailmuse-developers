@@ -7,17 +7,11 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 
 export function* toastSuccess(messages: string) {
-  yield put(FluxToast.Actions.showToast.REQUEST({
-    messages,
-    type: ToastType.Success,
-  }));
+  yield put(FluxToast.Actions.showToast(messages, ToastType.Success));
 }
 
 export function* toastError(messages: string) {
-  yield put(FluxToast.Actions.showToast.REQUEST({
-    messages,
-    type: ToastType.Error,
-  }));
+  yield put(FluxToast.Actions.showToast(messages, ToastType.Error));
 }
 
 export function* errorHandler(error: AxiosError) {
@@ -82,8 +76,8 @@ export function createSagaHandler<R, S, L>(option: ICreateSagaHandlerOptions<R, 
 
   return function* saga(action: Action<R>) {
     try {
-      const dataForApi                                = creatorDataForApi ? creatorDataForApi(action) : null;
-      const response = yield call(apiMethod, dataForApi);
+      const dataForApi = creatorDataForApi ? creatorDataForApi(action) : null;
+      const response   = yield call(apiMethod, dataForApi);
 
       yield put(actionCreators.SUCCESS(responseHandler(response)));
 

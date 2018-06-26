@@ -27,7 +27,3 @@ export interface ITemplateAction extends ActionCreatorsMapObject {
   createSuccess?: CreateAction<ITemplate>;
   copy?: CreateAction<{ id: string }>;
 }
-export interface ILayout {
-  description: string;
-  body: string;
-}
