@@ -9,12 +9,12 @@ interface IheaderToolbar {
   title?: string;
 }
 
-const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected = 1, title = 'List item' }) => {
+const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected = 1, title = '' }) => {
   const render = () => {
     if (numSelected === 0) {
       return (
         <Typography variant='title' id='tableTitle'>
-          {title ? title : 'New page'}
+          {title ? title : ''}
         </Typography>
       );
     }

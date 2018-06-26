@@ -17,23 +17,30 @@ import { bindModuleAction } from 'src/renderer/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';
+import { Fab } from 'src/renderer/common/Fab';
+import { Add } from '@material-ui/icons';
+import PageCreateLayout from 'src/renderer/component/Layouts/PageCreateLayout';
 
 const b = block('layout');
 
 export namespace LayoutsSpace {
   export interface IState {
+    showPopUp: boolean;
   }
 
   export interface IProps {
     actions?: ITemplateAction;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
+    showPopUp: boolean;
   }
 }
 
 export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState> {
 
-  state: LayoutsSpace.IState = {};
+  state: LayoutsSpace.IState = {
+    showPopUp: false,
+  };
 
   createTemplate = ({ title, body }: ILayout) => {
     this.props.actions.selectMenuItem({ selectedItem: MenuItemType.TEMPLATES });
@@ -52,11 +59,15 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     console.log(layout);
   }
 
-  render() {
-    const iconStyles = {
-      fontSize: '10rem',
-    };
+  createOwnTemplate = () => {
+    this.setState({ showPopUp: true });
+  }
 
+  handleClose = () => {
+    this.setState({ showPopUp: false });
+  }
+
+  render() {
     const { layouts } = this.props.layout;
 
     if (!layouts) {
@@ -64,6 +75,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     }
 
     return (
+      <div>
       <Fade in timeout={1000}>
         <Paper elevation={4}>
           <div className={b('header')}>
@@ -88,6 +100,19 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
           </div>
         </Paper>
       </Fade>
+        <Fab
+          onClick={this.createOwnTemplate}
+          icon={<Add/>}
+          position={0}
+          title={'Create your own template'}
+          whitCtrl
+          hotKey={'A'}
+        />
+        <PageCreateLayout
+          isOpen={this.state.showPopUp}
+          handleClose={this.handleClose}
+        />
+      </div>
     );
   }
 }
