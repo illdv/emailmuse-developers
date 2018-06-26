@@ -8,6 +8,7 @@ import {
   PictureInPictureAlt,
   SupervisorAccount,
   ViewCompact,
+  PlayCircleOutline,
 } from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import {
@@ -35,6 +36,7 @@ const createMenuSchema = (): IItem[] => {
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
     { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS },
+    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE },
   ];
 };
 

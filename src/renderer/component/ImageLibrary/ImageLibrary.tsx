@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IStyle } from 'type/materialUI';
-import { Paper, withStyles } from '@material-ui/core/';
+import { Fade, Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -33,7 +33,7 @@ const b = block('image-library');
 
 namespace ImageLibrarySpace {
   export interface IProps {
-    classes?: {root};
+    classes?: { root };
     actions?: {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,
@@ -128,62 +128,64 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
   render() {
     const { classes, pagination } = this.props;
     return (
-      <Paper elevation={4} className={classes.root}>
-        <div className={b()}>
-          <Search search={this.onLoading}/>
-          <TablePagination
-            component='div'
-            count={pagination.total || 0}
-            rowsPerPage={pagination.per_page || 0}
-            rowsPerPageOptions={[15]}
-            page={pagination.current_page - 1}
-            backIconButtonProps={{
-              'aria-label': 'Previous Page',
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Next Page',
-            }}
-            onChangePage={this.onChangePage}
-            onChangeRowsPerPage={this.onChangeRowsPerPage}
-          />
-          <DragAndDropTarget
-            onDrop={this.onDropFile}
-            showOverlay={true}
-            overlayMessage={'Drop files here to add them to your image library'}
-          >
-            <div className={b('container')}>
-              {
-                this.state.chosenImage &&
-                <ImageLibraryDialog
-                  item={this.state.chosenImage}
-                  onDeleteItem={this.deleteItem}
-                  onUpdateItem={this.updateItem}
-                  onClose={this.closeDialog}
+      <Fade in timeout={1000}>
+        <Paper elevation={4} className={classes.root}>
+          <div className={b()}>
+            <Search search={this.onLoading}/>
+            <TablePagination
+              component='div'
+              count={pagination.total || 0}
+              rowsPerPage={pagination.per_page || 0}
+              rowsPerPageOptions={[15]}
+              page={pagination.current_page - 1}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={this.onChangePage}
+              onChangeRowsPerPage={this.onChangeRowsPerPage}
+            />
+            <DragAndDropTarget
+              onDrop={this.onDropFile}
+              showOverlay={true}
+              overlayMessage={'Drop files here to add them to your image library'}
+            >
+              <div className={b('container')}>
+                {
+                  this.state.chosenImage &&
+                  <ImageLibraryDialog
+                    item={this.state.chosenImage}
+                    onDeleteItem={this.deleteItem}
+                    onUpdateItem={this.updateItem}
+                    onClose={this.closeDialog}
+                  />
+                }
+                <ImageLibraryList
+                  items={this.props.items}
+                  onDelete={this.deleteItem}
+                  onSelect={this.onOpenImageInfo}
                 />
-              }
-              <ImageLibraryList
-                items={this.props.items}
-                onDelete={this.deleteItem}
-                onSelect={this.onOpenImageInfo}
-              />
+              </div>
+            </DragAndDropTarget>
+            <div className={b('footer')}>
+              <Button color='primary'>
+                <label htmlFor='upload'>
+                  Upload images
+                </label>
+                <input
+                  id='upload'
+                  className={b('upload-input')}
+                  type='file'
+                  multiple
+                  onChange={this.onUploadFiles}
+                />
+              </Button>
             </div>
-          </DragAndDropTarget>
-          <div className={b('footer')}>
-            <Button color='primary'>
-              <label htmlFor='upload'>
-                Upload images
-              </label>
-              <input
-                id='upload'
-                className={b('upload-input')}
-                type='file'
-                multiple
-                onChange={this.onUploadFiles}
-              />
-            </Button>
           </div>
-        </div>
-      </Paper>
+        </Paper>
+      </Fade>
     );
   }
 }

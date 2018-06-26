@@ -29,41 +29,39 @@ export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IPro
   render() {
     const { onDelete, onSelect, items } = this.props;
     return (
-      <>
-        <GridList
-          cellHeight={240}
-          cols={3}
-          className={b()}
-        >
-          {
-            items.map((item, index) => (
-                <Grow key={item.id} in timeout={(index * 500) + 500}>
-                  <GridListTile className={b('tile')}>
-                    <div
-                      className={b('tile-img')}
-                      style={{
-                        backgroundImage: `url(${item.thumb_url})`,
-                      }}
-                      onClick={onSelect(item)}
+      <GridList
+        cellHeight={240}
+        cols={3}
+        className={b()}
+      >
+        {
+          items.map((item, index) => (
+              <Grow key={item.id} in timeout={(index * 500) + 500}>
+                <GridListTile className={b('tile')}>
+                  <div
+                    className={b('tile-img')}
+                    style={{
+                      backgroundImage: `url(${item.thumb_url})`,
+                    }}
+                    onClick={onSelect(item)}
+                  />
+                  {
+                    onDelete &&
+                    <GridListTileBar
+                      title={item.name}
+                      actionIcon={
+                        <IconButton onClick={onDelete(item)}>
+                          <Delete nativeColor='white'/>
+                        </IconButton>
+                      }
                     />
-                    {
-                      onDelete &&
-                      <GridListTileBar
-                        title={item.name}
-                        actionIcon={
-                          <IconButton onClick={onDelete(item)}>
-                            <Delete nativeColor='white'/>
-                          </IconButton>
-                        }
-                      />
-                    }
-                  </GridListTile>
-                </Grow>
-              ),
-            )
-          }
-        </GridList>
-      </>
+                  }
+                </GridListTile>
+              </Grow>
+            ),
+          )
+        }
+      </GridList>
     );
   }
 }
