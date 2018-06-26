@@ -7,9 +7,9 @@ import './LayoutCard.scss';
 const b = block('layout-card');
 
 const LayoutCard = props => {
-  const { cardTitle, children } = props;
+  const { cardTitle, children, onClick } = props;
   return (
-    <Card className={b()}>
+    <Card className={b()} onClick={onClick}>
       <CardContent>
           <Typography component='p' align='center'>
             {children}
