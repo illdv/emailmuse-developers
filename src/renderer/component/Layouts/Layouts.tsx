@@ -49,7 +49,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   }
 
   onSelect = (layout: ILayout) => () => {
-    console.log(layout);
+    this.createTemplate({ body: layout.body, title: layout.title });
   }
 
   render() {

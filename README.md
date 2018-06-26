@@ -8,7 +8,7 @@ Passworld: ezri.yitta@0ld0x.com
 ### Start project
 
 ### Install dependencies
-```
+```ezri.yitta@0ld0x.com
 npm ci
 ```
 
