@@ -23,7 +23,7 @@ export interface IGlobalState {
   snippets: ISnippetsState;
   images: ImageLibrary.IState;
   status: StatusConstants.TStatus;
-  layout: ILayoutState;
+  layouts: ILayoutState;
 }
 
 const appReducers = combineReducers({

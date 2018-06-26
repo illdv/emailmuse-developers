@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, Grid, Typography } from '@material-ui/core';
+
 import { ISubject } from 'src/renderer/component/Swipe/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Swipe } from 'src/renderer/component/Swipe/Swipe';
 import { bindModuleAction } from 'src/renderer/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
@@ -32,8 +32,6 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
       layout: {
         body: mail.body,
         title: mail.title,
-        created_at: '',
-        updated_at: '',
       },
     });
   }

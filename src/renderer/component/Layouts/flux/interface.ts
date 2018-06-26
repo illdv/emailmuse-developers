@@ -4,8 +4,10 @@ import { IPagination } from 'src/renderer/common/List/interface';
 export interface ILayout {
   title: string;
   body: string;
-  created_at: string;
-  updated_at: string;
+  icon?: string;
+  icon_url?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface ILayoutState {
