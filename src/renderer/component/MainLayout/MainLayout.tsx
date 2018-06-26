@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
@@ -52,6 +52,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
    },
   */
 });
+
 @DragDropContext(HTML5Backend)
 @(connect(mapStateToProps, mapDispatchToProps))
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
@@ -85,7 +86,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           <Grid item xs={12} sm={3}>
             <Menu/>
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden'}}>
+          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
             <PreloaderLayout/>
             {this.mainDisplay(this.props)}
           </Grid>

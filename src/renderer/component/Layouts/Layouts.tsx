@@ -2,14 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
-import {
-  FormatAlignCenter,
-  FormatAlignLeft,
-  FormatAlignRight,
-  PictureInPicture,
-  PictureInPictureAlt,
-} from '@material-ui/icons';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { FormatAlignCenter, FormatAlignLeft, PictureInPicture, } from '@material-ui/icons';
+import { Button, Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
 
 import { createLayout } from 'src/renderer/component/Templates/utils';
@@ -200,7 +194,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.selectLayout({ body: 'Example text', description: 'empty' });
   }
 
-  alignLeft   = () => {
+  alignLeft = () => {
     this.selectLayout({ body: mockTemplate2[0].body, description: mockTemplate2[0].description });
   }
 
@@ -208,7 +202,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.selectLayout({ body: mockTemplate2[1].body, description: mockTemplate2[1].description });
   }
 
-  pictureTop  = () => {
+  pictureTop = () => {
     this.selectLayout({ body: mockTemplate2[2].body, description: mockTemplate2[2].description });
   }
 
@@ -217,29 +211,31 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
       fontSize: '10rem',
     };
     return (
-      <Paper elevation={4}>
-        <div className={b('header')}>
-          <Typography variant='headline' align='center'>Choose a layout</Typography>
-        </div>
-        <div className={b('content')}>
-          <div className={b('list')}>
-            <LayoutCard cardTitle='Left' onClick={this.alignLeft}>
-              <FormatAlignLeft color='primary' style={iconStyles} onClick={this.alignLeft}/>
-            </LayoutCard>
-            <LayoutCard cardTitle='Center' onClick={this.alignCenter}>
-              <FormatAlignCenter color='primary' style={iconStyles} onClick={this.alignCenter}/>
-            </LayoutCard>
-            <LayoutCard cardTitle='Logo top' onClick={this.pictureTop}>
-              <PictureInPicture color='primary' style={iconStyles} onClick={this.pictureTop}/>
-            </LayoutCard>
+      <Fade in timeout={1000}>
+        <Paper elevation={4}>
+          <div className={b('header')}>
+            <Typography variant='headline' align='center'>Choose a layout</Typography>
           </div>
-          <Button
-            className={b('button')}
-            onClick={this.skip}
-          >No thanks. I'll start from scratch
-          </Button>
-        </div>
-      </Paper>
+          <div className={b('content')}>
+            <div className={b('list')}>
+              <LayoutCard cardTitle='Left' onClick={this.alignLeft}>
+                <FormatAlignLeft color='primary' style={iconStyles} onClick={this.alignLeft}/>
+              </LayoutCard>
+              <LayoutCard cardTitle='Center' onClick={this.alignCenter}>
+                <FormatAlignCenter color='primary' style={iconStyles} onClick={this.alignCenter}/>
+              </LayoutCard>
+              <LayoutCard cardTitle='Logo top' onClick={this.pictureTop}>
+                <PictureInPicture color='primary' style={iconStyles} onClick={this.pictureTop}/>
+              </LayoutCard>
+            </div>
+            <Button
+              className={b('button')}
+              onClick={this.skip}
+            >No thanks. I'll start from scratch
+            </Button>
+          </div>
+        </Paper>
+      </Fade>
     );
   }
 }

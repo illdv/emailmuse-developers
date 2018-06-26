@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
-import { Divider, List, ListItem, ListItemText, Paper, Typography } from '@material-ui/core';
+import { Divider, Fade, List, ListItem, ListItemText, Paper } from '@material-ui/core';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -10,6 +10,8 @@ import { ISubject, ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 import './Swipe.scss';
 import data from './Data';
+import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
+import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
 
 const b = block('swipe');
 
@@ -45,13 +47,13 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
 
   toItem = (title: string, onClick: () => void) => {
     return (
-      <>
+      <div key={title}>
         <ListItem button onClick={onClick}>
           <ListItemText primary={title}/>
           <KeyboardArrowRight/>
         </ListItem>
         <Divider/>
-      </>
+      </div>
     );
   }
 
@@ -84,52 +86,30 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     }
 
     return (
-      <Paper className={b()}>
+      <Paper className={b()} style={selectedSubject && {height: 'auto'}}>
         <Breadcrumbs
           items={items}
         />
         {
           selectedSubject
           &&
-          <div dangerouslySetInnerHTML={{ __html: selectedSubject.body }}/>
+          <PreviewMail mail={selectedSubject}/>
           ||
-          <List component='nav'>
-            {
-              selectedSwipe
-              &&
-              selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
-              ||
-              swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
-            }
-          </List>
+          <Fade in timeout={500}>
+            <List component='nav'>
+              {
+                selectedSwipe
+                &&
+                selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
+                ||
+                swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
+              }
+            </List>
+          </Fade>
         }
       </Paper>
     );
   }
-}
-
-// TODO: move in common
-interface IBreadcrumbs {
-  title: string;
-  onClick: () => void;
-}
-
-function Breadcrumbs({ items }: { items: IBreadcrumbs[] }) {
-  const separator = ' > ';
-  return (
-    <Typography variant='headline' noWrap style={{ padding: 24 }}>
-      <>
-        {
-          items.map((item, index) => (
-            <span onClick={item.onClick}>
-              {index !== 0 && separator}
-              {item.title}
-            </span>
-          ))
-        }
-      </>
-    </Typography>
-  );
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
