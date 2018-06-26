@@ -15,7 +15,6 @@ import {
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
-import { ImageLibrary } from 'src/renderer/component/ImageLibrary/ImageLibrary';
 
 const styles = theme => ({
   root: {

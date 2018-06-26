@@ -20,6 +20,9 @@ export function sendCodeOnMail(email: string) {
   return AxiosWrapper.post('/password/email', { email });
 }
 
+export function oAuthGoogle(token: string) {
+  return AxiosWrapper.get('/google/auth', {token} );
+}
 // TODO: move in Authorisation module
 interface IResetPasswordRequest {
   email: string;

@@ -19,3 +19,7 @@ export interface ILayoutActions {
   edit: IAsyncAction2<{ layout: ILayout }, {}>;
   remove: IAsyncAction2<{ id: string }, {}>;
 }
+
+export interface IOAuthActions {
+  loginInGoogle: IAsyncAction2<{}, {accessToken: string}>;
+}

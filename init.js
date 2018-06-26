@@ -26,7 +26,7 @@ function createWindow() {
         shell.openExternal(url)
     });
 
-    // mainWindow.toggleDevTools();
+    mainWindow.toggleDevTools();
 }
 app.on('activate', () => {
     if (mainWindow === null) {

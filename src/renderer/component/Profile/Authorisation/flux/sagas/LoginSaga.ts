@@ -1,9 +1,9 @@
-import { call, put, take } from 'redux-saga/effects';
+import { all, call, put, take, takeEvery } from 'redux-saga/effects';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import axios, { AxiosResponse } from 'axios';
 import { ILoginResponse } from 'type/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { login } from 'src/renderer/API/AuthAPI';
+import { login, oAuthGoogle } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
 import {
   ILoginRequest,
@@ -12,7 +12,7 @@ import {
   setAuthStepAction,
 } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
+import { OAuthActions } from 'src/renderer/component/Profile/Authorisation/flux/googleOAuth';
 
 export function* watcherSetToken() {
   while (true) {
@@ -36,7 +36,29 @@ function* onLogin(action: IActionPayload<{ request: ILoginRequest }>): IterableI
   try {
     yield put(setAuthStepAction(AuthStep.LOADING));
     const response: AxiosResponse<ILoginResponse> = yield login(action.payload.request);
-    const { user, token }                        = response.data;
+    const { user, token } = response.data;
+    yield put(loginSetToken(token));
+    yield put(loginActions.SUCCESS({ email: user.email, name: user.name, token }));
+  } catch (error) {
+    yield put(loginActions.FAILURE(''));
+    if (error.response === undefined) {
+      yield put(FluxToast.Actions.showToast(error.message, ToastType.Error));
+    } else {
+      if (error.response && error.response.status) {
+        yield put(FluxToast.Actions.showToast(error.response.data.message, ToastType.Error));
+      }
+    }
+    yield put(loginActions.FAILURE(''));
+  }
+}
+
+function* onGoogleLogin(): IterableIterator<any> {
+  const googleRequest = yield take(OAuthActions.loginInGoogle.SUCCESS(null).type);
+  try {
+    const authResponse: AxiosResponse<ILoginResponse> = yield call(
+      oAuthGoogle, googleRequest.payload.accessToken,
+    );
+    const { user, token } = authResponse.data;
     yield put(loginSetToken(token));
     yield put(loginActions.SUCCESS({ email: user.email, name: user.name, token }));
   } catch (error) {
@@ -53,8 +75,9 @@ function* onLogin(action: IActionPayload<{ request: ILoginRequest }>): IterableI
 }
 
 export function* loginSaga(): IterableIterator<any> {
-  while (true) {
-    const action = yield take(loginActions.type.REQUEST);
-    yield call(onLogin, action);
-  }
+
+  yield all([
+    takeEvery(loginActions.type.REQUEST, onLogin),
+    takeEvery(OAuthActions.loginInGoogle.REQUEST(null).type, onGoogleLogin),
+  ]);
 }

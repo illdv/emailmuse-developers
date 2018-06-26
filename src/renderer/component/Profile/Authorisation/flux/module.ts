@@ -1,5 +1,9 @@
 import { createAction, handleActions } from 'redux-actions';
-import { createActionSteps, IActionPayload, IActionSteps } from 'src/renderer/flux/utils';
+import {
+  createActionSteps,
+  IActionPayload,
+  IActionSteps,
+} from 'src/renderer/flux/utils';
 import axios from 'axios';
 import { AuthStep, IAuthState, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import CustomStorage from 'src/common/CustomStorage';

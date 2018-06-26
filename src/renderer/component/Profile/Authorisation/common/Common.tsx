@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Button, Grid, Grow, Typography } from '@material-ui/core/';
 import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
+import GoogleAuth from 'src/renderer/component/Profile/Authorisation/oAuth/oAuth';
 
 export function Title(props: { title: string, subtitle?: string }) {
   const { title, subtitle } = props;
@@ -77,6 +78,7 @@ export function Action(props: IActionProps) {
       <>
         <Grid item xs={12}>
           <Grid container direction={'row'} justify={'flex-end'}>
+            <GoogleAuth/>
             <ButtonHotKey
               hotKey={'Enter'}
               variant='raised'
