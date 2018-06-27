@@ -1,7 +1,7 @@
 const url = require('url')
 const path = require('path')
 const loadDevTool = require('electron-load-devtool')
-const {app, BrowserWindow, Menu, shell} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
 const electron = require('electron')
 
 let mainWindow

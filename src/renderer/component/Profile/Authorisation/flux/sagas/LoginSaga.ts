@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Action } from 'redux-act';
 
 import { ILoginResponse } from 'type/EmailerAPI';
-import { login, oAuthGoogle } from 'src/renderer/API/AuthAPI';
+import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
 import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
@@ -58,8 +58,9 @@ function* onGoogleLogin(): IterableIterator<any> {
 
     const token = yield call(getAccessToken);
 
-    const authResponse: AxiosResponse<ILoginResponse> = yield call(oAuthGoogle, token);
-    yield put(AuthorisationActions.login.SUCCESS({ user: extractUser(authResponse) }));
+    const user = extractUser({data: JSON.parse(token)} as any);
+
+    yield put(AuthorisationActions.login.SUCCESS({ user }));
 
   } catch (error) {
     yield call(errorHandler, error);
