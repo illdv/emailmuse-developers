@@ -8,13 +8,10 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-
-import {
-  ILoginRequest,
-  loginActions,
-  setAuthStepAction,
-} from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { bindModuleAction } from 'src/renderer/utils';
+import { ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 const styles = theme => ({
   root: {
@@ -50,31 +47,37 @@ export namespace AuthorizationSpace {
 
   export interface IProps {
     classes?: any;
-    onClickForgotPassword: () => void;
-    onCreateAccount: () => void;
-    onClickNext: (request: ILoginRequest) => () => void;
+    action?: IAuthorisationActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onClickForgotPassword: () => {
-    dispatch(setAuthStepAction(AuthStep.FORGOT_PASSWORD));
-  },
-  onCreateAccount: () => {
-    dispatch(setAuthStepAction(AuthStep.REGISTRATION));
-  },
-  onClickNext: (request: ILoginRequest) => {
-    dispatch(loginActions.REQUEST(request));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
+  onLoginGoogle = () => {
+    this.props.action.loginInGoogle.REQUEST({});
+  }
+
+  onClickForgotPassword = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOADING });
+  }
+
+  onCreateAccount = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.REGISTRATION });
+  }
+
+  onClickNext = (request: ILoginRequest) => {
+    this.props.action.login.REQUEST({ request });
+  }
+
   render() {
-    const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
+    const { classes } = this.props;
 
     const validationSchema = {
       email: {
@@ -90,7 +93,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
     return (
       <FormValidation
         schema={validationSchema}
-        onValidationSuccessful={onClickNext}
+        onValidationSuccessful={this.onClickNext}
       >
         <FormContext.Consumer>
           {(context: IFormContext) => (
@@ -109,7 +112,6 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                             margin='dense'
                           />
                           <TextValidator
-
                             fullWidth
                             id='password'
                             label='Password'
@@ -118,10 +120,11 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                           />
                         </Grid>
                         <Action
-                          onClickForgotPassword={onClickForgotPassword}
-                          onCreateAccount={onCreateAccount}
+                          onClickForgotPassword={this.onClickForgotPassword}
+                          onCreateAccount={this.onCreateAccount}
                           onClickNext={context.onSubmit}
                           canNext={true}
+                          loginGoogle={this.onLoginGoogle}
                         />
                       </Grid>
                     </Grow>
@@ -136,6 +139,4 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
   }
 }
 
-export default withStyles(styles)
-(connect(mapStateToProps, mapDispatchToProps)
-(Login as any));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login));

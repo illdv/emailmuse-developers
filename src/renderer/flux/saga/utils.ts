@@ -4,7 +4,7 @@ import { Action } from 'redux-act';
 import { all, call, put, take } from 'redux-saga/effects';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 export function* toastSuccess(messages: string) {
   yield put(FluxToast.Actions.showToast.REQUEST({
@@ -38,7 +38,7 @@ export function* extractMessages(error: AxiosError) {
     return error.response.data.message;
   }
   if (error.response.status === 401) {
-    yield put(logoutAction({}));
+    yield put(AuthorisationActions.logout.REQUEST({}));
     return error.response.data.message;
   }
   console.log(error);
@@ -82,8 +82,8 @@ export function createSagaHandler<R, S, L>(option: ICreateSagaHandlerOptions<R, 
 
   return function* saga(action: Action<R>) {
     try {
-      const dataForApi                                = creatorDataForApi ? creatorDataForApi(action) : null;
-      const response = yield call(apiMethod, dataForApi);
+      const dataForApi = creatorDataForApi ? creatorDataForApi(action) : null;
+      const response   = yield call(apiMethod, dataForApi);
 
       yield put(actionCreators.SUCCESS(responseHandler(response)));
 

@@ -1,49 +1,58 @@
-const url = require('url');
-const path = require('path');
-const { app, BrowserWindow, Menu, shell } = require('electron');
+const url = require('url')
+const path = require('path')
+const loadDevTool = require('electron-load-devtool')
+const {app, BrowserWindow, Menu, shell} = require('electron')
 const electron = require('electron')
-let mainWindow;
+
+let mainWindow
+
 function createWindow() {
     const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
     mainWindow = new BrowserWindow({
         width: width - 500,
         height: height - 200,
         title: "Emailer",
-    });
+    })
     const loadUrl = url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
-        slashes: true
-    });
-    mainWindow.loadURL(loadUrl);
-    //mainWindow.loadURL('http://localhost:3000');
+        slashes: true,
+    })
+    // mainWindow.loadURL(loadUrl);
+    mainWindow.loadURL('http://localhost:8080')
     mainWindow.on('closed', () => {
-        mainWindow = null;
-    });
+        mainWindow = null
+    })
+
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS)
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS)
 
     mainWindow.webContents.on('will-navigate', (event, url) => {
         event.preventDefault()
         shell.openExternal(url)
-    });
+    })
 
-    mainWindow.toggleDevTools();
+    mainWindow.toggleDevTools()
 }
+
 app.on('activate', () => {
     if (mainWindow === null) {
-        createWindow();
+        createWindow()
     }
-});
+})
+
 app.on('ready', () => {
-    createWindow();
+    createWindow()
     if (process.platform === 'darwin') {
-        createMenuForMac();
+        createMenuForMac()
     }
-});
+})
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-        app.quit();
+        app.quit()
     }
-});
+})
 
 function createMenuForMac() {
     Menu.setApplicationMenu(Menu.buildFromTemplate([

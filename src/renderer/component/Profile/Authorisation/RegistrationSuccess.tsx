@@ -7,7 +7,8 @@ import { Button, Grow, Typography } from '@material-ui/core';
 import { Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { bindModuleAction } from 'src/renderer/utils';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 export namespace RegistrationSuccessSpace {
@@ -17,7 +18,7 @@ export namespace RegistrationSuccessSpace {
 
   export interface IProps {
     profile?: IProfileState;
-    onBackLogin?: () => void;
+    action?: IAuthorisationActions;
   }
 }
 
@@ -26,9 +27,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onBackLogin: () => {
-    dispatch(setAuthStepAction(AuthStep.LOGIN));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -36,6 +35,10 @@ export class RegistrationSuccess
   extends Component<RegistrationSuccessSpace.IProps, RegistrationSuccessSpace.IState> {
 
   state = {};
+
+  onBackLogin = () => {
+    this.props.action.setAuthStep.REQUEST({authStep: AuthStep.LOGIN});
+  }
 
   render() {
     const { profile } = this.props;
@@ -54,7 +57,7 @@ export class RegistrationSuccess
         </Grow>
         <InCenter>
           <Grow in timeout={1000}>
-            <Button variant={'raised'} color='primary' onClick={this.props.onBackLogin}>
+            <Button variant={'raised'} color='primary' onClick={this.onBackLogin}>
               Next
             </Button>
           </Grow>
