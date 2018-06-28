@@ -15,7 +15,7 @@ const mockTemplate = {
 
 /*describe.skip('Layouts', () => {
   const create  = jest.fn() as any;
-  const props: LayoutsSpace.IProps   = { actions: { select: create },  actionLayout: {}};
+  const props: LayoutsSpace.IProps   = { actions: { select: create },  layoutActions: {}};
   const layouts = shallow(<Layouts {...props} />);
 
   test('Render UI', () => {

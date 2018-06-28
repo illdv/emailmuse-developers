@@ -8,8 +8,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/utils';
-import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
-import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 
 export namespace PreviewMailSpace {
   export interface IState {
@@ -18,7 +17,7 @@ export namespace PreviewMailSpace {
 
   export interface IProps {
     mail: ISubject;
-    actionLayout?: ILayoutActions;
+    swipeActions?: ISwipeActions;
   }
 }
 
@@ -27,13 +26,8 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
   state: PreviewMailSpace.IState = {};
 
   onAddInLayout = () => {
-    const { actionLayout, mail } = this.props;
-    actionLayout.create.REQUEST({
-      layout: {
-        body: mail.body,
-        title: mail.title,
-      },
-    });
+    const { swipeActions, mail } = this.props;
+    swipeActions.moveInEmail.REQUEST({ id: '1' });
   }
 
   render() {
@@ -75,7 +69,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  actionLayout: bindModuleAction(LayoutActions, dispatch),
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewMail);

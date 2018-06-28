@@ -16,7 +16,8 @@ export interface ILoadingTemplatePayload {
   templates: ITemplate[];
 }
 
-export interface ITemplateAction extends ActionCreatorsMapObject {
+// TODO: delete ?
+export interface ITemplateActions extends ActionCreatorsMapObject {
   loading?: CreateAction<{ page: number, hidePreloader?: boolean }>;
   remove?: CreateAction<string>;
   save?: CreateAction<{ template: ITemplate, saveAndClose: boolean }>;

@@ -6,9 +6,9 @@ import { Button, Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
 
 import LayoutCard from 'src/renderer/component/Layouts/Layout/LayoutCard';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ITemplateAction } from 'src/renderer/component/Templates/flux/interface';
+import { ITemplateActions } from 'src/renderer/component/Templates/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 import './Layouts.scss';
@@ -29,7 +29,7 @@ export namespace LayoutsSpace {
   }
 
   export interface IProps {
-    actions?: ITemplateAction;
+    actions?: ITemplateActions;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
     showPopUp: boolean;
@@ -125,9 +125,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return ({
     actionLayout: bindModuleAction(LayoutActions, dispatch),
     actions: {
-      select: bindActionCreators(TemplateAction.select, dispatch),
+      select: bindActionCreators(TemplateActions.select, dispatch),
       selectMenuItem: bindActionCreators(DrawerMenuAction.selectMenuItem, dispatch),
-      create: bindActionCreators(TemplateAction.create, dispatch),
+      create: bindActionCreators(TemplateActions.create, dispatch),
     },
   });
 };

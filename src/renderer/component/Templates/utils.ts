@@ -1,5 +1,5 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import { ICustomItem } from 'src/renderer/common/List/ElementList';
+import { IListItem } from 'src/renderer/common/List/ElementTable';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 
 export function createEmptyTemplate(): ITemplate {
@@ -14,7 +14,7 @@ export function createEmptyTemplate(): ITemplate {
     deleted_at: '',
   };
 }
-export function templateToItem(templates: ITemplate): ICustomItem {
+export function templateToItem(templates: ITemplate): IListItem {
   return {
     id: templates.id,
     title: templates.title,

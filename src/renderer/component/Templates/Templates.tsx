@@ -12,15 +12,15 @@ import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementList } from 'src/renderer/common/List/ElementList';
+import { ElementTable } from 'src/renderer/common/List/ElementTable';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
-    action?: ITemplateAction;
+    action?: ITemplateActions;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 
@@ -35,7 +35,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  action: bindActionCreators(TemplateAction, dispatch),
+  action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -140,7 +140,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     return (
       <Fade in timeout={1000}>
         <Paper>
-          <ElementList
+          <ElementTable
             title='Emails'
             entities={templates}
             toItem={templateToItem}

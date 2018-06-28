@@ -29,14 +29,14 @@ const columnData = [
   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
 ];
 
-export interface ICustomItem {
+export interface IListItem {
   id: string;
   title: string;
   description: string;
   rightText: string;
 }
 
-function CustomItem(props: { item: ICustomItem }) {
+function CustomItem(props: { item: IListItem }) {
   const { title, description, rightText } = props.item;
   return (
     <ListItem button>
@@ -62,7 +62,7 @@ export namespace ListElementSpace {
 
   export interface IProps<T> {
     entities: T[];
-    toItem: (item: T) => ICustomItem;
+    toItem: (item: T) => IListItem;
     pagination: IPagination;
     onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
@@ -71,7 +71,7 @@ export namespace ListElementSpace {
   }
 }
 
-export class ElementList extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
+export class ElementTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
 
   state: ListElementSpace.IState = {
     selectedItemIds: [],
@@ -148,8 +148,8 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
             />
             <TableBody>
               {entities.map((entity: {}) => {
-                const item: ICustomItem = toItem(entity);
-                const isSelected        = this.isSelected(item.id);
+                const item: IListItem = toItem(entity);
+                const isSelected      = this.isSelected(item.id);
                 return (
                   <TableRow
                     role='checkbox'

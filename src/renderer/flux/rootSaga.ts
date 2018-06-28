@@ -12,6 +12,7 @@ import login from 'src/renderer/component/Profile/Authorisation/flux/sagas/Login
 import templates from 'src/renderer/component/Templates/flux/saga';
 import snippets from 'src/renderer/component/Snippets/flux/saga';
 import layouts from 'src/renderer/component/Layouts/flux/saga';
+import swipe from 'src/renderer/component/Swipe/flux/saga';
 
 export default function* rootSaga() {
   yield [
@@ -28,5 +29,6 @@ export default function* rootSaga() {
     ...templates.map(fork),
     ...snippets.map(fork),
     ...layouts.map(fork),
+    ...swipe.map(fork),
   ];
 }

@@ -57,7 +57,7 @@ function responseHandlerDefault(response: AxiosResponse<any>) {
  */
 interface ICreateSagaHandlerOptions<R, S, L> {
   actionCreators: IAsyncAction2<R, S>;
-  apiMethod: (L) => AxiosResponse<any>;
+  apiMethod?: (L) => AxiosResponse<any>;
   responseHandler?: (response: AxiosResponse<any>) => S;
   creatorDataForApi?: (action: Action<R>) => L;
   callbackIfSuccess?: any;
@@ -76,10 +76,11 @@ export function createSagaHandler<R, S, L>(option: ICreateSagaHandlerOptions<R, 
 
   return function* saga(action: Action<R>) {
     try {
-      const dataForApi = creatorDataForApi ? creatorDataForApi(action) : null;
-      const response   = yield call(apiMethod, dataForApi);
-
-      yield put(actionCreators.SUCCESS(responseHandler(response)));
+      if (apiMethod) {
+        const dataForApi = creatorDataForApi ? creatorDataForApi(action) : null;
+        const response = yield call(apiMethod, dataForApi);
+        yield put(actionCreators.SUCCESS(responseHandler(response)));
+      }
 
       if (callbackIfSuccess) {
         yield all(callbackIfSuccess);

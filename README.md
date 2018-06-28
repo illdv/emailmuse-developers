@@ -19,15 +19,10 @@ Passworld: freidy.hanae@0ld0x.com
 ```
 
 ### Style
-This project adheres to next sources:
-[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript#types)
-
-[Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react#basic-rules)
-
 ##### Used commit message convention
 [Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
 
-#### If you use WebStorm see
+#### If you use WebStorm
 
 Please import Typescript.xml
 
