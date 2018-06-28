@@ -1,31 +1,41 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Fade, Paper, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
 import { createEmptyTemplate, templateToItem } from 'src/renderer/component/Templates/utils';
-import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { useOrDefault } from 'src/renderer/utils';
+import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
 import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { ElementList } from 'src/renderer/common/List/ElementList';
+import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
+import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
-export namespace MailListSpace {
+export namespace PageCreateLayoutSpace {
   export interface IProps {
+    isOpen?: boolean;
     templates?: ITemplateState;
     action?: ITemplateAction;
+    actionLayout?: ILayoutActions;
     onShowToast?: (messages: string, type: ToastType) => void;
+    handleClose?: () => void;
   }
 
   export interface IState {
     newTemplate: ITemplate;
+    open: boolean;
   }
 }
 
@@ -35,17 +45,19 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  actionLayout: bindModuleAction(LayoutActions, dispatch),
   action: bindActionCreators(TemplateAction, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
 });
 
-export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
+export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IProps, PageCreateLayoutSpace.IState> {
 
-  state: MailListSpace.IState = {
+  state: PageCreateLayoutSpace.IState = {
     newTemplate: null,
-  };
+    open: false,
+  }
 
   componentDidMount() {
     const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
@@ -53,7 +65,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   selectTemplate = (template: ITemplate) => () => {
-    this.props.action.select(template);
+    this.props.actionLayout.create.REQUEST({layout: {title: template.title, body: template.body}});
   }
 
   // TODO: for validation use TextValidator
@@ -107,10 +119,13 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.select(null);
   }
 
-  onCopy = (id: string) => {
-    this.props.action.copy({ id });
+  handleClickOpen = () => {
+    this.setState({ open: true });
   }
 
+  handleClose = () => {
+    this.props.handleClose();
+  }
   render() {
     const { status, templates, pagination, selectedTemplate } = this.props.templates;
 
@@ -127,40 +142,35 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     }
 
     if (selectedTemplate) {
-      return (
-        <TemplateEditor
-          template={selectedTemplate}
-          close={this.onClose}
-          remove={this.onCloseOrRemove}
-          save={this.onSaveOrCreate}
-        />
-      );
+      // return (
+      //   // console.log('you select ', selectedTemplate)
+      // );
     }
 
     return (
-      <Fade in timeout={1000}>
-        <Paper>
-          <ElementList
-            title='Emails'
-            entities={templates}
-            toItem={templateToItem}
-            onOpenItem={this.selectTemplate}
-            pagination={pagination}
-            onChangePage={this.onChangePage}
-            onCopy={this.onCopy}
-          />
-          <Fab
-            onClick={this.onSelectNewTemplate}
-            icon={<Add/>}
-            position={0}
-            title={'Add new template'}
-            whitCtrl
-            hotKey={'A'}
-          />
-        </Paper>
-      </Fade>
+        <Dialog
+          open={this.props.isOpen}
+          onClose={this.handleClose}
+          aria-labelledby='form-dialog-title'
+        >
+          <DialogTitle id='form-dialog-title'>Which email would you like to use as a layout template?</DialogTitle>
+          <DialogContent>
+              <ElementList
+                entities={templates}
+                toItem={templateToItem}
+                onOpenItem={this.selectTemplate}
+                pagination={pagination}
+                onChangePage={this.onChangePage}
+              />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color='primary'>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Templates);
+export default connect(mapStateToProps, mapDispatchToProps)(PageCreateLayout);

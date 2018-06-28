@@ -7,11 +7,13 @@ import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/con
 import templates from 'src/renderer/component/Templates/flux/module';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import drawerMenu from 'src/renderer/component/Menu/flux/action';
+import layouts from 'src/renderer/component/Layouts/flux/module';
 import { ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
+import { ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 export interface IGlobalState {
@@ -22,6 +24,7 @@ export interface IGlobalState {
   snippets: ISnippetsState;
   images: ImageLibrary.IState;
   status: StatusConstants.TStatus;
+  layouts: ILayoutState;
 }
 
 const appReducers = combineReducers({
@@ -32,6 +35,7 @@ const appReducers = combineReducers({
   drawerMenu,
   templates,
   snippets,
+  layouts,
 });
 
 const rootReducer = (state, action) => {

@@ -1,4 +1,8 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { IStyle } from 'type/materialUI';
 import {
   Button,
   Dialog,
@@ -16,10 +20,7 @@ import {
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { WithStyles } from '@material-ui/core/styles/withStyles';
-import { IStyle } from 'type/materialUI';
-import * as classNames from 'classnames';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import { bindModuleAction } from 'src/renderer/utils';
 

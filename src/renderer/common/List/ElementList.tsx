@@ -1,19 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import {
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  Table,
-  TableBody,
-  TableCell,
-  TablePagination,
-  TableRow,
-  Toolbar,
-  Tooltip,
-  Typography,
+Grid,
+IconButton,
+ListItem,
+Table,
+TableBody,
+TableCell,
+TablePagination,
+TableRow,
+Typography,
 } from '@material-ui/core';
 import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
@@ -21,6 +17,7 @@ import block from 'bem-ts';
 import InCenter from 'src/renderer/common/InCenter';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { CustomTableHead } from 'src/renderer/common/List/TableHead';
+import HeaderToolbar from 'src/renderer/common/Header/Header';
 
 import './ElementList.scss';
 
@@ -69,6 +66,7 @@ export namespace ListElementSpace {
     pagination: IPagination;
     onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
+    title?: string;
     onCopy?: (id: string) => void;
   }
 }
@@ -141,7 +139,7 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
 
     return (
       <>
-        <EnhancedTableToolbar numSelected={this.state.selectedItemIds.length}/>
+        <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title} />
         <div>
           <Table aria-labelledby='tableTitle'>
             <CustomTableHead
@@ -203,26 +201,4 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
       </>
     );
   }
-}
-
-function EnhancedTableToolbar(props: { numSelected: number }) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar>
-      <div style={{ flex: '0 0 auto' }}>
-        {
-          numSelected === 0 &&
-          <Typography variant='title' id='tableTitle'>
-            List item
-          </Typography>
-          ||
-          <Typography color='inherit' variant='subheading'>
-            {numSelected} selected
-          </Typography>
-        }
-      </div>
-      <div style={{ flex: '1 1 100%' }}/>
-    </Toolbar>
-  );
 }

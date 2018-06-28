@@ -8,6 +8,7 @@ html, body {
     overflow: hidden;
     height: 100%;
     width: 100%;
+    min-width: 768px;
     margin: 0 !important;
     display: flex;
     box-sizing: border-box;

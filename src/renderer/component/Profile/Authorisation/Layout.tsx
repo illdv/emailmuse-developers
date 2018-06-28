@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Login from 'src/renderer/component/Profile/Authorisation/Login';
 import ForgotPassword from 'src/renderer/component/Profile/Authorisation/ForgotPassword';

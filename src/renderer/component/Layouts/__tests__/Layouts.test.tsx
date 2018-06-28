@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Layouts } from 'src/renderer/component/Layouts/Layouts';
+import { Layouts, LayoutsSpace } from 'src/renderer/component/Layouts/Layouts';
 
-const mockTemplate =  {
+const mockTemplate = {
   id: null,
   user_id: 0,
   updated_at: '',
@@ -13,12 +13,12 @@ const mockTemplate =  {
   deleted_at: '',
 };
 
-describe.skip('Layouts', () => {
-  const create = jest.fn() as any;
-  const props = { actions: {select: create} };
+/*describe.skip('Layouts', () => {
+  const create  = jest.fn() as any;
+  const props: LayoutsSpace.IProps   = { actions: { select: create },  actionLayout: {}};
   const layouts = shallow(<Layouts {...props} />);
 
   test('Render UI', () => {
     expect(layouts).toMatchSnapshot();
   });
-});
+});*/

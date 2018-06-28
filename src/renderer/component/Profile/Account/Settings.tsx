@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ChangeEvent } from 'react';
-import { Grid, Paper, TextField, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { bindActionCreators } from 'redux';
 import { IStyle } from 'type/materialUI';
 import { connect } from 'react-redux';
+
+import { Grid, Paper, TextField, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 
 import { Loading } from 'src/renderer/common/Loading';

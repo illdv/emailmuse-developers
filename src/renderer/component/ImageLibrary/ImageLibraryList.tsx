@@ -29,10 +29,9 @@ export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IPro
   render() {
     const { onDelete, onSelect, items } = this.props;
     return (
-      <>
         <GridList
           cellHeight={240}
-          cols={3}
+          cols={2}
           className={b()}
         >
           {
@@ -63,7 +62,6 @@ export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IPro
             )
           }
         </GridList>
-      </>
     );
   }
 }

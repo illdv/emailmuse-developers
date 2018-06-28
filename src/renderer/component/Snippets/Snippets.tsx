@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Paper } from '@material-ui/core';
+import { Fade, Paper } from '@material-ui/core';
 import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
 
@@ -126,23 +126,26 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     }
 
     return (
-      <Paper elevation={4} className={'template-list'}>
-        <ElementList
-          entities={snippets}
-          toItem={snippetToItem}
-          onOpenItem={this.onSelect}
-          pagination={pagination}
-          onChangePage={this.onChangePage}
-        />
-        <Fab
-          onClick={this.selectNew}
-          icon={<Add/>}
-          position={0}
-          title={'Add new snippet'}
-          whitCtrl
-          hotKey={'A'}
-        />
-      </Paper>
+      <Fade in timeout={1000}>
+        <Paper elevation={4} className={'template-list'}>
+          <ElementList
+            title='Snippets'
+            entities={snippets}
+            toItem={snippetToItem}
+            onOpenItem={this.onSelect}
+            pagination={pagination}
+            onChangePage={this.onChangePage}
+          />
+          <Fab
+            onClick={this.selectNew}
+            icon={<Add/>}
+            position={0}
+            title={'Add new snippet'}
+            whitCtrl
+            hotKey={'A'}
+          />
+        </Paper>
+      </Fade>
     );
   }
 }

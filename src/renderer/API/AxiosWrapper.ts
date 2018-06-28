@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 
-const EMAILER_API_URL  = 'http://dev.emailer-electron-laravel.cronix.ms/api/v1';
+export const EMAILER_API_URL  = 'http://emailer-electron-laravel.cronix.ms/api/v1';
 axios.defaults.baseURL = EMAILER_API_URL;
 
 export namespace AxiosWrapper {
