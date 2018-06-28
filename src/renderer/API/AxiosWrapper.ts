@@ -17,14 +17,22 @@ export namespace AxiosWrapper {
   }
 
   export function put(apiMethod: string, body: any = {}): AxiosPromise<any> {
-    return axios.put(API_URL + apiMethod,
-      body,
+    return axios.put(API_URL + apiMethod, body);
+  }
+
+  /**
+   * @deprecated use deleteResponse2
+   * @param {string} apiMethod
+   * @param body
+   * @returns {AxiosPromise<any>}
+   */
+  export function deleteRequest(apiMethod: string, body: any = {}): AxiosPromise<any> {
+    return axios.post(API_URL + apiMethod,
+      { ...body, _method: 'DELETE' },
     );
   }
 
-  export function deleteRequest(apiMethod: string, body: any = {}): AxiosPromise<any> {
-    return axios.post(API_URL + apiMethod,
-      { ...body, _method: 'DELETE'},
-    );
+  export function deleteResponse2(apiMethod: string, body: any): AxiosPromise<any> {
+    return axios.delete(EMAILER_API_URL + apiMethod, { data: body });
   }
 }

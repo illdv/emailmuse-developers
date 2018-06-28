@@ -17,7 +17,7 @@ export namespace TemplateEditorSpace {
     templateId: string;
     value: string;
     title: string;
-    description: string;
+    description?: string;
     hasChange: boolean;
     isOpenConfirmationClose: boolean;
     isOpenConfirmationDelete: boolean;

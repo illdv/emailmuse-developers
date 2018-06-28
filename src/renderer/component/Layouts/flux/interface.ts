@@ -5,6 +5,8 @@ export interface ILayout {
   id?: string;
   title: string;
   body: string;
+  user_id?: number;
+  id?: number;
   icon?: string;
   icon_url?: string;
   created_at?: string;
@@ -18,7 +20,7 @@ export interface ILayoutState {
 
 export interface ILayoutActions {
   loading: IAsyncAction2<{ page?: number }, { layouts: ILayout[], pagination: IPagination }>;
-  create: IAsyncAction2<{ layout: ILayout }, { }>;
+  create: IAsyncAction2<{ layout: ILayout }, {}>;
   edit: IAsyncAction2<{ layout: ILayout }, {}>;
-  remove: IAsyncAction2<{ id: string }, {}>;
+  remove: IAsyncAction2<{id: number[]}, {}>;
 }

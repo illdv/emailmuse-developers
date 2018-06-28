@@ -1,74 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ImageLibrary >>>initialization render ImageLibrary component 1`] = `
-<WithStyles(Paper)
-  className="lib"
-  elevation={4}
+<WithTheme(Fade)
+  in={true}
+  timeout={1000}
 >
-  <div
-    className="image-library"
+  <WithStyles(Paper)
+    className="lib"
+    elevation={4}
   >
-    <Search
-      search={[Function]}
-    />
-    <WithStyles(TablePagination)
-      backIconButtonProps={
-        Object {
-          "aria-label": "Previous Page",
-        }
-      }
-      component="div"
-      count={40}
-      nextIconButtonProps={
-        Object {
-          "aria-label": "Next Page",
-        }
-      }
-      onChangePage={[Function]}
-      onChangeRowsPerPage={[Function]}
-      page={0}
-      rowsPerPage={15}
-      rowsPerPageOptions={
-        Array [
-          15,
-        ]
-      }
-    />
-    <DropTarget(DragAndDropTarget)
-      onDrop={[Function]}
-      overlayMessage="Drop files here to add them to your image library"
-      showOverlay={true}
-    >
-      <div
-        className="image-library__container"
-      >
-        <ImageLibraryList
-          items={Array []}
-          onDelete={[Function]}
-          onSelect={[Function]}
-        />
-      </div>
-    </DropTarget(DragAndDropTarget)>
     <div
-      className="image-library__footer"
+      className="image-library"
     >
-      <WithStyles(Button)
-        color="primary"
+      <Search
+        search={[Function]}
+      />
+      <WithStyles(TablePagination)
+        backIconButtonProps={
+          Object {
+            "aria-label": "Previous Page",
+          }
+        }
+        component="div"
+        count={40}
+        nextIconButtonProps={
+          Object {
+            "aria-label": "Next Page",
+          }
+        }
+        onChangePage={[Function]}
+        onChangeRowsPerPage={[Function]}
+        page={0}
+        rowsPerPage={15}
+        rowsPerPageOptions={
+          Array [
+            15,
+          ]
+        }
+      />
+      <DropTarget(DragAndDropTarget)
+        onDrop={[Function]}
+        overlayMessage="Drop files here to add them to your image library"
+        showOverlay={true}
       >
-        <label
-          htmlFor="upload"
+        <div
+          className="image-library__container"
         >
-          Upload images
-        </label>
-        <input
-          className="image-library__upload-input"
-          id="upload"
-          multiple={true}
-          onChange={[Function]}
-          type="file"
-        />
-      </WithStyles(Button)>
+          <ImageLibraryList
+            items={Array []}
+            onDelete={[Function]}
+            onSelect={[Function]}
+          />
+        </div>
+      </DropTarget(DragAndDropTarget)>
+      <div
+        className="image-library__footer"
+      >
+        <WithStyles(Button)
+          color="primary"
+        >
+          <label
+            htmlFor="upload"
+          >
+            Upload images
+          </label>
+          <input
+            className="image-library__upload-input"
+            id="upload"
+            multiple={true}
+            onChange={[Function]}
+            type="file"
+          />
+        </WithStyles(Button)>
+      </div>
     </div>
-  </div>
-</WithStyles(Paper)>
+  </WithStyles(Paper)>
+</WithTheme(Fade)>
 `;

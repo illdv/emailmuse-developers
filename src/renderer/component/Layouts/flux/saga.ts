@@ -19,7 +19,7 @@ const sagaLoading = createSagaHandler({
 
 const sagaRemove = createSagaHandler({
   actionCreators: LayoutActions.remove,
-  creatorDataForApi: action => action.payload.id,
+  creatorDataForApi: action => action.payload,
   apiMethod: LayoutAPI.remove,
   callbackIfSuccess: [
     call(layoutLoading),
@@ -41,7 +41,7 @@ const sagaCreate = createSagaHandler({
 
 const sagaEdit = createSagaHandler({
   actionCreators: LayoutActions.edit,
-  apiMethod: LayoutAPI.create,
+  apiMethod: LayoutAPI.edit,
   creatorDataForApi: action => action.payload.layout,
   callbackIfSuccess: [
     call(layoutLoading),
