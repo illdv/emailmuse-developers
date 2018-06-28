@@ -5,7 +5,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/utils';
 import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
-import { DialogInsertLinkButton } from 'src/renderer/common/Jodit/dialogs/insertLinkButton/DialogInsertLinkButton';
+import SelectLayout from 'src/renderer/common/ModalWindow/SelectLayout';
 
 export namespace ModalProviderSpace {
   export interface IState {
@@ -18,7 +18,7 @@ export namespace ModalProviderSpace {
 }
 
 const modalWindowMap: {[key in ModalWindowType]: any} = {
-  [ModalWindowType.Type1]: <DialogInsertLinkButton isOpen={true} handleClose={null} insertHTML={null}/>,
+  [ModalWindowType.SelectLayout]: <SelectLayout/>,
   [ModalWindowType.Type2]: <h1>Modal 2</h1>,
 };
 

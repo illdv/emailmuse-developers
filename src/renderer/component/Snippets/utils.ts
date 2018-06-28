@@ -1,4 +1,4 @@
-import { IListItem } from 'src/renderer/common/List/ElementTable';
+import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 
 export const createEmptySnippet = () => ({

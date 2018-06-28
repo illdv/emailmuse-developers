@@ -33,6 +33,6 @@ export namespace AxiosWrapper {
   }
 
   export function deleteResponse2(apiMethod: string, body: any): AxiosPromise<any> {
-    return axios.delete(EMAILER_API_URL + apiMethod, { data: body });
+    return axios.delete(API_URL + apiMethod, { data: body });
   }
 }

@@ -8,7 +8,7 @@ import { Add } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';
-import { ElementTable } from 'src/renderer/common/List/ElementTable';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Fab } from 'src/renderer/common/Fab';
@@ -128,7 +128,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     return (
       <Fade in timeout={1000}>
         <Paper elevation={4} className={'template-list'}>
-          <ElementTable
+          <ListTable
             title='Snippets'
             entities={snippets}
             toItem={snippetToItem}

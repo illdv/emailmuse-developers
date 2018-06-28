@@ -15,7 +15,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementTable } from 'src/renderer/common/List/ElementTable';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -140,7 +140,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     return (
       <Fade in timeout={1000}>
         <Paper>
-          <ElementTable
+          <ListTable
             title='Emails'
             entities={templates}
             toItem={templateToItem}

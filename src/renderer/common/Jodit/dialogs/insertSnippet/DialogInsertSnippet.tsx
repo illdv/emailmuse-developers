@@ -6,7 +6,7 @@ import block from 'bem-ts';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ElementTable } from 'src/renderer/common/List/ElementTable';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
@@ -89,7 +89,7 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
         <DialogContent>
           <Search search={this.onLoadingSnippet}/>
           <div className={b('container')}>
-            <ElementTable
+            <ListTable
               entities={snippets.snippets}
               toItem={snippetToItem}
               onOpenItem={this.onSelect}

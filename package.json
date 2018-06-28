@@ -10,7 +10,7 @@
   "private": true,
   "main": "./main/index.js",
   "scripts": {
-    "start-webpack-dev-server": "webpack-dev-server --open fasle;",
+    "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "webpack; npx typescript;",
     "build-prod": "NODE_ENV=production npm run build; cd build; npx electron-builder -wlm",

@@ -27,7 +27,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 
   onAddInLayout = () => {
     const { swipeActions, mail } = this.props;
-    swipeActions.moveInEmail.REQUEST({ id: '1' });
+    swipeActions.selectLayout.REQUEST({ id: '1' });
   }
 
   render() {

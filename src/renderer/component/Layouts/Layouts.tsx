@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
+import { Add } from '@material-ui/icons';
 import { Button, Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
-
-import LayoutCard from 'src/renderer/component/Layouts/Layout/LayoutCard';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ITemplateActions } from 'src/renderer/component/Templates/flux/interface';
@@ -18,10 +17,11 @@ import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
-import { Add } from '@material-ui/icons';
 import PageCreateLayout from 'src/renderer/component/Layouts/PageCreateLayout';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import ListCard, { IListCardItem } from 'src/renderer/common/List/ListCard/ListCard';
+import { toItem } from 'src/renderer/component/Layouts/utils';
 
 const b = block('layout');
 
@@ -30,13 +30,14 @@ export namespace LayoutsSpace {
     showPopUp: boolean;
     editMode: boolean;
     editor: any;
-  };
+  }
+
   export interface IProps {
     actions?: ITemplateActions;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
     showPopUp: boolean;
-  };
+  }
 }
 
 export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState> {
@@ -50,77 +51,80 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   createTemplate = ({ title, body }: ILayout) => {
     this.props.actions.selectMenuItem({ selectedItem: MenuItemType.TEMPLATES });
     this.props.actions.create({ body, title, description: '---' });
-  };
+  }
 
   onSkip = () => {
     this.createTemplate({ body: 'Example text', title: 'Email' });
-  };
+  }
 
   componentDidMount(): void {
     this.props.actionLayout.loading.REQUEST({ page: 0 });
-  };
+  }
 
   onSelect = (layout: ILayout) => () => {
     this.createTemplate({ body: layout.body, title: layout.title });
-  };
+  }
 
-  deleteLayout = (idLayout: number) => event => {
+  removeLayout = (id: string) => event => {
     event.stopPropagation();
-    this.props.actionLayout.remove.REQUEST({ id: [idLayout] });
-  };
+    this.props.actionLayout.remove.REQUEST({ id: [id] });
+  }
 
   editLayout = (layout: ILayout) => event => {
     event.stopPropagation();
     this.createEditor(layout);
-  };
+  }
 
   createOwnTemplate = () => {
     this.setState({ showPopUp: true });
-  };
+  }
 
   closePopup = () => {
     this.setState({ showPopUp: false });
-  };
+  }
 
   closeEditor = () => {
     this.setState({ editMode: false });
-  };
+  }
 
   onCloseOrRemove = (layout: ILayout) => {
-    this.deleteLayout(layout.id);
-  };
+    this.removeLayout(layout.id);
+  }
 
   onSaveOrCreate = (layout: ILayout) => {
     this.props.actionLayout.edit.REQUEST({ layout });
-  };
+  }
 
   createEditor = (layout: ILayout) => {
-    const template : ITemplate = {
+    const template: ITemplate = {
       title: layout.title,
       body: layout.body,
       description: '',
-      id: String(layout.id)
-    }
+      id: String(layout.id),
+    };
+
     const editor = (
       <TemplateEditor
         template={template}
         close={this.closeEditor}
-        remove={this.deleteLayout.bind(layout.id)}
+        remove={this.removeLayout.bind(layout.id)}
         save={this.onSaveOrCreate.bind(layout)}
       />
     );
-    this.setState({editor});
+
+    this.setState({ editor });
     this.setState({ editMode: true });
-  };
+  }
+
   render() {
-    const { layouts } = this.props.layout;
+    const { layouts, pagination } = this.props.layout;
 
     if (!layouts) {
       return <Loading/>;
     }
 
     if (this.state.editMode) {
-        return this.state.editor;
+      return this.state.editor;
     }
     return (
       <div>
@@ -130,21 +134,15 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
               <Typography variant='headline' align='center'>Choose a layout</Typography>
             </div>
             <div className={b('content')}>
-              <div className={b('list')}>
-                {
-                  layouts.map((layout, index) => (
-                    <LayoutCard
-                      key={index}
-                      cardTitle={layout.title}
-                      onClick={this.onSelect(layout)}
-                      onDelete={this.deleteLayout(layout.id)}
-                      onEdit={this.editLayout(layout)}
-                    >
-                      <img src={layout.icon_url}/>
-                    </LayoutCard>
-                  ))
-                }
-              </div>
+              <ListCard
+                entities={layouts}
+                toItem={toItem}
+                pagination={pagination}
+                onSelectItem={this.onSelect}
+                onRemoveItem={this.removeLayout}
+                onEditItem={this.editLayout}
+                onChangePage={null}
+              />
               <Button
                 className={b('button')}
                 onClick={this.onSkip}

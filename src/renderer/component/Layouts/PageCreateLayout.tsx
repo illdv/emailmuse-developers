@@ -19,7 +19,7 @@ import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementTable } from 'src/renderer/common/List/ElementTable';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
@@ -108,7 +108,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
         >
           <DialogTitle id='form-dialog-title'>Which email would you like to use as a layout template?</DialogTitle>
           <DialogContent>
-              <ElementTable
+              <ListTable
                 entities={templates}
                 toItem={templateToItem}
                 onOpenItem={this.selectTemplate}

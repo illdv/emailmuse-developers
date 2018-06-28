@@ -16,10 +16,10 @@ import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
 import { IPagination } from 'src/renderer/common/List/interface';
-import { CustomTableHead } from 'src/renderer/common/List/TableHead';
+import { CustomTableHead } from 'src/renderer/common/List/ListTable/TableHead';
 import HeaderToolbar from 'src/renderer/common/Header/Header';
 
-import './ElementList.scss';
+import './ListTable.scss';
 
 const b = block('list-element');
 
@@ -71,7 +71,7 @@ export namespace ListElementSpace {
   }
 }
 
-export class ElementTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
+export class ListTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
 
   state: ListElementSpace.IState = {
     selectedItemIds: [],

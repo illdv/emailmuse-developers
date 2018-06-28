@@ -3,10 +3,12 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
-import { ElementTable, IListItem } from 'src/renderer/common/List/ElementTable';
+import { ListTable, IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
+import ListCard from 'src/renderer/common/List/ListCard/ListCard';
+import { toItem } from 'src/renderer/component/Layouts/utils';
 
 export namespace SelectLayoutSpace {
   export interface IState {
@@ -19,7 +21,7 @@ export namespace SelectLayoutSpace {
   }
 }
 
-export class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
+class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
 
   state: SelectLayoutSpace.IState = {};
 
@@ -31,7 +33,7 @@ export class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayo
     return {id: item.id, title: item.title, description: '---', rightText: item.updated_at};
   }
 
-  onOpenItem = (item: ILayout) => () => {
+  onSelect = (item: ILayout) => () => {
 
   }
 
@@ -43,12 +45,14 @@ export class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayo
     const {layouts, pagination} = this.props.layout;
     return (
       <ModalWindow>
-        <ElementTable
+        <ListCard
           entities={layouts}
-          toItem={this.toItem}
+          toItem={toItem}
           pagination={pagination}
-          onOpenItem={this.onOpenItem}
-          onChangePage={this.onChangePage}
+          onSelectItem={this.onSelect}
+          onRemoveItem={null}
+          onEditItem={null}
+          onChangePage={null}
         />
       </ModalWindow>
     );
