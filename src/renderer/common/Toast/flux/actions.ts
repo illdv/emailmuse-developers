@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { Action } from 'redux-act';
 
 export enum ToastType {
   Error   = 'Error',
@@ -35,12 +36,12 @@ const handle = handleActions({
 
 export namespace FluxToast {
 
-  /*export interface IActions {
-    showToast: (messages: string, type?: ToastType) => void;
-    clear: () => void;
-  }*/
+  export interface IActions {
+    showToast: (messages: string, type?: ToastType) => Action<any>;
+    clear: () => Action<any>;
+  }
 
-  export const Actions = {
+  export const Actions: IActions = {
     showToast,
     clear,
   };

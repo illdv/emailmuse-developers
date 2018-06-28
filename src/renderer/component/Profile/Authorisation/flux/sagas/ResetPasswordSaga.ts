@@ -4,18 +4,9 @@ import { resetPassword } from 'src/renderer/API/AuthAPI';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/utils';
 
-interface IResetPasswordAction {
-  payload: {
-    email: string,
-    token: string,
-    password: string,
-    passwordConfirmation: string,
-  };
-}
-
-function* onResetPassword(action: IResetPasswordAction): IterableIterator<any> {
+function* onResetPassword(action): IterableIterator<any> {
   try {
-    yield resetPassword(action.payload);
+    yield resetPassword(action.payload.request);
     yield put(AuthorisationActions.resetPassword.SUCCESS({}));
     yield put(FluxToast.Actions.showToast('Reset password success.', ToastType.Success));
   } catch (error) {

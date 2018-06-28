@@ -7,17 +7,11 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 export function* toastSuccess(messages: string) {
-  yield put(FluxToast.Actions.showToast.REQUEST({
-    messages,
-    type: ToastType.Success,
-  }));
+  yield put(FluxToast.Actions.showToast(messages, ToastType.Success));
 }
 
 export function* toastError(messages: string) {
-  yield put(FluxToast.Actions.showToast.REQUEST({
-    messages,
-    type: ToastType.Error,
-  }));
+  yield put(FluxToast.Actions.showToast(messages, ToastType.Error));
 }
 
 export function* errorHandler(error: AxiosError) {

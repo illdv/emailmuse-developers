@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Registration
   extends Component<RegistrationSpace.IProps & WithStyles<'root' | 'paper'>, RegistrationSpace.IState> {
 
-  onCreateAccount = (user: ICreateAccountRequest) => () => {
+  onCreateAccount = (user: ICreateAccountRequest) => {
     this.props.action.createAccount.REQUEST({ user });
   }
 

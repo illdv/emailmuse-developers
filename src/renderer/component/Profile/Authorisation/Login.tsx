@@ -65,7 +65,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
   }
 
   onClickForgotPassword = () => {
-    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOADING });
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.FORGOT_PASSWORD });
   }
 
   onCreateAccount = () => {

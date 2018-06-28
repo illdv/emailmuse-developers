@@ -1,7 +1,10 @@
-import { ILoginResponse } from 'type/EmailerAPI';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { AxiosPromise } from 'axios';
-import { ICreateAccountRequest, ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import {
+  ICreateAccountRequest,
+  ILoginRequest,
+  ILoginResponse,
+} from 'src/renderer/component/Profile/Authorisation/flux/interface';
 
 export function login(request: ILoginRequest): AxiosPromise<ILoginResponse> {
   return AxiosWrapper.post('/login', request);
