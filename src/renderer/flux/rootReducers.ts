@@ -1,4 +1,4 @@
-import { combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
 import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
@@ -14,6 +14,7 @@ import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 import { ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 export interface IGlobalState {
   profile: IProfileState;
@@ -38,7 +39,7 @@ const appReducers = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === 'LOGOUT') {
+  if (action.type === AuthorisationActions.logout.REQUEST({}).type) {
     state = undefined;
   }
   return appReducers(state, action);

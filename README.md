@@ -1,20 +1,22 @@
 # Emailer electron 
 
+### Install dependencies
+```
+npm install
+```
+
+### Start project
+```
+npm start-webpack-dev-server
+```
+```
+npm start-electron
+```
 ### For login
 ```
-Email: ezri.yitta@0ld0x.com
-Passworld: ezri.yitta@0ld0x.com
+Email: freidy.hanae@0ld0x.com
+Passworld: freidy.hanae@0ld0x.com
 ```
-### Start project
-
-### Install dependencies
-```ezri.yitta@0ld0x.com
-npm ci
-```
-
-### Start React.JS
-```
-npm start
 
 ### Style
 This project adheres to next sources:
@@ -26,5 +28,7 @@ This project adheres to next sources:
 [Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
 
 #### If you use WebStorm see
+
+Please import Typescript.xml
 
 [Getting started with Electron in WebStorm](https://blog.jetbrains.com/webstorm/2016/05/getting-started-with-electron-in-webstorm/)
