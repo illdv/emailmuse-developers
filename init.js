@@ -31,7 +31,7 @@ function createWindow() {
         event.preventDefault()
         shell.openExternal(url)
     })
-
+    mainWindow.webContents.session.clearStorageData()
     mainWindow.toggleDevTools()
 }
 
@@ -71,4 +71,34 @@ function createMenuForMac() {
             ],
         },
     ]))
+}
+
+ipcMain.on('authorized-google', async (event, url) => {
+    const loginWindow = new BrowserWindow({
+        webPreferences: {nodeIntegration: false},
+    })
+
+    loginWindow.webContents.on('will-navigate', (event, url) => {
+        extractResponseFromPage(url, loginWindow)
+    })
+
+    loginWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
+        extractResponseFromPage(newUrl, loginWindow)
+    })
+
+    loginWindow.loadURL(url)
+})
+
+function extractResponseFromPage(url, loginWindow) {
+    if (url.includes('emailer-electron')) {
+        let javaScript = `document.body.children.length === 1 && document.querySelector('pre').innerText;`
+        loginWindow.webContents.executeJavaScript(javaScript, function (result) {
+            if (result) {
+                mainWindow.webContents.send(`authorized-google-success`, result)
+                if (!loginWindow.isDestroyed()) {
+                    loginWindow.close()
+                }
+            }
+        })
+    }
 }
