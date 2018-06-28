@@ -1,37 +1,16 @@
 import * as React from 'react';
 import block from 'bem-ts';
-import { Button, Card, CardContent, IconButton, Typography, withStyles } from '@material-ui/core';
+import { Card, CardContent, Grid, IconButton, Typography } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 
 import './LayoutCard.scss';
 
 const b = block('layout-card');
 
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-    rightIcon: {
-      marginLeft: theme.spacing.unit,
-    },
-    padding: '2px',
-  },
-  input: {
-    display: 'none',
-  },
-});
-
 const LayoutCard = props => {
-  const { cardTitle, children, onClick, classes } = props;
+  const { cardTitle, children, onClick, onDelete, onEdit } = props;
   return (
     <Card className={b()} onClick={onClick}>
-      <div className={b('action_button')}>
-        <IconButton className={classes.button} aria-label='delete template'>
-          <Delete className={classes.rightIcon} />
-        </IconButton>
-        <IconButton className={classes.button}>
-          <Edit className={classes.rightIcon} aria-label='edit template' />
-        </IconButton>
-      </div>
       <CardContent>
         <Typography component='p' align='center'>
           {children}
@@ -40,9 +19,16 @@ const LayoutCard = props => {
       <Typography variant='headline' align='center'>
         {cardTitle ? cardTitle : null}
       </Typography>
-
+      <Grid container justify={'flex-end'}>
+        <IconButton className={b('button')} aria-label='delete template' onClick={onDelete}>
+          <Delete />
+        </IconButton>
+        <IconButton className={b('button')} aria-label='edit template' onClick={onEdit}>
+          <Edit />
+        </IconButton>
+      </Grid>
     </Card>
 );
 };
 
-export default withStyles(styles)(LayoutCard);
+export default LayoutCard;

@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
-import { createEmptyTemplate, templateToItem } from 'src/renderer/component/Templates/utils';
+import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
@@ -68,59 +68,12 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
     this.props.actionLayout.create.REQUEST({layout: {title: template.title, body: template.body}});
   }
 
-  // TODO: for validation use TextValidator
-  private validation = (template: ITemplate): boolean => {
-    if (!template.body && template.body.length === 0) {
-      this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
-      return false;
-    }
-    if (!template.title && template.title.length === 0) {
-      this.props.onShowToast(`Subject can't be empty`, ToastType.Warning);
-      return false;
-    }
-    return true;
-  }
-
   onChangePage = (e, page: number) => {
     this.props.action.loading({ page: page + 1 });
   }
 
-  onSelectNewTemplate = () => {
-    this.props.action.select(createEmptyTemplate());
-  }
-
-  onSaveOrCreate = (newTemplate: ITemplate, saveAndClose: boolean = false) => {
-    if (!this.validation(newTemplate)) {
-      return;
-    }
-
-    const { templates, action } = this.props;
-
-    if (templates.selectedTemplate.id) {
-      action.save({ template: newTemplate, saveAndClose });
-    } else {
-      action.create(newTemplate);
-    }
-  }
-
-  onCloseOrRemove = () => {
-    const { templates, action } = this.props;
-
-    const id = templates.selectedTemplate.id;
-
-    if (id) {
-      action.remove(id);
-    } else {
-      action.select(null);
-    }
-  }
-
   onClose = () => {
     this.props.action.select(null);
-  }
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
   }
 
   handleClose = () => {
