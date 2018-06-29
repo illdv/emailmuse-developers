@@ -25,7 +25,7 @@ export const COPY   = `${NS}COPY`;
 const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
 
-// TODO: For async action use IAsyncAction and createAsyncAction
+// TODO: For async action use IAsyncAction and createModuleAction
 
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);

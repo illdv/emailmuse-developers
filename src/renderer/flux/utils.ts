@@ -26,7 +26,7 @@ export interface IActionSteps {
 
 /**
  * Create step action REQUEST, SUCCESS, FAILURE.
- * @deprecated use createAsyncAction
+ * @deprecated use createModuleAction
  */
 export function createActionSteps(actionName: string, requestHandling, successHandling, failureHandling): IActionSteps {
   const type = {
@@ -78,3 +78,8 @@ function helperCreateAction<R, S, F>(actionName: string): IAsyncAction<R, S, F> 
 export function createAsyncAction2<R, S>(actionName: string): IAsyncAction<R, S, IPayloadError>  {
   return helperCreateAction<R, S, IPayloadError>(actionName);
 }
+
+// TODO: bad name
+export const createActionCreator = (reducer: string) => (actionType: string) => {
+  return createAsyncAction2<any, any>(`${reducer}__${actionType}`);
+};

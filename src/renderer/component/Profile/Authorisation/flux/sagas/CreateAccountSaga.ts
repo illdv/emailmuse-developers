@@ -1,28 +1,25 @@
 import { call, put, take } from 'redux-saga/effects';
-import { useOrDefault } from 'src/renderer/utils';
-import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
+
 import { sendCode } from 'src/renderer/API/AuthAPI';
-import { createAccountActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { errorHandler } from 'src/renderer/flux/saga/utils';
 
 function* onCreateAccount(action): IterableIterator<any> {
   const requestUser = action.payload.user;
   try {
-    yield put(setAuthStepAction(AuthStep.LOADING));
+    yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
     yield sendCode(requestUser);
-    yield put(createAccountActions.SUCCESS(requestUser));
+    yield put(AuthorisationActions.createAccount.SUCCESS(requestUser));
   } catch (error) {
-    const errorMessages = useOrDefault(() => (error.response.data.errors.email[0]), 'Unknown error');
-    if (error.response && error.response.status) {
-      yield put(FluxToast.Actions.showToast(errorMessages, ToastType.Error));
-    }
-    yield put(createAccountActions.FAILURE(errorMessages, requestUser));
+    yield call(errorHandler, error);
+    yield put(AuthorisationActions.login.FAILURE({}));
   }
 }
 
 export function* createAccountSaga(): IterableIterator<any> {
   while (true) {
-    const action = yield take(createAccountActions.type.REQUEST);
+    const action = yield take(AuthorisationActions.createAccount.REQUEST(null).type);
     yield call(onCreateAccount, action);
   }
 }
