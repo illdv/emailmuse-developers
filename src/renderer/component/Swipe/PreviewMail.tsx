@@ -9,6 +9,11 @@ import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/utils';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateActions } from 'src/renderer/component/Templates/flux/interface';
+import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
+import { bindActionCreators } from 'redux';
 
 export namespace PreviewMailSpace {
   export interface IState {
@@ -17,7 +22,8 @@ export namespace PreviewMailSpace {
 
   export interface IProps {
     mail: ISubject;
-    swipeActions?: ISwipeActions;
+    templateActions?: ITemplateActions;
+    drawerMenuAction?: IDrawerMenuActions;
   }
 }
 
@@ -26,8 +32,9 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
   state: PreviewMailSpace.IState = {};
 
   onAddInLayout = () => {
-    const { swipeActions, mail } = this.props;
-    swipeActions.selectLayout.REQUEST({ id: '1' });
+    const { templateActions, drawerMenuAction, mail } = this.props;
+    drawerMenuAction.selectMenuItem({selectedItem: MenuItemType.TEMPLATES});
+    templateActions.create(mail);
   }
 
   render() {
@@ -69,7 +76,8 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  swipeActions: bindModuleAction(SwipeActions, dispatch),
+  templateActions: bindModuleAction(TemplateActions, dispatch),
+  drawerMenuAction: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewMail);
