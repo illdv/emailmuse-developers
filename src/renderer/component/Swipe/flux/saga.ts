@@ -1,13 +1,12 @@
-import { createSagaHandler, createWatch, toastError } from 'src/renderer/flux/saga/utils';
-import { call, put } from 'redux-saga/effects';
+import { createSagaHandler, createWatch } from 'src/renderer/flux/saga/utils';
+import { call, put, select } from 'redux-saga/effects';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 
 function* showModal(type: ModalWindowType) {
-  yield put(ModalWindowActions.show.REQUEST({ type }));
-}
-
-function* editSwipe(type: ModalWindowType) {
   yield put(ModalWindowActions.show.REQUEST({ type }));
 }
 
@@ -18,14 +17,6 @@ const selectEmail = createSagaHandler({
   ],
 });
 
-const selectLayout = createSagaHandler({
-  actionCreators: SwipeActions.selectLayout,
-  callbackIfSuccess: [
-    call(editSwipe, ModalWindowType.SelectLayout),
-  ],
-});
-
 export default [
   createWatch(SwipeActions.selectEmail, selectEmail),
-  createWatch(SwipeActions.selectLayout, selectLayout),
 ];
