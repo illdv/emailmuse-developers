@@ -12,14 +12,14 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
-import { createEmptyTemplate, templateToItem } from 'src/renderer/component/Templates/utils';
+import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementList } from 'src/renderer/common/List/ElementList';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
@@ -27,7 +27,7 @@ export namespace PageCreateLayoutSpace {
   export interface IProps {
     isOpen?: boolean;
     templates?: ITemplateState;
-    action?: ITemplateAction;
+    action?: ITemplateActions;
     actionLayout?: ILayoutActions;
     onShowToast?: (messages: string, type: ToastType) => void;
     handleClose?: () => void;
@@ -46,7 +46,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actionLayout: bindModuleAction(LayoutActions, dispatch),
-  action: bindActionCreators(TemplateAction, dispatch),
+  action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -68,59 +68,12 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
     this.props.actionLayout.create.REQUEST({layout: {title: template.title, body: template.body}});
   }
 
-  // TODO: for validation use TextValidator
-  private validation = (template: ITemplate): boolean => {
-    if (!template.body && template.body.length === 0) {
-      this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
-      return false;
-    }
-    if (!template.title && template.title.length === 0) {
-      this.props.onShowToast(`Subject can't be empty`, ToastType.Warning);
-      return false;
-    }
-    return true;
-  }
-
   onChangePage = (e, page: number) => {
     this.props.action.loading({ page: page + 1 });
   }
 
-  onSelectNewTemplate = () => {
-    this.props.action.select(createEmptyTemplate());
-  }
-
-  onSaveOrCreate = (newTemplate: ITemplate, saveAndClose: boolean = false) => {
-    if (!this.validation(newTemplate)) {
-      return;
-    }
-
-    const { templates, action } = this.props;
-
-    if (templates.selectedTemplate.id) {
-      action.save({ template: newTemplate, saveAndClose });
-    } else {
-      action.create(newTemplate);
-    }
-  }
-
-  onCloseOrRemove = () => {
-    const { templates, action } = this.props;
-
-    const id = templates.selectedTemplate.id;
-
-    if (id) {
-      action.remove(id);
-    } else {
-      action.select(null);
-    }
-  }
-
   onClose = () => {
     this.props.action.select(null);
-  }
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
   }
 
   handleClose = () => {
@@ -155,7 +108,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
         >
           <DialogTitle id='form-dialog-title'>Which email would you like to use as a layout template?</DialogTitle>
           <DialogContent>
-              <ElementList
+              <ListTable
                 entities={templates}
                 toItem={templateToItem}
                 onOpenItem={this.selectTemplate}

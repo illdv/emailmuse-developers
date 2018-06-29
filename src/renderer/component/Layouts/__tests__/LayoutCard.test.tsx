@@ -1,9 +1,9 @@
 import * as React from 'react';
-import LayoutCard from 'src/renderer/component/Layouts/Layout/LayoutCard';
+import EntityCard from 'src/renderer/common/List/ListCard/EntityCard';
 import { shallow } from 'enzyme';
 
 describe.skip('Layout Card', () => {
-  const layoutCard = shallow(<LayoutCard/>);
+  const layoutCard = shallow(<EntityCard/>);
   test('Render UI', () => {
     expect(layoutCard).toMatchSnapshot();
   });

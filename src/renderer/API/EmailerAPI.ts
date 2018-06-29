@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Profile/Account/flux/module';
-import { AxiosWrapper, EMAILER_API_URL } from 'src/renderer/API/AxiosWrapper';
+import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 // TODO: Move in file
@@ -41,7 +41,7 @@ export namespace Templates {
 
   // TODO: WTF! axios -> AxiosWrapper
   export function removeTemplate(templateId: string) {
-    return axios.delete(`${EMAILER_API_URL}/templates`, {
+    return axios.delete(`${API_URL}/templates`, {
       data: {
         id: [templateId],
       },

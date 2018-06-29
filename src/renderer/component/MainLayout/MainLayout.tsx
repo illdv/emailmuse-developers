@@ -16,6 +16,7 @@ import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import Layouts from 'src/renderer/component/Layouts/Layouts';
 import Swipe from 'src/renderer/component/Swipe/Swipe';
+import ModalProvider from 'src/renderer/common/ModalWindow/ModalProvider';
 
 const styles: IStyle = {
   root: {
@@ -88,6 +89,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
             <PreloaderLayout/>
+            <ModalProvider/>
             {this.mainDisplay(this.props)}
           </Grid>
         </Grid>

@@ -1,9 +1,9 @@
 export interface ITemplate {
+  title: string;
+  body: string;
+  description?: string;
   id?: string;
   user_id?: number;
-  title: string;
-  description: string;
-  body: string;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
