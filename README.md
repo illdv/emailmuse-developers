@@ -5,12 +5,12 @@
 npm install
 ```
 
-### Start project
+### Start project with Electron
 ```
-npm start-webpack-dev-server
+npm run start-webpack-dev-server
 ```
 ```
-npm start-electron
+npm run start-electron
 ```
 ### For login
 ```
