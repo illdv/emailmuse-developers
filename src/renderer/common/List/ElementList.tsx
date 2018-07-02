@@ -158,14 +158,13 @@ export class ElementList extends Component<ListElementSpace.IProps<any>, ListEle
                     key={item.id}
                     selected={isSelected}
                     className={b('row')}
-                  >
-                    {this.props.onCopy &&
+                  >{this.props.onCopy &&
                     <TableCell
                       style={{ width: 40 }}
                       onClick={this.onCopy(item.id)}
                       padding={'checkbox'}
                     >
-                      <IconButton title={'Copy'}>
+                      <IconButton title={'Create Duplicate'}>
                         <ContentCopyIcon/>
                       </IconButton>
                     </TableCell>
