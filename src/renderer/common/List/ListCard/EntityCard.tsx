@@ -3,11 +3,11 @@ import block from 'bem-ts';
 import { Card, CardContent, Grid, IconButton, Typography } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 
-import './LayoutCard.scss';
+import './EntityCard.scss';
 
 const b = block('layout-card');
 
-const LayoutCard = props => {
+const EntityCard = props => {
   const { cardTitle, children, onClick, onDelete, onEdit } = props;
   return (
     <Card className={b()} onClick={onClick}>
@@ -16,19 +16,25 @@ const LayoutCard = props => {
           {children}
         </Typography>
       </CardContent>
-      <Typography variant='headline' align='center'>
-        {cardTitle ? cardTitle : null}
+      <Typography variant='headline' align='center' noWrap>
+        {cardTitle}
       </Typography>
       <Grid container justify={'flex-end'}>
-        <IconButton className={b('button')} aria-label='delete template' onClick={onDelete}>
-          <Delete />
-        </IconButton>
-        <IconButton className={b('button')} aria-label='edit template' onClick={onEdit}>
-          <Edit />
-        </IconButton>
+        {
+          onDelete &&
+          <IconButton className={b('button')} aria-label='delete template' onClick={onDelete}>
+            <Delete/>
+          </IconButton>
+        }
+        {
+          onEdit &&
+          <IconButton className={b('button')} aria-label='edit template' onClick={onEdit}>
+            <Edit/>
+          </IconButton>
+        }
       </Grid>
     </Card>
-);
+  );
 };
 
-export default LayoutCard;
+export default EntityCard;

@@ -16,10 +16,10 @@ import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementList } from 'src/renderer/common/List/ElementList';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
@@ -27,7 +27,7 @@ export namespace PageCreateLayoutSpace {
   export interface IProps {
     isOpen?: boolean;
     templates?: ITemplateState;
-    action?: ITemplateAction;
+    action?: ITemplateActions;
     actionLayout?: ILayoutActions;
     onShowToast?: (messages: string, type: ToastType) => void;
     handleClose?: () => void;
@@ -46,7 +46,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actionLayout: bindModuleAction(LayoutActions, dispatch),
-  action: bindActionCreators(TemplateAction, dispatch),
+  action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -108,7 +108,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
         >
           <DialogTitle id='form-dialog-title'>Which email would you like to use as a layout template?</DialogTitle>
           <DialogContent>
-              <ElementList
+              <ListTable
                 entities={templates}
                 toItem={templateToItem}
                 onOpenItem={this.selectTemplate}

@@ -8,11 +8,9 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import {
-  createAccountActions,
-  ICreateAccountRequest,
-  setAuthStepAction,
-} from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { ICreateAccountRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { bindModuleAction } from 'src/renderer/utils';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
 const styles = () => ({
@@ -34,27 +32,32 @@ export namespace RegistrationSpace {
   }
 
   export interface IProps {
-    onClickBackToLogin?: () => void;
-    onCreateAccount?: (user: ICreateAccountRequest) => () => void;
+    /*onClickBackToLogin?: () => void;
+    onCreateAccount?: (user: ICreateAccountRequest) => () => void;*/
+    action?: IAuthorisationActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onClickBackToLogin: () => {
-    dispatch(setAuthStepAction(AuthStep.LOGIN));
-  }, onCreateAccount: (user: ICreateAccountRequest) => {
-    dispatch(createAccountActions.REQUEST(user));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
 class Registration
   extends Component<RegistrationSpace.IProps & WithStyles<'root' | 'paper'>, RegistrationSpace.IState> {
 
+  onCreateAccount = (user: ICreateAccountRequest) => {
+    this.props.action.createAccount.REQUEST({ user });
+  }
+
+  onClickBackToLogin = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN });
+  }
+
   render() {
-    const { classes, onClickBackToLogin, onCreateAccount } = this.props;
+    const { classes } = this.props;
 
     const validationSchema = {
       name: {
@@ -78,7 +81,7 @@ class Registration
     return (
       <InCenter>
         <Paper square className={classes.paper}>
-          <FormValidation onValidationSuccessful={onCreateAccount} schema={validationSchema}>
+          <FormValidation onValidationSuccessful={this.onCreateAccount} schema={validationSchema}>
             <Grid container className={classes.root}>
               <Title title={'Create your Emailer Account'}/>
               <Grow in timeout={1000}>
@@ -122,7 +125,7 @@ class Registration
               <FormContext.Consumer>
                 {(context: IFormContext) => (
                   <Navigation
-                    onBack={onClickBackToLogin}
+                    onBack={this.onClickBackToLogin}
                     onNext={context.onSubmit}
                     canNext={true}
                   />

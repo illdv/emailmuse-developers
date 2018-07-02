@@ -1,9 +1,11 @@
+/*
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { Layouts, LayoutsSpace } from 'src/renderer/component/Layouts/Layouts';
 import { ITemplateAction } from 'src/renderer/component/Templates/flux/interface';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { IPagination } from 'src/renderer/common/List/interface';
+*/
 
 // const mockTemplate = {
 //   id: null,

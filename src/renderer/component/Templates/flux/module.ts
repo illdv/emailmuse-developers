@@ -1,6 +1,6 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { ITemplateAction, ITemplateState } from './interface';
+import { ITemplateActions, ITemplateState } from './interface';
 import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/interface';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
@@ -25,7 +25,7 @@ export const COPY   = `${NS}COPY`;
 const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
 
-// TODO: For async action use IAsyncAction and createAsyncAction
+// TODO: For async action use IAsyncAction and createModuleAction
 
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
@@ -37,7 +37,7 @@ const save          = createAction(SAVE, (payload: { template: ITemplate, saveAn
 const remove        = createAction(REMOVE, (templateId: string) => templateId);
 const copy          = createAction(COPY, (payload: {id: string}) => payload);
 
-export const TemplateAction: ITemplateAction = {
+export const TemplateActions: ITemplateActions = {
   loading,
   failure,
   successfully,
