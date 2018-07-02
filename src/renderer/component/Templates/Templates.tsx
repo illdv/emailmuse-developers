@@ -153,7 +153,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
             onClick={this.onSelectNewTemplate}
             icon={<Add/>}
             position={0}
-            title={'Add new template'}
+            title={'Add a new template'}
             whitCtrl
             hotKey={'A'}
           />

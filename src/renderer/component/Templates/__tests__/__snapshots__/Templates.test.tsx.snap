@@ -2679,7 +2679,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                 icon={<pure(Add) />}
                 onClick={[Function]}
                 position={0}
-                title="Add new template"
+                title="Add a new template"
                 whitCtrl={true}
               >
                 <WithTheme(Zoom)
@@ -2968,11 +2968,11 @@ exports[`<Templates/> Render template list show list 1`] = `
                             "willChange": "transform",
                           }
                         }
-                        tooltip="Add new template"
+                        tooltip="Add a new template"
                         whitCtrl={true}
                       >
                         <WithStyles(Tooltip)
-                          title="Add new template Ctrl + A"
+                          title="Add a new template Ctrl + A"
                         >
                           <Tooltip
                             classes={
@@ -3247,7 +3247,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                 },
                               }
                             }
-                            title="Add new template Ctrl + A"
+                            title="Add a new template Ctrl + A"
                           >
                             <Manager>
                               <EventListener
@@ -3539,7 +3539,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                         className="MuiTooltip-tooltip-206"
                                         role="tooltip"
                                       >
-                                        Add new template Ctrl + A
+                                        Add a new template Ctrl + A
                                       </div>
                                     </div>
                                   </InnerPopper>
