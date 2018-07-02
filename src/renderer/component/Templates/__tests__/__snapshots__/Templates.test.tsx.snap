@@ -267,6 +267,9 @@ exports[`<Templates/> Render template list show list 1`] = `
             "0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12)",
             "0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12)",
           ],
+          "shape": Object {
+            "borderRadius": 4,
+          },
           "spacing": Object {
             "unit": 8,
           },
@@ -466,7 +469,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                 }
               }
             >
-              <ElementList
+              <ListTable
                 entities={
                   Array [
                     Object {
@@ -1202,7 +1205,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                           }
                                         >
                                           <WithStyles(IconButton)
-                                            title="Copy"
+                                            title="Create Duplicate"
                                           >
                                             <IconButton
                                               classes={
@@ -1217,14 +1220,14 @@ exports[`<Templates/> Render template list show list 1`] = `
                                               }
                                               color="default"
                                               disabled={false}
-                                              title="Copy"
+                                              title="Create Duplicate"
                                             >
                                               <WithStyles(ButtonBase)
                                                 centerRipple={true}
                                                 className="MuiIconButton-root-84"
                                                 disabled={false}
                                                 focusRipple={true}
-                                                title="Copy"
+                                                title="Create Duplicate"
                                               >
                                                 <ButtonBase
                                                   centerRipple={true}
@@ -1242,7 +1245,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                                   disabled={false}
                                                   focusRipple={true}
                                                   tabIndex="0"
-                                                  title="Copy"
+                                                  title="Create Duplicate"
                                                   type="button"
                                                 >
                                                   <button
@@ -1259,7 +1262,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                                     onTouchMove={[Function]}
                                                     onTouchStart={[Function]}
                                                     tabIndex="0"
-                                                    title="Copy"
+                                                    title="Create Duplicate"
                                                     type="button"
                                                   >
                                                     <span
@@ -1508,7 +1511,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                           }
                                         >
                                           <WithStyles(IconButton)
-                                            title="Copy"
+                                            title="Create Duplicate"
                                           >
                                             <IconButton
                                               classes={
@@ -1523,14 +1526,14 @@ exports[`<Templates/> Render template list show list 1`] = `
                                               }
                                               color="default"
                                               disabled={false}
-                                              title="Copy"
+                                              title="Create Duplicate"
                                             >
                                               <WithStyles(ButtonBase)
                                                 centerRipple={true}
                                                 className="MuiIconButton-root-84"
                                                 disabled={false}
                                                 focusRipple={true}
-                                                title="Copy"
+                                                title="Create Duplicate"
                                               >
                                                 <ButtonBase
                                                   centerRipple={true}
@@ -1548,7 +1551,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                                   disabled={false}
                                                   focusRipple={true}
                                                   tabIndex="0"
-                                                  title="Copy"
+                                                  title="Create Duplicate"
                                                   type="button"
                                                 >
                                                   <button
@@ -1565,7 +1568,7 @@ exports[`<Templates/> Render template list show list 1`] = `
                                                     onTouchMove={[Function]}
                                                     onTouchStart={[Function]}
                                                     tabIndex="0"
-                                                    title="Copy"
+                                                    title="Create Duplicate"
                                                     type="button"
                                                   >
                                                     <span
@@ -2315,6 +2318,9 @@ exports[`<Templates/> Render template list show list 1`] = `
                                                       "0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12)",
                                                       "0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12)",
                                                     ],
+                                                    "shape": Object {
+                                                      "borderRadius": 4,
+                                                    },
                                                     "spacing": Object {
                                                       "unit": 8,
                                                     },
@@ -2673,13 +2679,13 @@ exports[`<Templates/> Render template list show list 1`] = `
                     </WithStyles(Grid)>
                   </InCenter>
                 </WithStyles(InCenter)>
-              </ElementList>
+              </ListTable>
               <Fab
                 hotKey="A"
                 icon={<pure(Add) />}
                 onClick={[Function]}
                 position={0}
-                title="Add a new template"
+                title="Add a new email"
                 whitCtrl={true}
               >
                 <WithTheme(Zoom)
@@ -2818,6 +2824,9 @@ exports[`<Templates/> Render template list show list 1`] = `
                           "0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12)",
                           "0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12)",
                         ],
+                        "shape": Object {
+                          "borderRadius": 4,
+                        },
                         "spacing": Object {
                           "unit": 8,
                         },
@@ -2968,11 +2977,11 @@ exports[`<Templates/> Render template list show list 1`] = `
                             "willChange": "transform",
                           }
                         }
-                        tooltip="Add a new template"
+                        tooltip="Add a new email"
                         whitCtrl={true}
                       >
                         <WithStyles(Tooltip)
-                          title="Add a new template Ctrl + A"
+                          title="Add a new email Ctrl + A"
                         >
                           <Tooltip
                             classes={
@@ -3124,6 +3133,9 @@ exports[`<Templates/> Render template list show list 1`] = `
                                   "0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12)",
                                   "0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12)",
                                 ],
+                                "shape": Object {
+                                  "borderRadius": 4,
+                                },
                                 "spacing": Object {
                                   "unit": 8,
                                 },
@@ -3247,23 +3259,73 @@ exports[`<Templates/> Render template list show list 1`] = `
                                 },
                               }
                             }
-                            title="Add a new template Ctrl + A"
+                            title="Add a new email Ctrl + A"
                           >
-                            <Manager>
+                            <Manager
+                              tag={false}
+                            >
                               <EventListener
                                 onResize={[Function]}
                                 target="window"
                               />
-                              <Reference>
-                                <InnerReference
-                                  getReferenceRef={[Function]}
+                              <Target>
+                                <RootRef
+                                  rootRef={[Function]}
                                 >
-                                  <RootRef
-                                    rootRef={[Function]}
+                                  <WithStyles(Button)
+                                    className="fab "
+                                    color="primary"
+                                    onBlur={[Function]}
+                                    onClick={[Function]}
+                                    onFocus={[Function]}
+                                    onMouseLeave={[Function]}
+                                    onMouseOver={[Function]}
+                                    onTouchEnd={[Function]}
+                                    onTouchStart={[Function]}
+                                    style={
+                                      Object {
+                                        "right": 20,
+                                        "zIndex": 99,
+                                      }
+                                    }
+                                    variant="fab"
                                   >
-                                    <WithStyles(Button)
+                                    <Button
                                       className="fab "
+                                      classes={
+                                        Object {
+                                          "colorInherit": "MuiButton-colorInherit-231",
+                                          "contained": "MuiButton-contained-221",
+                                          "containedPrimary": "MuiButton-containedPrimary-222",
+                                          "containedSecondary": "MuiButton-containedSecondary-223",
+                                          "disabled": "MuiButton-disabled-230",
+                                          "extendedFab": "MuiButton-extendedFab-228",
+                                          "fab": "MuiButton-fab-227",
+                                          "flat": "MuiButton-flat-217",
+                                          "flatPrimary": "MuiButton-flatPrimary-218",
+                                          "flatSecondary": "MuiButton-flatSecondary-219",
+                                          "focusVisible": "MuiButton-focusVisible-229",
+                                          "fullWidth": "MuiButton-fullWidth-235",
+                                          "label": "MuiButton-label-213",
+                                          "mini": "MuiButton-mini-232",
+                                          "outlined": "MuiButton-outlined-220",
+                                          "raised": "MuiButton-raised-224",
+                                          "raisedPrimary": "MuiButton-raisedPrimary-225",
+                                          "raisedSecondary": "MuiButton-raisedSecondary-226",
+                                          "root": "MuiButton-root-212",
+                                          "sizeLarge": "MuiButton-sizeLarge-234",
+                                          "sizeSmall": "MuiButton-sizeSmall-233",
+                                          "text": "MuiButton-text-214",
+                                          "textPrimary": "MuiButton-textPrimary-215",
+                                          "textSecondary": "MuiButton-textSecondary-216",
+                                        }
+                                      }
                                       color="primary"
+                                      component="button"
+                                      disableFocusRipple={false}
+                                      disabled={false}
+                                      fullWidth={false}
+                                      mini={false}
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -3271,48 +3333,22 @@ exports[`<Templates/> Render template list show list 1`] = `
                                       onMouseOver={[Function]}
                                       onTouchEnd={[Function]}
                                       onTouchStart={[Function]}
+                                      size="medium"
                                       style={
                                         Object {
                                           "right": 20,
                                           "zIndex": 99,
                                         }
                                       }
+                                      type="button"
                                       variant="fab"
                                     >
-                                      <Button
-                                        className="fab "
-                                        classes={
-                                          Object {
-                                            "colorInherit": "MuiButton-colorInherit-220",
-                                            "contained": "MuiButton-contained-221",
-                                            "containedPrimary": "MuiButton-containedPrimary-222",
-                                            "containedSecondary": "MuiButton-containedSecondary-223",
-                                            "disabled": "MuiButton-disabled-228",
-                                            "fab": "MuiButton-fab-229",
-                                            "flat": "MuiButton-flat-216",
-                                            "flatPrimary": "MuiButton-flatPrimary-217",
-                                            "flatSecondary": "MuiButton-flatSecondary-218",
-                                            "focusVisible": "MuiButton-focusVisible-227",
-                                            "fullWidth": "MuiButton-fullWidth-233",
-                                            "label": "MuiButton-label-213",
-                                            "mini": "MuiButton-mini-230",
-                                            "outlined": "MuiButton-outlined-219",
-                                            "raised": "MuiButton-raised-224",
-                                            "raisedPrimary": "MuiButton-raisedPrimary-225",
-                                            "raisedSecondary": "MuiButton-raisedSecondary-226",
-                                            "root": "MuiButton-root-212",
-                                            "sizeLarge": "MuiButton-sizeLarge-232",
-                                            "sizeSmall": "MuiButton-sizeSmall-231",
-                                            "textPrimary": "MuiButton-textPrimary-214",
-                                            "textSecondary": "MuiButton-textSecondary-215",
-                                          }
-                                        }
-                                        color="primary"
+                                      <WithStyles(ButtonBase)
+                                        className="MuiButton-root-212 MuiButton-fab-227 MuiButton-contained-221 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
                                         component="button"
-                                        disableFocusRipple={false}
                                         disabled={false}
-                                        fullWidth={false}
-                                        mini={false}
+                                        focusRipple={true}
+                                        focusVisibleClassName="MuiButton-focusVisible-229"
                                         onBlur={[Function]}
                                         onClick={[Function]}
                                         onFocus={[Function]}
@@ -3320,7 +3356,6 @@ exports[`<Templates/> Render template list show list 1`] = `
                                         onMouseOver={[Function]}
                                         onTouchEnd={[Function]}
                                         onTouchStart={[Function]}
-                                        size="medium"
                                         style={
                                           Object {
                                             "right": 20,
@@ -3328,14 +3363,23 @@ exports[`<Templates/> Render template list show list 1`] = `
                                           }
                                         }
                                         type="button"
-                                        variant="fab"
                                       >
-                                        <WithStyles(ButtonBase)
-                                          className="MuiButton-root-212 MuiButton-contained-221 MuiButton-fab-229 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
+                                        <ButtonBase
+                                          centerRipple={false}
+                                          className="MuiButton-root-212 MuiButton-fab-227 MuiButton-contained-221 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
+                                          classes={
+                                            Object {
+                                              "disabled": "MuiButtonBase-disabled-75",
+                                              "focusVisible": "MuiButtonBase-focusVisible-76",
+                                              "root": "MuiButtonBase-root-74",
+                                            }
+                                          }
                                           component="button"
+                                          disableRipple={false}
+                                          disableTouchRipple={false}
                                           disabled={false}
                                           focusRipple={true}
-                                          focusVisibleClassName="MuiButton-focusVisible-227"
+                                          focusVisibleClassName="MuiButton-focusVisible-229"
                                           onBlur={[Function]}
                                           onClick={[Function]}
                                           onFocus={[Function]}
@@ -3349,30 +3393,23 @@ exports[`<Templates/> Render template list show list 1`] = `
                                               "zIndex": 99,
                                             }
                                           }
+                                          tabIndex="0"
                                           type="button"
                                         >
-                                          <ButtonBase
-                                            centerRipple={false}
-                                            className="MuiButton-root-212 MuiButton-contained-221 MuiButton-fab-229 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
-                                            classes={
-                                              Object {
-                                                "disabled": "MuiButtonBase-disabled-75",
-                                                "focusVisible": "MuiButtonBase-focusVisible-76",
-                                                "root": "MuiButtonBase-root-74",
-                                              }
-                                            }
-                                            component="button"
-                                            disableRipple={false}
-                                            disableTouchRipple={false}
+                                          <button
+                                            className="MuiButtonBase-root-74 MuiButton-root-212 MuiButton-fab-227 MuiButton-contained-221 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
                                             disabled={false}
-                                            focusRipple={true}
-                                            focusVisibleClassName="MuiButton-focusVisible-227"
                                             onBlur={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
+                                            onKeyDown={[Function]}
+                                            onKeyUp={[Function]}
+                                            onMouseDown={[Function]}
                                             onMouseLeave={[Function]}
                                             onMouseOver={[Function]}
+                                            onMouseUp={[Function]}
                                             onTouchEnd={[Function]}
+                                            onTouchMove={[Function]}
                                             onTouchStart={[Function]}
                                             style={
                                               Object {
@@ -3383,166 +3420,110 @@ exports[`<Templates/> Render template list show list 1`] = `
                                             tabIndex="0"
                                             type="button"
                                           >
-                                            <button
-                                              className="MuiButtonBase-root-74 MuiButton-root-212 MuiButton-contained-221 MuiButton-fab-229 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
-                                              disabled={false}
-                                              onBlur={[Function]}
-                                              onClick={[Function]}
-                                              onFocus={[Function]}
-                                              onKeyDown={[Function]}
-                                              onKeyUp={[Function]}
-                                              onMouseDown={[Function]}
-                                              onMouseLeave={[Function]}
-                                              onMouseOver={[Function]}
-                                              onMouseUp={[Function]}
-                                              onTouchEnd={[Function]}
-                                              onTouchMove={[Function]}
-                                              onTouchStart={[Function]}
-                                              style={
-                                                Object {
-                                                  "right": 20,
-                                                  "zIndex": 99,
-                                                }
-                                              }
-                                              tabIndex="0"
-                                              type="button"
+                                            <span
+                                              className="MuiButton-label-213"
                                             >
-                                              <span
-                                                className="MuiButton-label-213"
-                                              >
-                                                <pure(Add)>
-                                                  <Add>
-                                                    <WithStyles(SvgIcon)>
-                                                      <SvgIcon
-                                                        classes={
-                                                          Object {
-                                                            "colorAction": "MuiSvgIcon-colorAction-80",
-                                                            "colorDisabled": "MuiSvgIcon-colorDisabled-82",
-                                                            "colorError": "MuiSvgIcon-colorError-81",
-                                                            "colorPrimary": "MuiSvgIcon-colorPrimary-78",
-                                                            "colorSecondary": "MuiSvgIcon-colorSecondary-79",
-                                                            "root": "MuiSvgIcon-root-77",
-                                                          }
+                                              <pure(Add)>
+                                                <Add>
+                                                  <WithStyles(SvgIcon)>
+                                                    <SvgIcon
+                                                      classes={
+                                                        Object {
+                                                          "colorAction": "MuiSvgIcon-colorAction-80",
+                                                          "colorDisabled": "MuiSvgIcon-colorDisabled-82",
+                                                          "colorError": "MuiSvgIcon-colorError-81",
+                                                          "colorPrimary": "MuiSvgIcon-colorPrimary-78",
+                                                          "colorSecondary": "MuiSvgIcon-colorSecondary-79",
+                                                          "root": "MuiSvgIcon-root-77",
                                                         }
-                                                        color="inherit"
+                                                      }
+                                                      color="inherit"
+                                                      viewBox="0 0 24 24"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        className="MuiSvgIcon-root-77"
+                                                        focusable="false"
                                                         viewBox="0 0 24 24"
                                                       >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          className="MuiSvgIcon-root-77"
-                                                          focusable="false"
-                                                          viewBox="0 0 24 24"
-                                                        >
-                                                          <g>
-                                                            <path
-                                                              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                                                            />
-                                                          </g>
-                                                        </svg>
-                                                      </SvgIcon>
-                                                    </WithStyles(SvgIcon)>
-                                                  </Add>
-                                                </pure(Add)>
-                                              </span>
-                                              <WithStyles(TouchRipple)
+                                                        <g>
+                                                          <path
+                                                            d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                                                          />
+                                                        </g>
+                                                      </svg>
+                                                    </SvgIcon>
+                                                  </WithStyles(SvgIcon)>
+                                                </Add>
+                                              </pure(Add)>
+                                            </span>
+                                            <WithStyles(TouchRipple)
+                                              center={false}
+                                              innerRef={[Function]}
+                                            >
+                                              <TouchRipple
                                                 center={false}
-                                                innerRef={[Function]}
-                                              >
-                                                <TouchRipple
-                                                  center={false}
-                                                  classes={
-                                                    Object {
-                                                      "child": "MuiTouchRipple-child-94",
-                                                      "childLeaving": "MuiTouchRipple-childLeaving-95",
-                                                      "childPulsate": "MuiTouchRipple-childPulsate-96",
-                                                      "ripple": "MuiTouchRipple-ripple-91",
-                                                      "ripplePulsate": "MuiTouchRipple-ripplePulsate-93",
-                                                      "rippleVisible": "MuiTouchRipple-rippleVisible-92",
-                                                      "root": "MuiTouchRipple-root-90",
-                                                    }
+                                                classes={
+                                                  Object {
+                                                    "child": "MuiTouchRipple-child-94",
+                                                    "childLeaving": "MuiTouchRipple-childLeaving-95",
+                                                    "childPulsate": "MuiTouchRipple-childPulsate-96",
+                                                    "ripple": "MuiTouchRipple-ripple-91",
+                                                    "ripplePulsate": "MuiTouchRipple-ripplePulsate-93",
+                                                    "rippleVisible": "MuiTouchRipple-rippleVisible-92",
+                                                    "root": "MuiTouchRipple-root-90",
                                                   }
+                                                }
+                                              >
+                                                <TransitionGroup
+                                                  childFactory={[Function]}
+                                                  className="MuiTouchRipple-root-90"
+                                                  component="span"
+                                                  enter={true}
+                                                  exit={true}
                                                 >
-                                                  <TransitionGroup
-                                                    childFactory={[Function]}
+                                                  <span
                                                     className="MuiTouchRipple-root-90"
-                                                    component="span"
-                                                    enter={true}
-                                                    exit={true}
-                                                  >
-                                                    <span
-                                                      className="MuiTouchRipple-root-90"
-                                                    />
-                                                  </TransitionGroup>
-                                                </TouchRipple>
-                                              </WithStyles(TouchRipple)>
-                                            </button>
-                                          </ButtonBase>
-                                        </WithStyles(ButtonBase)>
-                                      </Button>
-                                    </WithStyles(Button)>
-                                  </RootRef>
-                                </InnerReference>
-                              </Reference>
+                                                  />
+                                                </TransitionGroup>
+                                              </TouchRipple>
+                                            </WithStyles(TouchRipple)>
+                                          </button>
+                                        </ButtonBase>
+                                      </WithStyles(ButtonBase)>
+                                    </Button>
+                                  </WithStyles(Button)>
+                                </RootRef>
+                              </Target>
                               <Portal>
                                 <Popper
                                   className="MuiTooltip-popper-204"
+                                  component="div"
                                   eventsEnabled={false}
+                                  modifiers={Object {}}
                                   placement="bottom"
+                                  positionFixed={false}
                                 >
-                                  <InnerPopper
+                                  <div
                                     className="MuiTooltip-popper-204"
-                                    eventsEnabled={false}
-                                    placement="bottom"
-                                    positionFixed={false}
-                                    referenceElement={
-                                      <button
-                                        class="MuiButtonBase-root-74 MuiButton-root-212 MuiButton-contained-221 MuiButton-fab-229 MuiButton-containedPrimary-222 MuiButton-raised-224 MuiButton-raisedPrimary-225 fab "
-                                        style="z-index: 99; right: 20px; -webkit-transition: transform 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
-                                        tabindex="0"
-                                        type="button"
-                                      >
-                                        <span
-                                          class="MuiButton-label-213"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class="MuiSvgIcon-root-77"
-                                            focusable="false"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <g>
-                                              <path
-                                                d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                                              />
-                                            </g>
-                                          </svg>
-                                        </span>
-                                        <span
-                                          class="MuiTouchRipple-root-90"
-                                        />
-                                      </button>
+                                    style={
+                                      Object {
+                                        "left": 0,
+                                        "opacity": 0,
+                                        "pointerEvents": "none",
+                                        "position": "absolute",
+                                        "top": 0,
+                                      }
                                     }
                                   >
                                     <div
-                                      style={
-                                        Object {
-                                          "left": 0,
-                                          "opacity": 0,
-                                          "pointerEvents": "none",
-                                          "position": "absolute",
-                                          "top": 0,
-                                        }
-                                      }
+                                      aria-hidden={true}
+                                      className="MuiTooltip-tooltip-206 MuiTooltip-tooltipPlacementBottom-211"
+                                      role="tooltip"
                                     >
-                                      <div
-                                        aria-hidden={true}
-                                        className="MuiTooltip-tooltip-206"
-                                        role="tooltip"
-                                      >
-                                        Add a new template Ctrl + A
-                                      </div>
+                                      Add a new email Ctrl + A
                                     </div>
-                                  </InnerPopper>
+                                  </div>
                                 </Popper>
                               </Portal>
                             </Manager>

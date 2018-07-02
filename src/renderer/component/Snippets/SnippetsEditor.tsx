@@ -153,10 +153,11 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
           question={'The changes are not saved. Are you want save snippet?'}
         />
         <Confirmation
+          title='Are you sure?'
           isOpen={this.state.isOpenConfirmationDelete}
           onClose={this.onCloseDialogDelete}
           onSelectYes={onRemove}
-          question={'Are you want to delete this snippet?'}
+          question={'You are about to delete a snippet and this action cannot be undone.'}
         />
         <div>
           <Fab

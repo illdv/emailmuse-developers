@@ -78,7 +78,7 @@ describe('<Templates/>', () => {
     expect(render).toMatchSnapshot();
   });
 
-  test('User click on button "Add a new template"', () => {
+  test('User click on button "Add a new email"', () => {
     props.templates.selectedTemplate = undefined;
     const render                     = shallow(<Templates {...props} />);
     render.find('Fab').simulate('click');
