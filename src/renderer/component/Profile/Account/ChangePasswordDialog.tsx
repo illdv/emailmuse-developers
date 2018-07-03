@@ -1,7 +1,13 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { IStyle } from 'type/materialUI';
 import {
   Button,
-  Dialog, DialogActions, DialogContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
   DialogTitle,
   FormControl,
   Grid,
@@ -14,11 +20,9 @@ import {
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { WithStyles } from '@material-ui/core/styles/withStyles';
-import { IStyle } from 'type/materialUI';
-import * as classNames from 'classnames';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
+
+import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 const styles: IStyle = theme => ({
   root: {
@@ -49,7 +53,7 @@ export namespace ChangePasswordDialogSpace {
     onClose?: () => void;
     email?: string;
     name?: string;
-    changePassword?: typeof AccountActions.changePassword.REQUEST;
+    action?: IAccountActions;
   }
 
   export interface IState {
@@ -71,6 +75,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   changePassword: bindActionCreators(AccountActions.changePassword.REQUEST, dispatch),
+  action: bindModuleAction(AccountActions, dispatch),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -97,7 +102,7 @@ class ChangePasswordDialog
   handleClickShowPassword = (type: string) => () =>
     this.setState({ [type]: !this.state[type] })
   submit                  = () => {
-    this.props.changePassword(this.state.fields);
+    this.props.action.changePassword.REQUEST({ data: this.state.fields });
     this.setState({
       fields: Object.keys(this.state.fields).reduce((p, k) => ({ ...p, [k]: '' }), {}),
     });

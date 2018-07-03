@@ -5,7 +5,8 @@ import { Button, Grid, Typography } from '@material-ui/core';
 
 import InCenter from 'src/renderer/common/InCenter';
 import PaperInCenter from 'src/renderer/component/Profile/Authorisation/common/PaperInCenter';
-import { logoutAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 export namespace ErrorBoundarySpace {
   export interface IState {
@@ -13,14 +14,12 @@ export namespace ErrorBoundarySpace {
   }
 
   export interface IProps {
-    logout?: () => void;
+    action?: IAuthorisationActions;
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  logout: () => {
-    dispatch(logoutAction());
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 @(connect(null, mapDispatchToProps))
@@ -35,7 +34,7 @@ export class ErrorBoundary extends Component<ErrorBoundarySpace.IProps, ErrorBou
   }
 
   restartApplication = () => {
-    this.props.logout();
+    this.props.action.logout.REQUEST({});
     this.setState({hasError: false});
   }
 

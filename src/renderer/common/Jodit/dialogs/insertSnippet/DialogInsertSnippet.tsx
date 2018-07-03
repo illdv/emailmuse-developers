@@ -6,14 +6,14 @@ import block from 'bem-ts';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ElementList } from 'src/renderer/common/List/ElementList';
-import { SnippetsAction } from 'src/renderer/component/Snippets/flux/module';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { Search } from 'src/renderer/common/Search';
 
 import './DialogInsertSnippet.scss';
+import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
 // TODO: fix name on dialogs-select-snippet
 const b = block('dialogs-select-image');
@@ -89,7 +89,7 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
         <DialogContent>
           <Search search={this.onLoadingSnippet}/>
           <div className={b('container')}>
-            <ElementList
+            <ListTable
               entities={snippets.snippets}
               toItem={snippetToItem}
               onOpenItem={this.onSelect}

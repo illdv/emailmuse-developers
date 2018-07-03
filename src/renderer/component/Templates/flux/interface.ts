@@ -1,6 +1,6 @@
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
-import { Action, ActionStatus, IAsyncAction } from 'src/renderer/flux/interface';
+import { ActionStatus, CreateAction } from 'src/renderer/flux/interface';
 import { ActionCreatorsMapObject } from 'redux';
 import { EmptyActionCreator } from 'redux-act';
 
@@ -16,18 +16,15 @@ export interface ILoadingTemplatePayload {
   templates: ITemplate[];
 }
 
-export interface ITemplateAction extends ActionCreatorsMapObject {
-  loading?: Action<{ page: number, hidePreloader?: boolean }>;
-  remove?: Action<string>;
-  save?: Action<{ template: ITemplate, saveAndClose: boolean }>;
-  create?: Action<ITemplate>;
-  select?: Action<ITemplate>;
+// TODO: delete ?
+export interface ITemplateActions extends ActionCreatorsMapObject {
+  loading?: CreateAction<{ page: number, hidePreloader?: boolean }>;
+  remove?: CreateAction<string>;
+  save?: CreateAction<{ template: ITemplate, saveAndClose: boolean }>;
+  create?: CreateAction<ITemplate>;
+  select?: CreateAction<ITemplate>;
   failure?: EmptyActionCreator;
-  successfully?: Action<ILoadingTemplatePayload>;
-  createSuccess?: Action<ITemplate>;
-  copy?: Action<{ id: string }>;
-}
-export interface ILayout {
-  description: string;
-  body: string;
+  successfully?: CreateAction<ILoadingTemplatePayload>;
+  createSuccess?: CreateAction<ITemplate>;
+  copy?: CreateAction<{ id: string }>;
 }

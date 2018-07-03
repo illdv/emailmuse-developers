@@ -1,29 +1,60 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-    template: './index.html',
-    filename: 'index.html',
-    inject: 'body',
-})
+const isProduction = process.env.NODE_ENV === 'production';
 
-const outPath = path.join(__dirname, './dist');
+const outPath = path.join(__dirname, './build');
 const sourcePath = path.join(__dirname, './src');
 const assetsPath = path.join(__dirname, './assets');
 
-const styleLoader = process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader;
+const styleLoader = !isProduction ? 'style-loader' : MiniCssExtractPlugin.loader;
+const devtool = !isProduction ? 'source-map' : 'none';
+
+const dotenv = require('dotenv').config({
+    path: isProduction ? './.env.production' : './.env.development',
+});
 
 module.exports = {
-    entry: './index.tsx',
+    entry: './renderer/index.tsx',
     context: sourcePath,
     output: {
         path: outPath,
         filename: 'index_bundle.js',
     },
     mode: 'development',
-    devtool: "source-map",
+    devtool,
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        modules: ['node_modules', sourcePath],
+        alias: {
+            src: sourcePath,
+        },
+    },
+    devServer: {
+        open: false
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './renderer/index.html',
+            filename: 'index.html',
+            inject: 'body',
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[indicator].css',
+            chunkFilename: '[id].css',
+        }),
+        new CopyWebpackPlugin([
+            {from: '../package.json', to: '../build'},
+        ]),
+        new webpack.DefinePlugin({
+            IS_PRODUCTION: JSON.stringify(isProduction),
+            APP_VERSION: JSON.stringify(require('./package.json').version),
+            API_URL: JSON.stringify(dotenv.parsed.API_URL),
+        }),
+    ],
     module: {
         rules: [
             {
@@ -43,13 +74,13 @@ module.exports = {
                         loader: styleLoader,
                     },
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             sourceMap: true,
                         },
                     },
                     {
-                        loader: "sass-loader",
+                        loader: 'sass-loader',
                         options: {
                             sourceMap: true,
                         },
@@ -59,8 +90,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    {loader: "style-loader"},
-                    {loader: "css-loader"},
+                    {loader: 'style-loader'},
+                    {loader: 'css-loader'},
                 ],
             },
             {
@@ -69,28 +100,10 @@ module.exports = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: './images/[indicator].[hash].[ext]'
-                    }
-                }]
-            }
+                        name: './images/[indicator].[hash].[ext]',
+                    },
+                }],
+            },
         ],
     },
-    resolve: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        modules: ['node_modules', sourcePath],
-        alias: {
-            src: sourcePath,
-        },
-    },
-    plugins: [
-        HtmlWebpackPluginConfig,
-        new MiniCssExtractPlugin({
-            filename: "[indicator].css",
-            chunkFilename: "[id].css",
-        }),
-        new CopyWebpackPlugin([
-            { from: '../init.js', to: '../dist' },
-            { from: '../package.json', to: '../dist' }
-        ])
-    ],
 }

@@ -5,3 +5,7 @@ export function useOrDefault<T>(func: () => T, defaultValue: T): T {
     return defaultValue;
   }
 }
+
+export interface IKeyPair<V = string> {
+  [key: string]: V;
+}

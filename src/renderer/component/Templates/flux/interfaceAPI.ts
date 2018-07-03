@@ -1,12 +1,12 @@
 export interface ITemplate {
-  id: string;
-  user_id: number;
   title: string;
-  description: string;
   body: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: any;
+  description?: string;
+  id?: string;
+  user_id?: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
 }
 
 export interface ITemplatesResponse {
@@ -22,8 +22,4 @@ export interface ITemplatesResponse {
   prev_page_url?: any;
   to: number;
   total: number;
-}
-export interface ILayout {
-  description: string;
-  body: string;
 }

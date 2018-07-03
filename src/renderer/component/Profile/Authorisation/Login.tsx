@@ -8,12 +8,10 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import {
-  ILoginRequest,
-  loginActions,
-  setAuthStepAction,
-} from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 const styles = theme => ({
   root: {
@@ -49,32 +47,37 @@ export namespace AuthorizationSpace {
 
   export interface IProps {
     classes?: any;
-    onClickForgotPassword: () => void;
-    onCreateAccount: () => void;
-    onClickNext: (request: ILoginRequest) => () => void;
+    action?: IAuthorisationActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onClickForgotPassword: () => {
-    dispatch(setAuthStepAction(AuthStep.FORGOT_PASSWORD));
-  },
-  onCreateAccount: () => {
-    dispatch(setAuthStepAction(AuthStep.REGISTRATION));
-  },
-  onClickNext: (request: ILoginRequest) => {
-    dispatch(loginActions.REQUEST(request));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
+  onLoginGoogle = () => {
+    this.props.action.loginInGoogle.REQUEST({});
+  }
+
+  onClickForgotPassword = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.FORGOT_PASSWORD });
+  }
+
+  onCreateAccount = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.REGISTRATION });
+  }
+
+  onClickNext = (request: ILoginRequest) => {
+    this.props.action.login.REQUEST({ request });
+  }
+
   render() {
-    const { classes, onClickForgotPassword, onCreateAccount, onClickNext } = this.props;
+    const { classes } = this.props;
 
     const validationSchema = {
       email: {
@@ -87,10 +90,18 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
       },
     };
 
+    const defaultValue = IS_PRODUCTION ? {} :
+      {
+        email: 'freidy.hanae@0ld0x.com',
+        password: 'freidy.hanae@0ld0x.com',
+      }
+    ;
+
     return (
       <FormValidation
         schema={validationSchema}
-        onValidationSuccessful={onClickNext}
+        onValidationSuccessful={this.onClickNext}
+        defaultValue={defaultValue}
       >
         <FormContext.Consumer>
           {(context: IFormContext) => (
@@ -109,7 +120,6 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                             margin='dense'
                           />
                           <TextValidator
-
                             fullWidth
                             id='password'
                             label='Password'
@@ -118,10 +128,11 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
                           />
                         </Grid>
                         <Action
-                          onClickForgotPassword={onClickForgotPassword}
-                          onCreateAccount={onCreateAccount}
+                          onClickForgotPassword={this.onClickForgotPassword}
+                          onCreateAccount={this.onCreateAccount}
                           onClickNext={context.onSubmit}
                           canNext={true}
+                          loginGoogle={this.onLoginGoogle}
                         />
                       </Grid>
                     </Grow>
@@ -136,4 +147,4 @@ class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.ISta
   }
 }
 
-export default withStyles(styles)(Login as any);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login));

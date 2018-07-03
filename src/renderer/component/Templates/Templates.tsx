@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Paper, Typography } from '@material-ui/core';
+import { Fade, Paper, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
@@ -12,15 +12,15 @@ import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
-import { TemplateAction } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateAction, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ElementList } from 'src/renderer/common/List/ElementList';
+import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
-    action?: ITemplateAction;
+    action?: ITemplateActions;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 
@@ -35,14 +35,13 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  action: bindActionCreators(TemplateAction, dispatch),
+  action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
+export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
   state: MailListSpace.IState = {
     newTemplate: null,
@@ -53,12 +52,12 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     this.props.action.loading({ page });
   }
 
-  onSelect = (template: ITemplate) => () => {
+  selectTemplate = (template: ITemplate) => () => {
     this.props.action.select(template);
   }
 
   // TODO: for validation use TextValidator
-  validation = (template: ITemplate): boolean => {
+  private validation = (template: ITemplate): boolean => {
     if (!template.body && template.body.length === 0) {
       this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
       return false;
@@ -109,7 +108,7 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
   }
 
   onCopy = (id: string) => {
-    this.props.action.copy({id});
+    this.props.action.copy({ id });
   }
 
   render() {
@@ -139,26 +138,29 @@ class Templates extends React.Component<MailListSpace.IProps, MailListSpace.ISta
     }
 
     return (
-      <Paper>
-        <ElementList
-          entities={templates}
-          toItem={templateToItem}
-          onOpenItem={this.onSelect}
-          pagination={pagination}
-          onChangePage={this.onChangePage}
-          onCopy={this.onCopy}
-        />
-        <Fab
-          onClick={this.onSelectNewTemplate}
-          icon={<Add/>}
-          position={0}
-          title={'Add new template'}
-          whitCtrl
-          hotKey={'A'}
-        />
-      </Paper>
+      <Fade in timeout={1000}>
+        <Paper>
+          <ListTable
+            title='Emails'
+            entities={templates}
+            toItem={templateToItem}
+            onOpenItem={this.selectTemplate}
+            pagination={pagination}
+            onChangePage={this.onChangePage}
+            onCopy={this.onCopy}
+          />
+          <Fab
+            onClick={this.onSelectNewTemplate}
+            icon={<Add/>}
+            position={0}
+            title={'Add a new email'}
+            whitCtrl
+            hotKey={'A'}
+          />
+        </Paper>
+      </Fade>
     );
   }
 }
 
-export default Templates;
+export default connect(mapStateToProps, mapDispatchToProps)(Templates);

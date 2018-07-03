@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IStyle } from 'type/materialUI';
-import { Paper, withStyles } from '@material-ui/core/';
+import { Fade, Paper, withStyles } from '@material-ui/core/';
 import { TypeBackground } from '@material-ui/core/styles/createPalette';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,7 +23,7 @@ import {
 } from 'src/renderer/component/ImageLibrary/store/selectors';
 import { IImageLibraryItem } from 'src/renderer/component/ImageLibrary/store/models';
 import 'src/renderer/component/ImageLibrary/ImageLibrary.scss';
-import { ImageLibraryDialog } from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
+import ImageLibraryDialog from 'src/renderer/component/ImageLibrary/ImageLibraryDialog';
 import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
@@ -33,7 +33,7 @@ const b = block('image-library');
 
 namespace ImageLibrarySpace {
   export interface IProps {
-    classes?: any;
+    classes?: { root };
     actions?: {
       getImagesRequest: typeof getImagesRequest,
       uploadImagesRequest: typeof uploadImagesRequest,
@@ -58,24 +58,7 @@ const styles: IStyle = theme => ({
   },
 });
 
-const mapStateToProps = state => ({
-  items: getImagesURLSelector(state),
-  pagination: {
-    current_page: getCurrentPageSelector(state),
-    total: getTotalImages(state),
-    last_page: getLastPageSelector(state),
-    per_page: getPerPageSelector(state),
-  },
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
-    dispatch),
-});
-
-@connect(mapStateToProps, mapDispatchToProps)
-class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
+export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
 
   state: ImageLibrarySpace.IState = {
     openDialog: false,
@@ -145,64 +128,84 @@ class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrar
   render() {
     const { classes, pagination } = this.props;
     return (
-      <Paper elevation={4} className={classes.root}>
-        <div className={b()}>
-          <Search search={this.onLoading}/>
-          <TablePagination
-            component='div'
-            count={pagination.total || 0}
-            rowsPerPage={pagination.per_page || 0}
-            rowsPerPageOptions={[15]}
-            page={pagination.current_page - 1}
-            backIconButtonProps={{
-              'aria-label': 'Previous Page',
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Next Page',
-            }}
-            onChangePage={this.onChangePage}
-            onChangeRowsPerPage={this.onChangeRowsPerPage}
-          />
-          <DragAndDropTarget
-            onDrop={this.onDropFile}
-            showOverlay={true}
-            overlayMessage={'Drop files here to add them to your image library'}
-          >
-            <div className={b('container')}>
-              {
-                this.state.chosenImage &&
-                <ImageLibraryDialog
-                  item={this.state.chosenImage}
-                  onDeleteItem={this.deleteItem}
-                  onUpdateItem={this.updateItem}
-                  onClose={this.closeDialog}
+      <Fade in timeout={1000}>
+        <Paper elevation={4} className={classes.root}>
+          <div className={b()}>
+            <Search search={this.onLoading}/>
+            <TablePagination
+              component='div'
+              count={pagination.total || 0}
+              rowsPerPage={pagination.per_page || 0}
+              rowsPerPageOptions={[15]}
+              page={pagination.current_page - 1}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={this.onChangePage}
+              onChangeRowsPerPage={this.onChangeRowsPerPage}
+            />
+            <DragAndDropTarget
+              onDrop={this.onDropFile}
+              showOverlay={true}
+              overlayMessage={'Drop files here to add them to your image library'}
+            >
+              <div className={b('container')}>
+                {
+                  this.state.chosenImage &&
+                  <ImageLibraryDialog
+                    item={this.state.chosenImage}
+                    onDeleteItem={this.deleteItem}
+                    onUpdateItem={this.updateItem}
+                    onClose={this.closeDialog}
+                  />
+                }
+                <ImageLibraryList
+                  items={this.props.items}
+                  onDelete={this.deleteItem}
+                  onSelect={this.onOpenImageInfo}
                 />
-              }
-              <ImageLibraryList
-                items={this.props.items}
-                onDelete={this.deleteItem}
-                onSelect={this.onOpenImageInfo}
-              />
+              </div>
+            </DragAndDropTarget>
+            <div className={b('footer')}>
+              <Button color='primary'>
+                <label htmlFor='upload'>
+                  Upload images
+                </label>
+                <input
+                  id='upload'
+                  className={b('upload-input')}
+                  type='file'
+                  multiple
+                  onChange={this.onUploadFiles}
+                />
+              </Button>
             </div>
-          </DragAndDropTarget>
-          <div className={b('footer')}>
-            <Button color='primary'>
-              <label htmlFor='upload'>
-                Upload images
-              </label>
-              <input
-                id='upload'
-                className={b('upload-input')}
-                type='file'
-                multiple
-                onChange={this.onUploadFiles}
-              />
-            </Button>
           </div>
-        </div>
-      </Paper>
+        </Paper>
+      </Fade>
     );
   }
 }
 
-export default withStyles(styles)(ImageLibrary as any);
+const mapStateToProps = state => ({
+  items: getImagesURLSelector(state),
+  pagination: {
+    current_page: getCurrentPageSelector(state),
+    total: getTotalImages(state),
+    last_page: getLastPageSelector(state),
+    per_page: getPerPageSelector(state),
+  },
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
+    dispatch),
+});
+
+export default withStyles(styles)
+(connect(mapStateToProps, mapDispatchToProps)
+(ImageLibrary as any));

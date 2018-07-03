@@ -20,8 +20,7 @@ namespace ImageLibraryListSpace {
   }
 }
 
-export class ImageLibraryList
-  extends React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
+export class ImageLibraryList extends React.Component<ImageLibraryListSpace.IProps, ImageLibraryListSpace.IState> {
 
   constructor(props) {
     super(props);
@@ -30,10 +29,9 @@ export class ImageLibraryList
   render() {
     const { onDelete, onSelect, items } = this.props;
     return (
-      <>
         <GridList
           cellHeight={240}
-          cols={3}
+          cols={2}
           className={b()}
         >
           {
@@ -64,7 +62,6 @@ export class ImageLibraryList
             )
           }
         </GridList>
-      </>
     );
   }
 }

@@ -1,7 +1,7 @@
 /**
  * Types item menu.
  */
-import { Action } from 'src/renderer/flux/interface';
+import { CreateAction } from 'src/renderer/flux/interface';
 
 export enum MenuItemType {
   ACCOUNT = 'ACCOUNT',
@@ -9,6 +9,7 @@ export enum MenuItemType {
   IMAGE_LIBRARY = 'IMAGE_LIBRARY',
   SNIPPETS = 'SNIPPETS',
   LAYOUTS = 'LAYOUTS',
+  SWIPE = 'SWIPE',
 }
 
 export interface IDrawerMenuState {
@@ -22,5 +23,5 @@ export interface IDrawerMenuActions {
   /**
    * Use for definitions selected item in menu.
    */
-  selectMenuItem: Action<{ selectedItem: MenuItemType }>;
+  selectMenuItem: CreateAction<{ selectedItem: MenuItemType }>;
 }

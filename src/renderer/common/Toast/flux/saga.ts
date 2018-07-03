@@ -1,5 +1,5 @@
 import { call, put, take } from 'redux-saga/effects';
-import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { delay } from 'redux-saga';
 
 function* onSetError(action): IterableIterator<any> {
@@ -9,7 +9,7 @@ function* onSetError(action): IterableIterator<any> {
 
 export function* toastSaga(): IterableIterator<any> {
   while (true) {
-    const action = yield take(FluxToast.Actions.showToast().type);
+    const action = yield take(FluxToast.Actions.showToast('', ToastType.Success).type);
     yield call(onSetError, action);
   }
 }

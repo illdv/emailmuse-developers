@@ -1,0 +1,12 @@
+.list-card__content {
+    display: flex;
+    flex-flow: column;
+}
+
+.list-card__list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: end;
+    align-content: end;
+}

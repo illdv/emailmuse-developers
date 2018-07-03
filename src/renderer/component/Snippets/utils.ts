@@ -1,4 +1,4 @@
-import { ICustomItem } from 'src/renderer/common/List/ElementList';
+import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 
 export const createEmptySnippet = () => ({
@@ -11,7 +11,7 @@ export const createEmptySnippet = () => ({
   created_at: '',
 });
 
-export function snippetToItem(snippet: ISnippet): ICustomItem {
+export function snippetToItem(snippet: ISnippet): IListItem {
   return {
     id: snippet.id.toString(),
     title: snippet.shortcut,

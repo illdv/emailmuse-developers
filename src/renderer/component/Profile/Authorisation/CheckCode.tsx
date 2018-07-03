@@ -5,9 +5,10 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import PaperDialog from 'src/renderer/component/Profile/Authorisation/common/PaperDialog';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { checkCodeActions, setAuthStepAction } from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 export namespace CheckCodeSpace {
   export interface IState {
@@ -16,8 +17,7 @@ export namespace CheckCodeSpace {
 
   export interface IProps {
     profile?: IProfileState;
-    onClickBack?: () => void;
-    onCheckCode?: (code: string) => void;
+    action?: IAuthorisationActions;
   }
 }
 
@@ -26,12 +26,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onClickBack: () => {
-    dispatch(setAuthStepAction(AuthStep.LOGIN));
-  },
-  onCheckCode: (code: string) => {
-    dispatch(checkCodeActions.REQUEST(code));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -41,11 +36,15 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
 
   onCheckCode = value => {
     // noinspection TsLint
-    this.props.onCheckCode(value['check_code']);
+    this.props.action.checkCode.REQUEST({ code: value['check_code'] });
+  }
+
+  onClickBack = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN });
   }
 
   render() {
-    const { profile, onClickBack } = this.props;
+    const { profile } = this.props;
 
     return (
       <FormValidation onValidationSuccessful={this.onCheckCode} schema={{}}>
@@ -56,7 +55,7 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
               subtitle={`A message was sent to ${profile.auth.user.email}.`}
               canNext={true}
               onEnterCompleted={context.onSubmit}
-              onBack={onClickBack}
+              onBack={this.onClickBack}
               id={'check_code'}
               label={'Code'}
               defaultValue={''}

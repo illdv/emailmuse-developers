@@ -10,12 +10,9 @@ import {
   PaperDialogSpace,
 } from 'src/renderer/component/Profile/Authorisation/common/PaperDialog';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
-import {
-  resetPasswordActions,
-  sendCodeOnMailActions,
-  setAuthStepAction,
-} from 'src/renderer/component/Profile/Authorisation/flux/module';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
+import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 enum Step {
   EMAIL,
@@ -59,25 +56,15 @@ export namespace ForgotPasswordSpace {
 
   export interface IProps {
     classes?: any;
-    onSendCode?: (mail: string) => void;
-    resetPassword?: (email: string, token: string, password: string, passwordConfirmation: string) => void;
-    onClickBackToLogin?: () => void;
     onClickNex?: () => void;
+    action?: IAuthorisationActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onClickBackToLogin: () => {
-    dispatch(setAuthStepAction(AuthStep.LOGIN));
-  },
-  onSendCode: (mail: string) => {
-    dispatch(sendCodeOnMailActions.REQUEST(mail));
-  },
-  resetPassword: (email: string, token: string, password: string, passwordConfirmation: string) => {
-    dispatch(resetPasswordActions.REQUEST(email, token, password, passwordConfirmation));
-  },
+  action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -89,9 +76,11 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
     step: Step.EMAIL,
   };
 
-  stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
-    const { onClickBackToLogin } = this.props;
+  onClickBackToLogin = () => {
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN });
+  }
 
+  stepsRecoveriesPassword = (): { [key: string]: PaperDialogSpace.IProps } => {
     return {
       [Step.EMAIL]: {
         title: 'Pleas enter your email',
@@ -100,7 +89,7 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
         id: 'email',
         defaultValue: this.state.mail,
         canNext: true,
-        onBack: onClickBackToLogin,
+        onBack: this.onClickBackToLogin,
       },
       [Step.SECRET_CODE]: {
         title: 'Pleas enter secret code',
@@ -165,11 +154,11 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
   }
 
   onEnterMail = value => {
-    const mail = value.email;
-    this.props.onSendCode(mail);
+    const email = value.email;
+    this.props.action.sendCode.REQUEST({ email });
     this.setState({
       step: Step.SECRET_CODE,
-      mail,
+      mail: email,
     });
   }
 
@@ -182,12 +171,15 @@ class ForgotPassword extends Component<ForgotPasswordSpace.IProps, ForgotPasswor
 
   onEnterNewPassword = value => {
     const { mail, secretCode } = this.state;
-    this.props.resetPassword(
-      mail,
-      secretCode,
-      value.password,
-      value.password_confirmation,
-    );
+    this.props.action.resetPassword.REQUEST({
+      request: {
+        email: mail,
+        token: secretCode,
+        password: value.password,
+        passwordConfirmation: value.password_confirmation,
+      },
+    })
+    ;
   }
 
   render() {

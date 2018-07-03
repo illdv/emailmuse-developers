@@ -2,12 +2,22 @@ import { ComplexActionCreator, ComplexActionCreator1, ComplexActionCreator2 } fr
 import { ActionCreatorsMapObject } from 'redux';
 
 export interface IAsyncAction<R, S, F> extends ActionCreatorsMapObject {
-  REQUEST: Action<R>;
-  SUCCESS: Action<S>;
-  FAILURE: Action<F>;
+  REQUEST: CreateAction<R>;
+  SUCCESS: CreateAction<S>;
+  FAILURE: CreateAction<F>;
 }
 
-export type Action<T> = ComplexActionCreator1<T, T>;
+export interface IAsyncAction2<R, S> extends ActionCreatorsMapObject {
+  REQUEST: CreateAction<R>;
+  SUCCESS: CreateAction<S>;
+  FAILURE: CreateAction<IPayloadError>;
+}
+
+export type CreateAction<T> = ComplexActionCreator1<T, T>;
+
+export interface IPayloadError {
+  error?: string;
+}
 
 export enum ActionStatus {
   REQUEST = 'REQUEST',

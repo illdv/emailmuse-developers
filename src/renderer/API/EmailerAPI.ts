@@ -1,4 +1,3 @@
-import { API_ENDPOINT } from 'src/renderer/API/api.config';
 import axios, { AxiosPromise } from 'axios';
 import { IChangePasswordPayload } from 'src/renderer/component/Profile/Account/flux/module';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
@@ -29,7 +28,7 @@ export namespace Templates {
 
   export function editTemplate(template: ITemplate) {
     const { id, ...remainingData } = template;
-    return axios.put(`${API_ENDPOINT}/templates/${id}`, remainingData);
+    return AxiosWrapper.put(`/templates/${id}`, remainingData);
   }
 
   export function copyTemplate(id: string) {
@@ -37,11 +36,12 @@ export namespace Templates {
   }
 
   export function createTemplate(template: ITemplate) {
-    return axios.post(`${API_ENDPOINT}/templates`, template);
+    return AxiosWrapper.post(`/templates`, template);
   }
 
+  // TODO: WTF! axios -> AxiosWrapper
   export function removeTemplate(templateId: string) {
-    return axios.delete(`${API_ENDPOINT}/templates`, {
+    return axios.delete(`${API_URL}/templates`, {
       data: {
         id: [templateId],
       },
