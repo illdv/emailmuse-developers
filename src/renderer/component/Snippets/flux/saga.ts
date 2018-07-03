@@ -29,7 +29,7 @@ function* loadingSnippetsSaga(action) {
       },
     ));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Loading snippets failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed snippets loading', ToastType.Error));
   }
 }
 
@@ -43,13 +43,13 @@ function* watchLoadingSnippets() {
 function* removeSnippetsSaga(action) {
   try {
     yield call(SnippetsAPI.deleteSnippets, [action.payload.id]);
-    yield put(FluxToast.Actions.showToast('Remove snippets success', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Snippets created', ToastType.Success));
     yield put(SnippetsAction.remove.SUCCESS({}));
 
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Remove snippets failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed snippets created', ToastType.Error));
   }
 }
 
@@ -66,10 +66,10 @@ function* addSnippetsSaga(action) {
     yield put(SnippetsAction.add.SUCCESS({ snippet: axionData.data }));
     const currentPage = yield select(getCurrentPageSelector);
 
-    yield put(FluxToast.Actions.showToast('Add snippets success', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Snippets created', ToastType.Success));
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Add snippets failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed snippets created', ToastType.Error));
   }
 }
 
@@ -83,11 +83,11 @@ function* watchAddSnippets() {
 function* editSnippetsSaga(action) {
   try {
     yield call(SnippetsAPI.editSnippets, action.payload.snippet);
-    yield put(FluxToast.Actions.showToast('Edit snippets success', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Snippets save', ToastType.Success));
     const currentPage = yield select(getCurrentPageSelector);
     yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Edit snippets failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed snippets save', ToastType.Error));
   }
 }
 

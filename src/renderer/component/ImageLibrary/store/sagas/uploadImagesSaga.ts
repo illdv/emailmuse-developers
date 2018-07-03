@@ -14,7 +14,7 @@ function* uploadImagesWorker(action: IActionPayload<File[]>): IterableIterator<a
     const currentPage = yield select(getCurrentPageSelector);
     // Checks for currentPage being correct are implemented in getImagesWorker saga
     yield put(actions.getImagesRequest(currentPage));
-    yield put(FluxToast.Actions.showToast('Image loading success'));
+    yield put(FluxToast.Actions.showToast('Image saved'));
   } catch (error) {
     // TODO: Check this
     const messages = useOrDefault(() => (error.response.data.errors['images.0']['0']), null);

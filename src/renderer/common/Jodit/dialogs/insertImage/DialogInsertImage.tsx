@@ -76,7 +76,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
   }
 
   onSelectImage = (item: IImageLibraryItem) => () => {
-    this.props.insertHTML(`<img width="300px" src="${item.thumb_url}" />`, this.props.handleClose);
+    this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
   }
 
   onChangePage = (e, page) => {

@@ -23,9 +23,9 @@ const sagaRemove = createSagaHandler({
   apiMethod: LayoutAPI.remove,
   callbackIfSuccess: [
     call(layoutLoading),
-    call(toastSuccess, 'Remove layout success'),
+    call(toastSuccess, 'Layout removed'),
   ],
-  callbackIfFailure: () => toastError('Remove layout failed'),
+  callbackIfFailure: () => toastError('Failed layout removed'),
 });
 
 const sagaCreate = createSagaHandler({
@@ -34,9 +34,9 @@ const sagaCreate = createSagaHandler({
   creatorDataForApi: action => action.payload.layout,
   callbackIfSuccess: [
     call(layoutLoading),
-    call(toastSuccess, 'Create layout success'),
+    call(toastSuccess, 'Layout created'),
   ],
-  callbackIfFailure: () => toastError('Create layout failed'),
+  callbackIfFailure: () => toastError('Failed layout created'),
 });
 
 const sagaEdit = createSagaHandler({
@@ -47,7 +47,7 @@ const sagaEdit = createSagaHandler({
     call(layoutLoading),
     call(toastSuccess, 'Layout saved'),
   ],
-  callbackIfFailure: () => toastError('Layout saved failed'),
+  callbackIfFailure: () => toastError('Failed layout saved'),
 });
 
 const watchLoading = createWatch(LayoutActions.loading, sagaLoading);
