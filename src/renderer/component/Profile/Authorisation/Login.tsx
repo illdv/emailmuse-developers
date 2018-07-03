@@ -90,10 +90,18 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
       },
     };
 
+    const defaultValue = IS_PRODUCTION ? {} :
+      {
+        email: 'freidy.hanae@0ld0x.com',
+        password: 'freidy.hanae@0ld0x.com',
+      }
+    ;
+
     return (
       <FormValidation
         schema={validationSchema}
         onValidationSuccessful={this.onClickNext}
+        defaultValue={defaultValue}
       >
         <FormContext.Consumer>
           {(context: IFormContext) => (

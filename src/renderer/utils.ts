@@ -17,3 +17,7 @@ export function bindModuleAction(moduleActions: any, dispatch: any): ActionCreat
     return { ...result, [key]: bindActionCreators(value as any, dispatch) };
   }, {});
 }
+
+export interface IKeyPair<V = string> {
+  [key: string]: V;
+}

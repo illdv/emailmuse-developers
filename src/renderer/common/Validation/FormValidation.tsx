@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import * as validate from 'validate.js';
+import { IKeyPair } from 'src/renderer/utils';
 
 export interface IFormContext {
   onSubmit: () => void;
@@ -22,12 +23,13 @@ export namespace FormValidationSpace {
   export interface IProps {
     onValidationSuccessful: (value) => void;
     schema: object;
+    defaultValue?: IKeyPair;
   }
 }
 
 export class FormValidation extends Component<FormValidationSpace.IProps, FormValidationSpace.IState> {
 
-  state = { values: {}, activeField: {}, errors: {} };
+  state = { values: this.props.defaultValue || {}, activeField: {}, errors: {} };
 
   onSubmit = () => {
     const { values } = this.state;
@@ -39,7 +41,6 @@ export class FormValidation extends Component<FormValidationSpace.IProps, FormVa
 
     if (errors === undefined) {
       this.props.onValidationSuccessful(values);
-      return;
     } else {
       this.setState({
         errors,
