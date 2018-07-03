@@ -1,17 +1,7 @@
 .layout {
     width: 100%;
 }
-.layout__content {
-    display: flex;
-    flex-flow: column wrap;
-}
-.layout__list {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    align-content: center;
-}
+
 .layout__header {
     padding: 12px;
     width: 100%;
