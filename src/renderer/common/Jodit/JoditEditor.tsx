@@ -34,8 +34,6 @@ export namespace JoditEditorSpace {
   }
 }
 
-const editors = [];
-
 export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
 
   state: JoditEditorSpace.IState<DialogName> = {
@@ -61,6 +59,9 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   componentWillUnmount(): void {
     this.destructEditor();
+    if (this.textArea) {
+      this.textArea.remove();
+    }
   }
 
   componentWillUpdate(): void {
@@ -72,20 +73,15 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   destructEditor = () => {
     if (this.editor) {
       this.editor.destruct();
-      const querySelector = document.querySelector('.jodit_container');
-      if (querySelector) {
-        querySelector.remove();
-      }
     }
   }
 
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
-      this.editor = new Jodit(this.textArea.current, this.createOption());
-      editors.push(this.editor);
+      this.editor                    = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue } = this.props;
-      this.editor.value            = value || '';
+      this.editor.value              = value || '';
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }

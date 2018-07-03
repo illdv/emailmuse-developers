@@ -1,14 +1,16 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
-import { ListTable, IListItem } from 'src/renderer/common/List/ListTable/ListTable';
+import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { toItem } from 'src/renderer/component/Layouts/utils';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 
 export namespace SelectLayoutSpace {
   export interface IState {
@@ -16,6 +18,7 @@ export namespace SelectLayoutSpace {
   }
 
   export interface IProps {
+    swipeActions?: ISwipeActions;
     layoutActions?: ILayoutActions;
     layout?: ILayoutState;
   }
@@ -30,11 +33,11 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   }
 
   toItem = (item: ILayout): IListItem => {
-    return {id: item.id, title: item.title, description: '---', rightText: item.updated_at};
+    return { id: item.id, title: item.title, description: '---', rightText: item.updated_at };
   }
 
   onSelect = (item: ILayout) => () => {
-
+    this.props.swipeActions.selectLayout.REQUEST({ layout: item });
   }
 
   onChangePage = (item: ILayout) => () => {
@@ -42,7 +45,7 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   }
 
   render() {
-    const {layouts, pagination} = this.props.layout;
+    const { layouts, pagination } = this.props.layout;
     return (
       <ModalWindow>
         <ListCard
@@ -64,6 +67,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
   layoutActions: bindModuleAction(LayoutActions, dispatch),
 });
 

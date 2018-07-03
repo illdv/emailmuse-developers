@@ -5,7 +5,7 @@ const createAsyncAction = createActionCreator('MODAL_WINDOW');
 
 export enum ModalWindowType {
   SelectLayout = 'SelectLayout',
-  Type2 = 'Type2',
+  Type2        = 'Type2',
 }
 
 const show = createAsyncAction('SHOW');
@@ -18,5 +18,5 @@ export const ModalWindowActions: IModalWindowActions = {
 
 export interface IModalWindowActions {
   show: IAsyncAction2<{ type: ModalWindowType }, {}>;
-  hide: IAsyncAction2<{ type: ModalWindowType }, {}>;
+  hide: IAsyncAction2<{}, {}>;
 }
