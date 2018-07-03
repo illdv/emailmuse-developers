@@ -27,8 +27,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
 
-@(connect(mapStateToProps, mapDispatchToProps))
-export class Layout extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
+export class Auth extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
 
   state = {};
 
@@ -51,3 +50,4 @@ export class Layout extends Component<AuthorizationLayoutSpace.IProps, Authoriza
     }
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

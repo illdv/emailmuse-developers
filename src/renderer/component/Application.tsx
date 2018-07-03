@@ -2,13 +2,15 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Layout } from 'src/renderer/component/Profile/Authorisation/Layout';
 import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
+import Auth from 'src/renderer/component/Profile/Authorisation/Auth';
 
 import './Application.scss';
 import { Toast } from 'src/renderer/common/Toast/Toast';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
+import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
+import { Route } from 'react-router-dom';
 
 export namespace MainLayoutScope {
 
@@ -30,19 +32,15 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
 
   constructor(props: MainLayoutScope.IProps) {
     super(props);
-
-    this.state = {
-      layouts: [],
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
   }
-
   render() {
-    const { token } = this.props.profile.auth.user;
+    // const { token } = this.props.profile.auth.user;
+    const mockComponent = () => <h1> Hello </h1>;
+
     return (
       <ErrorBoundary>
-        {!!token && <MainLayout/> || <Layout/>}
+        <PrivateRoute exact path='/' component={mockComponent}/>
+        <Route path='/login' component={mockComponent} />
         <Toast/>
       </ErrorBoundary>
   );
