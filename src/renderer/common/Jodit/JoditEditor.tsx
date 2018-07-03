@@ -59,9 +59,6 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   componentWillUnmount(): void {
     this.destructEditor();
-    if (this.textArea) {
-      this.textArea.remove();
-    }
   }
 
   componentWillUpdate(): void {
@@ -73,6 +70,10 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   destructEditor = () => {
     if (this.editor) {
       this.editor.destruct();
+      const querySelector = document.querySelector('.jodit_container');
+      if (querySelector) {
+        querySelector.remove();
+      }
     }
   }
 
