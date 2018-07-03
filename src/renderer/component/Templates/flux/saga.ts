@@ -77,11 +77,11 @@ function* copyTemplates(action) {
   try {
     yield call(Templates.copyTemplate, action.payload.id);
 
-    yield put(FluxToast.Actions.showToast('Copy template success.', ToastType.Success));
+    yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
     yield put(TemplateActions.loading({ page }));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Copy template failed', ToastType.Error));
+    yield put(FluxToast.Actions.showToast('Failed template copy', ToastType.Error));
   }
 }
 
