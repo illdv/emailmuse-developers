@@ -7,7 +7,7 @@ import block from 'bem-ts';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Dialog, DialogActions, DialogContent, Paper } from '@material-ui/core';
 import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
 
 const b = block('dialog');

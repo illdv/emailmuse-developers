@@ -22,7 +22,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { WithStyles } from '@material-ui/core/styles/withStyles';
 
 import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 const styles: IStyle = theme => ({
   root: {

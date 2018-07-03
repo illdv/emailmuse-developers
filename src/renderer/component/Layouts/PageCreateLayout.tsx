@@ -15,13 +15,14 @@ import { Loading } from 'src/renderer/common/Loading';
 import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { bindModuleAction, useOrDefault } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
+import { useOrDefault } from 'src/renderer/utils';
 
 export namespace PageCreateLayoutSpace {
   export interface IProps {
@@ -57,7 +58,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
   state: PageCreateLayoutSpace.IState = {
     newTemplate: null,
     open: false,
-  }
+  };
 
   componentDidMount() {
     const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);

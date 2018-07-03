@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
 import { ListTable, IListItem } from 'src/renderer/common/List/ListTable/ListTable';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';

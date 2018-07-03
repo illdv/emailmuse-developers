@@ -6,7 +6,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import PaperInCenter from 'src/renderer/component/Profile/Authorisation/common/PaperInCenter';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 export namespace ErrorBoundarySpace {
   export interface IState {
