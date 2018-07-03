@@ -26,7 +26,7 @@ export const AccountItemNew: React.SFC<AccountItemNewSpace.IProps> = (props: Acc
           <AddIcon/>
         </Avatar>
       </ListItemAvatar>
-      <ListItemText primary={'Add new account'}/>
+      <ListItemText primary={'Add a new account'}/>
     </ListItem>
   );
 };

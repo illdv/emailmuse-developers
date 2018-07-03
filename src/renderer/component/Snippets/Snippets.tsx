@@ -140,7 +140,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
             onClick={this.selectNew}
             icon={<Add/>}
             position={0}
-            title={'Add new snippet'}
+            title={'Add a new snippet'}
             whitCtrl
             hotKey={'A'}
           />

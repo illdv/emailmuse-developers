@@ -78,7 +78,7 @@ export function Action(props: IActionProps) {
       <Grid container justify={'space-between'}>
         <Grid container direction={'row'} justify={'space-between'} alignItems={'center'}>
           <Button variant='contained' color='primary' onClick={loginGoogle}>
-            Sing in Google
+            Sign in Google
           </Button>
           <ButtonHotKey
             hotKey={'Enter'}
