@@ -13,12 +13,10 @@ const initialState = (): IModalWindowState => ({
 const reducer = createReducer({}, initialState());
 
 reducer.on(ModalWindowActions.show.REQUEST, (state, payload): IModalWindowState => {
-  console.log('show.REQUEST');
   return {...state, ...payload};
 });
 
-reducer.on(ModalWindowActions.hide.REQUEST, (state, payload): IModalWindowState => {
-  console.log('hide.REQUEST');
+reducer.on(ModalWindowActions.hide.REQUEST, (): IModalWindowState => {
   return initialState();
 });
 

@@ -1,8 +1,9 @@
 import { call, put } from 'redux-saga/effects';
-import { createSagaHandler, createWatch, toastError, toastSuccess } from 'src/renderer/flux/saga/utils';
+import { createSagaHandler, createWatch} from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { LayoutAPI } from 'src/renderer/API/LayoutAPI';
 import { extractPagination } from 'src/renderer/common/List/utils';
+import { toastError, toastSuccess } from 'src/renderer/flux/saga/toast';
 
 function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));

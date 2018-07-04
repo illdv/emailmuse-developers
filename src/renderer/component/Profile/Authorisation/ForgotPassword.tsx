@@ -12,7 +12,7 @@ import {
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 enum Step {
   EMAIL,

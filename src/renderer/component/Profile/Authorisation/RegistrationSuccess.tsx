@@ -8,8 +8,8 @@ import { Title } from 'src/renderer/component/Profile/Authorisation/common/Commo
 import InCenter from 'src/renderer/common/InCenter';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 export namespace RegistrationSuccessSpace {
   export interface IState {
