@@ -11,10 +11,16 @@ import { Router as RouterConnect } from 'react-router';
 import reducer from './flux/rootReducers';
 import rootSaga from './flux/rootSaga';
 import Application from 'src/renderer/component/Application';
+import { whyDidYouUpdate } from 'why-did-you-update';
+
+if (IS_PRODUCTION) {
+  whyDidYouUpdate(React);
+}
+document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
 
 const sagaMiddleware = createSagaMiddleware();
-
 const history = createHistory();
+
 const routeMiddleware = routerMiddleware(history);
 
 const store = createStore(
@@ -23,8 +29,6 @@ const store = createStore(
 );
 
 sagaMiddleware.run(rootSaga);
-
-document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
 
 ReactDOM.render(
   <Provider store={store}>

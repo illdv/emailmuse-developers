@@ -13,14 +13,11 @@ import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
 import { Route } from 'react-router-dom';
 
 export namespace MainLayoutScope {
-
   export interface IState {
   }
-
   export interface IProps {
     profile?: IProfileState;
   }
-
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -36,8 +33,8 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   render() {
     return (
       <ErrorBoundary>
-        <PrivateRoute exact path='/' component={MainLayout}/>
         <Route path='/login' component={Auth} />
+        <PrivateRoute path='/' component={MainLayout}/>
         <Toast/>
       </ErrorBoundary>
   );
