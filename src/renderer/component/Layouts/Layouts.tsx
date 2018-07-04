@@ -12,7 +12,7 @@ import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 import './Layouts.scss';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { Loading } from 'src/renderer/common/Loading';

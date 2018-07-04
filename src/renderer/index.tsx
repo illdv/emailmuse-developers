@@ -24,7 +24,7 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga);
 
-document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develope'}`;
+document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
 
 ReactDOM.render(
   <Provider store={store}>

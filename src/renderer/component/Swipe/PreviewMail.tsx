@@ -7,13 +7,12 @@ import { ISubject } from 'src/renderer/component/Swipe/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { bindModuleAction } from 'src/renderer/utils';
-import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateActions } from 'src/renderer/component/Templates/flux/interface';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { bindActionCreators } from 'redux';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 
 export namespace PreviewMailSpace {
   export interface IState {
@@ -22,7 +21,7 @@ export namespace PreviewMailSpace {
 
   export interface IProps {
     mail: ISubject;
-    templateActions?: ITemplateActions;
+    swipeActions?: ISwipeActions;
     drawerMenuAction?: IDrawerMenuActions;
   }
 }
@@ -32,9 +31,9 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
   state: PreviewMailSpace.IState = {};
 
   onAddInLayout = () => {
-    const { templateActions, drawerMenuAction, mail } = this.props;
-    drawerMenuAction.selectMenuItem({selectedItem: MenuItemType.TEMPLATES});
-    templateActions.create(mail);
+    const { swipeActions, drawerMenuAction, mail } = this.props;
+    // drawerMenuAction.selectMenuItem({selectedItem: MenuItemType.TEMPLATES});
+    swipeActions.selectEmail.REQUEST({email: mail});
   }
 
   render() {
@@ -76,7 +75,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 const mapStateToProps = (state: IGlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  templateActions: bindModuleAction(TemplateActions, dispatch),
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
   drawerMenuAction: bindActionCreators(DrawerMenuAction, dispatch),
 });
 

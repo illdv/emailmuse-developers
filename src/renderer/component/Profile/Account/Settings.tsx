@@ -15,7 +15,7 @@ import InCenter from 'src/renderer/common/InCenter';
 import ChangePasswordDialog from './ChangePasswordDialog';
 import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 const styles: IStyle = theme => ({
   root: {

@@ -34,8 +34,6 @@ export namespace JoditEditorSpace {
   }
 }
 
-const editors = [];
-
 export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
 
   state: JoditEditorSpace.IState<DialogName> = {
@@ -82,10 +80,9 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
-      this.editor = new Jodit(this.textArea.current, this.createOption());
-      editors.push(this.editor);
+      this.editor                    = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue } = this.props;
-      this.editor.value            = value || '';
+      this.editor.value              = value || '';
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }

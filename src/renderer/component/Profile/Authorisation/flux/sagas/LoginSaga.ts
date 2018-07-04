@@ -7,9 +7,9 @@ import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
 import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
-import { errorHandler } from 'src/renderer/flux/saga/utils';
 import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 
 const { ipcRenderer } = (window as any).require('electron');
 

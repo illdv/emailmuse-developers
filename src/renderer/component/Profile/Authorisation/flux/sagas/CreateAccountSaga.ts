@@ -3,7 +3,7 @@ import { call, put, take } from 'redux-saga/effects';
 import { sendCode } from 'src/renderer/API/AuthAPI';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { errorHandler } from 'src/renderer/flux/saga/utils';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 
 function* onCreateAccount(action): IterableIterator<any> {
   const requestUser = action.payload.user;

@@ -10,8 +10,8 @@ import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import { ICreateAccountRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { bindModuleAction } from 'src/renderer/utils';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 const styles = () => ({
   root: {

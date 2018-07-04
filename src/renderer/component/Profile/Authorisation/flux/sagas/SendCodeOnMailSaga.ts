@@ -2,7 +2,7 @@ import { call, put, take } from 'redux-saga/effects';
 
 import { sendCodeOnMail } from 'src/renderer/API/AuthAPI';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { errorHandler } from 'src/renderer/flux/saga/utils';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 
 function* onSendCodeOnMail(action: { payload: { email: string } }): IterableIterator<any> {
   try {

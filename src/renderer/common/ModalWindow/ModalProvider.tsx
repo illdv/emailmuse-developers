@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { bindModuleAction } from 'src/renderer/utils';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
 import SelectLayout from 'src/renderer/common/ModalWindow/SelectLayout';

@@ -1,42 +1,24 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Action } from 'redux-act';
 
 import { all, call, put, take } from 'redux-saga/effects';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
-import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 
-export function* toastSuccess(messages: string) {
-  yield put(FluxToast.Actions.showToast(messages, ToastType.Success));
+export function* showModal(type: ModalWindowType) {
+  yield put(ModalWindowActions.show.REQUEST({ type }));
 }
 
-export function* toastError(messages: string) {
-  yield put(FluxToast.Actions.showToast(messages, ToastType.Error));
-}
-
-export function* errorHandler(error: AxiosError) {
-  const messages = yield extractMessages(error);
-  yield call(toastError, messages);
-}
-
-export function* extractMessages(error: AxiosError) {
-  if (!error.response) {
-    return error.message;
-  }
-  if (error.response.status === 422) {
-    const errors          = error.response.data.errors;
-    const keyFirstElement = Object.keys(errors)[0];
-    return errors[keyFirstElement];
-  }
-  if (error.response.status === 400) {
-    return error.response.data.message;
-  }
-  if (error.response.status === 401) {
-    yield put(AuthorisationActions.logout.REQUEST({}));
-    return error.response.data.message;
-  }
-  console.log(error);
-  return 'Error undefined';
+// TODO: fix any
+/**
+ * Use for map dispatch actions from Module.
+ */
+export function bindModuleAction(moduleActions: any, dispatch: any): ActionCreatorsMapObject {
+  return Object.entries(moduleActions).reduce((result, [key, value]): ActionCreatorsMapObject => {
+    return { ...result, [key]: bindActionCreators(value as any, dispatch) };
+  }, {});
 }
 
 export function createWatch(actionCreators: IAsyncAction2<any, any>, handler: (action: any) => void) {
