@@ -11,6 +11,7 @@ import { RegistrationSuccess } from 'src/renderer/component/Profile/Authorisatio
 import { CheckCode } from 'src/renderer/component/Profile/Authorisation/CheckCode';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { Redirect } from 'react-router-dom';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {

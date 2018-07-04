@@ -34,13 +34,10 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
     super(props);
   }
   render() {
-    // const { token } = this.props.profile.auth.user;
-    const mockComponent = () => <h1> Hello </h1>;
-
     return (
       <ErrorBoundary>
-        <PrivateRoute exact path='/' component={mockComponent}/>
-        <Route path='/login' component={mockComponent} />
+        <PrivateRoute exact path='/' component={MainLayout}/>
+        <Route path='/login' component={Auth} />
         <Toast/>
       </ErrorBoundary>
   );

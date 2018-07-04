@@ -1,6 +1,7 @@
 import { all, call, put, take, takeEvery } from 'redux-saga/effects';
 import axios, { AxiosResponse } from 'axios';
 import { Action } from 'redux-act';
+import {push} from 'react-router-redux';
 
 import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
@@ -19,7 +20,7 @@ function* watcherSetToken() {
 
     CustomStorage.setItem('token', token, false);
     // noinspection TsLint
-    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }
 }
 
@@ -28,7 +29,7 @@ function* watcherLogout() {
     yield take(AuthorisationActions.logout.REQUEST(null).type);
     CustomStorage.clear();
     // noinspection TsLint
-    axios.defaults.headers.common['authorization'] = ``;
+    axios.defaults.headers.common.authorization = ``;
   }
 }
 
@@ -40,6 +41,8 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     yield put(AuthorisationActions.login.SUCCESS({
       user: extractUser(response),
     }));
+    // redirect to main page
+    yield put(push('/'));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
