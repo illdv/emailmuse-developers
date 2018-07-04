@@ -3,6 +3,7 @@ import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
 import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
 import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
 import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
+import { routerReducer } from 'react-router-redux';
 
 import templates from 'src/renderer/component/Templates/flux/module';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
@@ -44,6 +45,7 @@ const appReducers = combineReducers({
   layouts,
   modalWindow,
   swipe,
+  router: routerReducer,
 });
 
 const rootReducer = (state, action) => {
