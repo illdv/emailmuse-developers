@@ -18,7 +18,7 @@
     "pack": "electron-builder --dir",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "clear:project": "rm -rf node_modules build dist"
+    "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i"
   },
   "dependencies": {
     "@material-ui/core": "^1.3.0",

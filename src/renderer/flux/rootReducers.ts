@@ -11,6 +11,7 @@ import drawerMenu from 'src/renderer/component/Menu/flux/action';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/ModalWindow/flux/reducer';
 import swipe, { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
+import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 
 import { ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
@@ -32,6 +33,7 @@ export interface IGlobalState {
   layouts: ILayoutState;
   modalWindow: IModalWindowState;
   swipe: ISwipeState;
+  editor: IEditorState;
 }
 
 const appReducers = combineReducers({
@@ -45,6 +47,7 @@ const appReducers = combineReducers({
   layouts,
   modalWindow,
   swipe,
+  editor,
   router: routerReducer,
 });
 

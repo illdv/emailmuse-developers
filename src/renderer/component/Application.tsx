@@ -11,6 +11,7 @@ import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
 import { Route } from 'react-router-dom';
+import Editor from 'src/renderer/component/Editor/Editor';
 
 export namespace MainLayoutScope {
 
@@ -38,6 +39,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
       <ErrorBoundary>
         <PrivateRoute exact path='/' component={MainLayout}/>
         <Route path='/login' component={Auth} />
+        <Route path='/editor' component={Editor} />
         <Toast/>
       </ErrorBoundary>
   );

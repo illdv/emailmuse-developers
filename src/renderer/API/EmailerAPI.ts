@@ -23,25 +23,25 @@ export namespace Accounts {
 // TODO: Move in file
 export namespace Templates {
   export function getTemplates(page): any {
-    return AxiosWrapper.get(`/templates/`, {page});
+    return AxiosWrapper.get(`/emails/`, { page });
   }
 
   export function editTemplate(template: ITemplate) {
     const { id, ...remainingData } = template;
-    return AxiosWrapper.put(`/templates/${id}`, remainingData);
+    return AxiosWrapper.put(`/emails/${id}`, remainingData);
   }
 
   export function copyTemplate(id: string) {
-    return AxiosWrapper.post(`/templates/${id}/copy`);
+    return AxiosWrapper.post(`/emails/${id}/copy`);
   }
 
   export function createTemplate(template: ITemplate) {
-    return AxiosWrapper.post(`/templates`, template);
+    return AxiosWrapper.post(`/emails`, { emails: [template] });
   }
 
   // TODO: WTF! axios -> AxiosWrapper
   export function removeTemplate(templateId: string) {
-    return axios.delete(`${API_URL}/templates`, {
+    return axios.delete(`${API_URL}/emails`, {
       data: {
         id: [templateId],
       },

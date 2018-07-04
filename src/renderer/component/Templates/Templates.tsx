@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
-import { createEmptyTemplate, templateToItem } from 'src/renderer/component/Templates/utils';
+import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
@@ -16,11 +16,15 @@ import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { EntityType, ParamType } from 'src/renderer/component/Editor/flux/interface';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
     action?: ITemplateActions;
+    editorActions?: IEditorActions;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
 
@@ -28,18 +32,6 @@ export namespace MailListSpace {
     newTemplate: ITemplate;
   }
 }
-
-const mapStateToProps = (state: IGlobalState) => ({
-  templates: state.templates,
-});
-
-// TODO: Use createActions!
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  action: bindActionCreators(TemplateActions, dispatch),
-  onShowToast: (messages: string, type: ToastType) => {
-    dispatch(FluxToast.Actions.showToast(messages, type));
-  },
-});
 
 export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
 
@@ -74,7 +66,17 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   onSelectNewTemplate = () => {
-    this.props.action.select(createEmptyTemplate());
+    this.props.editorActions.edit.REQUEST({
+      editEntity: {
+        id: null,
+        type: EntityType.Email,
+        html: 'Content email',
+        params: {
+          title: { value: 'Title email', type: ParamType.Text },
+          description: { value: 'Description email', type: ParamType.Text },
+        },
+      },
+    });
   }
 
   onSaveOrCreate = (newTemplate: ITemplate, saveAndClose: boolean = false) => {
@@ -162,5 +164,18 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     );
   }
 }
+
+const mapStateToProps = (state: IGlobalState) => ({
+  templates: state.templates,
+});
+
+// TODO: Use createActions!
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  action: bindActionCreators(TemplateActions, dispatch),
+  onShowToast: (messages: string, type: ToastType) => {
+    dispatch(FluxToast.Actions.showToast(messages, type));
+  },
+  editorActions: bindModuleAction(EditorActions, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Templates);
