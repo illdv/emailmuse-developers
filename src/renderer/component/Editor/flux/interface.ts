@@ -3,6 +3,7 @@
  */
 export interface IEditEntity {
   id: string;
+  idEditSession: string;
   html: string;
   type: EntityType;
   params: IEditEntityParameter;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { TextField } from '@material-ui/core';
+import { Close, Delete, Save } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
@@ -9,20 +10,20 @@ import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
+import { Fab } from 'src/renderer/common/Fab';
+import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
+
 import block from 'bem-ts';
 
 import './Editor.scss';
-import { Fab } from 'src/renderer/common/Fab';
-import { Close, Delete, Save } from '@material-ui/icons';
-import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 
 const b = block('editor');
 
 export namespace EditorSpace {
   export interface IState {
     html: string;
+    idEditSession: string;
     hasChange: boolean;
-    editEntity: IEditEntity;
     params: IEditEntityParameter;
   }
 
@@ -36,7 +37,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   state: EditorSpace.IState = {
     html: '',
-    editEntity: null,
+    idEditSession: '',
     hasChange: false,
     params: {},
   };
@@ -45,13 +46,13 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     nextProps: EditorSpace.IProps,
     prevState: EditorSpace.IState): EditorSpace.IState {
 
-    const { editor } = nextProps;
-    if (editor.editEntity !== prevState.editEntity) {
+    const { html, params, idEditSession } = nextProps.editor.editEntity;
+    if (idEditSession !== prevState.idEditSession) {
       return {
         hasChange: false,
-        editEntity: editor.editEntity,
-        html: editor.editEntity.html,
-        params: editor.editEntity.params,
+        html,
+        params,
+        idEditSession,
       };
     }
     return null;
@@ -70,14 +71,17 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       ...state,
       params: {
         ...state.params,
-        [key]: value,
+        [key]: {
+          ...state.params[key],
+          value,
+        },
       },
     } as any));
   }
 
   getEntity = (): IEditEntity => {
     return {
-      ...this.state.editEntity,
+      ...this.props.editor.editEntity,
       html: this.state.html,
       params: this.state.params,
     };
