@@ -7,6 +7,7 @@ import { toastSaga } from 'src/renderer/common/Toast/flux/saga';
 import { imageLibraryRootSaga } from 'src/renderer/component/ImageLibrary/store/sagas/imageLibraryRootSaga';
 import { watcherChangePassword, watcherGetProfile, watcherName } from '../component/Profile/Account/flux/saga';
 import { checkCodeSaga } from 'src/renderer/component/Profile/Authorisation/flux/sagas/CheckCodeSaga';
+import { menuWatcher } from 'src/renderer/component/Menu/flux/saga';
 
 import login from 'src/renderer/component/Profile/Authorisation/flux/sagas/LoginSaga';
 import templates from 'src/renderer/component/Templates/flux/saga';
@@ -30,5 +31,6 @@ export default function* rootSaga() {
     ...snippets.map(fork),
     ...layouts.map(fork),
     ...swipe.map(fork),
+    menuWatcher,
   ];
 }

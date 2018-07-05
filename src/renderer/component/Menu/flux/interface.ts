@@ -23,5 +23,5 @@ export interface IDrawerMenuActions {
   /**
    * Use for definitions selected item in menu.
    */
-  selectMenuItem: CreateAction<{ selectedItem: MenuItemType }>;
+  selectMenuItem: CreateAction<{ selectedItem: MenuItemType  }>;
 }
