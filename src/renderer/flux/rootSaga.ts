@@ -14,6 +14,7 @@ import templates from 'src/renderer/component/Templates/flux/saga';
 import snippets from 'src/renderer/component/Snippets/flux/saga';
 import layouts from 'src/renderer/component/Layouts/flux/saga';
 import swipe from 'src/renderer/component/Swipe/flux/saga';
+import editor from 'src/renderer/component/Editor/flux/saga';
 
 export default function* rootSaga() {
   yield [
@@ -32,5 +33,6 @@ export default function* rootSaga() {
     ...layouts.map(fork),
     ...swipe.map(fork),
     menuWatcher,
+    ...editor.map(fork),
   ];
 }
