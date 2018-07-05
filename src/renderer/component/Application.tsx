@@ -36,7 +36,6 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
       <ErrorBoundary>
         <Route path='/login' component={Auth} />
         <PrivateRoute path='/' component={MainLayout}/>
-        <Route path='/editor' component={Editor} />
         <Toast/>
       </ErrorBoundary>
   );
