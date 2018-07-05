@@ -105,6 +105,9 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     this.props.editorActions.save.REQUEST({
       editEntity: this.getEntity(),
     });
+    this.setState({
+      hasChange: false,
+    });
   }
 
   onSaveAndClose = () => {
