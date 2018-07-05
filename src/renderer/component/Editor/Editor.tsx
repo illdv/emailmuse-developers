@@ -14,6 +14,7 @@ import block from 'bem-ts';
 import './Editor.scss';
 import { Fab } from 'src/renderer/common/Fab';
 import { Close, Delete, Save } from '@material-ui/icons';
+import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 
 const b = block('editor');
 
@@ -74,36 +75,43 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     } as any));
   }
 
+  getEntity = (): IEditEntity => {
+    return {
+      ...this.state.editEntity,
+      html: this.state.html,
+      params: this.state.params,
+    };
+  }
+
   onRemove = () => {
-    //
+    this.props.editorActions.remove.REQUEST({
+      editEntity: this.getEntity(),
+    });
   }
 
   onSave = () => {
     this.props.editorActions.save.REQUEST({
-      editEntity: {
-        ...this.state.editEntity,
-        html: this.state.html,
-        params: this.state.params,
-      },
+      editEntity: this.getEntity(),
     });
   }
 
   onClose = () => {
-    //
+    this.props.editorActions.close.REQUEST({
+      editEntity: this.getEntity(),
+    });
   }
 
   renderParameters = () => {
-    return Object.entries(this.state.params).map(([key, { value }]) => (
+    return Object.keys(this.state.params).map(key => (
       <TextField
         key={key}
         className={b('text-field')}
         id={key}
-        label={key.charAt(0).toUpperCase() + key.slice(1)}
+        label={firstSymbolUp(key)}
         margin='normal'
         InputLabelProps={{
           shrink: true,
         }}
-        defaultValue={value}
         value={this.state.params[key].value}
         onChange={this.onChangeField(key)}
       />

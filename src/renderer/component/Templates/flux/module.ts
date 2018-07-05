@@ -86,13 +86,6 @@ reducer.on(remove, state => ({
 
 reducer.on(createSuccess, (state, payload) => ({
   ...state,
-  selectedTemplate: payload[0],
-  status: ActionStatus.SUCCESS,
-}));
-
-reducer.on(select, (state, payload) => ({
-  ...state,
-  selectedTemplate: payload,
   status: ActionStatus.SUCCESS,
 }));
 

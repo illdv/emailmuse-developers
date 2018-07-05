@@ -29,11 +29,19 @@ function* sagaSave(action: Action<{ editEntity: IEditEntity }>) {
 }
 
 function* sagaClose(action: Action<{ editEntity: IEditEntity }>) {
-  yield put(push('/editor'));
+  yield put(push('/'));
 }
 
 function* sagaRemove(action: Action<{ editEntity: IEditEntity }>) {
-  yield put(push('/editor'));
+  const { type, id } = action.payload.editEntity;
+  if (!id) {
+    yield put(push('/'));
+    return;
+  }
+  if (type === EntityType.Email) {
+    yield put(TemplateActions.remove(id));
+    yield put(push('/'));
+  }
 }
 
 const watchEdit   = createWatch(EditorActions.edit, sagaEdit);
@@ -41,4 +49,4 @@ const watchSave   = createWatch(EditorActions.save, sagaSave);
 const watchClose  = createWatch(EditorActions.close, sagaClose);
 const watchRemove = createWatch(EditorActions.remove, sagaRemove);
 
-export default [watchEdit, watchSave];
+export default [watchEdit, watchSave, watchClose, watchRemove];
