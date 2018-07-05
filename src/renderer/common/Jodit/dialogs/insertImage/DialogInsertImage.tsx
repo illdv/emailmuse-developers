@@ -24,6 +24,7 @@ import {
 
 import './DialogInsertImage.scss';
 import { IPagination } from 'src/renderer/common/List/interface';
+import { Search } from 'src/renderer/common/Search';
 
 const b = block('dialogs-select-image');
 
@@ -83,6 +84,11 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
     this.props.actions.getImagesRequest(page + 1);
   }
 
+  onLoading = (searchWorld: string) => {
+    this.props.actions.getImagesRequest(1, searchWorld);
+    this.setState({ searchWorld });
+  }
+
   render() {
     const { pagination } = this.props;
     return (
@@ -97,6 +103,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
         <Paper elevation={4}>
           <DialogContent>
             <div className={b('container')}>
+              <Search search={this.onLoading}/>
               {
                 pagination.total &&
                 <TablePagination
