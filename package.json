@@ -26,7 +26,7 @@
     "axios": "^0.18.0",
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",
-    "jodit": "https://github.com/Kamys/jodit/tarball/master",
+    "jodit": "^3.2.6",
     "log4js": "^2.6.1",
     "moment-es6": "^1.0.0",
     "react": "^16.3.2",
