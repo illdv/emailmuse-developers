@@ -14,14 +14,11 @@ import { Route } from 'react-router-dom';
 import Editor from 'src/renderer/component/Editor/Editor';
 
 export namespace MainLayoutScope {
-
   export interface IState {
   }
-
   export interface IProps {
     profile?: IProfileState;
   }
-
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -37,8 +34,8 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   render() {
     return (
       <ErrorBoundary>
-        <PrivateRoute exact path='/' component={MainLayout}/>
         <Route path='/login' component={Auth} />
+        <PrivateRoute path='/' component={MainLayout}/>
         <Route path='/editor' component={Editor} />
         <Toast/>
       </ErrorBoundary>

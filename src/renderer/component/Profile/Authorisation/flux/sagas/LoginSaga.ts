@@ -42,7 +42,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
       user: extractUser(response),
     }));
     // redirect to main page
-    yield put(push('/'));
+    yield put(push('/emails'));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
