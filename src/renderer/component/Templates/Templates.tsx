@@ -69,6 +69,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.editorActions.edit.REQUEST({
       editEntity: {
         id: null,
+        idEditSession: new Date().getTime().toString(),
         type: EntityType.Email,
         html: 'Content email',
         params: {
