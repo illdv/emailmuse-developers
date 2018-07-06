@@ -1,9 +1,11 @@
 /**
- * Params for editor
+ * Params for editor.
+ * idBackEnd get when we send Entity on back end.
+ * idFrontEnd use
  */
 export interface IEditEntity {
   id: string;
-  idEditSession: string;
+  idFrontEnd: string;
   html: string;
   type: EntityType;
   params: IEditEntityParameter;
