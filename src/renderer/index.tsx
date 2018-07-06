@@ -11,11 +11,11 @@ import { Router as RouterConnect } from 'react-router';
 import reducer from './flux/rootReducers';
 import rootSaga from './flux/rootSaga';
 import Application from 'src/renderer/component/Application';
-import { whyDidYouUpdate } from 'why-did-you-update';
-
-if (IS_PRODUCTION) {
-  whyDidYouUpdate(React);
-}
+// import { whyDidYouUpdate } from 'why-did-you-update';
+//
+// if (IS_PRODUCTION) {
+//   whyDidYouUpdate(React);
+// }
 document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
 
 const sagaMiddleware = createSagaMiddleware();
