@@ -122,7 +122,6 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
-    this.setState({ searchWorld });
   }
 
   render() {

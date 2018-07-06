@@ -7,7 +7,7 @@ import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import { Router as RouterConnect } from 'react-router';
-import { whyDidYouUpdate } from 'why-did-you-update';
+// import { whyDidYouUpdate } from 'why-did-you-update';
 
 import reducer from './flux/rootReducers';
 import rootSaga from './flux/rootSaga';
