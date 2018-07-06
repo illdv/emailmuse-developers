@@ -104,7 +104,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   templates: state.templates,
 });
 
-// TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {

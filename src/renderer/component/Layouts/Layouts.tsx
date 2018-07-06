@@ -11,7 +11,6 @@ import { ITemplateActions } from 'src/renderer/component/Templates/flux/interfac
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 import './Layouts.scss';
-import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
@@ -20,8 +19,10 @@ import { Fab } from 'src/renderer/common/Fab';
 import PageCreateLayout from 'src/renderer/component/Layouts/PageCreateLayout';
 import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import ListCard, { IListCardItem } from 'src/renderer/common/List/ListCard/ListCard';
+import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { toItem } from 'src/renderer/component/Layouts/utils';
+import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
 const b = block('layout');
 
@@ -36,6 +37,7 @@ export namespace LayoutsSpace {
     actions?: ITemplateActions;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
+    editorActions?: IEditorActions;
     showPopUp: boolean;
   }
 }
@@ -48,17 +50,16 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     editor: {},
   };
 
+  componentDidMount(): void {
+    this.props.actionLayout.loading.REQUEST({ page: 0 });
+  }
+
   createTemplate = ({ title, body }: ILayout) => {
-    this.props.actions.selectMenuItem({ selectedItem: MenuItemType.TEMPLATES });
-    this.props.actions.create({ body, title, description: '---' });
+    this.props.editorActions.edit.REQUEST(emailToEditEntity({ body, title, description: '---' }));
   }
 
   onSkip = () => {
     this.createTemplate({ body: 'Example text', title: 'Email' });
-  }
-
-  componentDidMount(): void {
-    this.props.actionLayout.loading.REQUEST({ page: 0 });
   }
 
   onSelect = (layout: ILayout) => () => {
@@ -112,8 +113,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
       />
     );
 
-    this.setState({ editor });
-    this.setState({ editMode: true });
+    this.setState({ editor, editMode: true });
   }
 
   render() {
@@ -175,8 +175,8 @@ const mapStateToProps = (state: IGlobalState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return ({
     actionLayout: bindModuleAction(LayoutActions, dispatch),
+    editorActions: bindModuleAction(EditorActions, dispatch),
     actions: {
-      select: bindActionCreators(TemplateActions.select, dispatch),
       selectMenuItem: bindActionCreators(DrawerMenuAction.selectMenuItem, dispatch),
       create: bindActionCreators(TemplateActions.create, dispatch),
     },
