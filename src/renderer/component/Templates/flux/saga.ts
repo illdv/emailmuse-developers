@@ -7,9 +7,11 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { useOrDefault } from 'src/renderer/utils';
 
 function getCurrentPageSelector(state: IGlobalState) {
-  return state.templates.pagination.current_page;
+  return useOrDefault(() => state.templates.pagination.current_page, 0);
 }
 
 function* loadingTemplates(action) {
@@ -48,9 +50,9 @@ function* createTemplate(action) {
     yield put(TemplateActions.createSuccess(axionData.data));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
-    const page = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page, hidePreloader: true }));
   } catch (error) {
+    yield call(errorHandler, error);
+    console.log(error);
     yield put(FluxToast.Actions.showToast('Failed email created', ToastType.Error));
   }
 }

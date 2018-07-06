@@ -11,7 +11,7 @@ import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Au
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 
-const { ipcRenderer } = (window as any).require('electron');
+/*const { ipcRenderer } = (window as any).require('electron');*/
 
 function* watcherSetToken() {
   while (true) {
@@ -51,7 +51,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
 
 function* getAccessToken() {
   const response = yield AxiosWrapper.get('/google/auth/redirect-url');
-  ipcRenderer.send('authorized-google', response.data.url);
+  /*ipcRenderer.send('authorized-google', response.data.url);*/
   return yield call(getToken);
 }
 
@@ -80,9 +80,9 @@ function* loginSaga(): IterableIterator<any> {
 
 function getToken() {
   return new Promise((resolve, reject) => {
-    ipcRenderer.on('authorized-google-success', (event, value) => {
+    /*ipcRenderer.on('authorized-google-success', (event, value) => {
       resolve(value);
-    });
+    });*/
   });
 }
 

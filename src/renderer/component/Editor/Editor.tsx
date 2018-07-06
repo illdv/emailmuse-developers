@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Fade, Paper, TextField } from '@material-ui/core';
+import { Fade, TextField } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';

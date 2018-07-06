@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button/Button';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Dialog, DialogActions, DialogContent, Paper } from '@material-ui/core';
-import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@material-ui/core';
+import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
 
@@ -17,7 +17,7 @@ export namespace SelectLayoutSpace {
   }
 
   export interface IProps {
-    type: ModalWindowType;
+    title?: string;
     modalWindow?: IModalWindowState;
     modalWindowActions?: IModalWindowActions;
   }
@@ -28,11 +28,11 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
   state: SelectLayoutSpace.IState = {};
 
   onClose = () => {
-    this.props.modalWindowActions.hide.REQUEST({ type: null });
+    this.props.modalWindowActions.hide.REQUEST({});
   }
 
   render() {
-    const { children } = this.props;
+    const { children, title } = this.props;
     return (
       <Dialog
         fullWidth
@@ -42,6 +42,7 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
         maxWidth={'sm'}
         aria-labelledby='responsive-dialog-title'
       >
+        <DialogTitle id='form-dialog-title'>{title || ''}</DialogTitle>
         <Paper elevation={4}>
           <DialogContent>
             {children}
