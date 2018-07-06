@@ -5,7 +5,6 @@ import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
 import { Loading } from 'src/renderer/common/Loading';
 import { templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
@@ -44,32 +43,30 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.loading({ page });
   }
 
-  selectTemplate = (template: ITemplate) => () => {
-    this.props.action.select(template);
-  }
-
-  // TODO: for validation use TextValidator
-  private validation = (template: ITemplate): boolean => {
-    if (!template.body && template.body.length === 0) {
-      this.props.onShowToast(`Body can't be empty`, ToastType.Warning);
-      return false;
-    }
-    if (!template.title && template.title.length === 0) {
-      this.props.onShowToast(`Subject can't be empty`, ToastType.Warning);
-      return false;
-    }
-    return true;
-  }
-
   onChangePage = (e, page: number) => {
     this.props.action.loading({ page: page + 1 });
+  }
+
+  selectTemplate = (template: ITemplate) => () => {
+    this.props.editorActions.edit.REQUEST({
+      editEntity: {
+        id: template.id,
+        idFrontEnd: new Date().getTime().toString(),
+        type: EntityType.Email,
+        html: template.body,
+        params: {
+          title: { value: template.title, type: ParamType.Text },
+          description: { value: template.description, type: ParamType.Text },
+        },
+      },
+    });
   }
 
   onSelectNewTemplate = () => {
     this.props.editorActions.edit.REQUEST({
       editEntity: {
         id: null,
-        idEditSession: new Date().getTime().toString(),
+        idFrontEnd: new Date().getTime().toString(),
         type: EntityType.Email,
         html: 'Content email',
         params: {
@@ -80,42 +77,12 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     });
   }
 
-  onSaveOrCreate = (newTemplate: ITemplate, saveAndClose: boolean = false) => {
-    if (!this.validation(newTemplate)) {
-      return;
-    }
-
-    const { templates, action } = this.props;
-
-    if (templates.selectedTemplate.id) {
-      action.save({ template: newTemplate, saveAndClose });
-    } else {
-      action.create(newTemplate);
-    }
-  }
-
-  onCloseOrRemove = () => {
-    const { templates, action } = this.props;
-
-    const id = templates.selectedTemplate.id;
-
-    if (id) {
-      action.remove(id);
-    } else {
-      action.select(null);
-    }
-  }
-
-  onClose = () => {
-    this.props.action.select(null);
-  }
-
   onCopy = (id: string) => {
     this.props.action.copy({ id });
   }
 
   render() {
-    const { status, templates, pagination, selectedTemplate } = this.props.templates;
+    const { status, templates, pagination } = this.props.templates;
 
     if (status === ActionStatus.REQUEST) {
       return <Loading/>;
@@ -126,17 +93,6 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
         <Typography variant='headline' noWrap align='center'>
           Sorry but we couldn't download the templates.
         </Typography>
-      );
-    }
-
-    if (selectedTemplate) {
-      return (
-        <TemplateEditor
-          template={selectedTemplate}
-          close={this.onClose}
-          remove={this.onCloseOrRemove}
-          save={this.onSaveOrCreate}
-        />
       );
     }
 

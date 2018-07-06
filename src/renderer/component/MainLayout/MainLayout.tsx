@@ -12,7 +12,13 @@ import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLa
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 
 import ModalProvider from 'src/renderer/common/ModalWindow/ModalProvider';
-import MainScreen from 'src/renderer/component/MainLayout/MainScreen';
+import { Snippets } from 'src/renderer/component/Snippets/Snippets';
+import Swipe from 'src/renderer/component/Swipe/Swipe';
+import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
+import Layouts from 'src/renderer/component/Layouts/Layouts';
+import Account from 'src/renderer/component/Profile/Account/Account';
+import Templates from 'src/renderer/component/Templates/Templates';
+import Editor from 'src/renderer/component/Editor/Editor';
 
 const styles: IStyle = {
   root: {
@@ -49,12 +55,18 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       <div className={classes.root}>
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
-            <Menu/>
+            <Route path='/' component={Menu}/>
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+            <Route path='/emails' component={Templates}/>
+            <Route path='/layouts' component={Layouts}/>
+            <Route path='/image-library' component={ImageLibrary}/>
+            <Route path='/snippets' component={Snippets}/>
+            <Route path='/swipe' component={Swipe}/>
+            <Route path='/account' component={Account}/>
+            <Route path='/editor' component={Editor}/>
             <PreloaderLayout/>
             <ModalProvider/>
-            <MainScreen />
           </Grid>
         </Grid>
       </div>

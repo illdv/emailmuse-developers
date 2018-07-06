@@ -16,15 +16,18 @@ import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import block from 'bem-ts';
 
 import './Editor.scss';
+import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 const b = block('editor');
 
 export namespace EditorSpace {
   export interface IState {
     html: string;
-    idEditSession: string;
+    idFrontEnd: string;
     hasChange: boolean;
     params: IEditEntityParameter;
+    isOpenConfirmationClose: boolean;
+    isOpenConfirmationDelete: boolean;
   }
 
   export interface IProps {
@@ -37,22 +40,26 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   state: EditorSpace.IState = {
     html: '',
-    idEditSession: '',
+    idFrontEnd: '',
     hasChange: false,
     params: {},
+    isOpenConfirmationClose: false,
+    isOpenConfirmationDelete: false,
   };
 
   static getDerivedStateFromProps(
     nextProps: EditorSpace.IProps,
     prevState: EditorSpace.IState): EditorSpace.IState {
 
-    const { html, params, idEditSession } = nextProps.editor.editEntity;
-    if (idEditSession !== prevState.idEditSession) {
+    const { html, params, idFrontEnd } = nextProps.editor.editEntity;
+    if (idFrontEnd !== prevState.idFrontEnd) {
       return {
         hasChange: false,
         html,
         params,
-        idEditSession,
+        idFrontEnd,
+        isOpenConfirmationClose: false,
+        isOpenConfirmationDelete: false,
       };
     }
     return null;
@@ -69,6 +76,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     const value = event.target.value;
     this.setState(state => ({
       ...state,
+      hasChange: true,
       params: {
         ...state.params,
         [key]: {
@@ -97,6 +105,14 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     this.props.editorActions.save.REQUEST({
       editEntity: this.getEntity(),
     });
+    this.setState({
+      hasChange: false,
+    });
+  }
+
+  onSaveAndClose = () => {
+    this.onSave();
+    this.onClose();
   }
 
   onClose = () => {
@@ -122,15 +138,48 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     ));
   }
 
+  onOpenDialogClose = () => {
+    if (this.state.hasChange) {
+      this.setState({ isOpenConfirmationClose: true });
+      return;
+    }
+    this.onClose();
+  }
+
+  onOpenDialogDelete = () => {
+    this.setState({ isOpenConfirmationDelete: true });
+  }
+
+  onCloseDialogClose = () => {
+    this.setState({ isOpenConfirmationClose: false });
+  }
+
+  onCloseDialogDelete = () => {
+    this.setState({ isOpenConfirmationDelete: false });
+  }
+
   render() {
     return (
       <>
         {this.renderParameters()}
         <JoditEditor onChangeValue={this.onChange} value={this.state.html}/>
         <div>
+          <Confirmation
+            isOpen={this.state.isOpenConfirmationClose}
+            onClose={this.onCloseDialogClose}
+            onSelectYes={this.onSaveAndClose}
+            onSelectNo={this.onClose}
+            question={'The changes are not saved. Are you want save template?'}
+          />
+          <Confirmation
+            isOpen={this.state.isOpenConfirmationDelete}
+            onClose={this.onCloseDialogDelete}
+            onSelectYes={this.onRemove}
+            question={'Are you want to delete this template?'}
+          />
           <Fab
             color={'secondary'}
-            onClick={this.onRemove}
+            onClick={this.onOpenDialogDelete}
             icon={<Delete/>}
             position={0}
             title={'Remove'}
@@ -144,7 +193,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             hotKey={'S'}
           />
           <Fab
-            onClick={this.onClose}
+            onClick={this.onOpenDialogClose}
             icon={<Close/>}
             position={2}
             title={'Close'}

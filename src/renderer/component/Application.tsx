@@ -10,12 +10,12 @@ import { Toast } from 'src/renderer/common/Toast/Toast';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
-import { Route, Switch as SwitchRoute} from 'react-router-dom';
-import Editor from 'src/renderer/component/Editor/Editor';
+import { Route, Switch as SwitchRoute } from 'react-router-dom';
 
 export namespace MainLayoutScope {
   export interface IState {
   }
+
   export interface IProps {
     profile?: IProfileState;
   }
@@ -31,17 +31,17 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   constructor(props: MainLayoutScope.IProps) {
     super(props);
   }
+
   render() {
     return (
       <ErrorBoundary>
         <SwitchRoute>
-          <Route path='/login' component={Auth} />
-          <Route path='/editor' component={Editor} />
+          <Route path='/login' component={Auth}/>
           <PrivateRoute path='/' component={MainLayout}/>
         </SwitchRoute>
         <Toast/>
       </ErrorBoundary>
-  );
+    );
   }
 }
 
