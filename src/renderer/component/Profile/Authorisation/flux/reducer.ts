@@ -23,6 +23,7 @@ const actions = AuthorisationActions;
 reducer.on(actions.login.SUCCESS, (state, payload): IAuthState => ({
   ...state,
   ...payload,
+  authStep: AuthStep.LOGIN,
 }));
 
 reducer.on(actions.login.FAILURE, (state, payload): IAuthState => ({

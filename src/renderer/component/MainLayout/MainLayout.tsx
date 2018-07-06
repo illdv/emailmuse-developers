@@ -5,18 +5,20 @@ import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
+import { Route } from 'react-router-dom';
 
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import Menu from 'src/renderer/component/Menu/Menu';
-import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
-import Settings from '../Profile/Account/Settings';
-import Templates from '../Templates/Templates';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
-import { Snippets } from 'src/renderer/component/Snippets/Snippets';
-import { IDrawerMenuState, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
-import Layouts from 'src/renderer/component/Layouts/Layouts';
-import Swipe from 'src/renderer/component/Swipe/Swipe';
+import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
+
 import ModalProvider from 'src/renderer/common/ModalWindow/ModalProvider';
+import { Snippets } from 'src/renderer/component/Snippets/Snippets';
+import Swipe from 'src/renderer/component/Swipe/Swipe';
+import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
+import Layouts from 'src/renderer/component/Layouts/Layouts';
+import Account from 'src/renderer/component/Profile/Account/Account';
+import Templates from 'src/renderer/component/Templates/Templates';
+import Editor from 'src/renderer/component/Editor/Editor';
 
 const styles: IStyle = {
   root: {
@@ -42,42 +44,10 @@ export namespace MainLayoutSpace {
   }
 }
 
-const mapStateToProps = (state: IGlobalState) => ({
-  drawerMenu: state.drawerMenu,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
-});
-
 @DragDropContext(HTML5Backend)
-@(connect(mapStateToProps, mapDispatchToProps))
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
 
   state = {};
-
-  mainDisplay = (props: MainLayoutSpace.IProps) => {
-    switch (props.drawerMenu.selectedItem) {
-      case MenuItemType.ACCOUNT:
-        return <Settings/>;
-      case MenuItemType.TEMPLATES:
-        return <Templates/>;
-      case MenuItemType.IMAGE_LIBRARY:
-        return <ImageLibrary/>;
-      case MenuItemType.SNIPPETS:
-        return <Snippets/>;
-      case MenuItemType.LAYOUTS:
-        return <Layouts/>;
-      case MenuItemType.SWIPE:
-        return <Swipe/>;
-      default:
-        return <Settings/>;
-    }
-  }
 
   render() {
     const { classes } = this.props;
@@ -85,12 +55,18 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       <div className={classes.root}>
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
-            <Menu/>
+            <Route path='/' component={Menu}/>
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+            <Route path='/emails' component={Templates}/>
+            <Route path='/layouts' component={Layouts}/>
+            <Route path='/image-library' component={ImageLibrary}/>
+            <Route path='/snippets' component={Snippets}/>
+            <Route path='/swipe' component={Swipe}/>
+            <Route path='/account' component={Account}/>
+            <Route path='/editor' component={Editor}/>
             <PreloaderLayout/>
             <ModalProvider/>
-            {this.mainDisplay(this.props)}
           </Grid>
         </Grid>
       </div>

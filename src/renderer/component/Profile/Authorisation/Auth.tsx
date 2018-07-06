@@ -11,6 +11,7 @@ import { RegistrationSuccess } from 'src/renderer/component/Profile/Authorisatio
 import { CheckCode } from 'src/renderer/component/Profile/Authorisation/CheckCode';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import { Redirect } from 'react-router-dom';
 
 export namespace AuthorizationLayoutSpace {
   export interface IState {
@@ -27,8 +28,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
 
-@(connect(mapStateToProps, mapDispatchToProps))
-export class Layout extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
+export class Auth extends Component<AuthorizationLayoutSpace.IProps, AuthorizationLayoutSpace.IState> {
 
   state = {};
 
@@ -51,3 +51,4 @@ export class Layout extends Component<AuthorizationLayoutSpace.IProps, Authoriza
     }
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

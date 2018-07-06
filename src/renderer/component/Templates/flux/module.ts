@@ -19,7 +19,6 @@ export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
 export const SELECT         = `${NS}SELECT`;
 export const REMOVE         = `${NS}REMOVE`;
 export const SAVE           = `${NS}SAVE`;
-export const SAVE_SUCCESS   = `${NS}SAVE_SUCCESS`;
 export const COPY   = `${NS}COPY`;
 
 const loading = createAction(LOADING,
@@ -32,7 +31,7 @@ const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => 
 
 const create        = createAction(CREATE, (template: ITemplate) => template);
 const select        = createAction(SELECT, (template: ITemplate) => template);
-const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate) => template);
+const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate[]) => template);
 const save          = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
 const remove        = createAction(REMOVE, (templateId: string) => templateId);
 const copy          = createAction(COPY, (payload: {id: string}) => payload);
@@ -87,13 +86,6 @@ reducer.on(remove, state => ({
 
 reducer.on(createSuccess, (state, payload) => ({
   ...state,
-  selectedTemplate: payload,
-  status: ActionStatus.SUCCESS,
-}));
-
-reducer.on(select, (state, payload) => ({
-  ...state,
-  selectedTemplate: payload,
   status: ActionStatus.SUCCESS,
 }));
 
