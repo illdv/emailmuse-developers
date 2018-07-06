@@ -111,8 +111,9 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   onSaveAndClose = () => {
-    this.onSave();
-    this.onClose();
+    this.props.editorActions.saveAndClose.REQUEST({
+      editEntity: this.getEntity(),
+    });
   }
 
   onClose = () => {
@@ -169,13 +170,13 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             onClose={this.onCloseDialogClose}
             onSelectYes={this.onSaveAndClose}
             onSelectNo={this.onClose}
-            question={'The changes are not saved. Are you want save template?'}
+            question={'The changes are not saved. Are you want save email?'}
           />
           <Confirmation
             isOpen={this.state.isOpenConfirmationDelete}
             onClose={this.onCloseDialogDelete}
             onSelectYes={this.onRemove}
-            question={'Are you want to delete this template?'}
+            question={'Are you want to delete this email?'}
           />
           <Fab
             color={'secondary'}

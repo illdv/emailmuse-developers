@@ -36,13 +36,7 @@ function* saveTemplate(action) {
   try {
     yield call(Templates.editTemplate, action.payload.template);
 
-    if (action.payload.saveAndClose) {
-      yield put(TemplateActions.select(null));
-    }
-
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
-    const page: number = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page, hidePreloader: true }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email saved', ToastType.Error));
   }
