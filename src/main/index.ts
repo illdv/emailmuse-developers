@@ -14,9 +14,9 @@ function createWindow() {
     center: true,
   });
 
-  if (false) {
+  if (true) {
     const loadUrl = urlFormat.format({
-      pathname: path.join(__dirname, 'index.html'),
+      pathname: path.join(__dirname, '../index.html'),
       protocol: 'file:',
       slashes: true,
     });
@@ -26,6 +26,7 @@ function createWindow() {
     const loadDevTool = require('electron-load-devtool');
     loadDevTool(loadDevTool.REDUX_DEVTOOLS);
     loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
@@ -33,7 +34,6 @@ function createWindow() {
     shell.openExternal(url);
   });
   mainWindow.webContents.session.clearStorageData();
-  mainWindow.toggleDevTools();
 }
 
 app.on('activate', () => {
