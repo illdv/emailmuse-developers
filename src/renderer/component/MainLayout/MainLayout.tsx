@@ -65,7 +65,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/swipe' component={Swipe}/>
             <Route path='/account' component={Account}/>
             <Route path='/editor' component={Editor}/>
-            <PreloaderLayout/>
+            {/*<PreloaderLayout/>*/}
             <ModalProvider/>
           </Grid>
         </Grid>

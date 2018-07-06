@@ -15,7 +15,7 @@ const reducer = createReducer({}, initialState());
 
 reducer.on(EditorActions.edit.REQUEST, (state, payload) => ({
   ...state,
-  ...payload,
+  editEntity: payload,
 }));
 
 reducer.on(TemplateActions.createSuccess, (state, payload) => ({

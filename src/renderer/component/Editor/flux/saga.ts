@@ -7,6 +7,7 @@ import { EntityType, IEditEntity, IEditEntityParameter } from 'src/renderer/comp
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
+import { delay } from 'redux-saga';
 
 function* sagaEdit() {
   yield put(push('/editor'));
@@ -14,7 +15,7 @@ function* sagaEdit() {
 
 function validation(params: IEditEntityParameter): string {
   for (const key of Object.keys(params)) {
-    const value = params[key].value;
+    const value = params[key];
     if (!value && value.length === 0) {
       return key;
     }
@@ -22,8 +23,8 @@ function validation(params: IEditEntityParameter): string {
   return null;
 }
 
-function* sagaSave(action: Action<{ editEntity: IEditEntity }>) {
-  const { type, html, id, params } = action.payload.editEntity;
+function* sagaSave(action: Action<IEditEntity>) {
+  const { type, html, id, params } = action.payload;
 
   const validationResult = validation(params);
   if (validationResult) {
@@ -35,8 +36,8 @@ function* sagaSave(action: Action<{ editEntity: IEditEntity }>) {
     const template = {
       body: html,
       id,
-      description: params.description.value,
-      title: params.title.value,
+      description: params.description,
+      title: params.title,
     };
 
     if (template.id) {
@@ -48,28 +49,31 @@ function* sagaSave(action: Action<{ editEntity: IEditEntity }>) {
 }
 
 function* sagaClose(action: Action<{}>) {
+  yield delay(100);
   yield put(push('/emails'));
 }
 
-function* sagaRemove(action: Action<{ editEntity: IEditEntity }>) {
-  const { type, id } = action.payload.editEntity;
+function* sagaRemove(action: Action<IEditEntity>) {
+  const { type, id } = action.payload;
   if (id) {
     if (type === EntityType.Email) {
       yield put(TemplateActions.remove(id));
     }
   }
+  // TODO: dix problem whit async remove
+  yield delay(100);
   yield put(push('/emails'));
 }
 
-function* sagaSaveAndClose(action: Action<{ editEntity: IEditEntity }>) {
+function* sagaSaveAndClose(action: Action<IEditEntity>) {
   yield call(sagaSave, action);
   yield put(EditorActions.close.REQUEST({}));
 }
 
-const watchEdit        = createWatch(EditorActions.edit, sagaEdit);
-const watchSave        = createWatch(EditorActions.save, sagaSave);
-const watchClose       = createWatch(EditorActions.close, sagaClose);
-const watchRemove      = createWatch(EditorActions.remove, sagaRemove);
+const watchEdit         = createWatch(EditorActions.edit, sagaEdit);
+const watchSave         = createWatch(EditorActions.save, sagaSave);
+const watchClose        = createWatch(EditorActions.close, sagaClose);
+const watchRemove       = createWatch(EditorActions.remove, sagaRemove);
 const watchSaveAndClose = createWatch(EditorActions.saveAndClose, sagaSaveAndClose);
 
 export default [watchEdit, watchSave, watchSaveAndClose, watchClose, watchRemove];
