@@ -47,7 +47,7 @@ function* sagaSave(action: Action<{ editEntity: IEditEntity }>) {
   }
 }
 
-function* sagaClose(action: Action<{ editEntity: IEditEntity }>) {
+function* sagaClose(action: Action<{}>) {
   yield put(push('/emails'));
 }
 
@@ -61,9 +61,15 @@ function* sagaRemove(action: Action<{ editEntity: IEditEntity }>) {
   yield put(push('/emails'));
 }
 
-const watchEdit   = createWatch(EditorActions.edit, sagaEdit);
-const watchSave   = createWatch(EditorActions.save, sagaSave);
-const watchClose  = createWatch(EditorActions.close, sagaClose);
-const watchRemove = createWatch(EditorActions.remove, sagaRemove);
+function* sagaSaveAndClose(action: Action<{ editEntity: IEditEntity }>) {
+  yield call(sagaSave, action);
+  yield put(EditorActions.close.REQUEST({}));
+}
 
-export default [watchEdit, watchSave, watchClose, watchRemove];
+const watchEdit        = createWatch(EditorActions.edit, sagaEdit);
+const watchSave        = createWatch(EditorActions.save, sagaSave);
+const watchClose       = createWatch(EditorActions.close, sagaClose);
+const watchRemove      = createWatch(EditorActions.remove, sagaRemove);
+const watchSaveAndClose = createWatch(EditorActions.saveAndClose, sagaSaveAndClose);
+
+export default [watchEdit, watchSave, watchSaveAndClose, watchClose, watchRemove];

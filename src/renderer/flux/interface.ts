@@ -7,7 +7,7 @@ export interface IAsyncAction<R, S, F> extends ActionCreatorsMapObject {
   FAILURE: CreateAction<F>;
 }
 
-export interface IAsyncAction2<R, S> extends ActionCreatorsMapObject {
+export interface IAsyncAction2<R = {}, S = {}> extends ActionCreatorsMapObject {
   REQUEST: CreateAction<R>;
   SUCCESS: CreateAction<S>;
   FAILURE: CreateAction<IPayloadError>;
