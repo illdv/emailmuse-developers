@@ -19,9 +19,9 @@ export const EditorActions: IEditorActions = {
 };
 
 export interface IEditorActions {
-  edit: IAsyncAction2<{ editEntity: IEditEntity }>;
-  save: IAsyncAction2<{ editEntity: IEditEntity }>;
+  edit: IAsyncAction2<IEditEntity>;
+  save: IAsyncAction2<IEditEntity>;
   close: IAsyncAction2;
-  remove: IAsyncAction2<{ editEntity: IEditEntity }>;
-  saveAndClose: IAsyncAction2<{ editEntity: IEditEntity }>;
+  remove: IAsyncAction2<IEditEntity>;
+  saveAndClose: IAsyncAction2<IEditEntity>;
 }

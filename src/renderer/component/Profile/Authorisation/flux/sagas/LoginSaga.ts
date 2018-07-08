@@ -63,6 +63,7 @@ function* onGoogleLogin(): IterableIterator<any> {
     const user = extractUser({data: JSON.parse(token)} as any);
 
     yield put(AuthorisationActions.login.SUCCESS({ user }));
+    yield put(push('/emails'));
 
   } catch (error) {
     yield call(errorHandler, error);

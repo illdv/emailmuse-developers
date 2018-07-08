@@ -67,6 +67,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
 
   selectTemplate = (template: ITemplate) => () => {
     this.props.actionLayout.create.REQUEST({layout: {title: template.title, body: template.body}});
+    this.props.handleClose();
   }
 
   onChangePage = (e, page: number) => {

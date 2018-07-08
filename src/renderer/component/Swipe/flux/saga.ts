@@ -6,9 +6,8 @@ import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWi
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
-import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
-import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
 function* selectEmail() {
   yield call(showModal, ModalWindowType.SelectLayout);
@@ -26,13 +25,20 @@ function* selectLayout() {
   layout.innerHTML = selectedLayout.body;
 
   const content: HTMLElement = layout.querySelector('[id=content-email]');
-  while (content.hasChildNodes()) {
-    content.removeChild(content.lastChild);
-  }
-  content.insertAdjacentHTML('afterbegin', selectedEmail.body);
+  if (content) {
+    while (content.hasChildNodes()) {
+      content.removeChild(content.lastChild);
+    }
+    content.insertAdjacentHTML('afterbegin', selectedEmail.body);
 
-  yield put(DrawerMenuAction.selectMenuItem({ selectedItem: MenuItemType.TEMPLATES }));
-  yield put(TemplateActions.select({ ...selectedEmail, body: layout.innerHTML }));
+    yield put(EditorActions.edit.REQUEST(emailToEditEntity({ ...selectedEmail, body: layout.innerHTML })));
+  } else {
+    yield put(EditorActions.edit.REQUEST(emailToEditEntity({
+      ...selectedEmail,
+      body: `CONTENTGOESHERE ${selectedLayout.body }`,
+    })));
+    yield put(SwipeActions.needInsertBody.REQUEST({ body: selectedEmail.body }));
+  }
 }
 
 export default [

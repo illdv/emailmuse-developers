@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, Grow, Paper, withStyles } from '@material-ui/core/';
+import { Redirect } from 'react-router-dom';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
@@ -94,8 +95,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
       {
         email: 'freidy.hanae@0ld0x.com',
         password: 'freidy.hanae@0ld0x.com',
-      }
-    ;
+      };
 
     return (
       <FormValidation

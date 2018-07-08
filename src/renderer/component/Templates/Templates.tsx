@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
-import { templateToItem } from 'src/renderer/component/Templates/utils';
+import { createTemplate, emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
@@ -17,7 +17,6 @@ import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { EntityType, ParamType } from 'src/renderer/component/Editor/flux/interface';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -48,33 +47,12 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   selectTemplate = (template: ITemplate) => () => {
-    this.props.editorActions.edit.REQUEST({
-      editEntity: {
-        id: template.id,
-        idFrontEnd: new Date().getTime().toString(),
-        type: EntityType.Email,
-        html: template.body,
-        params: {
-          title: { value: template.title, type: ParamType.Text },
-          description: { value: template.description, type: ParamType.Text },
-        },
-      },
-    });
+    this.props.editorActions.edit.REQUEST(emailToEditEntity(template));
   }
 
   onSelectNewTemplate = () => {
-    this.props.editorActions.edit.REQUEST({
-      editEntity: {
-        id: null,
-        idFrontEnd: new Date().getTime().toString(),
-        type: EntityType.Email,
-        html: 'Content email',
-        params: {
-          title: { value: 'Title email', type: ParamType.Text },
-          description: { value: 'Description email', type: ParamType.Text },
-        },
-      },
-    });
+    const template = createTemplate();
+    this.props.editorActions.edit.REQUEST(emailToEditEntity(template));
   }
 
   onCopy = (id: string) => {
@@ -126,7 +104,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   templates: state.templates,
 });
 
-// TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindActionCreators(TemplateActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {

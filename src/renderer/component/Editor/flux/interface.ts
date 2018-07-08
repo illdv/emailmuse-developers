@@ -12,10 +12,7 @@ export interface IEditEntity {
 }
 
 export interface IEditEntityParameter {
-  [key: string]: {
-    value: string;
-    type: ParamType;
-  };
+  [key: string]: string;
 }
 
 export enum ParamType {
