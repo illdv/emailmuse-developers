@@ -3,13 +3,12 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
+import ModalWindow, { IModalAction } from 'src/renderer/common/ModalWindow/ModalWindow';
 import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { toItem } from 'src/renderer/component/Layouts/utils';
-import { ISwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
@@ -45,10 +44,25 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
 
   }
 
+  selectScratch = () => {
+    const layout: ILayout = {
+      id: null,
+      body: '<div id="content-email"></div>',
+      title: 'Scratch',
+    };
+
+    this.props.modalWindowActions.show.SUCCESS({ layout });
+  }
+
   render() {
     const { layouts, pagination } = this.props.layout;
+
+    const actions: IModalAction[] = [
+      { title: 'No thanks. I\'ll start from scratch', color: 'secondary', onClick: this.selectScratch },
+    ];
+
     return (
-      <ModalWindow>
+      <ModalWindow actions={actions}>
         <ListCard
           entities={layouts}
           toItem={toItem}

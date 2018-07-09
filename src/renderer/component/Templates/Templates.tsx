@@ -17,11 +17,13 @@ import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 
 export namespace MailListSpace {
   export interface IProps {
     templates?: ITemplateState;
     action?: ITemplateActions;
+    swipeActions?: ISwipeActions;
     editorActions?: IEditorActions;
     onShowToast?: (messages: string, type: ToastType) => void;
   }
@@ -52,7 +54,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
 
   onSelectNewTemplate = () => {
     const template = createTemplate();
-    this.props.editorActions.edit.REQUEST(emailToEditEntity(template));
+    this.props.action.selectNewTemplate({});
   }
 
   onCopy = (id: string) => {
@@ -110,6 +112,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
   editorActions: bindModuleAction(EditorActions, dispatch),
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Templates);

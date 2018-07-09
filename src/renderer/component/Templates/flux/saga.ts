@@ -13,6 +13,8 @@ import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { Action } from 'redux-act';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
+import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return useOrDefault(() => state.templates.pagination.current_page, 0);
@@ -56,7 +58,6 @@ function* createTemplate(action) {
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
-    console.log(error);
     yield put(FluxToast.Actions.showToast('Failed email created', ToastType.Error));
   }
 }
@@ -125,6 +126,11 @@ function* sagaSelectNewTemplate() {
 
   const selectedLayout = actionSelectLayout.payload.layout;
 
+  yield put(EditorActions.edit.REQUEST(emailToEditEntity({
+    id: null,
+    title: selectedLayout.title,
+    body: selectedLayout.body,
+  })));
 }
 
 function* watchSelectNewTemplate() {

@@ -30,6 +30,7 @@ function* watcherLogout() {
     CustomStorage.clear();
     // noinspection TsLint
     axios.defaults.headers.common.authorization = ``;
+    yield put(push('/login'));
   }
 }
 

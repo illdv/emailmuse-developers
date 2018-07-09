@@ -4,7 +4,7 @@ import { Action } from 'redux-act';
 
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
-import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
@@ -27,6 +27,16 @@ function htmlTextToNode(text: string) {
   return layout;
 }
 
+const temporaryLayoutToEntity = ({ id, body, title }: ILayout): IEditEntity => ({
+  id,
+  html: body,
+  idFrontEnd: new Date().getTime().toString(),
+  type: EntityType.TemporaryLayout,
+  params: {
+    title,
+  },
+});
+
 function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
@@ -46,6 +56,8 @@ function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
       ...selectedLayout,
       body: `${insertMarker} ${selectedLayout.body }`,
     });
+
+    yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.NeedInsertBody }));
     yield put(EditorActions.edit.REQUEST(entity));
 
     const { save }: { save: Action<IEditEntity> } = yield race({
@@ -55,28 +67,19 @@ function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
       saveAndClose: take(EditorActions.saveAndClose.REQUEST),
     });
 
-    const temporaryLayout: IEditEntity = save.payload;
-
-    if (temporaryLayout.type === EntityType.TemporaryLayout) {
+    if (save) {
+      const temporaryLayout: IEditEntity = save.payload;
       yield put(push('/'));
       yield delay(100);
       yield put(EditorActions.edit.REQUEST(emailToEditEntity({
         ...selectedEmail,
         body: temporaryLayout.html.replace(insertMarker, selectedEmail.body),
       })));
+    } else {
+      yield put(push('/swipe'));
     }
   }
 }
-
-const temporaryLayoutToEntity = ({ id, body, title }: ILayout): IEditEntity => ({
-  id,
-  html: body,
-  idFrontEnd: new Date().getTime().toString(),
-  type: EntityType.TemporaryLayout,
-  params: {
-    title,
-  },
-});
 
 function* watcherCreateEmailFromLayout() {
   yield all([
