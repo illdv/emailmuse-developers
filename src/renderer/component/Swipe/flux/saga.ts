@@ -1,25 +1,30 @@
-import { call, put, select } from 'redux-saga/effects';
+import { put, race, take } from 'redux-saga/effects';
 
-import { createWatch, showModal } from 'src/renderer/flux/saga/utils';
+import { createWatch } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { Action } from 'redux-act';
+import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 
-function* selectEmail() {
-  yield call(showModal, ModalWindowType.SelectLayout);
+function* selectFromModal(type: ModalWindowType) {
+  yield put(ModalWindowActions.show.REQUEST({ type }));
+  const { success, failure } = yield race({
+    success: take(ModalWindowActions.show.SUCCESS),
+    failure: take(ModalWindowActions.show.FAILURE),
+  });
+
+  return success || null;
 }
 
-const getSelectedEmail  = (state: IGlobalState) => state.swipe.email;
-const getSelectedLayout = (state: IGlobalState) => state.swipe.layout;
+function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
 
-function* selectLayout() {
-  yield put(ModalWindowActions.hide.REQUEST({}));
-  const selectedEmail: ITemplate = yield select(getSelectedEmail);
-  const selectedLayout: ILayout  = yield select(getSelectedLayout);
+  const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
+
+  const selectedEmail: ITemplate = action.payload.email;
+  const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
   const layout     = document.createElement('html');
   layout.innerHTML = selectedLayout.body;
@@ -42,6 +47,5 @@ function* selectLayout() {
 }
 
 export default [
-  createWatch(SwipeActions.selectEmail, selectEmail),
-  createWatch(SwipeActions.selectLayout, selectLayout),
+  createWatch(SwipeActions.moveSubjectInEmail, sagaMoveSubjectInEmail),
 ];

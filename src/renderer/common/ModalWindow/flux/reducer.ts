@@ -16,6 +16,14 @@ reducer.on(ModalWindowActions.show.REQUEST, (state, payload): IModalWindowState 
   return {...state, ...payload};
 });
 
+reducer.on(ModalWindowActions.show.SUCCESS, (state, payload): IModalWindowState => {
+  return initialState();
+});
+
+reducer.on(ModalWindowActions.show.FAILURE, (state, payload): IModalWindowState => {
+  return initialState();
+});
+
 reducer.on(ModalWindowActions.hide.REQUEST, (): IModalWindowState => {
   return initialState();
 });

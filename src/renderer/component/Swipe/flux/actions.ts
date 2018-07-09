@@ -5,18 +5,18 @@ import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 const createAsyncAction = createActionCreator('SWIPE');
 
-const selectEmail  = createAsyncAction('SELECT_EMAIL');
+const moveSubjectInEmail  = createAsyncAction('MOVE_SUBJECT_IN_EMAIL');
 const selectLayout = createAsyncAction('SELECT_LAYOUT');
 const needInsertBody = createAsyncAction('NEED_INSERT_BODY');
 
 export const SwipeActions: ISwipeActions = {
-  selectEmail,
+  moveSubjectInEmail,
   selectLayout,
   needInsertBody,
 };
 
 export interface ISwipeActions {
-  selectEmail: IAsyncAction2<{ email: ITemplate }, {}>;
+  moveSubjectInEmail: IAsyncAction2<{ email: ITemplate }, {}>;
   selectLayout: IAsyncAction2<{ layout: ILayout }, {}>;
   needInsertBody: IAsyncAction2<{ body: string }, {}>;
 }
