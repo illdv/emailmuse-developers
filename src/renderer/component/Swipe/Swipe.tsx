@@ -6,19 +6,20 @@ import { Divider, Fade, List, ListItem, ListItemText, Paper } from '@material-ui
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISubject, ISwipe } from 'src/renderer/component/Swipe/flux/interface';
+import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 import './Swipe.scss';
 import data from './Data';
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 const b = block('swipe');
 
 export namespace SwipeSpace {
   export interface IState {
     selectedSwipe: ISwipe;
-    selectedSubject: ISubject;
+    selectedSubject: ITemplate;
   }
 
   export interface IProps {
@@ -39,7 +40,7 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     });
   }
 
-  onSelectSubject = (subject: ISubject) => () => {
+  onSelectSubject = (subject: ITemplate) => () => {
     this.setState({
       selectedSubject: subject,
     });
@@ -93,7 +94,7 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
         {
           selectedSubject
           &&
-          <PreviewMail mail={selectedSubject}/>
+          <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
           ||
           <Fade in timeout={500}>
             <List component='nav'>

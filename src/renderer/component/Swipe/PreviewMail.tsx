@@ -3,16 +3,16 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, Grid, Typography } from '@material-ui/core';
 
-import { ISubject } from 'src/renderer/component/Swipe/flux/interface';
+import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
-import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { bindActionCreators } from 'redux';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 export namespace PreviewMailSpace {
   export interface IState {
@@ -20,7 +20,8 @@ export namespace PreviewMailSpace {
   }
 
   export interface IProps {
-    mail: ISubject;
+    mail: ITemplate;
+    swipe: ISwipe;
     swipeActions?: ISwipeActions;
     drawerMenuAction?: IDrawerMenuActions;
   }
@@ -31,9 +32,13 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
   state: PreviewMailSpace.IState = {};
 
   onAddInLayout = () => {
-    const { swipeActions, drawerMenuAction, mail } = this.props;
-    // drawerMenuAction.selectMenuItem({selectedItem: MenuItemType.TEMPLATES});
-    swipeActions.moveSubjectInEmail.REQUEST({email: mail});
+    const { swipeActions, swipe, mail } = this.props;
+    swipeActions.moveSubjectInEmail.REQUEST({
+      email: {
+        ...mail,
+        description: `${swipe.title} > ${mail.title}`,
+      },
+    });
   }
 
   render() {
