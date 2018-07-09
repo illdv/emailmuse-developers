@@ -58,7 +58,7 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
     const { layouts, pagination } = this.props.layout;
 
     const actions: IModalAction[] = [
-      { title: 'No thanks. I\'ll start from scratch', color: 'secondary', onClick: this.selectScratch },
+      { title: 'No thanks. I\'ll start from scratch', color: 'primary', onClick: this.selectScratch },
     ];
 
     return (

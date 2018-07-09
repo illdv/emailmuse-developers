@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, Grid, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
-import { Edit } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
