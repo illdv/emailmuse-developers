@@ -31,7 +31,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 
   state: PreviewMailSpace.IState = {};
 
-  onAddInLayout = () => {
+  onMoveSubjectInEmail = () => {
     const { swipeActions, swipe, mail } = this.props;
     swipeActions.moveSubjectInEmail.REQUEST({
       email: {
@@ -66,7 +66,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
         </Fade>
         <Fab
           color={'secondary'}
-          onClick={this.onAddInLayout}
+          onClick={this.onMoveSubjectInEmail}
           icon={<Edit/>}
           position={0}
           title={'Use This Email'}

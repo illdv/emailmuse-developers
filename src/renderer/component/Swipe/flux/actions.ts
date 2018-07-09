@@ -7,13 +7,16 @@ const createAsyncAction = createActionCreator('SWIPE');
 
 const moveSubjectInEmail  = createAsyncAction('MOVE_SUBJECT_IN_EMAIL');
 const selectLayout = createAsyncAction('SELECT_LAYOUT');
+const moveSwipeInEmail = createAsyncAction('MOVE_SWIPE_IN_EMAIL');
 
 export const SwipeActions: ISwipeActions = {
   moveSubjectInEmail,
   selectLayout,
+  moveSwipeInEmail,
 };
 
 export interface ISwipeActions {
   moveSubjectInEmail: IAsyncAction2<{ email: ITemplate }, {}>;
   selectLayout: IAsyncAction2<{ layout: ILayout }, {}>;
+  moveSwipeInEmail: IAsyncAction2<{ emails: ITemplate[] }, {}>;
 }
