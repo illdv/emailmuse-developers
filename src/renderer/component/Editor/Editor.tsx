@@ -166,7 +166,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
               isOpen={this.state.isOpenConfirmationDelete}
               onClose={this.onCloseDialogDelete}
               onSelectYes={this.onRemove}
-              question={'Are you want to delete this email?'}
+              question={'Are you sure your want to delete this email?'}
             />
             <Fab
               color={'secondary'}
