@@ -1,19 +1,20 @@
-import { createWatch, showModal } from 'src/renderer/flux/saga/utils';
-import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { push } from 'react-router-redux';
 import { call, put, select } from 'redux-saga/effects';
 import { Action } from 'redux-act';
+import { delay } from 'redux-saga';
+
+import { createWatch } from 'src/renderer/flux/saga/utils';
+import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { EntityType, IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
-import { delay } from 'redux-saga';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
-import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
-function* sagaEdit() {
+function* sagaEdit(action: IEditorActions) {
   yield put(push('/editor'));
 }
 
@@ -30,14 +31,9 @@ function validation(params: IEditEntityParameter): string {
 const getBodyForInsert = (state: IGlobalState) => state.editor.bodyForInsert;
 
 function* sagaSave(action: Action<IEditEntity>) {
-  const { type, id, params } = action.payload;
-  let { html }               = action.payload;
+  const { type, id, params, html } = action.payload;
 
   const bodyForInsert: string = yield select(getBodyForInsert);
-
-  if (bodyForInsert) {
-    html = html.replace('CONTENTGOESHERE', bodyForInsert);
-  }
 
   const validationResult = validation(params);
   if (validationResult) {
@@ -89,7 +85,7 @@ function* sagaSaveAndClose(action: Action<IEditEntity>) {
 }
 
 function* sagaNeedInsertBody(action: Action<IEditEntity>) {
-  yield call(showModal, ModalWindowType.NeedInsertBody);
+  yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.NeedInsertBody }));
 }
 
 const watchEdit           = createWatch(EditorActions.edit, sagaEdit);

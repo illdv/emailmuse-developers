@@ -1,51 +1,87 @@
-import { put, race, take } from 'redux-saga/effects';
+import { all, put, race, take, takeEvery } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
+import { Action } from 'redux-act';
 
-import { createWatch } from 'src/renderer/flux/saga/utils';
+import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
-import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
-import { Action } from 'redux-act';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
+import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
+import { delay } from 'redux-saga';
 
-function* selectFromModal(type: ModalWindowType) {
-  yield put(ModalWindowActions.show.REQUEST({ type }));
-  const { success, failure } = yield race({
-    success: take(ModalWindowActions.show.SUCCESS),
-    failure: take(ModalWindowActions.show.FAILURE),
-  });
+const insertMarker = 'CONTENTGOESHERE';
 
-  return success || null;
+function insertEmailById(content: HTMLElement, selectedEmail: ITemplate) {
+  while (content.hasChildNodes()) {
+    content.removeChild(content.lastChild);
+  }
+  content.insertAdjacentHTML('afterbegin', selectedEmail.body);
 }
 
-function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
+function htmlTextToNode(text: string) {
+  const layout     = document.createElement('html');
+  layout.innerHTML = text;
+  return layout;
+}
+
+function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
   const selectedEmail: ITemplate = action.payload.email;
   const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
-  const layout     = document.createElement('html');
-  layout.innerHTML = selectedLayout.body;
+  const layout = htmlTextToNode(selectedLayout.body);
 
   const content: HTMLElement = layout.querySelector('[id=content-email]');
-  if (content) {
-    while (content.hasChildNodes()) {
-      content.removeChild(content.lastChild);
-    }
-    content.insertAdjacentHTML('afterbegin', selectedEmail.body);
 
+  if (content) {
+    insertEmailById(content, selectedEmail);
     yield put(EditorActions.edit.REQUEST(emailToEditEntity({ ...selectedEmail, body: layout.innerHTML })));
   } else {
-    yield put(EditorActions.edit.REQUEST(emailToEditEntity({
-      ...selectedEmail,
-      body: `CONTENTGOESHERE ${selectedLayout.body }`,
-    })));
-    yield put(SwipeActions.needInsertBody.REQUEST({ body: selectedEmail.body }));
+    const entity = temporaryLayoutToEntity({
+      ...selectedLayout,
+      body: `${insertMarker} ${selectedLayout.body }`,
+    });
+    yield put(EditorActions.edit.REQUEST(entity));
+
+    const { save }: { save: Action<IEditEntity> } = yield race({
+      save: take(EditorActions.save.REQUEST),
+      close: take(EditorActions.close.REQUEST),
+      remove: take(EditorActions.remove.REQUEST),
+      saveAndClose: take(EditorActions.saveAndClose.REQUEST),
+    });
+
+    const temporaryLayout: IEditEntity = save.payload;
+
+    if (temporaryLayout.type === EntityType.TemporaryLayout) {
+      yield put(push('/'));
+      yield delay(100);
+      yield put(EditorActions.edit.REQUEST(emailToEditEntity({
+        ...selectedEmail,
+        body: temporaryLayout.html.replace(insertMarker, selectedEmail.body),
+      })));
+    }
   }
 }
 
-export default [
-  createWatch(SwipeActions.moveSubjectInEmail, sagaMoveSubjectInEmail),
-];
+const temporaryLayoutToEntity = ({ id, body, title }: ILayout): IEditEntity => ({
+  id,
+  html: body,
+  idFrontEnd: new Date().getTime().toString(),
+  type: EntityType.TemporaryLayout,
+  params: {
+    title,
+  },
+});
+
+function* watcherCreateEmailFromLayout() {
+  yield all([
+    takeEvery(SwipeActions.moveSubjectInEmail.REQUEST, sagaCreateEmailFromLayout),
+  ]);
+}
+
+export default [watcherCreateEmailFromLayout];

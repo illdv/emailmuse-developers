@@ -1,7 +1,7 @@
-import { call, put, select, take } from 'redux-saga/effects';
+import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
-import { CREATE, LOADING, REMOVE, SAVE } from './module';
+import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
@@ -9,6 +9,10 @@ import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { useOrDefault } from 'src/renderer/utils';
+import { selectFromModal } from 'src/renderer/flux/saga/utils';
+import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { Action } from 'redux-act';
+import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return useOrDefault(() => state.templates.pagination.current_page, 0);
@@ -116,4 +120,15 @@ function* watchRemove() {
   }
 }
 
-export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy];
+function* sagaSelectNewTemplate() {
+  const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
+
+  const selectedLayout = actionSelectLayout.payload.layout;
+
+}
+
+function* watchSelectNewTemplate() {
+  yield takeEvery(SELECT_NEW_TEMPLATE, sagaSelectNewTemplate);
+}
+
+export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy, watchSelectNewTemplate];

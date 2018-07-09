@@ -27,4 +27,5 @@ export interface ITemplateActions extends ActionCreatorsMapObject {
   successfully?: CreateAction<ILoadingTemplatePayload>;
   createSuccess?: CreateAction<ITemplate[]>;
   copy?: CreateAction<{ id: string }>;
+  selectNewTemplate?: CreateAction<{}>;
 }

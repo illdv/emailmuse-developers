@@ -5,7 +5,6 @@ import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/i
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { createAsyncAction } from 'src/renderer/flux/utils';
 
 const REDUCER = 'TEMPLATES';
 const NS      = `${REDUCER}__`;
@@ -14,12 +13,13 @@ export const LOADING = `${NS}LOADING`;
 export const FAILURE = `${NS}FAILURE`;
 export const LOADED  = `${NS}LOADED`;
 
-export const CREATE         = `${NS}CREATE`;
-export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
-export const SELECT         = `${NS}SELECT`;
-export const REMOVE         = `${NS}REMOVE`;
-export const SAVE           = `${NS}SAVE`;
-export const COPY   = `${NS}COPY`;
+export const CREATE            = `${NS}CREATE`;
+export const CREATE_SUCCESS    = `${NS}CREATE_SUCCESS`;
+export const SELECT            = `${NS}SELECT`;
+export const REMOVE            = `${NS}REMOVE`;
+export const SAVE              = `${NS}SAVE`;
+export const COPY              = `${NS}COPY`;
+export const SELECT_NEW_TEMPLATE = `${NS}SELECT_NEW_TEMPLATE`;
 
 const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean } = { page: 1, hidePreloader: false }) => payload);
@@ -29,12 +29,13 @@ const loading = createAction(LOADING,
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
-const create        = createAction(CREATE, (template: ITemplate) => template);
-const select        = createAction(SELECT, (template: ITemplate) => template);
-const createSuccess = createAction(CREATE_SUCCESS, (template: ITemplate[]) => template);
-const save          = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
-const remove        = createAction(REMOVE, (templateId: string) => templateId);
-const copy          = createAction(COPY, (payload: {id: string}) => payload);
+const create            = createAction(CREATE, (template: ITemplate) => template);
+const select            = createAction(SELECT, (template: ITemplate) => template);
+const createSuccess     = createAction(CREATE_SUCCESS, (template: ITemplate[]) => template);
+const save              = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
+const remove            = createAction(REMOVE, (templateId: string) => templateId);
+const copy              = createAction(COPY, (payload: { id: string }) => payload);
+const selectNewTemplate = createAction(SELECT_NEW_TEMPLATE);
 
 export const TemplateActions: ITemplateActions = {
   loading,
@@ -46,6 +47,7 @@ export const TemplateActions: ITemplateActions = {
   select,
   remove,
   copy,
+  selectNewTemplate,
 };
 
 const initialState: ITemplateState = {
