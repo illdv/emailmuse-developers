@@ -15,7 +15,7 @@ const initialState = (): ISwipeState => ({
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(SwipeActions.selectEmail.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.moveSubjectInEmail.REQUEST, (state, payload) => ({
   ...state,
   ...payload,
 }));

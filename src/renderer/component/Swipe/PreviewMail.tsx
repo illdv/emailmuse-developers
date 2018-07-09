@@ -33,7 +33,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
   onAddInLayout = () => {
     const { swipeActions, drawerMenuAction, mail } = this.props;
     // drawerMenuAction.selectMenuItem({selectedItem: MenuItemType.TEMPLATES});
-    swipeActions.selectEmail.REQUEST({email: mail});
+    swipeActions.moveSubjectInEmail.REQUEST({email: mail});
   }
 
   render() {
