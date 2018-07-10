@@ -14,7 +14,7 @@ function createWindow() {
     center: true,
   });
 
-  if (true) {
+  if (false) {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, '../index.html'),
       protocol: 'file:',
@@ -28,6 +28,8 @@ function createWindow() {
     loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
     mainWindow.toggleDevTools();
   }
+
+  mainWindow.toggleDevTools();
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
