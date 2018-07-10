@@ -14,7 +14,7 @@ function createWindow() {
     center: true,
   });
 
-  if (false) {
+  if (true) {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, '../index.html'),
       protocol: 'file:',
