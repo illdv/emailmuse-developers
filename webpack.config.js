@@ -17,8 +17,7 @@ const dotenv = require('dotenv').config({
     path: isProduction ? './.env.production' : './.env.development',
 });
 
-module.exports = {
-    entry: './renderer/index.tsx',
+const commonConfig = {
     context: sourcePath,
     output: {
         path: outPath,
@@ -37,11 +36,6 @@ module.exports = {
         open: false,
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './renderer/index.html',
-            filename: 'index.html',
-            inject: 'body',
-        }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
@@ -107,3 +101,29 @@ module.exports = {
         ],
     },
 };
+
+module.exports = [
+    {
+        ...commonConfig,
+        target: 'electron-main',
+        entry: {
+            main: './main/index.ts',
+        },
+
+    },
+    {
+        ...commonConfig,
+        target: 'electron-renderer',
+        entry: {
+            renderer: './renderer/index.tsx',
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: './renderer/index.html',
+                filename: 'index.html',
+                inject: 'body',
+            }),
+        ],
+
+    },
+];
