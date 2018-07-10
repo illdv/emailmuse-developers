@@ -29,8 +29,6 @@ function createWindow() {
     mainWindow.toggleDevTools();
   }
 
-  mainWindow.toggleDevTools();
-
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
     shell.openExternal(url);
