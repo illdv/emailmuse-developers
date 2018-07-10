@@ -8,7 +8,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "outDir": "build",
+    "outDir": "./",
     "rootDir": "src",
     "module": "commonjs",
     "target": "es2017",

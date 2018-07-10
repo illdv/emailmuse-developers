@@ -22,7 +22,7 @@ module.exports = {
     context: sourcePath,
     output: {
         path: outPath,
-        filename: 'index_bundle.js',
+        filename: '[name].js',
     },
     mode: 'development',
     devtool,
@@ -34,7 +34,7 @@ module.exports = {
         },
     },
     devServer: {
-        open: false
+        open: false,
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -43,7 +43,7 @@ module.exports = {
             inject: 'body',
         }),
         new MiniCssExtractPlugin({
-            filename: '[indicator].css',
+            filename: '[name].css',
             chunkFilename: '[id].css',
         }),
         new CopyWebpackPlugin([
@@ -100,10 +100,10 @@ module.exports = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: './images/[indicator].[hash].[ext]',
+                        name: './images/[name].[hash].[ext]',
                     },
                 }],
             },
         ],
     },
-}
+};

@@ -12,7 +12,7 @@
   "scripts": {
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
-    "build": "webpack; npx typescript;",
+    "build": "webpack",
     "build-prod": "NODE_ENV=production npm run build; cd build; npx electron-builder -wlm",
     "start-build": "./build/dist/linux-unpacked/emailer",
     "pack": "electron-builder --dir",
