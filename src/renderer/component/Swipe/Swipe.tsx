@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Add, KeyboardArrowRight } from '@material-ui/icons';
+import { Edit, KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, List, ListItem, ListItemText, Paper } from '@material-ui/core';
 import block from 'bem-ts';
@@ -122,14 +122,14 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
           }
         </Paper>
         {
-          selectedSwipe &&
+          selectedSwipe && !selectedSubject &&
           <Fab
             onClick={this.onMoveSwipeInEmail(selectedSwipe)}
-            icon={<Add/>}
+            icon={<Edit/>}
             position={0}
-            title={'Save'}
-            whitCtrl
-            hotKey={'S'}
+            title={'Use These Emails'}
+            key={'Enter'}
+            color={'secondary'}
           />
         }
       </div>
