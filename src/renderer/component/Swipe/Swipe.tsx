@@ -8,7 +8,6 @@ import block from 'bem-ts';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
-import './Swipe.scss';
 import data from './Data';
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
@@ -16,6 +15,7 @@ import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { Fab } from 'src/renderer/common/Fab';
+import './Swipe.scss';
 
 const b = block('swipe');
 
@@ -94,7 +94,10 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     }
 
     if (selectedSubject) {
-      items.push({ title: selectedSubject.title, onClick: () => null });
+      items.push({
+        title: selectedSubject.title,
+        onClick: () => null,
+      });
     }
 
     return (
