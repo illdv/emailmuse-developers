@@ -1,6 +1,7 @@
 import { all, call, put, race, take, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
+import { delay } from 'redux-saga';
 
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
@@ -10,7 +11,6 @@ import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
-import { delay } from 'redux-saga';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 
@@ -48,11 +48,40 @@ function isHasIdContentEmail(selectedLayout: ILayout) {
 }
 
 /**
- * Use for create email from Swipe.
+ * Use for user to insert Marker in custom Layout.
+ * @param {ILayout} selectedLayout
+ * @returns {IterableIterator<any>}
+ */
+function* toGiveUserToInsertMarker(selectedLayout: ILayout) {
+  const entity = temporaryLayoutToEntity({
+    ...selectedLayout,
+    body: `${insertMarker} ${selectedLayout.body }`,
+  });
+
+  yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.NeedInsertBody }));
+  yield put(EditorActions.edit.REQUEST(entity));
+
+  const { save }: { save: Action<IEditEntity> } = yield race({
+    save: take(EditorActions.save.REQUEST),
+    close: take(EditorActions.close.REQUEST),
+    remove: take(EditorActions.remove.REQUEST),
+    saveAndClose: take(EditorActions.saveAndClose.REQUEST),
+  });
+
+  if (save) {
+    return save;
+  } else {
+    yield put(push('/swipe'));
+    return null;
+  }
+}
+
+/**
+ * Use for execute step need for create one email from Swipe.
  * @param {Action<{email: ITemplate}>} action
  * @returns {IterableIterator<any>}
  */
-function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
+function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
@@ -63,20 +92,7 @@ function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
     const body = insertEmailById(selectedLayout, selectedEmail);
     yield put(EditorActions.edit.REQUEST(emailToEditEntity({ ...selectedEmail, body })));
   } else {
-    const entity = temporaryLayoutToEntity({
-      ...selectedLayout,
-      body: `${insertMarker} ${selectedLayout.body }`,
-    });
-
-    yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.NeedInsertBody }));
-    yield put(EditorActions.edit.REQUEST(entity));
-
-    const { save }: { save: Action<IEditEntity> } = yield race({
-      save: take(EditorActions.save.REQUEST),
-      close: take(EditorActions.close.REQUEST),
-      remove: take(EditorActions.remove.REQUEST),
-      saveAndClose: take(EditorActions.saveAndClose.REQUEST),
-    });
+    const save: Action<IEditEntity> = yield toGiveUserToInsertMarker(selectedLayout);
 
     if (save) {
       const temporaryLayout: IEditEntity = save.payload;
@@ -86,8 +102,6 @@ function* sagaCreateEmailFromLayout(action: Action<{ email: ITemplate }>) {
         ...selectedEmail,
         body: temporaryLayout.html.replace(insertMarker, selectedEmail.body),
       })));
-    } else {
-      yield put(push('/swipe'));
     }
   }
 }
@@ -116,13 +130,23 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
     yield createTemplates(template);
 
   } else {
-    console.log(2);
+    const save: Action<IEditEntity> = yield toGiveUserToInsertMarker(selectedLayout);
+
+    if (save) {
+      const temporaryLayout: IEditEntity = save.payload;
+      const newEmail = selectedEmails.map(email => ({
+        ...email,
+        body: temporaryLayout.html.replace(insertMarker, email.body),
+      }));
+
+      yield createTemplates(newEmail);
+    }
   }
 }
 
 function* watcher() {
   yield all([
-    takeEvery(SwipeActions.moveSubjectInEmail.REQUEST, sagaCreateEmailFromLayout),
+    takeEvery(SwipeActions.moveSubjectInEmail.REQUEST, sagaMoveSubjectInEmail),
     takeEvery(SwipeActions.moveSwipeInEmail.REQUEST, sagaMoveSwipeInEmail),
   ]);
 }

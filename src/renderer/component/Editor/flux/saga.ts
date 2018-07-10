@@ -15,9 +15,13 @@ function* sagaEdit() {
 }
 
 function validation(params: IEditEntityParameter): string {
+  console.log(params);
   for (const key of Object.keys(params)) {
     const value = params[key];
-    if (!value && value.length === 0) {
+    if (!value) {
+      return key;
+    }
+    if (value.length === 0) {
       return key;
     }
   }

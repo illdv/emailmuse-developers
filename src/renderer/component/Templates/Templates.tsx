@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
-import { createTemplate, emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
@@ -53,7 +53,6 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   onSelectNewTemplate = () => {
-    const template = createTemplate();
     this.props.action.selectNewTemplate({});
   }
 

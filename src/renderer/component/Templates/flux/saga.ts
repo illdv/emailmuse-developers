@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { ITemplate, ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
@@ -50,9 +50,9 @@ function* saveTemplate(action) {
   }
 }
 
-function* createTemplate(action) {
+function* createTemplate(action: Action<ITemplate>) {
   try {
-    const axionData = yield call(Templates.createTemplate, action.payload);
+    const axionData = yield call(Templates.createTemplate, [action.payload]);
     yield put(TemplateActions.createSuccess(axionData.data));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
@@ -130,6 +130,7 @@ function* sagaSelectNewTemplate() {
     id: null,
     title: selectedLayout.title,
     body: selectedLayout.body,
+    description: '---',
   })));
 }
 
