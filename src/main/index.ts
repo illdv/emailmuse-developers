@@ -14,8 +14,6 @@ function createWindow() {
     center: true,
   });
 
-  console.log('IS_PRODUCTION ' + IS_PRODUCTION);
-
   if (IS_PRODUCTION) {
     const loadUrl = urlFormat.format({
       pathname: path.join(path.resolve(), './build/index.html'),
