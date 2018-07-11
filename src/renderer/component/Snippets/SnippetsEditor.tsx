@@ -150,7 +150,8 @@ export class SnippetsEditor extends Component<SnippetsEditorSpace.IProps, Snippe
           onClose={this.onCloseDialogClose}
           onSelectYes={this.onSave(true)}
           onSelectNo={this.props.onClose}
-          question={'The changes are not saved. Are you want save snippet?'}
+          title={'Warning'}
+          question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
         />
         <Confirmation
           title='Are you sure?'
