@@ -35,8 +35,8 @@ export namespace Templates {
     return AxiosWrapper.post(`/emails/${id}/copy`);
   }
 
-  export function createTemplate(template: ITemplate) {
-    return AxiosWrapper.post(`/emails`, { emails: [template] });
+  export function createTemplate(template: ITemplate[]) {
+    return AxiosWrapper.post(`/emails`, { emails: template });
   }
 
   // TODO: WTF! axios -> AxiosWrapper

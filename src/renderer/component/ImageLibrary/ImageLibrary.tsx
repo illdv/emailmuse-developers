@@ -28,6 +28,7 @@ import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
+import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 
 const b = block('image-library');
 
@@ -109,15 +110,8 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
     this.props.actions.updateImageRequest({ imageId: item.id, name });
   }
 
-  // TODO implement onProgress
-
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  }
-
-  // TODO: implement properly when there is capability to change rows per currentPage
-  onChangeRowsPerPage = e => {
-    console.log('Change rows', e.target.value);
   }
 
   onLoading = (searchWorld: string) => {
@@ -144,7 +138,6 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
                 'aria-label': 'Next Page',
               }}
               onChangePage={this.onChangePage}
-              onChangeRowsPerPage={this.onChangeRowsPerPage}
             />
             <DragAndDropTarget
               onDrop={this.onDropFile}
@@ -161,6 +154,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
                     onClose={this.closeDialog}
                   />
                 }
+                <PreloaderLayout/>
                 <ImageLibraryList
                   items={this.props.items}
                   onDelete={this.deleteItem}

@@ -5,12 +5,18 @@ import Button from '@material-ui/core/Button/Button';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, PropTypes } from '@material-ui/core';
 import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
 
 const b = block('dialog');
+
+export interface IModalAction {
+  title: string;
+  onClick: () => void;
+  color: PropTypes.Color;
+}
 
 export namespace SelectLayoutSpace {
   export interface IState {
@@ -18,12 +24,17 @@ export namespace SelectLayoutSpace {
 
   export interface IProps {
     title?: string;
+    actions?: IModalAction[];
     modalWindow?: IModalWindowState;
     modalWindowActions?: IModalWindowActions;
   }
 }
 
 class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
+
+  static defaultProps: SelectLayoutSpace.IProps = {
+    actions: [],
+  };
 
   state: SelectLayoutSpace.IState = {};
 
@@ -32,7 +43,7 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
   }
 
   render() {
-    const { children, title } = this.props;
+    const { children, title, actions } = this.props;
     return (
       <Dialog
         fullWidth
@@ -48,6 +59,11 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
             {children}
           </DialogContent>
           <DialogActions>
+            {actions.map((action, index) => (
+              <Button key={index} onClick={action.onClick} color={action.color}>
+                {action.title}
+              </Button>
+            ))}
             <Button onClick={this.onClose} color='secondary'>
               Close
             </Button>

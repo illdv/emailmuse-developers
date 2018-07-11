@@ -24,4 +24,5 @@ export enum EntityType {
   Email   = 'Email',
   Snippet = 'Snippet',
   Layout  = 'Layout',
+  TemporaryLayout  = 'TemporaryLayout',
 }

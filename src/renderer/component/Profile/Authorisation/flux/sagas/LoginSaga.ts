@@ -1,7 +1,7 @@
 import { all, call, put, take, takeEvery } from 'redux-saga/effects';
 import axios, { AxiosResponse } from 'axios';
 import { Action } from 'redux-act';
-import {push} from 'react-router-redux';
+import { push } from 'react-router-redux';
 
 import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
@@ -30,6 +30,7 @@ function* watcherLogout() {
     CustomStorage.clear();
     // noinspection TsLint
     axios.defaults.headers.common.authorization = ``;
+    yield put(push('/login'));
   }
 }
 
@@ -60,7 +61,7 @@ function* onGoogleLogin(): IterableIterator<any> {
 
     const token = yield call(getAccessToken);
 
-    const user = extractUser({data: JSON.parse(token)} as any);
+    const user = extractUser({ data: JSON.parse(token) } as any);
 
     yield put(AuthorisationActions.login.SUCCESS({ user }));
     yield put(push('/emails'));

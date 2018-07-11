@@ -1,28 +1,32 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { KeyboardArrowRight } from '@material-ui/icons';
+import { Edit, KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, List, ListItem, ListItemText, Paper } from '@material-ui/core';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISubject, ISwipe } from 'src/renderer/component/Swipe/flux/interface';
+import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
-import './Swipe.scss';
 import data from './Data';
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { Fab } from 'src/renderer/common/Fab';
+import './Swipe.scss';
 
 const b = block('swipe');
 
 export namespace SwipeSpace {
   export interface IState {
     selectedSwipe: ISwipe;
-    selectedSubject: ISubject;
+    selectedSubject: ITemplate;
   }
 
   export interface IProps {
-
+    swipeActions: ISwipeActions;
   }
 }
 
@@ -39,7 +43,7 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     });
   }
 
-  onSelectSubject = (subject: ISubject) => () => {
+  onSelectSubject = (subject: ITemplate) => () => {
     this.setState({
       selectedSubject: subject,
     });
@@ -55,6 +59,14 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
         <Divider/>
       </div>
     );
+  }
+
+  onMoveSwipeInEmail = (selectedSwipe: ISwipe) => () => {
+    const subjects = selectedSwipe.subjects.map(subject => ({
+      ...subject,
+      description: `${selectedSwipe.title} > ${subject.title}`,
+    }));
+    this.props.swipeActions.moveSwipeInEmail.REQUEST({ emails: subjects });
   }
 
   render() {
@@ -82,32 +94,48 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     }
 
     if (selectedSubject) {
-      items.push({ title: selectedSubject.title, onClick: () => null });
+      items.push({
+        title: selectedSubject.title,
+        onClick: () => null,
+      });
     }
 
     return (
-      <Paper className={b()} style={selectedSubject && {height: 'auto'}}>
-        <Breadcrumbs
-          items={items}
-        />
+      <div>
+        <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
+          <Breadcrumbs
+            items={items}
+          />
+          {
+            selectedSubject
+            &&
+            <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
+            ||
+            <Fade in timeout={500}>
+              <List component='nav'>
+                {
+                  selectedSwipe
+                  &&
+                  selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
+                  ||
+                  swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
+                }
+              </List>
+            </Fade>
+          }
+        </Paper>
         {
-          selectedSubject
-          &&
-          <PreviewMail mail={selectedSubject}/>
-          ||
-          <Fade in timeout={500}>
-            <List component='nav'>
-              {
-                selectedSwipe
-                &&
-                selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
-                ||
-                swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
-              }
-            </List>
-          </Fade>
+          selectedSwipe && !selectedSubject &&
+          <Fab
+            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+            icon={<Edit/>}
+            position={0}
+            title={'Use These Emails'}
+            key={'Enter'}
+            color={'secondary'}
+          />
         }
-      </Paper>
+      </div>
     );
   }
 }
@@ -117,11 +145,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Swipe);
