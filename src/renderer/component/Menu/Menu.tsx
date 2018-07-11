@@ -26,6 +26,7 @@ import { NavLink } from 'react-router-dom';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
+// TODO: delete route
 const createMenuSchema = (): IMenuItem[] => {
   return [
     { title: 'Emails', icon: <Drafts/>, type: MenuItemType.TEMPLATES, route: '/emails' },
@@ -33,6 +34,7 @@ const createMenuSchema = (): IMenuItem[] => {
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, route: '/snippets' },
     { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, route: '/layouts' },
     { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, route: '/swipe' },
+    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, route: '/training' },
   ];
 };
 

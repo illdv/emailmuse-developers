@@ -28,7 +28,7 @@ export class Confirmation extends Component<ConfirmationSpace.IProps, Confirmati
   state: ConfirmationSpace.IState = {};
 
   render() {
-    const { question, isOpen, onClose, onSelectNo = onClose, onSelectYes, title = 'Confirmation' } = this.props;
+    const { question, isOpen, onClose, onSelectNo = onClose, onSelectYes, title = 'Are you sure?' } = this.props;
     if (!isOpen) {
       return <></>;
     }

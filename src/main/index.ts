@@ -1,9 +1,24 @@
-const electron                                     = require('electron');
-const path                                         = require('path');
-const urlFormat                                    = require('url');
-const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const electron  = require('electron');
+const path      = require('path');
+const urlFormat = require('url');
+
+const {
+        app,
+        BrowserWindow,
+        Menu,
+        ipcMain,
+        shell,
+      } = require('electron');
 
 let mainWindow;
+
+let isProduction = false;
+
+try {
+  isProduction = IS_PRODUCTION;
+} catch (e) {
+  console.log('Failed get IS_PRODUCTION in Electron!');
+}
 
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -14,7 +29,7 @@ function createWindow() {
     center: true,
   });
 
-  if (IS_PRODUCTION) {
+  if (isProduction) {
     const loadUrl = urlFormat.format({
       pathname: path.join(path.resolve(), './build/index.html'),
       protocol: 'file:',

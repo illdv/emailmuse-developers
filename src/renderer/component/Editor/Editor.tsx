@@ -160,13 +160,14 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
               onClose={this.onCloseDialogClose}
               onSelectYes={this.onSaveAndClose}
               onSelectNo={this.onClose}
-              question={'The changes are not saved. Are you want save email?'}
+              title={'Warning'}
+              question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
             />
             <Confirmation
               isOpen={this.state.isOpenConfirmationDelete}
               onClose={this.onCloseDialogDelete}
               onSelectYes={this.onRemove}
-              question={'Are you sure your want to delete this email?'}
+              question={'You are about to delete a email and this action cannot be undone?'}
             />
             <Fab
               color={'secondary'}

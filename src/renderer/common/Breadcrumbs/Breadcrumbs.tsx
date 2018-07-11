@@ -5,7 +5,7 @@ import './Breadcrumbs.scss';
 
 const b = block('breadcrumbs');
 
-interface IBreadcrumbs {
+export interface IBreadcrumbs {
   title: string;
   onClick: () => void;
 }

@@ -10,6 +10,7 @@ export enum MenuItemType {
   SNIPPETS = 'SNIPPETS',
   LAYOUTS = 'LAYOUTS',
   SWIPE = 'SWIPE',
+  TRAINING = 'TRAINING',
 }
 
 export interface IDrawerMenuState {

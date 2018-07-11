@@ -18,6 +18,7 @@ import Layouts from 'src/renderer/component/Layouts/Layouts';
 import Account from 'src/renderer/component/Profile/Account/Account';
 import Templates from 'src/renderer/component/Templates/Templates';
 import Editor from 'src/renderer/component/Editor/Editor';
+import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 
 const styles: IStyle = {
   root: {
@@ -64,6 +65,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/swipe' component={Swipe}/>
             <Route path='/account' component={Account}/>
             <Route path='/editor' component={Editor}/>
+            <Route path='/training' component={StepsSelection}/>
             <ModalProvider/>
           </Grid>
         </Grid>
