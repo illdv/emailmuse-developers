@@ -17,38 +17,35 @@ import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/a
 import { Fab } from 'src/renderer/common/Fab';
 import './Swipe.scss';
 import { RouteComponentProps } from 'react-router-dom';
+import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
 const b                = block('swipe');
 const swipes: ISwipe[] = data as any;
 
 export namespace SwipeSpace {
   export interface IState {
-    selectedSwipe: ISwipe;
-    selectedSubject: ITemplate;
   }
 
   export interface IProps extends RouteComponentProps<any> {
     swipeActions: ISwipeActions;
+    swipe: ISwipeState;
   }
 }
 
 export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
 
-  state: SwipeSpace.IState = {
-    selectedSwipe: null,
-    selectedSubject: null,
-  };
+  state: SwipeSpace.IState = {};
+
+  onResetSelect = () => {
+    this.props.swipeActions.resetSelected.REQUEST({});
+  }
 
   onSelectSwipe = (swipe: ISwipe) => () => {
-    this.setState({
-      selectedSwipe: swipe,
-    });
+    this.props.swipeActions.selectSwipe.REQUEST({ selectedSwipe: swipe });
   }
 
   onSelectSubject = (subject: ITemplate) => () => {
-    this.setState({
-      selectedSubject: subject,
-    });
+    this.props.swipeActions.selectSubject.REQUEST({ selectedSubject: subject });
   }
 
   toItem = (title: string, onClick: () => void) => {
@@ -73,24 +70,19 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
 
   render() {
 
-    const { selectedSwipe, selectedSubject } = this.state;
+    const { selectedSwipe, selectedSubject } = this.props.swipe;
 
     const items = [
       {
         title: 'Swipe',
-        onClick: () => this.setState({
-          selectedSwipe: null,
-          selectedSubject: null,
-        }),
+        onClick: this.onResetSelect,
       },
     ];
 
     if (selectedSwipe) {
       items.push({
         title: selectedSwipe.title,
-        onClick: () => this.setState({
-          selectedSubject: null,
-        }),
+        onClick: this.onSelectSubject(null),
       });
     }
 
@@ -142,7 +134,7 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  swipe: state.swipe,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
