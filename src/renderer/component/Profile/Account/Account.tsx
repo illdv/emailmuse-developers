@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { ChangeEvent } from 'react';
-import { bindActionCreators } from 'redux';
 import { IStyle } from 'type/materialUI';
 import { connect } from 'react-redux';
 
-import { Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { Fade, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 
@@ -137,65 +136,67 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
     }
 
     return (
-      <div className={classes.container}>
-        <Paper className={classes.root}>
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id='name'
-                label='Your name'
-                value={this.state.name}
-                className={classes.textField}
-                margin='normal'
-                onChange={this.onChangeName}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                disabled
-                id='mail'
-                label='Your mail'
-                value={email}
-                margin='normal'
-                helperText='Mail cannot be changed'
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
-                Change password
-              </Button>
-            </Grid>
-            {/*<Grid item xs={12}>
+      <Fade in timeout={1000}>
+        <div className={classes.container}>
+          <Paper className={classes.root}>
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id='name'
+                  label='Your name'
+                  value={this.state.name}
+                  className={classes.textField}
+                  margin='normal'
+                  onChange={this.onChangeName}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  disabled
+                  id='mail'
+                  label='Your mail'
+                  value={email}
+                  margin='normal'
+                  helperText='Mail cannot be changed'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
+                  Change password
+                </Button>
+              </Grid>
+              {/*<Grid item xs={12}>
               <Button onClick={this.onOpenManageAccounts} variant='raised' color='primary'>
                 <Email/>
                 Manage Gmail accounts
               </Button>
             </Grid>*/}
-            <Grid item xs={12}>
-              <InCenter>
-                <Button onClick={this.onSave} variant='raised' color='primary'>
-                  Save setting
-                </Button>
-                <Button variant='raised' color='secondary' onClick={this.onLogout} style={{ marginLeft: 10 }}>
-                  Logout
-                </Button>
-              </InCenter>
+              <Grid item xs={12}>
+                <InCenter>
+                  <Button onClick={this.onSave} variant='raised' color='primary'>
+                    Save setting
+                  </Button>
+                  <Button variant='raised' color='secondary' onClick={this.onLogout} style={{ marginLeft: 10 }}>
+                    Logout
+                  </Button>
+                </InCenter>
+              </Grid>
             </Grid>
-          </Grid>
-          <AccountsDialog
-            open={this.state.isDialogManageAccountsOpen}
-            onClose={this.onCloseManageAccounts}
-            onItemClick={this.onItemClick}
-          />
-          <ChangePasswordDialog
-            open={this.state.isDialogChangePasswordOpen}
-            onClose={this.onCloseDialogChangePassword}
-          />
-        </Paper>
-      </div>
+            <AccountsDialog
+              open={this.state.isDialogManageAccountsOpen}
+              onClose={this.onCloseManageAccounts}
+              onItemClick={this.onItemClick}
+            />
+            <ChangePasswordDialog
+              open={this.state.isDialogChangePasswordOpen}
+              onClose={this.onCloseDialogChangePassword}
+            />
+          </Paper>
+        </div>
+      </Fade>
     );
   }
 }
