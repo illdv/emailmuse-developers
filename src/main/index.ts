@@ -1,7 +1,14 @@
-const electron                                     = require('electron');
-const path                                         = require('path');
-const urlFormat                                    = require('url');
-const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const electron  = require('electron');
+const path      = require('path');
+const urlFormat = require('url');
+
+const {
+        app,
+        BrowserWindow,
+        Menu,
+        ipcMain,
+        shell,
+      } = require('electron');
 
 let mainWindow;
 
@@ -9,7 +16,7 @@ let isProduction = false;
 
 try {
   isProduction = IS_PRODUCTION;
-} catch  {
+} catch (e) {
   console.log('Failed get IS_PRODUCTION in Electron!');
 }
 

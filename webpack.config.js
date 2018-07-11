@@ -18,7 +18,14 @@ const webpackReact = {
 
 console.log('isProduction = ' + isProduction);
 
-module.exports = [
-    webpackElectron,
-    webpackReact,
-];
+
+if (isProduction) {
+    module.exports = [
+        webpackElectron,
+        webpackReact,
+    ];
+} else {
+    module.exports = [
+        webpackReact,
+    ];
+}
