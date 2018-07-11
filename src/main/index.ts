@@ -5,7 +5,7 @@ const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 
 let mainWindow;
 
-const isProduction = false;
+const isProduction = process.env.NODE_ENV === 'production';
 
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
