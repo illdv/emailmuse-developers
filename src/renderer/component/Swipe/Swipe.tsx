@@ -16,8 +16,10 @@ import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { Fab } from 'src/renderer/common/Fab';
 import './Swipe.scss';
+import { RouteComponentProps } from 'react-router-dom';
 
-const b = block('swipe');
+const b                = block('swipe');
+const swipes: ISwipe[] = data as any;
 
 export namespace SwipeSpace {
   export interface IState {
@@ -25,7 +27,7 @@ export namespace SwipeSpace {
     selectedSubject: ITemplate;
   }
 
-  export interface IProps {
+  export interface IProps extends RouteComponentProps<any> {
     swipeActions: ISwipeActions;
   }
 }
@@ -70,7 +72,6 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
   }
 
   render() {
-    const swipes: ISwipe[] = data as any;
 
     const { selectedSwipe, selectedSubject } = this.state;
 
