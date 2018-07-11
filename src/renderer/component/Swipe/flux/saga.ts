@@ -13,6 +13,7 @@ import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
 const insertMarker = 'CONTENTGOESHERE';
 
@@ -110,8 +111,10 @@ function* createTemplates(template: ITemplate[]) {
   try {
     yield call(Templates.createTemplate, template);
     yield put(push('/emails'));
+    yield put(FluxToast.Actions.showToast('Emails created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
+    yield put(FluxToast.Actions.showToast('Failed emails created', ToastType.Error));
   }
 }
 
