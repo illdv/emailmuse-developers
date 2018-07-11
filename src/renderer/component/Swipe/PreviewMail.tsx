@@ -36,6 +36,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
     swipeActions.moveSubjectInEmail.REQUEST({
       email: {
         ...mail,
+        id: null,
         description: `${swipe.title} > ${mail.title}`,
       },
     });

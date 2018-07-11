@@ -63,6 +63,7 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
   onMoveSwipeInEmail = (selectedSwipe: ISwipe) => () => {
     const subjects = selectedSwipe.subjects.map(subject => ({
       ...subject,
+      id: null,
       description: `${selectedSwipe.title} > ${subject.title}`,
     }));
     this.props.swipeActions.moveSwipeInEmail.REQUEST({ emails: subjects });
