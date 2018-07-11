@@ -5,6 +5,8 @@ const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 
 let mainWindow;
 
+const isProduction = false;
+
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow              = new BrowserWindow({
@@ -14,7 +16,7 @@ function createWindow() {
     center: true,
   });
 
-  if (IS_PRODUCTION) {
+  if (isProduction) {
     const loadUrl = urlFormat.format({
       pathname: path.join(path.resolve(), './build/index.html'),
       protocol: 'file:',
