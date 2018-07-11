@@ -18,7 +18,7 @@ const dotenv = require('dotenv').config({
     path: isProduction ? './.env.production' : './.env.development',
 });
 
-const moduleWebpac = {
+const moduleWebpack = {
     rules: [
         {
             test: /.tsx?$/,
@@ -107,7 +107,7 @@ const commonConfig = {
             API_URL: JSON.stringify(dotenv.parsed.API_URL),
         }),
     ],
-    module: moduleWebpac,
+    module: moduleWebpack,
 };
 
 module.exports = {commonConfig, isProduction};
