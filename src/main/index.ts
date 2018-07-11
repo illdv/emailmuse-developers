@@ -1,7 +1,7 @@
-const electron                                              = require('electron');
-const path                                                  = require('path');
-const urlFormat                                             = require('url');
-const { app, BrowserWindow, Menu, ipcMain, shell, session } = require('electron');
+const electron                                     = require('electron');
+const path                                         = require('path');
+const urlFormat                                    = require('url');
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 
 let mainWindow;
 
@@ -14,9 +14,11 @@ function createWindow() {
     center: true,
   });
 
+  console.log('IS_PRODUCTION ' + IS_PRODUCTION);
+
   if (IS_PRODUCTION) {
     const loadUrl = urlFormat.format({
-      pathname: path.join(__dirname, './index.html'),
+      pathname: path.join(path.resolve(), './build/index.html'),
       protocol: 'file:',
       slashes: true,
     });

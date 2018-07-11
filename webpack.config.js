@@ -36,6 +36,11 @@ const commonConfig = {
         open: false,
     },
     plugins: [
+        new HtmlWebpackPlugin({
+            template: './renderer/index.html',
+            filename: 'index.html',
+            inject: 'body',
+        }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
@@ -117,13 +122,5 @@ module.exports = [
         entry: {
             renderer: './renderer/index.tsx',
         },
-        plugins: [
-            new HtmlWebpackPlugin({
-                template: './renderer/index.html',
-                filename: 'index.html',
-                inject: 'body',
-            }),
-        ],
-
     },
 ];
