@@ -12,10 +12,7 @@ export interface IEditEntity {
 }
 
 export interface IEditEntityParameter {
-  [key: string]: {
-    value: string;
-    type: ParamType;
-  };
+  [key: string]: string;
 }
 
 export enum ParamType {
@@ -27,4 +24,5 @@ export enum EntityType {
   Email   = 'Email',
   Snippet = 'Snippet',
   Layout  = 'Layout',
+  TemporaryLayout  = 'TemporaryLayout',
 }

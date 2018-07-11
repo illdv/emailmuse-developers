@@ -1,6 +1,6 @@
 {
   "name": "Emailer",
-  "version": "0.1.8",
+  "version": "0.2.1",
   "author": {
     "name": "Nikita Kamyshenko",
     "email": "kamyshenko.n@cronix.ms"
@@ -8,12 +8,12 @@
   "homepage": "homepage.example",
   "description": "Emailr demo",
   "private": true,
-  "main": "./main/index.js",
+  "main": "./main.js",
   "scripts": {
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
-    "build": "webpack; npx typescript;",
-    "build-prod": "NODE_ENV=production npm run build; cd build; npx electron-builder -wlm",
+    "build": "NODE_ENV=production webpack --mode=production",
+    "build-prod": "npm run build; cd build; npx electron-builder -wlm",
     "start-build": "./build/dist/linux-unpacked/emailer",
     "pack": "electron-builder --dir",
     "test": "jest",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@material-ui/core": "^1.3.0",
     "@material-ui/icons": "^1.1.0",
+    "@types/react-router-dom": "^4.2.7",
     "axios": "^0.18.0",
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",

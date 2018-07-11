@@ -1,25 +1,34 @@
 import { createActionCreator } from 'src/renderer/flux/utils';
-import {
-  ICreateAccountRequest,
-  ILoginRequest,
-  IResetPasswordRequest,
-} from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
-import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 const createAsyncAction = createActionCreator('SWIPE');
 
-const selectEmail  = createAsyncAction('SELECT_EMAIL');
+const moveSubjectInEmail  = createAsyncAction('MOVE_SUBJECT_IN_EMAIL');
 const selectLayout = createAsyncAction('SELECT_LAYOUT');
+const moveSwipeInEmail = createAsyncAction('MOVE_SWIPE_IN_EMAIL');
+
+const selectSwipe = createAsyncAction('SELECT_SWIPE');
+const selectSubject = createAsyncAction('SELECT_SUBJECT');
+const resetSelected = createAsyncAction('RESET_SELECTED');
 
 export const SwipeActions: ISwipeActions = {
-  selectEmail,
+  moveSubjectInEmail,
   selectLayout,
+  moveSwipeInEmail,
+  selectSwipe,
+  selectSubject,
+  resetSelected,
 };
 
 export interface ISwipeActions {
-  selectEmail: IAsyncAction2<{ email: ITemplate }, {}>;
+  moveSubjectInEmail: IAsyncAction2<{ email: ITemplate }, {}>;
   selectLayout: IAsyncAction2<{ layout: ILayout }, {}>;
+  moveSwipeInEmail: IAsyncAction2<{ emails: ITemplate[] }, {}>;
+
+  selectSwipe: IAsyncAction2<{selectedSwipe: ISwipe}, {}>;
+  selectSubject: IAsyncAction2<{selectedSubject: ITemplate}, {}>;
+  resetSelected: IAsyncAction2<{}, {}>;
 }

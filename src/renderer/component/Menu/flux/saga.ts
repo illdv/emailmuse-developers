@@ -25,6 +25,9 @@ export function* menuSaga(action): IterableIterator<any> {
     case MenuItemType.TEMPLATES:
       route = '/emails';
       break;
+    case MenuItemType.TRAINING:
+      route = '/training';
+      break;
     default:
       route = '/';
   }

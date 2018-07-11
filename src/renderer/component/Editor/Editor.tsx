@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { TextField } from '@material-ui/core';
+import { Fade, TextField } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -12,11 +12,11 @@ import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
+import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 import block from 'bem-ts';
 
 import './Editor.scss';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
 
 const b = block('editor');
 
@@ -79,10 +79,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       hasChange: true,
       params: {
         ...state.params,
-        [key]: {
-          ...state.params[key],
-          value,
-        },
+        [key]: value,
       },
     } as any));
   }
@@ -96,29 +93,22 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   onRemove = () => {
-    this.props.editorActions.remove.REQUEST({
-      editEntity: this.getEntity(),
-    });
+    this.props.editorActions.remove.REQUEST(this.getEntity());
   }
 
   onSave = () => {
-    this.props.editorActions.save.REQUEST({
-      editEntity: this.getEntity(),
-    });
+    this.props.editorActions.save.REQUEST(this.getEntity());
     this.setState({
       hasChange: false,
     });
   }
 
   onSaveAndClose = () => {
-    this.onSave();
-    this.onClose();
+    this.props.editorActions.saveAndClose.REQUEST(this.getEntity());
   }
 
   onClose = () => {
-    this.props.editorActions.close.REQUEST({
-      editEntity: this.getEntity(),
-    });
+    this.props.editorActions.close.REQUEST(this.getEntity());
   }
 
   renderParameters = () => {
@@ -132,7 +122,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
         InputLabelProps={{
           shrink: true,
         }}
-        value={this.state.params[key].value}
+        value={this.state.params[key]}
         onChange={this.onChangeField(key)}
       />
     ));
@@ -160,46 +150,49 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   render() {
     return (
-      <>
-        {this.renderParameters()}
-        <JoditEditor onChangeValue={this.onChange} value={this.state.html}/>
+      <Fade in timeout={2000}>
         <div>
-          <Confirmation
-            isOpen={this.state.isOpenConfirmationClose}
-            onClose={this.onCloseDialogClose}
-            onSelectYes={this.onSaveAndClose}
-            onSelectNo={this.onClose}
-            question={'The changes are not saved. Are you want save template?'}
-          />
-          <Confirmation
-            isOpen={this.state.isOpenConfirmationDelete}
-            onClose={this.onCloseDialogDelete}
-            onSelectYes={this.onRemove}
-            question={'Are you want to delete this template?'}
-          />
-          <Fab
-            color={'secondary'}
-            onClick={this.onOpenDialogDelete}
-            icon={<Delete/>}
-            position={0}
-            title={'Remove'}
-          />
-          <Fab
-            onClick={this.onSave}
-            icon={<Save/>}
-            position={1}
-            title={'Save'}
-            whitCtrl
-            hotKey={'S'}
-          />
-          <Fab
-            onClick={this.onOpenDialogClose}
-            icon={<Close/>}
-            position={2}
-            title={'Close'}
-          />
+          {this.renderParameters()}
+          <JoditEditor onChangeValue={this.onChange} value={this.state.html}/>
+          <div>
+            <Confirmation
+              isOpen={this.state.isOpenConfirmationClose}
+              onClose={this.onCloseDialogClose}
+              onSelectYes={this.onSaveAndClose}
+              onSelectNo={this.onClose}
+              title={'Warning'}
+              question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
+            />
+            <Confirmation
+              isOpen={this.state.isOpenConfirmationDelete}
+              onClose={this.onCloseDialogDelete}
+              onSelectYes={this.onRemove}
+              question={'You are about to delete a email and this action cannot be undone?'}
+            />
+            <Fab
+              color={'secondary'}
+              onClick={this.onOpenDialogDelete}
+              icon={<Delete/>}
+              position={0}
+              title={'Remove'}
+            />
+            <Fab
+              onClick={this.onSave}
+              icon={<Save/>}
+              position={1}
+              title={'Save'}
+              whitCtrl
+              hotKey={'S'}
+            />
+            <Fab
+              onClick={this.onOpenDialogClose}
+              icon={<Close/>}
+              position={2}
+              title={'Close'}
+            />
+          </div>
         </div>
-      </>
+      </Fade>
     );
   }
 }

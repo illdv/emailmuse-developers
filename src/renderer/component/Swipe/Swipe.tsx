@@ -1,48 +1,51 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { KeyboardArrowRight } from '@material-ui/icons';
+import { Edit, KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import { Divider, Fade, List, ListItem, ListItemText, Paper } from '@material-ui/core';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISubject, ISwipe } from 'src/renderer/component/Swipe/flux/interface';
+import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
-import './Swipe.scss';
 import data from './Data';
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { Fab } from 'src/renderer/common/Fab';
+import './Swipe.scss';
+import { RouteComponentProps } from 'react-router-dom';
+import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
-const b = block('swipe');
+const b                = block('swipe');
+const swipes: ISwipe[] = data as any;
 
 export namespace SwipeSpace {
   export interface IState {
-    selectedSwipe: ISwipe;
-    selectedSubject: ISubject;
   }
 
-  export interface IProps {
-
+  export interface IProps extends RouteComponentProps<any> {
+    swipeActions: ISwipeActions;
+    swipe: ISwipeState;
   }
 }
 
 export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
 
-  state: SwipeSpace.IState = {
-    selectedSwipe: null,
-    selectedSubject: null,
-  };
+  state: SwipeSpace.IState = {};
 
-  onSelectSwipe = (swipe: ISwipe) => () => {
-    this.setState({
-      selectedSwipe: swipe,
-    });
+  onResetSelect = () => {
+    this.props.swipeActions.resetSelected.REQUEST({});
   }
 
-  onSelectSubject = (subject: ISubject) => () => {
-    this.setState({
-      selectedSubject: subject,
-    });
+  onSelectSwipe = (swipe: ISwipe) => () => {
+    this.props.swipeActions.selectSwipe.REQUEST({ selectedSwipe: swipe });
+  }
+
+  onSelectSubject = (subject: ITemplate) => () => {
+    this.props.swipeActions.selectSubject.REQUEST({ selectedSubject: subject });
   }
 
   toItem = (title: string, onClick: () => void) => {
@@ -57,71 +60,86 @@ export class Swipe extends Component<SwipeSpace.IProps, SwipeSpace.IState> {
     );
   }
 
-  render() {
-    const swipes: ISwipe[] = data as any;
+  onMoveSwipeInEmail = (selectedSwipe: ISwipe) => () => {
+    const subjects = selectedSwipe.subjects.map(subject => ({
+      ...subject,
+      id: null,
+      description: `${selectedSwipe.title} > ${subject.title}`,
+    }));
+    this.props.swipeActions.moveSwipeInEmail.REQUEST({ emails: subjects });
+  }
 
-    const { selectedSwipe, selectedSubject } = this.state;
+  render() {
+
+    const { selectedSwipe, selectedSubject } = this.props.swipe;
 
     const items = [
       {
         title: 'Swipe',
-        onClick: () => this.setState({
-          selectedSwipe: null,
-          selectedSubject: null,
-        }),
+        onClick: this.onResetSelect,
       },
     ];
 
     if (selectedSwipe) {
       items.push({
         title: selectedSwipe.title,
-        onClick: () => this.setState({
-          selectedSubject: null,
-        }),
+        onClick: this.onSelectSubject(null),
       });
     }
 
     if (selectedSubject) {
-      items.push({ title: selectedSubject.title, onClick: () => null });
+      items.push({
+        title: selectedSubject.title,
+        onClick: () => null,
+      });
     }
 
     return (
-      <Paper className={b()} style={selectedSubject && {height: 'auto'}}>
-        <Breadcrumbs
-          items={items}
-        />
+      <div>
+        <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
+          <Breadcrumbs
+            items={items}
+          />
+          {
+            selectedSubject
+            &&
+            <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
+            ||
+            <Fade in timeout={500}>
+              <List component='nav'>
+                {
+                  selectedSwipe
+                  &&
+                  selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
+                  ||
+                  swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
+                }
+              </List>
+            </Fade>
+          }
+        </Paper>
         {
-          selectedSubject
-          &&
-          <PreviewMail mail={selectedSubject}/>
-          ||
-          <Fade in timeout={500}>
-            <List component='nav'>
-              {
-                selectedSwipe
-                &&
-                selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
-                ||
-                swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
-              }
-            </List>
-          </Fade>
+          selectedSwipe && !selectedSubject &&
+          <Fab
+            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+            icon={<Edit/>}
+            position={0}
+            title={'Use These Emails'}
+            key={'Enter'}
+            color={'secondary'}
+          />
         }
-      </Paper>
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  swipe: state.swipe,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Swipe);

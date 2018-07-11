@@ -1,14 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { Action } from 'redux-act';
 
-import { all, call, put, take } from 'redux-saga/effects';
+import { all, call, put, race, take } from 'redux-saga/effects';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 
-export function* showModal(type: ModalWindowType) {
+export function* selectFromModal(type: ModalWindowType) {
   yield put(ModalWindowActions.show.REQUEST({ type }));
+  const { success, failure } = yield race({
+    success: take(ModalWindowActions.show.SUCCESS),
+    failure: take(ModalWindowActions.show.FAILURE),
+  });
+
+  return success || null;
 }
 
 // TODO: fix any

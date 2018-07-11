@@ -2,6 +2,7 @@ import { createReducer } from 'redux-act';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 
 export interface IEditorState {
   editEntity: IEditEntity;
@@ -13,12 +14,12 @@ const initialState = (): IEditorState => ({
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(EditorActions.edit.REQUEST, (state, payload) => ({
+reducer.on(EditorActions.edit.REQUEST, (state, payload): IEditorState => ({
   ...state,
-  ...payload,
+  editEntity: payload,
 }));
 
-reducer.on(TemplateActions.createSuccess, (state, payload) => ({
+reducer.on(TemplateActions.createSuccess, (state, payload): IEditorState => ({
   ...state,
   editEntity: {
     ...state.editEntity,

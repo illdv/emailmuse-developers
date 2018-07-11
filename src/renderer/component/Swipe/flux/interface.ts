@@ -1,11 +1,7 @@
-export interface ISubject {
-  day: number;
-  description: string;
-  title: string;
-  body: string;
-}
+import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
 export interface ISwipe {
+  id: string;
   title: string;
-  subjects: ISubject[];
+  subjects: ITemplate[];
 }

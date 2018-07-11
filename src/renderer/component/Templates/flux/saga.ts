@@ -1,15 +1,23 @@
-import { call, put, select, take } from 'redux-saga/effects';
+import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
-import { CREATE, LOADING, REMOVE, SAVE } from './module';
+import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
 import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { ITemplate, ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { useOrDefault } from 'src/renderer/utils';
+import { selectFromModal } from 'src/renderer/flux/saga/utils';
+import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { Action } from 'redux-act';
+import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
+import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
+import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
 function getCurrentPageSelector(state: IGlobalState) {
-  return state.templates.pagination.current_page;
+  return useOrDefault(() => state.templates.pagination.current_page, 0);
 }
 
 function* loadingTemplates(action) {
@@ -36,27 +44,20 @@ function* saveTemplate(action) {
   try {
     yield call(Templates.editTemplate, action.payload.template);
 
-    if (action.payload.saveAndClose) {
-      yield put(TemplateActions.select(null));
-    }
-
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
-    const page: number = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page, hidePreloader: true }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email saved', ToastType.Error));
   }
 }
 
-function* createTemplate(action) {
+function* createTemplate(action: Action<ITemplate>) {
   try {
-    const axionData = yield call(Templates.createTemplate, action.payload);
+    const axionData = yield call(Templates.createTemplate, [action.payload]);
     yield put(TemplateActions.createSuccess(axionData.data));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
-    const page = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page, hidePreloader: true }));
   } catch (error) {
+    yield call(errorHandler, error);
     yield put(FluxToast.Actions.showToast('Failed email created', ToastType.Error));
   }
 }
@@ -120,4 +121,21 @@ function* watchRemove() {
   }
 }
 
-export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy];
+function* sagaSelectNewTemplate() {
+  const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
+
+  const selectedLayout = actionSelectLayout.payload.layout;
+
+  yield put(EditorActions.edit.REQUEST(emailToEditEntity({
+    id: null,
+    title: selectedLayout.title,
+    body: selectedLayout.body,
+    description: '---',
+  })));
+}
+
+function* watchSelectNewTemplate() {
+  yield takeEvery(SELECT_NEW_TEMPLATE, sagaSelectNewTemplate);
+}
+
+export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy, watchSelectNewTemplate];

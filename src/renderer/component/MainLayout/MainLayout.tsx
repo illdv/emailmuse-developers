@@ -8,7 +8,6 @@ import { DragDropContext } from 'react-dnd';
 import { Route } from 'react-router-dom';
 
 import Menu from 'src/renderer/component/Menu/Menu';
-import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 
 import ModalProvider from 'src/renderer/common/ModalWindow/ModalProvider';
@@ -19,6 +18,7 @@ import Layouts from 'src/renderer/component/Layouts/Layouts';
 import Account from 'src/renderer/component/Profile/Account/Account';
 import Templates from 'src/renderer/component/Templates/Templates';
 import Editor from 'src/renderer/component/Editor/Editor';
+import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 
 const styles: IStyle = {
   root: {
@@ -65,7 +65,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/swipe' component={Swipe}/>
             <Route path='/account' component={Account}/>
             <Route path='/editor' component={Editor}/>
-            <PreloaderLayout/>
+            <Route path='/training' component={StepsSelection}/>
             <ModalProvider/>
           </Grid>
         </Grid>

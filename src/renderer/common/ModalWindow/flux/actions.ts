@@ -4,8 +4,8 @@ import { IAsyncAction2 } from 'src/renderer/flux/interface';
 const createAsyncAction = createActionCreator('MODAL_WINDOW');
 
 export enum ModalWindowType {
-  SelectLayout = 'SelectLayout',
-  Type2        = 'Type2',
+  SelectLayout   = 'SelectLayout',
+  NeedInsertBody = 'NeedInsertBody',
 }
 
 const show = createAsyncAction('SHOW');

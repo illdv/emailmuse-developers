@@ -3,14 +3,14 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
+import ModalWindow, { IModalAction } from 'src/renderer/common/ModalWindow/ModalWindow';
 import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { toItem } from 'src/renderer/component/Layouts/utils';
-import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
+import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
 export namespace SelectLayoutSpace {
   export interface IState {
@@ -18,9 +18,9 @@ export namespace SelectLayoutSpace {
   }
 
   export interface IProps {
-    swipeActions?: ISwipeActions;
     layoutActions?: ILayoutActions;
     layout?: ILayoutState;
+    modalWindowActions?: IModalWindowActions;
   }
 }
 
@@ -37,17 +37,32 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   }
 
   onSelect = (item: ILayout) => () => {
-    this.props.swipeActions.selectLayout.REQUEST({ layout: item });
+    this.props.modalWindowActions.show.SUCCESS({ layout: item });
   }
 
   onChangePage = (item: ILayout) => () => {
 
   }
 
+  selectScratch = () => {
+    const layout: ILayout = {
+      id: null,
+      body: '<div id="content-email"></div>',
+      title: 'Scratch',
+    };
+
+    this.props.modalWindowActions.show.SUCCESS({ layout });
+  }
+
   render() {
     const { layouts, pagination } = this.props.layout;
+
+    const actions: IModalAction[] = [
+      { title: 'No thanks. I\'ll start from scratch', color: 'primary', onClick: this.selectScratch },
+    ];
+
     return (
-      <ModalWindow>
+      <ModalWindow actions={actions}>
         <ListCard
           entities={layouts}
           toItem={toItem}
@@ -67,7 +82,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  swipeActions: bindModuleAction(SwipeActions, dispatch),
+  modalWindowActions: bindModuleAction(ModalWindowActions, dispatch),
   layoutActions: bindModuleAction(LayoutActions, dispatch),
 });
 

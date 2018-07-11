@@ -143,13 +143,14 @@ export class TemplateEditor extends Component<TemplateEditorSpace.IProps, Templa
           onClose={this.onCloseDialogClose}
           onSelectYes={this.onSave(true)}
           onSelectNo={this.props.close}
-          question={'The changes are not saved. Are you want save template?'}
+          title={'Warning'}
+          question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
         />
         <Confirmation
           isOpen={this.state.isOpenConfirmationDelete}
           onClose={this.onCloseDialogDelete}
           onSelectYes={this.props.remove}
-          question={'Are you want to delete this template?'}
+          question={'You are about to delete a layout and this action cannot be undone.'}
         />
         <div>
           <Fab

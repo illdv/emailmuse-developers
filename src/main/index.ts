@@ -1,9 +1,24 @@
-const electron                                              = require('electron');
-const path                                                  = require('path');
-const urlFormat                                             = require('url');
-const { app, BrowserWindow, Menu, ipcMain, shell, session } = require('electron');
+const electron  = require('electron');
+const path      = require('path');
+const urlFormat = require('url');
+
+const {
+        app,
+        BrowserWindow,
+        Menu,
+        ipcMain,
+        shell,
+      } = require('electron');
 
 let mainWindow;
+
+let isProduction = false;
+
+try {
+  isProduction = IS_PRODUCTION;
+} catch (e) {
+  console.log('Failed get IS_PRODUCTION in Electron!');
+}
 
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -14,9 +29,9 @@ function createWindow() {
     center: true,
   });
 
-  if (false) {
+  if (isProduction) {
     const loadUrl = urlFormat.format({
-      pathname: path.join(__dirname, 'index.html'),
+      pathname: path.join(path.resolve(), './build/index.html'),
       protocol: 'file:',
       slashes: true,
     });
@@ -26,6 +41,7 @@ function createWindow() {
     const loadDevTool = require('electron-load-devtool');
     loadDevTool(loadDevTool.REDUX_DEVTOOLS);
     loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
@@ -33,7 +49,6 @@ function createWindow() {
     shell.openExternal(url);
   });
   mainWindow.webContents.session.clearStorageData();
-  mainWindow.toggleDevTools();
 }
 
 app.on('activate', () => {
@@ -91,7 +106,7 @@ ipcMain.on('authorized-google', (e, url) => {
 });
 
 function extractResponseFromPage(url, loginWindow) {
-  if (url.includes('emailer-electron-laravel.cronix.ms/')) {
+  if (url.includes('emailer-electron-laravel.cronix.life/api/')) {
     const javaScript = `document.body.children.length === 1 && document.querySelector('pre').innerText;`;
     loginWindow.webContents.executeJavaScript(javaScript, result => {
       if (result) {

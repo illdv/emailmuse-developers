@@ -5,19 +5,26 @@ import Button from '@material-ui/core/Button/Button';
 import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Dialog, DialogActions, DialogContent, Paper } from '@material-ui/core';
-import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, PropTypes } from '@material-ui/core';
+import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
 
 const b = block('dialog');
+
+export interface IModalAction {
+  title: string;
+  onClick: () => void;
+  color: PropTypes.Color;
+}
 
 export namespace SelectLayoutSpace {
   export interface IState {
   }
 
   export interface IProps {
-    type: ModalWindowType;
+    title?: string;
+    actions?: IModalAction[];
     modalWindow?: IModalWindowState;
     modalWindowActions?: IModalWindowActions;
   }
@@ -25,14 +32,18 @@ export namespace SelectLayoutSpace {
 
 class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
 
+  static defaultProps: SelectLayoutSpace.IProps = {
+    actions: [],
+  };
+
   state: SelectLayoutSpace.IState = {};
 
   onClose = () => {
-    this.props.modalWindowActions.hide.REQUEST({ type: null });
+    this.props.modalWindowActions.hide.REQUEST({});
   }
 
   render() {
-    const { children } = this.props;
+    const { children, title, actions } = this.props;
     return (
       <Dialog
         fullWidth
@@ -42,11 +53,17 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
         maxWidth={'sm'}
         aria-labelledby='responsive-dialog-title'
       >
+        <DialogTitle id='form-dialog-title'>{title || ''}</DialogTitle>
         <Paper elevation={4}>
           <DialogContent>
             {children}
           </DialogContent>
           <DialogActions>
+            {actions.map((action, index) => (
+              <Button key={index} onClick={action.onClick} color={action.color}>
+                {action.title}
+              </Button>
+            ))}
             <Button onClick={this.onClose} color='secondary'>
               Close
             </Button>
