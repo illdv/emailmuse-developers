@@ -16,10 +16,7 @@ function create(layout: ILayout): any {
 function edit(layout: ILayout): any {
   return AxiosWrapper.put(`/layouts/${layout.id}`, layout);
 }
-// {
-//   "title": "some",
-//   "body": "<html>/text</html>"
-// }
+
 export const LayoutAPI = {
   loading,
   remove,

@@ -32,7 +32,7 @@ export namespace AxiosWrapper {
     );
   }
 
-  export function deleteResponse2(apiMethod: string, body: any): AxiosPromise<any> {
+  export function deleteResponse2(apiMethod: string, body?: any): AxiosPromise<any> {
     return axios.delete(API_URL + apiMethod, { data: body });
   }
 }
