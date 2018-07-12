@@ -31,7 +31,7 @@ function createWindow() {
 
   if (isProduction) {
     const loadUrl = urlFormat.format({
-      pathname: path.join(path.resolve(), './build/index.html'),
+      pathname: path.join(__dirname, './index.html'),
       protocol: 'file:',
       slashes: true,
     });
