@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import {
-Grid,
-IconButton,
-ListItem,
-Table,
-TableBody,
-TableCell,
-TablePagination,
-TableRow,
-Typography,
+  Grid,
+  IconButton,
+  ListItem,
+  Table,
+  TableBody,
+  TableCell,
+  TablePagination,
+  TableRow,
+  Typography,
 } from '@material-ui/core';
 import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
@@ -139,7 +139,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
 
     return (
       <>
-        <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title} />
+        <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title}/>
         <div>
           <Table aria-labelledby='tableTitle'>
             <CustomTableHead
@@ -158,17 +158,21 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
                     key={item.id}
                     selected={isSelected}
                     className={b('row')}
-                  >{this.props.onCopy &&
-                    <TableCell
-                      style={{ width: 40 }}
-                      onClick={this.onCopy(item.id)}
-                      padding={'checkbox'}
-                    >
-                      <IconButton title={'Create Duplicate'}>
-                        <ContentCopyIcon/>
-                      </IconButton>
-                    </TableCell>
-                      || <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                  >
+                    {
+                      this.props.onCopy
+                      &&
+                      <TableCell
+                        style={{ width: 40 }}
+                        onClick={this.onCopy(item.id)}
+                        padding={'checkbox'}
+                      >
+                        <IconButton title={'Create Duplicate'}>
+                          <ContentCopyIcon/>
+                        </IconButton>
+                      </TableCell>
+                      ||
+                      <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
                     }
                     <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
                       {item.title}
