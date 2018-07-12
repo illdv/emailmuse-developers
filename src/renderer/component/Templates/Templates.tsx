@@ -18,6 +18,7 @@ import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { Search } from 'src/renderer/common/Search';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -60,12 +61,13 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.copy({ id });
   }
 
+  onSearch = (searchWorld: string) => {
+    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    this.props.action.loading({ page, search: searchWorld });
+  }
+
   render() {
     const { status, templates, pagination } = this.props.templates;
-
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
-    }
 
     if (status === ActionStatus.FAILURE) {
       return (
@@ -86,6 +88,8 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
             pagination={pagination}
             onChangePage={this.onChangePage}
             onCopy={this.onCopy}
+            onSearch={this.onSearch}
+            isLoading={status === ActionStatus.REQUEST}
           />
           <Fab
             onClick={this.onSelectNewTemplate}

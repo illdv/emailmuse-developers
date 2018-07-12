@@ -22,8 +22,8 @@ export namespace Accounts {
 
 // TODO: Move in file
 export namespace Templates {
-  export function getTemplates(page): any {
-    return AxiosWrapper.get(`/emails/`, { page });
+  export function getTemplates(page: number, search: string = ''): any {
+    return AxiosWrapper.get(`/emails/`, { page, s: search });
   }
 
   export function editTemplate(template: ITemplate) {

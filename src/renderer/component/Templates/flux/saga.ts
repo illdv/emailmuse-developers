@@ -22,7 +22,8 @@ function getCurrentPageSelector(state: IGlobalState) {
 
 function* loadingTemplates(action) {
   try {
-    const response: AxiosResponse<ITemplatesResponse> = yield call(Templates.getTemplates, action.payload.page);
+    const response: AxiosResponse<ITemplatesResponse>
+            = yield call(Templates.getTemplates, action.payload.page, action.payload.search);
 
     const { total, current_page, data, last_page, per_page } = response.data;
 
