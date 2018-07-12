@@ -10,7 +10,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { useOrDefault } from 'src/renderer/utils';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
-import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { Action } from 'redux-act';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';

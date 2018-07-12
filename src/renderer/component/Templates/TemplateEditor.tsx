@@ -8,7 +8,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { Grid, TextField } from '@material-ui/core';
 import './TemplateEditor.scss';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 const b = block('template-editor');
 

@@ -10,7 +10,7 @@ import { Fab } from 'src/renderer/common/Fab';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 import './SnippetsEditor.scss';
 

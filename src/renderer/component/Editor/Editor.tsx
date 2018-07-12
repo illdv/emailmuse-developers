@@ -12,7 +12,7 @@ import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 import block from 'bem-ts';
 
