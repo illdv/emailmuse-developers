@@ -47,7 +47,7 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   selectScratch = () => {
     const layout: ILayout = {
       id: null,
-      body: '<div id="content-email"></div>',
+      body: '<div ids="content-email"></div>',
       title: 'Scratch',
     };
 

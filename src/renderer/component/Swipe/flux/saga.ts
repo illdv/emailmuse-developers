@@ -45,7 +45,7 @@ const temporaryLayoutToEntity = ({ id, body, title }: ILayout): IEditEntity => (
 });
 
 function isHasIdContentEmail(selectedLayout: ILayout) {
-  return htmlTextToNode(selectedLayout.body).querySelector('[id=content-email]');
+  return htmlTextToNode(selectedLayout.body).querySelector('[ids=content-email]');
 }
 
 /**

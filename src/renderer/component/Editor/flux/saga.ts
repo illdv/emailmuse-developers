@@ -11,6 +11,8 @@ import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
+import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
 function* sagaEdit() {
   yield put(push('/editor'));
@@ -68,6 +70,20 @@ function* sagaSave(action: Action<IEditEntity>) {
       yield put(SnippetsAction.add.REQUEST({ snippet }));
     }
   }
+
+  if (type === EntityType.Layout) {
+    const layout: ILayout = {
+      id,
+      body: html,
+      title: params.title,
+    };
+
+    if (layout.id) {
+      yield put(LayoutActions.edit.REQUEST({ layout }));
+    } else {
+      yield put(LayoutActions.create.REQUEST({ layout }));
+    }
+  }
 }
 
 function* sagaClose(action: Action<{ type: EntityType }>) {
@@ -75,6 +91,10 @@ function* sagaClose(action: Action<{ type: EntityType }>) {
 
   if (action.payload.type === EntityType.Email) {
     yield put(push('/emails'));
+  }
+
+  if (action.payload.type === EntityType.Layout) {
+    yield put(push('/layouts'));
   }
 
   if (action.payload.type === EntityType.Snippet) {
@@ -90,6 +110,9 @@ function* sagaRemove(action: Action<IEditEntity>) {
     }
     if (type === EntityType.Snippet) {
       yield put(SnippetsAction.remove.REQUEST({ id }));
+    }
+    if (type === EntityType.Layout) {
+      yield put(LayoutActions.remove.REQUEST({ ids: [id] }));
     }
   }
 
