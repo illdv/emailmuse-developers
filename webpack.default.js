@@ -88,6 +88,10 @@ const commonConfig = {
     devServer: {
         open: false,
     },
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: './renderer/index.html',
