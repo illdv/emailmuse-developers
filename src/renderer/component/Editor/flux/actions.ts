@@ -1,6 +1,6 @@
 import { createActionCreator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
-import { IEditEntity } from 'src/renderer/component/Editor/flux/interface';
+import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 
 const createAsyncAction = createActionCreator('EDITOR');
 
@@ -21,7 +21,7 @@ export const EditorActions: IEditorActions = {
 export interface IEditorActions {
   edit: IAsyncAction2<IEditEntity>;
   save: IAsyncAction2<IEditEntity>;
-  close: IAsyncAction2;
+  close: IAsyncAction2<{ type: EntityType }>;
   remove: IAsyncAction2<IEditEntity>;
   saveAndClose: IAsyncAction2<IEditEntity>;
 }

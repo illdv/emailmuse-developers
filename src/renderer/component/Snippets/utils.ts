@@ -1,5 +1,6 @@
 import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
+import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 
 export const createEmptySnippet = () => ({
   id: null,
@@ -17,5 +18,17 @@ export function snippetToItem(snippet: ISnippet): IListItem {
     title: snippet.shortcut,
     description: snippet.description,
     rightText: snippet.updated_at,
+  };
+}
+
+export function snippetToEditEntity({id, body, shortcut }: ISnippet): IEditEntity {
+  return {
+    id: id ? id.toString() : '',
+    idFrontEnd: new Date().getTime().toString(),
+    type: EntityType.Snippet,
+    html: body,
+    params: {
+      shortcut,
+    },
   };
 }
