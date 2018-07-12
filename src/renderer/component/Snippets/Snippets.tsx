@@ -7,7 +7,6 @@ import { Add } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { Loading } from 'src/renderer/common/Loading';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
@@ -113,37 +112,64 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
     }
   }
 
-  render() {
-
+  renderContent = () => {
     const { status, snippets, pagination } = this.props.snippets;
 
+    /*const isFirstSwipe = true;
+
+    if (isFirstSwipe) {
+      return (
+        <div>
+          <InCenter>
+            <Typography variant='title' noWrap>
+              Let's create a "snippet" you can use over and over
+              in your email to save time.
+            </Typography>
+            <Fab
+              onClick={this.selectNew}
+              icon={<Add/>}
+              position={0}
+              title={'Add a new snippet'}
+              whitCtrl
+              hotKey={'A'}
+            />
+          </InCenter>
+        </div>
+      );
+    }*/
+
+    return (
+      <div>
+        <ListTable
+          title='Snippets'
+          entities={snippets}
+          toItem={snippetToItem}
+          onOpenItem={this.onSelect}
+          pagination={pagination}
+          onChangePage={this.onChangePage}
+          isLoading={status === ActionStatus.REQUEST}
+        />
+        <Fab
+          onClick={this.selectNew}
+          icon={<Add/>}
+          position={0}
+          title={'Add a new snippet'}
+          whitCtrl
+          hotKey={'A'}
+        />
+      </div>
+    );
+  }
+
+  render() {
     if (this.props.snippets.selectSnippet) {
       return this.showEditOrCreateSnippet();
-    }
-
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
     }
 
     return (
       <Fade in timeout={1000}>
         <Paper elevation={4} className={'template-list'}>
-          <ListTable
-            title='Snippets'
-            entities={snippets}
-            toItem={snippetToItem}
-            onOpenItem={this.onSelect}
-            pagination={pagination}
-            onChangePage={this.onChangePage}
-          />
-          <Fab
-            onClick={this.selectNew}
-            icon={<Add/>}
-            position={0}
-            title={'Add a new snippet'}
-            whitCtrl
-            hotKey={'A'}
-          />
+          {this.renderContent()}
         </Paper>
       </Fade>
     );

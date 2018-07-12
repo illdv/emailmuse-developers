@@ -5,7 +5,6 @@ import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Loading } from 'src/renderer/common/Loading';
 import { emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
@@ -18,7 +17,6 @@ import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
-import { Search } from 'src/renderer/common/Search';
 
 export namespace MailListSpace {
   export interface IProps {
