@@ -7,7 +7,7 @@ import { ListElementSpace } from 'src/renderer/common/List/ListTable/ListTable';
 import { CSSProperties } from 'react';
 
 interface ILoadingProps {
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 export class Loading extends Component<ILoadingProps>  {
