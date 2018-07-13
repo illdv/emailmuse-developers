@@ -1,6 +1,6 @@
 import { createReducer } from 'redux-act';
 
-import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 
 export interface IModalWindowState {
   type: ModalWindowType | null;

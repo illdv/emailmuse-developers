@@ -1,15 +1,10 @@
 import { AxiosResponse } from 'axios';
 
-import { call, put, select, take } from 'redux-saga/effects';
+import { call, put, take } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
 import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
-
-function getCurrentPageSelector(state: IGlobalState) {
-  return state.snippets.pagination.current_page;
-}
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -46,8 +41,6 @@ function* removeSnippetsSaga(action) {
     yield put(FluxToast.Actions.showToast('Snippet deleted', ToastType.Success));
     yield put(SnippetsAction.remove.SUCCESS({}));
 
-    const currentPage = yield select(getCurrentPageSelector);
-    yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed snippet deleted', ToastType.Error));
   }
@@ -64,10 +57,9 @@ function* addSnippetsSaga(action) {
   try {
     const axionData = yield call(SnippetsAPI.addSnippets, action.payload.snippet);
     yield put(SnippetsAction.add.SUCCESS({ snippet: axionData.data }));
-    const currentPage = yield select(getCurrentPageSelector);
 
     yield put(FluxToast.Actions.showToast('Snippet created', ToastType.Success));
-    yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
+
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed snippet created', ToastType.Error));
   }
@@ -84,8 +76,6 @@ function* editSnippetsSaga(action) {
   try {
     yield call(SnippetsAPI.editSnippets, action.payload.snippet);
     yield put(FluxToast.Actions.showToast('Snippet saved', ToastType.Success));
-    const currentPage = yield select(getCurrentPageSelector);
-    yield put(SnippetsAction.loading.REQUEST({ page: currentPage }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed snippet saved', ToastType.Error));
   }
@@ -98,22 +88,9 @@ function* watchEditSnippets() {
   }
 }
 
-function* saveAndCloseSaga(action) {
-  yield put(SnippetsAction.edit.REQUEST({ snippet: action.payload.snippet }));
-  yield put(SnippetsAction.selectSnippet({ selectSnippet: null }));
-}
-
-function* watchCloseAndSave() {
-  while (true) {
-    const action = yield take(SnippetsAction.saveAndClose(null).type);
-    yield call(saveAndCloseSaga, action);
-  }
-}
-
 export default [
   watchLoadingSnippets,
   watchRemoveSnippets,
   watchAddSnippets,
   watchEditSnippets,
-  watchCloseAndSave,
 ];

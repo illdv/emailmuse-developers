@@ -6,7 +6,6 @@ export interface ISnippetsState {
   snippets: ISnippet[];
   pagination: IPagination;
   status: ActionStatus;
-  selectSnippet: ISnippet;
 }
 
 export interface ISnippetsAction {
@@ -14,8 +13,6 @@ export interface ISnippetsAction {
   remove: IAsyncAction<{ id: string }, {}, {}>;
   add: IAsyncAction<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
   edit: IAsyncAction<{ snippet: ISnippet }, {}, {}>;
-  selectSnippet: CreateAction<{ selectSnippet: ISnippet }>;
-  saveAndClose: CreateAction<{ snippet: ISnippet }>;
 }
 
 export interface ISuccessfullyPayload {

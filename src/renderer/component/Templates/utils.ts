@@ -11,6 +11,15 @@ export function createTemplate(): ITemplate {
   };
 }
 
+export function templateToItem(templates: ITemplate): IListItem {
+  return {
+    id: templates.id,
+    title: templates.title,
+    description: templates.description,
+    rightText: templates.updated_at,
+  };
+}
+
 export function emailToEditEntity({id, body, title, description}: ITemplate): IEditEntity {
   return {
     id,
@@ -21,14 +30,5 @@ export function emailToEditEntity({id, body, title, description}: ITemplate): IE
       title,
       description,
     },
-  };
-}
-
-export function templateToItem(templates: ITemplate): IListItem {
-  return {
-    id: templates.id,
-    title: templates.title,
-    description: templates.description,
-    rightText: templates.updated_at,
   };
 }

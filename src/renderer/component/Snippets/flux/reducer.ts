@@ -9,7 +9,6 @@ const initialState = (): ISnippetsState => ({
   snippets: null,
   pagination: null,
   status: ActionStatus.REQUEST,
-  selectSnippet: null,
 });
 
 const reducer = createReducer({}, initialState());
@@ -26,7 +25,6 @@ reducer.on(SnippetsAction.add.REQUEST, state => ({
 
 reducer.on(SnippetsAction.add.SUCCESS, (state, payload): ISnippetsState => ({
   ...state,
-  selectSnippet: payload.snippet,
   status: ActionStatus.SUCCESS,
 }));
 
@@ -55,16 +53,6 @@ reducer.on(SnippetsAction.loading.SUCCESS, (state, payload) => ({
 reducer.on(SnippetsAction.loading.FAILURE, state => ({
   ...state,
   status: ActionStatus.FAILURE,
-}));
-
-reducer.on(SnippetsAction.selectSnippet, (state, payload): ISnippetsState => ({
-  ...state,
-  selectSnippet: payload.selectSnippet,
-}));
-
-reducer.on(DrawerMenuAction.selectMenuItem, (state): ISnippetsState => ({
-  ...state,
-  selectSnippet: null,
 }));
 
 export default reducer;

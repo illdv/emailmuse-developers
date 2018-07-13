@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import ModalWindow from 'src/renderer/common/ModalWindow/ModalWindow';
+import ModalWindow from 'src/renderer/common/DialogProvider/ModalWindow';
 import { Typography } from '@material-ui/core';
 
 export namespace NeedInsertBodySpace {

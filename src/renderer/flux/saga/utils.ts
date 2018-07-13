@@ -3,7 +3,7 @@ import { Action } from 'redux-act';
 
 import { all, call, put, race, take } from 'redux-saga/effects';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
-import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 
