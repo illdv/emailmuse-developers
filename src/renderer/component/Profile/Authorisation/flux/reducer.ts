@@ -10,7 +10,7 @@ const initialState = (token?: string): IAuthState => {
   // noinspection TsLint
   axios.defaults.headers.common.authorization = `Bearer ${token}`;
   return {
-    user: { email: '', name: '', token: token ? token : '' },
+    user: null,
     error: '',
     authStep: AuthStep.LOGIN,
   };
