@@ -10,6 +10,7 @@ import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/DialogProvider/flux/reducer';
 import swipe, { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
+import training, { ITrainingState } from 'src/renderer/component/Training/flux/reducer';
 import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 
 import { ITemplateState } from 'src/renderer/component/Templates/flux/interface';
@@ -31,6 +32,7 @@ export interface IGlobalState {
   modalWindow: IModalWindowState;
   swipe: ISwipeState;
   editor: IEditorState;
+  training: ITrainingState;
 }
 
 const appReducers = combineReducers({
@@ -44,6 +46,7 @@ const appReducers = combineReducers({
   modalWindow,
   swipe,
   editor,
+  training,
   router: routerReducer,
 });
 

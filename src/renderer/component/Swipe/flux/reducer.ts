@@ -11,7 +11,7 @@ export interface ISwipeState {
   selectedSwipe: ISwipe;
   selectedSubject: ITemplate;
   swipes: ISwipe[];
-  isLoading: boolean,
+  isLoading: boolean;
 }
 
 const initialState = (): ISwipeState => ({
