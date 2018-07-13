@@ -15,7 +15,14 @@ import { Loading } from 'src/renderer/common/Loading';
 
 const b = block('list-element');
 
-const columnData = [
+export interface IColumn {
+  id: string;
+  label: string;
+  disablePadding: boolean;
+  numeric: boolean;
+}
+
+const defaultColumnData: IColumn[] = [
   { id: '1', label: 'Name', disablePadding: false, numeric: false },
   { id: '2', label: 'Description', disablePadding: false, numeric: false },
   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
@@ -43,6 +50,7 @@ export namespace ListElementSpace {
     title?: string;
     onCopy?: (id: string) => void;
     onSearch?: (searchWorld: string) => void;
+    columnData?: IColumn[];
   }
 }
 
@@ -50,6 +58,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
 
   static defaultProps = {
     isLoading: false,
+    columnData: defaultColumnData,
   };
 
   state: ListElementSpace.IState = {
@@ -114,7 +123,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
   }
 
   renderTable = () => {
-    const { entities, toItem, onOpenItem, isLoading } = this.props;
+    const { entities, toItem, onOpenItem, isLoading, columnData } = this.props;
 
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
@@ -178,7 +187,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
             spacing={16}
             alignItems={'center'}
             justify={'space-between'}
-            style={{marginTop: 0}}
+            style={{ marginTop: 0 }}
           >
             <Grid item>
               <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title}/>

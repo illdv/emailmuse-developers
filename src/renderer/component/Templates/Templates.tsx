@@ -13,7 +13,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
+import { IColumn, ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
@@ -75,6 +75,12 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
       );
     }
 
+    const columnData: IColumn[] = [
+      { id: '1', label: 'Subject', disablePadding: false, numeric: false },
+      { id: '2', label: 'Description', disablePadding: false, numeric: false },
+      { id: '3', label: 'Last update', disablePadding: false, numeric: false },
+    ];
+
     return (
       <div>
         <Fade in timeout={1000}>
@@ -89,6 +95,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
               onCopy={this.onCopy}
               onSearch={this.onSearch}
               isLoading={status === ActionStatus.REQUEST}
+              columnData={columnData}
             />
             <Fab
               onClick={this.onSelectNewTemplate}
