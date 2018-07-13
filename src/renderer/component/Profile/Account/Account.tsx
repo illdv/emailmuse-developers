@@ -160,7 +160,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   label='Your mail'
                   value={email}
                   margin='normal'
-                  helperText='Mail cannot be changed'
+                  helperText='Email cannot be changed'
                 />
               </Grid>
               <Grid item xs={12} style={{paddingTop: 20}}>
