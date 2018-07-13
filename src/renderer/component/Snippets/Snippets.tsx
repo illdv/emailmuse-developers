@@ -7,14 +7,14 @@ import { Add } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
-import { Loading } from 'src/renderer/common/Loading';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
-import { SnippetsEditor } from 'src/renderer/component/Snippets/SnippetsEditor';
 import { Fab } from 'src/renderer/common/Fab';
-import { createEmptySnippet, snippetToItem } from 'src/renderer/component/Snippets/utils';
+import { createEmptySnippet, snippetToEditEntity, snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -23,6 +23,7 @@ export namespace SnippetsSpace {
   export interface IProps {
     actions?: ISnippetsAction;
     snippets?: ISnippetsState;
+    editorActions?: IEditorActions;
   }
 }
 
@@ -36,9 +37,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     add: bindActionCreators(SnippetsAction.add, dispatch),
     edit: bindActionCreators(SnippetsAction.edit, dispatch),
     remove: bindActionCreators(SnippetsAction.remove, dispatch),
-    selectSnippet: bindActionCreators(SnippetsAction.selectSnippet, dispatch),
-    saveAndClose: bindActionCreators(SnippetsAction.saveAndClose, dispatch),
   },
+  editorActions: bindModuleAction(EditorActions, dispatch),
 });
 
 @(connect(mapStateToProps, mapDispatchToProps))
@@ -55,95 +55,68 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
   }
 
   onSelect = (snippet: ISnippet) => () => {
-    this.props.actions.selectSnippet({ selectSnippet: snippet });
-  }
-
-  onClose = () => {
-    this.props.actions.selectSnippet({ selectSnippet: null });
-  }
-
-  onRemove = () => {
-    const selectSnippet = this.props.snippets.selectSnippet;
-    this.props.actions.remove.REQUEST({ id: selectSnippet.id.toString() });
-  }
-
-  onSave = (newSnippet: ISnippet, saveAndClose: boolean) => {
-    if (saveAndClose) {
-      this.props.actions.saveAndClose({ snippet: newSnippet });
-    }
-    this.props.actions.edit.REQUEST({ snippet: newSnippet });
-  }
-
-  onCreate = (newSnippet: ISnippet) => {
-    this.props.actions.add.REQUEST({ snippet: newSnippet });
+    this.props.editorActions.edit.REQUEST(snippetToEditEntity(snippet));
   }
 
   selectNew = () => {
-    this.props.actions.selectSnippet({ selectSnippet: createEmptySnippet() });
+    const emptySnippet = createEmptySnippet();
+    this.props.editorActions.edit.REQUEST(snippetToEditEntity(emptySnippet));
   }
 
-  /**
-   * New means that has not yet been created.
-   */
-  isNewSnippet = (): boolean => {
-    return this.props.snippets.selectSnippet.id === null;
-  }
+  renderContent = () => {
+    const { status, snippets, pagination } = this.props.snippets;
 
-  showEditOrCreateSnippet = () => {
-    const selectSnippet = this.props.snippets.selectSnippet;
+    /*const isFirstSwipe = true;
 
-    if (this.isNewSnippet()) {
+    if (isFirstSwipe) {
       return (
-        <SnippetsEditor
-          onRemove={this.onClose}
-          onClose={this.onClose}
-          snippet={selectSnippet}
-          onSave={this.onCreate}
-        />
+        <div>
+          <InCenter>
+            <Typography variant='title' noWrap>
+              Let's create a "snippet" you can use over and over
+              in your email to save time.
+            </Typography>
+            <Fab
+              onClick={this.selectNew}
+              icon={<Add/>}
+              position={0}
+              title={'Add a new snippet'}
+              whitCtrl
+              hotKey={'A'}
+            />
+          </InCenter>
+        </div>
       );
-    } else {
-      return (
-        <SnippetsEditor
-          onRemove={this.onRemove}
-          onClose={this.onClose}
-          snippet={selectSnippet}
-          onSave={this.onSave}
+    }*/
+
+    return (
+      <div>
+        <ListTable
+          title='Snippets'
+          entities={snippets}
+          toItem={snippetToItem}
+          onOpenItem={this.onSelect}
+          pagination={pagination}
+          onChangePage={this.onChangePage}
+          isLoading={status === ActionStatus.REQUEST}
         />
-      );
-    }
+        <Fab
+          onClick={this.selectNew}
+          icon={<Add/>}
+          position={0}
+          title={'Add a new snippet'}
+          whitCtrl
+          hotKey={'A'}
+        />
+      </div>
+    );
   }
 
   render() {
-
-    const { status, snippets, pagination } = this.props.snippets;
-
-    if (this.props.snippets.selectSnippet) {
-      return this.showEditOrCreateSnippet();
-    }
-
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
-    }
-
     return (
       <Fade in timeout={1000}>
         <Paper elevation={4} className={'template-list'}>
-          <ListTable
-            title='Snippets'
-            entities={snippets}
-            toItem={snippetToItem}
-            onOpenItem={this.onSelect}
-            pagination={pagination}
-            onChangePage={this.onChangePage}
-          />
-          <Fab
-            onClick={this.selectNew}
-            icon={<Add/>}
-            position={0}
-            title={'Add a new snippet'}
-            whitCtrl
-            hotKey={'A'}
-          />
+          {this.renderContent()}
         </Paper>
       </Fade>
     );

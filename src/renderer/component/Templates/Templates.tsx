@@ -5,7 +5,6 @@ import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Loading } from 'src/renderer/common/Loading';
 import { emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
@@ -60,12 +59,13 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.copy({ id });
   }
 
+  onSearch = (searchWorld: string) => {
+    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    this.props.action.loading({ page, search: searchWorld });
+  }
+
   render() {
     const { status, templates, pagination } = this.props.templates;
-
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
-    }
 
     if (status === ActionStatus.FAILURE) {
       return (
@@ -86,6 +86,8 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
             pagination={pagination}
             onChangePage={this.onChangePage}
             onCopy={this.onCopy}
+            onSearch={this.onSearch}
+            isLoading={status === ActionStatus.REQUEST}
           />
           <Fab
             onClick={this.onSelectNewTemplate}

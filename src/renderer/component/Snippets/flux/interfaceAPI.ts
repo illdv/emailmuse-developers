@@ -15,11 +15,11 @@ export interface ILoadingResponse {
 
 export interface ISnippet {
   id: number;
-  user_id: number;
   shortcut: string;
   body: string;
+  user_id?: number;
   description: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   deleted_at?: any;
 }

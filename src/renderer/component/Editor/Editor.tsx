@@ -12,7 +12,7 @@ import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 import block from 'bem-ts';
 
@@ -158,17 +158,17 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             <Confirmation
               isOpen={this.state.isOpenConfirmationClose}
               onClose={this.onCloseDialogClose}
-              onSelectYes={this.onSaveAndClose}
-              onSelectNo={this.onClose}
+              onSelectYes={this.onClose}
+              onSelectNo={this.onCloseDialogClose}
               title={'Warning'}
-              question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
+              question={'Your changes are not saved. Do you want to leave this page? Click "No" to stay.'}
             />
             <Confirmation
               isOpen={this.state.isOpenConfirmationDelete}
               onClose={this.onCloseDialogDelete}
               onSelectYes={this.onRemove}
               title={'Confirmation'}
-              question={'Are you sure you want to delete this email?'}
+              question={'Are you sure you want to delete this?'}
             />
             <Fab
               color={'secondary'}
