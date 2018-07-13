@@ -32,6 +32,14 @@ reducer.on(actions.login.FAILURE, (state, payload): IAuthState => ({
   authStep: AuthStep.LOGIN,
 }));
 
+reducer.on(actions.createAccount.REQUEST, (state, payload): IAuthState => ({
+  ...state,
+  user: {
+    ...state.user,
+    email: payload.user.email,
+  },
+}));
+
 reducer.on(actions.createAccount.SUCCESS, (state, payload): IAuthState => ({
   ...state,
   ...payload,
