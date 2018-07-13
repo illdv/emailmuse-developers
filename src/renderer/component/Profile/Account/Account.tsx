@@ -143,7 +143,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
               <Grid item xs={12}>
                 <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   id='name'
                   label='Your name'
@@ -153,7 +153,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   onChange={this.onChangeName}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   disabled
                   id='mail'
@@ -163,20 +163,12 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   helperText='Mail cannot be changed'
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
-                  Change password
-                </Button>
-              </Grid>
-              {/*<Grid item xs={12}>
-              <Button onClick={this.onOpenManageAccounts} variant='raised' color='primary'>
-                <Email/>
-                Manage Gmail accounts
-              </Button>
-            </Grid>*/}
-              <Grid item xs={12}>
+              <Grid item xs={12} style={{paddingTop: 20}}>
                 <InCenter>
-                  <Button onClick={this.onSave} variant='raised' color='primary'>
+                  <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
+                    Change password
+                  </Button>
+                  <Button onClick={this.onSave} variant='raised' color='primary' style={{ marginLeft: 10 }}>
                     Save setting
                   </Button>
                   <Button variant='raised' color='secondary' onClick={this.onLogout} style={{ marginLeft: 10 }}>

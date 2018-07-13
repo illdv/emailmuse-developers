@@ -36,7 +36,7 @@ class CloseEditor extends Component<CloseEditorSpace.IProps, CloseEditorSpace.IS
         isOpen={true}
         onClose={this.onClose}
         onSelectYes={this.onSelectYes}
-        question={'Your changes are not saved. Do you want to leave this page?'}
+        question={'If you leave the page, the changes may not be saved. Do you want to leave this page?'}
       />
     );
   }
