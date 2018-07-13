@@ -76,29 +76,31 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     }
 
     return (
-      <Fade in timeout={1000}>
-        <Paper>
-          <ListTable
-            title='Emails'
-            entities={templates}
-            toItem={templateToItem}
-            onOpenItem={this.selectTemplate}
-            pagination={pagination}
-            onChangePage={this.onChangePage}
-            onCopy={this.onCopy}
-            onSearch={this.onSearch}
-            isLoading={status === ActionStatus.REQUEST}
-          />
-          <Fab
-            onClick={this.onSelectNewTemplate}
-            icon={<Add/>}
-            position={0}
-            title={'Add a new email'}
-            whitCtrl
-            hotKey={'A'}
-          />
-        </Paper>
-      </Fade>
+      <div>
+        <Fade in timeout={1000}>
+          <Paper>
+            <ListTable
+              title='Emails'
+              entities={templates}
+              toItem={templateToItem}
+              onOpenItem={this.selectTemplate}
+              pagination={pagination}
+              onChangePage={this.onChangePage}
+              onCopy={this.onCopy}
+              onSearch={this.onSearch}
+              isLoading={status === ActionStatus.REQUEST}
+            />
+            <Fab
+              onClick={this.onSelectNewTemplate}
+              icon={<Add/>}
+              position={0}
+              title={'Add a new email'}
+              whitCtrl
+              hotKey={'A'}
+            />
+          </Paper>
+        </Fade>
+      </div>
     );
   }
 }

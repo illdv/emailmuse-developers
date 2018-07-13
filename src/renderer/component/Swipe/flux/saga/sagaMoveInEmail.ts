@@ -16,7 +16,7 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SwipeUtils } from 'src/renderer/component/Swipe/flux/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
 
-const { insertEmailById, isHasIdContentEmail, temporaryLayoutToEntity } = SwipeUtils;
+const { temporaryLayoutToEntity } = SwipeUtils;
 
 const insertMarker = 'CONTENTGOESHERE';
 
@@ -68,9 +68,11 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
   const selectedEmail: ITemplate = action.payload.email;
   const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
-  if (isHasIdContentEmail(selectedLayout)) {
-    const body = insertEmailById(selectedLayout, selectedEmail);
-    yield put(EditorActions.edit.REQUEST(emailToEditEntity({ ...selectedEmail, body })));
+  if (selectedLayout.body.includes(insertMarker)) {
+    yield put(EditorActions.edit.REQUEST(emailToEditEntity({
+      ...selectedEmail,
+      body: selectedLayout.body.replace(insertMarker, selectedEmail.body),
+    })));
   } else {
     const save: Action<IEditEntity> = yield toGiveUserToInsertMarker(selectedLayout);
 
@@ -95,13 +97,13 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
   const selectedEmails: ITemplate[] = action.payload.emails;
   const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
 
-  if (isHasIdContentEmail(selectedLayout)) {
-    const template: ITemplate[] = selectedEmails.map((email): ITemplate => ({
+  if (selectedLayout.body.includes(insertMarker)) {
+    const newEmail                     = selectedEmails.map(email => ({
       ...email,
-      body: insertEmailById(selectedLayout, email),
+      body: selectedLayout.body.replace(insertMarker, email.body),
     }));
 
-    yield createTemplates(template);
+    yield createTemplates(newEmail);
 
   } else {
     const save: Action<IEditEntity> = yield toGiveUserToInsertMarker(selectedLayout);

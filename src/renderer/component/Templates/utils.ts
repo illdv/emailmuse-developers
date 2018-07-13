@@ -27,7 +27,7 @@ export function emailToEditEntity({id, body, title, description}: ITemplate): IE
     idFrontEnd: new Date().getTime().toString(),
     type: EntityType.Email,
     params: {
-      title,
+      subject: title,
       description,
     },
   };

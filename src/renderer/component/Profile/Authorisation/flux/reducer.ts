@@ -10,7 +10,7 @@ const initialState = (token?: string): IAuthState => {
   // noinspection TsLint
   axios.defaults.headers.common.authorization = `Bearer ${token}`;
   return {
-    user: { email: '', name: '', token: token ? token : '' },
+    user: null,
     error: '',
     authStep: AuthStep.LOGIN,
   };
@@ -30,6 +30,14 @@ reducer.on(actions.login.FAILURE, (state, payload): IAuthState => ({
   ...state,
   ...payload,
   authStep: AuthStep.LOGIN,
+}));
+
+reducer.on(actions.createAccount.REQUEST, (state, payload): IAuthState => ({
+  ...state,
+  user: {
+    ...state.user,
+    email: payload.user.email,
+  },
 }));
 
 reducer.on(actions.createAccount.SUCCESS, (state, payload): IAuthState => ({

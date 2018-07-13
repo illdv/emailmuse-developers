@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow, } from '@material-ui/core';
+import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
 import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
 
@@ -178,6 +178,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
             spacing={16}
             alignItems={'center'}
             justify={'space-between'}
+            style={{marginTop: 0}}
           >
             <Grid item>
               <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title}/>

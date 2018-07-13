@@ -19,7 +19,6 @@ function* sagaEdit() {
 }
 
 function validation(params: IEditEntityParameter): string {
-  console.log(params);
   for (const key of Object.keys(params)) {
     const value = params[key];
     if (!value) {
@@ -46,7 +45,7 @@ function* sagaSave(action: Action<IEditEntity>) {
       body: html,
       id,
       description: params.description,
-      title: params.title,
+      title: params.subject,
     };
 
     if (template.id) {
