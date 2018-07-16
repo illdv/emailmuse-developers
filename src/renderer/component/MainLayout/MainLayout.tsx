@@ -10,7 +10,7 @@ import { Route } from 'react-router-dom';
 import Menu from 'src/renderer/component/Menu/Menu';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 
-import ModalProvider from 'src/renderer/common/ModalWindow/ModalProvider';
+import ModalProvider from 'src/renderer/common/DialogProvider/ModalProvider';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import Swipe from 'src/renderer/component/Swipe/Swipe';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';

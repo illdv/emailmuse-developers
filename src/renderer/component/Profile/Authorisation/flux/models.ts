@@ -14,6 +14,9 @@ export interface IUser {
   name: string;
   email: string;
   token: string;
+  passed_poll: boolean;
+  has_email: boolean;
+  has_snippet: boolean;
 }
 
 export interface IAuthState {

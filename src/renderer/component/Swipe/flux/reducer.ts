@@ -10,6 +10,8 @@ export interface ISwipeState {
   layout: ILayout;
   selectedSwipe: ISwipe;
   selectedSubject: ITemplate;
+  swipes: ISwipe[];
+  isLoading: boolean;
 }
 
 const initialState = (): ISwipeState => ({
@@ -17,37 +19,50 @@ const initialState = (): ISwipeState => ({
   layout: null,
   selectedSwipe: null,
   selectedSubject: null,
+  swipes: [],
+  isLoading: false,
 });
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(SwipeActions.moveSubjectInEmail.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.loading.REQUEST, (state, payload): ISwipeState => ({
+  ...state,
+  isLoading: true,
+}));
+
+reducer.on(SwipeActions.loading.SUCCESS, (state, payload): ISwipeState => ({
+  ...state,
+  ...payload,
+  isLoading: false,
+}));
+
+reducer.on(SwipeActions.moveSubjectInEmail.REQUEST, (state, payload): ISwipeState => ({
   ...state,
   ...payload,
 }));
 
-reducer.on(SwipeActions.selectLayout.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.selectLayout.REQUEST, (state, payload): ISwipeState => ({
   ...state,
   ...payload,
 }));
 
-reducer.on(SwipeActions.selectSubject.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.selectSubject.REQUEST, (state, payload): ISwipeState => ({
   ...state,
   ...payload,
 }));
 
-reducer.on(SwipeActions.selectSwipe.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.selectSwipe.REQUEST, (state, payload): ISwipeState => ({
   ...state,
   ...payload,
 }));
 
-reducer.on(SwipeActions.resetSelected.REQUEST, (state, payload) => ({
+reducer.on(SwipeActions.resetSelected.REQUEST, (state, payload): ISwipeState => ({
   ...state,
   selectedSubject: null,
   selectedSwipe: null,
 }));
 
-reducer.on(DrawerMenuAction.selectMenuItem, (state, payload) => ({
+reducer.on(DrawerMenuAction.selectMenuItem, (state, payload): ISwipeState => ({
   ...state,
   selectedSubject: null,
   selectedSwipe: null,

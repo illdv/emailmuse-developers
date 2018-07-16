@@ -42,7 +42,6 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     yield put(AuthorisationActions.login.SUCCESS({
       user: extractUser(response),
     }));
-    // redirect to main page
     yield put(push('/emails'));
   } catch (error) {
     yield call(errorHandler, error);
@@ -90,7 +89,7 @@ function getToken() {
 
 function extractUser(response: AxiosResponse<ILoginResponse>) {
   const { user, token } = response.data;
-  return { email: user.email, name: user.name, token };
+  return { ...user, token };
 }
 
 export default [loginSaga, watcherLogout, watcherSetToken];

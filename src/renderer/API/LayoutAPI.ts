@@ -5,8 +5,8 @@ function loading(): any {
   return AxiosWrapper.get('/layouts');
 }
 
-function remove(idArray: {id: number[]}): any {
-  return AxiosWrapper.deleteResponse2('/layouts', idArray);
+function remove({ ids }: { ids: number[] }): any {
+  return AxiosWrapper.deleteResponse2('/layouts', { id: ids });
 }
 
 function create(layout: ILayout): any {
@@ -16,10 +16,7 @@ function create(layout: ILayout): any {
 function edit(layout: ILayout): any {
   return AxiosWrapper.put(`/layouts/${layout.id}`, layout);
 }
-// {
-//   "title": "some",
-//   "body": "<html>/text</html>"
-// }
+
 export const LayoutAPI = {
   loading,
   remove,

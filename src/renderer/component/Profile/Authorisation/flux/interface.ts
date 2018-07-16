@@ -25,5 +25,8 @@ export interface ILoginResponse {
     email: string;
     id: number;
     name: string;
+    passed_poll: boolean;
+    has_email: boolean;
+    has_snippet: boolean;
   };
 }

@@ -22,7 +22,6 @@ import {
   Tooltip,
   Typography, WithStyles, withStyles,
 } from '@material-ui/core/';
-import { NavLink } from 'react-router-dom';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 

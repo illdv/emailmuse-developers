@@ -6,9 +6,9 @@ import block from 'bem-ts';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, PropTypes } from '@material-ui/core';
-import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/ModalWindow/flux/actions';
+import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/DialogProvider/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
+import { IModalWindowState } from 'src/renderer/common/DialogProvider/flux/reducer';
 
 const b = block('dialog');
 
@@ -44,6 +44,7 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
 
   render() {
     const { children, title, actions } = this.props;
+
     return (
       <Dialog
         fullWidth
@@ -59,12 +60,14 @@ class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.
             {children}
           </DialogContent>
           <DialogActions>
-            {actions.map((action, index) => (
-              <Button key={index} onClick={action.onClick} color={action.color}>
-                {action.title}
-              </Button>
-            ))}
-            <Button onClick={this.onClose} color='secondary'>
+            {
+              actions.map((action, index) => (
+                <Button key={index} onClick={action.onClick} color={action.color}>
+                  {action.title}
+                </Button>
+              ))
+            }
+            <Button onClick={this.onClose}>
               Close
             </Button>
           </DialogActions>

@@ -5,7 +5,6 @@ import { Add } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { Loading } from 'src/renderer/common/Loading';
 import { emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
@@ -14,7 +13,7 @@ import { useOrDefault } from 'src/renderer/utils';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
+import { IColumn, ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
@@ -60,12 +59,13 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.copy({ id });
   }
 
+  onSearch = (searchWorld: string) => {
+    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    this.props.action.loading({ page, search: searchWorld });
+  }
+
   render() {
     const { status, templates, pagination } = this.props.templates;
-
-    if (status === ActionStatus.REQUEST) {
-      return <Loading/>;
-    }
 
     if (status === ActionStatus.FAILURE) {
       return (
@@ -75,28 +75,39 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
       );
     }
 
+    const columnData: IColumn[] = [
+      { id: '1', label: 'Subject', disablePadding: false, numeric: false },
+      { id: '2', label: 'Description', disablePadding: false, numeric: false },
+      { id: '3', label: 'Last update', disablePadding: false, numeric: false },
+    ];
+
     return (
-      <Fade in timeout={1000}>
-        <Paper>
-          <ListTable
-            title='Emails'
-            entities={templates}
-            toItem={templateToItem}
-            onOpenItem={this.selectTemplate}
-            pagination={pagination}
-            onChangePage={this.onChangePage}
-            onCopy={this.onCopy}
-          />
-          <Fab
-            onClick={this.onSelectNewTemplate}
-            icon={<Add/>}
-            position={0}
-            title={'Add a new email'}
-            whitCtrl
-            hotKey={'A'}
-          />
-        </Paper>
-      </Fade>
+      <div>
+        <Fade in timeout={1000}>
+          <Paper>
+            <ListTable
+              title='Emails'
+              entities={templates}
+              toItem={templateToItem}
+              onOpenItem={this.selectTemplate}
+              pagination={pagination}
+              onChangePage={this.onChangePage}
+              onCopy={this.onCopy}
+              onSearch={this.onSearch}
+              isLoading={status === ActionStatus.REQUEST}
+              columnData={columnData}
+            />
+            <Fab
+              onClick={this.onSelectNewTemplate}
+              icon={<Add/>}
+              position={0}
+              title={'Add a new email'}
+              whitCtrl
+              hotKey={'A'}
+            />
+          </Paper>
+        </Fade>
+      </div>
     );
   }
 }
