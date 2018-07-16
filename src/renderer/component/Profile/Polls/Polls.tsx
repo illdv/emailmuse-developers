@@ -59,9 +59,9 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
   }
 
   render() {
-    const { classes, currentQuestion }    = this.props;
-    const { answers, description, title } = currentQuestion;
-    if (currentQuestion) {
+    const { classes } = this.props;
+    const question = this.props.currentQuestion;
+    if (question) {
       return (
         <InCenter>
           <Paper className={classes.paper}>
@@ -76,14 +76,14 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
               >
                 <Grid item>
                   <Typography variant='title' gutterBottom>
-                    {title}
+                    {question.title}
                   </Typography>
                   <Typography variant='subheading' gutterBottom>
-                    {description}
+                    {question.description}
                   </Typography>
                 </Grid>
                 <Grid>
-                  <Answers answers={answers} reply={this.next} answered={this.state.answer}/>
+                  <Answers answers={question.answers} reply={this.next} answered={this.state.answer}/>
                 </Grid>
               </Grid>
             </Grid>
