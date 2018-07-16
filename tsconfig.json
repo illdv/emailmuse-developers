@@ -20,6 +20,7 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
+    "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -28,7 +29,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
     "inlineSources": true,
-    "baseUrl": "./",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },

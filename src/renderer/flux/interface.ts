@@ -1,4 +1,4 @@
-import { ComplexActionCreator, ComplexActionCreator1, ComplexActionCreator2 } from 'redux-act';
+import { ComplexActionCreator1 } from 'redux-act';
 import { ActionCreatorsMapObject } from 'redux';
 
 export interface IAsyncAction<R, S, F> extends ActionCreatorsMapObject {
