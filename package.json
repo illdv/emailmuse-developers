@@ -1,6 +1,6 @@
 {
   "name": "Emailer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": {
     "name": "Nikita Kamyshenko",
     "email": "kamyshenko.n@cronix.ms"
@@ -14,11 +14,11 @@
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlm",
-    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz",
     "start-build": "cd ./build/dist/linux-unpacked; ./emailer",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i"
+    "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
+    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz"
   },
   "dependencies": {
     "@material-ui/core": "^1.3.0",
