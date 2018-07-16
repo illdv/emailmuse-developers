@@ -1,8 +1,6 @@
 import { all, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
-
-import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { PollsActions } from './actions';
 import { PollsAPI } from 'src/renderer/API/Polls';
 import { createSagaHandler } from 'src/renderer/flux/saga/utils';
@@ -16,12 +14,13 @@ export function* pollsFlow() {
   yield put(push('/polls'));
   yield take(PollsActions.savePoll.SUCCESS);
 }
+
 const savePoll = createSagaHandler({
   actionCreators: PollsActions.savePoll,
   apiMethod: PollsAPI.savePoll,
   creatorDataForApi: action => action.payload,
   callbackIfSuccess: [],
-  callbackIfFailure: () => toastError('Server does not available'),
+  callbackIfFailure: () => toastError('Failed poll saved'),
 });
 
 const getPoll = createSagaHandler({
@@ -30,10 +29,6 @@ const getPoll = createSagaHandler({
   responseHandler: response => ({
     poll: response.data,
   }),
-  callbackIfSuccess: [
-    // Должны получить нового пользователя с допуском
-  ],
-  callbackIfFailure: null,
 });
 
 function* nextQuestion(action?: Action<{ answer: string }>) {
@@ -41,14 +36,14 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
   let questions;
   let currentQuestionId: number;
   let currentQuestion: IQuestion;
-  const getQuestions = state => state.polls.poll.questions;
+  const getQuestions         = state => state.polls.poll.questions;
   const getCurrentQuestionId = state => state.polls.currentQuestionId;
-  const getAnswers = state => state.polls.answers;
+  const getAnswers           = state => state.polls.answers;
 
   currentQuestionId = yield select(getCurrentQuestionId);
-  questions = yield select(getQuestions);
-  answers = yield select(getAnswers);
-  currentQuestion = yield questions[currentQuestionId];
+  questions         = yield select(getQuestions);
+  answers           = yield select(getAnswers);
+  currentQuestion   = yield questions[currentQuestionId];
   currentQuestionId++;
 
   if (!action.payload.answer) {
@@ -60,6 +55,7 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
       done: false,
     }));
   } else {
+    // TODO move in function isPollsCompleted
     if (answers.length && (answers.length === questions.length - 1)) {
       // done
       yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));

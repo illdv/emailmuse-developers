@@ -4,6 +4,7 @@ import { IPoll } from './interfase';
 import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 
 const createAsyncAction = createActionCreator('POLLS');
+
 const savePoll = createAsyncAction('CREATE');
 const getPoll = createAsyncAction('GET');
 const nextQuestion = createAsyncAction('NEXT_QUESTION');
