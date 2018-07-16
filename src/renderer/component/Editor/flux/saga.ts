@@ -60,7 +60,7 @@ function* sagaSave(action: Action<IEditEntity>) {
       id: +id,
       body: html,
       description: params.description,
-      shortcut: params.shortcut,
+      shortcut: params['shortcut name'],
     };
 
     if (snippet.id) {

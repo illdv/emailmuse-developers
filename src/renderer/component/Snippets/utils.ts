@@ -28,7 +28,7 @@ export function snippetToEditEntity({ id, body, shortcut }: ISnippet): IEditEnti
     type: EntityType.Snippet,
     html: body,
     params: {
-      shortcut,
+      ['shortcut name']: shortcut,
     },
   };
 }
