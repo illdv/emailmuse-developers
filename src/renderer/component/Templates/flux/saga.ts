@@ -24,7 +24,7 @@ function getCurrentPageSelector(state: IGlobalState) {
 function* loadingTemplates(action) {
   try {
     const response: AxiosResponse<ITemplatesResponse>
-            = yield call(EmailAPI.get, action.payload.page, action.payload.search);
+      = yield call(EmailAPI.get, action.payload.page, action.payload.search);
 
     const { total, current_page, data, last_page, per_page } = response.data;
 

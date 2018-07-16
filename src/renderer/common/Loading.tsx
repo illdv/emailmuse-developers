@@ -10,7 +10,7 @@ interface ILoadingProps {
   style?: CSSProperties;
 }
 
-export class Loading extends Component<ILoadingProps>  {
+export class Loading extends Component<ILoadingProps> {
 
   state = {};
 

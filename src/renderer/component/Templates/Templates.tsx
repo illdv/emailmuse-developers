@@ -62,7 +62,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   onSearch = (searchWorld: string) => {
     const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
     this.props.action.loading({ page, search: searchWorld });
-  }
+  };
 
   render() {
     const { status, templates, pagination } = this.props.templates;

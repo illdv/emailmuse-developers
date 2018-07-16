@@ -163,7 +163,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   helperText='Email cannot be changed'
                 />
               </Grid>
-              <Grid item xs={12} style={{paddingTop: 20}}>
+              <Grid item xs={12} style={{ paddingTop: 20 }}>
                 <InCenter>
                   <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
                     Change password

@@ -153,7 +153,7 @@ describe('<Templates/>', () => {
       });
     it('user click save button', () => {
       // if it current template
-        // props.templates.selectedTemplate.ids != false
+      // props.templates.selectedTemplate.ids != false
         render.instance().onSaveOrCreate(selectedTemplate, false);
 
         expect(mockSaveTemplate).toBeCalledWith({ template: selectedTemplate, saveAndClose: false });
@@ -164,7 +164,7 @@ describe('<Templates/>', () => {
     // another case when  selectedTemplate.ids = false
     let render;
     beforeEach(() => {
-      props.templates.selectedTemplate     = selectedTemplate;
+      props.templates.selectedTemplate = selectedTemplate;
       props.templates.selectedTemplate.ids = undefined;
 
       render                           = shallow(<Templates {...props} />);

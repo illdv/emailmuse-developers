@@ -21,7 +21,7 @@ export function snippetToItem(snippet: ISnippet): IListItem {
   };
 }
 
-export function snippetToEditEntity({id, body, shortcut }: ISnippet): IEditEntity {
+export function snippetToEditEntity({ id, body, shortcut }: ISnippet): IEditEntity {
   return {
     id: id ? id.toString() : '',
     idFrontEnd: new Date().getTime().toString(),

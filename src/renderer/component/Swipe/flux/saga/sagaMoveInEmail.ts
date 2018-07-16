@@ -98,7 +98,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
   const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {
-    const newEmail                     = selectedEmails.map(email => ({
+    const newEmail = selectedEmails.map(email => ({
       ...email,
       body: selectedLayout.body.replace(insertMarker, email.body),
     }));
@@ -110,7 +110,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
 
     if (save) {
       const temporaryLayout: IEditEntity = save.payload;
-      const newEmail                     = selectedEmails.map(email => ({
+      const newEmail = selectedEmails.map(email => ({
         ...email,
         body: temporaryLayout.html.replace(insertMarker, email.body),
       }));

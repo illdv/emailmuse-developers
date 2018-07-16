@@ -9,6 +9,7 @@ import { watcherChangePassword, watcherGetProfile, watcherName } from '../compon
 import { checkCodeSaga } from 'src/renderer/component/Profile/Authorisation/flux/sagas/CheckCodeSaga';
 import { menuWatcher } from 'src/renderer/component/Menu/flux/saga';
 
+import polls from 'src/renderer/component/Profile/Polls/flux/saga';
 import login from 'src/renderer/component/Profile/Authorisation/flux/sagas/LoginSaga';
 import templates from 'src/renderer/component/Templates/flux/saga';
 import snippets from 'src/renderer/component/Snippets/flux/saga';
@@ -28,6 +29,7 @@ export default function* rootSaga() {
     fork(watcherName),
     fork(watcherGetProfile),
     fork(checkCodeSaga),
+    ...polls.map(fork),
     menuWatcher,
     ...login.map(fork),
     ...templates.map(fork),
@@ -35,6 +37,7 @@ export default function* rootSaga() {
     ...layouts.map(fork),
     ...swipe.map(fork),
     ...editor.map(fork),
+    menuWatcher,
     ...training.map(fork),
   ];
 }
