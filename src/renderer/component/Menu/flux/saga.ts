@@ -4,12 +4,13 @@ import { put, race, take, takeEvery } from 'redux-saga/effects';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
+import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
 
 export function* menuSaga(action): IterableIterator<any> {
 
-  const isEditorOpen: boolean = window.location.href.includes('/editor');
+  // const isEditorOpen: boolean = window.location.href.includes('/editor');
 
-  if (isEditorOpen) {
+  if (hasEdit) {
     yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.ConfirmationCloseEditor }));
 
     const { failure } = yield race({
@@ -23,6 +24,7 @@ export function* menuSaga(action): IterableIterator<any> {
 
   }
 
+  setEdit(false);
   const routePath = getRoutePath(action);
   yield put(push(routePath));
 }

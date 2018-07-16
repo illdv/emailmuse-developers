@@ -20,6 +20,12 @@ import './Editor.scss';
 
 const b = block('editor');
 
+export let hasEdit = false;
+
+export const setEdit = (edit: boolean) => {
+  hasEdit = edit;
+};
+
 export namespace EditorSpace {
   export interface IState {
     html: string;
@@ -65,11 +71,16 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     return null;
   }
 
+  componentDidMount(): void {
+    hasEdit = false;
+  }
+
   onChange = (html: string) => {
     this.setState({
       html,
       hasChange: true,
     });
+    hasEdit = true;
   }
 
   onChangeField = (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +93,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
         [key]: value,
       },
     } as any));
+    hasEdit = true;
   }
 
   getEntity = (): IEditEntity => {
@@ -101,6 +113,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     this.setState({
       hasChange: false,
     });
+    hasEdit = false;
   }
 
   onSaveAndClose = () => {
