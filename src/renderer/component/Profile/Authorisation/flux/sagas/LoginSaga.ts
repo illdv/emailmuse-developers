@@ -44,8 +44,11 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     yield put(AuthorisationActions.login.SUCCESS({ user }));
     // ToDO Add Check If User is new
     yield put(PollsActions.getPoll.REQUEST({}));
+
     // ToDO Add show Loader
     yield take(PollsActions.getPoll.SUCCESS);
+    yield put(PollsActions.nextQuestion.REQUEST({}));
+
     yield put(push('/polls'));
 
     // redirect to main page

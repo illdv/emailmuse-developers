@@ -6,12 +6,13 @@ import { IPollsActions, PollsActions } from 'src/renderer/component/Profile/Poll
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IPoll, IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 import {
+  Grid,
   Paper,
   Typography,
   withStyles,
 } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
-import Answers from 'src/renderer/component/Profile/Polls/flux/Answers';
+import Answers from 'src/renderer/component/Profile/Polls/Answers';
 import { Loading } from 'src/renderer/common/Loading';
 
 const styles = theme => ({
@@ -19,80 +20,77 @@ const styles = theme => ({
     height: '100%',
   },
   paper: {
-    width: 1130,
-    height: 946,
+    width: 630,
+    height: 500,
     paddingLeft: 40,
     paddingRight: 40,
     paddingTop: 48,
     paddingBottom: 26,
   },
+  question: {
+    'width': '100%',
+    'text-align': 'center',
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export namespace PollsSpace {
   export interface IState {
-    answerNumber: number;
-    answers: string[];
-    question: IQuestion;
+    answer: string;
   }
 
   export interface IProps {
     pallsActions: IPollsActions;
     polls: IPoll;
+    currentQuestion: IQuestion;
     classes?: any;
   }
 }
 
 export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
-  constructor(props) {
-    super(props);
-    // this.next.bind(this);
-  }
-
   state: PollsSpace.IState = {
-    answerNumber: 0,
-    answers: [],
-    question: this.props.polls.questions[0],
+    answer: null,
   };
 
-  // next = (answer: string) => {
-  //   const { questions } = this.props.polls;
-  //   const { answers, answerNumber } = this.state;
-  //   this.setState({ answers: [...answers, answer], answerNumber: answerNumber + 1 });
-  //   if (!questions[answerNumber]) {
-  //     this.props.pallsActions.savePoll.REQUEST({answers});
-  //     return;
-  //   }
-  //   this.setState({ question: questions[answerNumber] });
-  // }
-
-  * next(answer: string) {
-    const { questions } = this.props.polls;
-    const { answers, answerNumber } = this.state;
-    yield this.setState({ answers: [...answers, answer] });
-    if (!questions[answerNumber]) {
-      yield this.props.pallsActions.savePoll.REQUEST({ answers });
-    }
-    yield this.setState({ question: questions[answerNumber] });
-  }
-
+  next = (answer: string) => {
+    this.setState({ answer });
+    setTimeout(() => {
+      this.props.pallsActions.nextQuestion.REQUEST({ answer });
+    }, 500);
+  };
   render() {
     const { classes } = this.props;
-    const { question } = this.state;
-    if (question !== null) {
+    const question = this.props.currentQuestion;
+    if (question) {
       return (
         <InCenter>
           <Paper className={classes.paper}>
-            <InCenter>
-              <div className={classes.question}>
-                <Typography variant='title' gutterBottom>
-                  {question.title}
-                </Typography>
-                <Typography variant='subheading' gutterBottom>
-                  {question.description}
-                </Typography>
-              </div>
-              <Answers answers={question.answers} reply={this.next}/>
-            </InCenter>
+            <Grid item xs={12} className={classes.root}>
+              <Grid
+                className={classes.root}
+                container
+                spacing={16}
+                alignItems={'center'}
+                justify={'center'}
+                direction={'column'}
+              >
+                <Grid item>
+                  <Typography variant='title' gutterBottom>
+                    {question.title}
+                  </Typography>
+                  <Typography variant='subheading' gutterBottom>
+                    {question.description}
+                  </Typography>
+                </Grid>
+                <Grid>
+                  <Answers answers={question.answers} reply={this.next} answered={this.state.answer}/>
+                </Grid>
+              </Grid>
+            </Grid>
           </Paper>
         </InCenter>
       );
@@ -103,6 +101,7 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
 
 const mapStateToProps = (state: IGlobalState) => ({
   polls: state.polls.poll,
+  currentQuestion: state.polls.currentQuestion,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -11,7 +11,12 @@ const nextQuestion = createAsyncAction('NEXT_QUESTION');
 export interface IPollsActions {
   savePoll: IAsyncAction2<{ answers: string[] }, {}>;
   getPoll: IAsyncAction2<{}, { poll: IPoll }>;
-  nextQuestion: IAsyncAction2<{ answer: string }, { question: IQuestion }>;
+  nextQuestion: IAsyncAction2<{ answer?: string }, {
+    currentQuestion: IQuestion;
+    currentQuestionId: number,
+    done: boolean,
+    answers?: string[]
+  }>;
 }
 
 export const PollsActions: IPollsActions = {

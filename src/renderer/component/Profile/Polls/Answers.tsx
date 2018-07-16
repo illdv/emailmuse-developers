@@ -4,13 +4,6 @@ import { FormControl, FormControlLabel, Radio, RadioGroup, WithStyles, withStyle
 import { Component } from 'react';
 
 const styles = theme => ({
-  root: {
-    height: '100%',
-  },
-  question: {
-    width: '100%',
-    maxWidth: 500,
-  },
 });
 
 export namespace AnswersSpace {
@@ -18,32 +11,33 @@ export namespace AnswersSpace {
     answers: IAnswer[];
     reply: any;
     classes?: any;
+    answered: string;
   }
 
   export interface IState {
-    answer: string;
+    // answer: string;
   }
 }
 
 export class Answers extends Component<AnswersSpace.IProps & WithStyles<any>, AnswersSpace.IState> {
   state: AnswersSpace.IState = {
-    answer: null,
+    // answer: null,
   };
 
   handleChange = event => {
     const answer = event.target.value;
-    this.setState({ answer });
+    // this.setState({ answer });
     this.props.reply(answer);
-  };
+  }
 
   render() {
-    const { classes, answers } = this.props;
+    const { classes, answers, answered } = this.props;
     return (
       <FormControl component='fieldset' required className={classes.formControl}>
         <RadioGroup
           name='pollAnswers'
           className={classes.group}
-          value={this.state.answer}
+          value={answered}
         >{answers && answers.map(answer => (
             <FormControlLabel
               key={answer.id}

@@ -1,4 +1,4 @@
-import { all, call, put, race, take, takeEvery } from 'redux-saga/effects';
+import { all, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
 
@@ -7,6 +7,7 @@ import { PollsActions } from './actions';
 import { PollsAPI } from 'src/renderer/API/Polls';
 import { createSagaHandler } from 'src/renderer/flux/saga/utils';
 import { toastError } from 'src/renderer/flux/saga/toast';
+import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 
 const savePoll = createSagaHandler({
   actionCreators: PollsActions.savePoll,
@@ -14,7 +15,7 @@ const savePoll = createSagaHandler({
   creatorDataForApi: action => action.payload,
   callbackIfSuccess: [
     // Должны получить нового пользователя с допуском потом
-    put(push('/')),
+    put(push('/emails')),
   ],
   callbackIfFailure: () => toastError('Server does not available'),
 });
@@ -23,26 +24,58 @@ const getPoll = createSagaHandler({
   actionCreators: PollsActions.getPoll,
   apiMethod: PollsAPI.getPoll,
   responseHandler: response => ({
-    poll: response.data[0],
+    poll: response.data,
   }),
   callbackIfSuccess: [
     // Должны получить нового пользователя с допуском
-    // call(),
   ],
   callbackIfFailure: null,
 });
 
-// function* nextQuestion(answer) {
-//   // получили ответ> сохранили > взяли новый вопрос > oтдали
-//   const nextquestion: IQuestion;
-//   put(PollsActions.nextQuestion.SUCCESS, nextquestion);
-// }
+function* nextQuestion(action?: Action<{ answer: string }>) {
+  let answers: string[];
+  let questions;
+  let currentQuestionId: number;
+  let currentQuestion: IQuestion;
+  const getQuestions = state => state.polls.poll.questions;
+  const getCurrentQuestionId = state => state.polls.currentQuestionId;
+  const getAnswers = state => state.polls.answers;
+
+  currentQuestionId = yield select(getCurrentQuestionId);
+  questions = yield select(getQuestions);
+  answers = yield select(getAnswers);
+  currentQuestion = yield questions[currentQuestionId];
+  currentQuestionId++;
+
+  if (!action.payload.answer) {
+    // initial
+    yield put(PollsActions.nextQuestion.SUCCESS({
+      currentQuestion,
+      currentQuestionId,
+      answers,
+      done: false,
+    }));
+  } else {
+    if (answers.length && (answers.length === questions.length - 1)) {
+      // done
+      yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));
+      yield put(PollsActions.savePoll.REQUEST({ answers }));
+    }
+    // next
+    yield put(PollsActions.nextQuestion.SUCCESS({
+      currentQuestion,
+      done: false,
+      currentQuestionId,
+      answers: [...answers, ...[action.payload.answer]],
+    }));
+  }
+}
 
 function* watcher() {
   yield all([
-    takeEvery(PollsActions.getPoll.REQUEST, getPoll),
+    takeLatest(PollsActions.getPoll.REQUEST, getPoll),
     takeEvery(PollsActions.savePoll.REQUEST, savePoll),
-    // takeEvery(PollsActions.nextQuestion.REQUEST, nextQuestion),
+    takeEvery(PollsActions.nextQuestion.REQUEST, nextQuestion),
   ]);
 }
 
