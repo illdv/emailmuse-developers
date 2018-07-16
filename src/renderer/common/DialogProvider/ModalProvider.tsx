@@ -3,10 +3,15 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { IModalWindowActions, ModalWindowActions, ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
-import { IModalWindowState } from 'src/renderer/common/ModalWindow/flux/reducer';
-import SelectLayout from 'src/renderer/common/ModalWindow/SelectLayout';
-import { NeedInsertBody } from 'src/renderer/common/ModalWindow/NeedInsertBody';
+import { IModalWindowState } from 'src/renderer/common/DialogProvider/flux/reducer';
+import SelectLayout from 'src/renderer/common/DialogProvider/Dialogs/SelectLayout';
+import { NeedInsertBody } from 'src/renderer/common/DialogProvider/Dialogs/NeedInsertBody';
+import CloseEditor from 'src/renderer/common/DialogProvider/Dialogs/CloseEditor';
+import {
+  IModalWindowActions,
+  ModalWindowActions,
+  ModalWindowType,
+} from 'src/renderer/common/DialogProvider/flux/actions';
 
 export namespace ModalProviderSpace {
   export interface IState {
@@ -21,6 +26,7 @@ export namespace ModalProviderSpace {
 const modalWindowMap: {[key in ModalWindowType]: any} = {
   [ModalWindowType.SelectLayout]: <SelectLayout/>,
   [ModalWindowType.NeedInsertBody]: <NeedInsertBody/>,
+  [ModalWindowType.ConfirmationCloseEditor]: <CloseEditor/>,
 };
 
 class ModalProvider extends Component<ModalProviderSpace.IProps, ModalProviderSpace.IState> {

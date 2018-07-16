@@ -14,8 +14,8 @@ npm run start-electron
 ```
 ### For login
 ```
-Email: freidy.hanae@0ld0x.com
-Passworld: freidy.hanae@0ld0x.com
+Email: korbin.nastasia@lm0k.com
+Passworld: korbin.nastasia@lm0k.com
 ```
 
 ### Style

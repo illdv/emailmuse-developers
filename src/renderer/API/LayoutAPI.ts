@@ -5,8 +5,8 @@ function loading(): any {
   return AxiosWrapper.get('/layouts');
 }
 
-function remove(idArray: {id: number[]}): any {
-  return AxiosWrapper.deleteResponse2('/layouts', idArray);
+function remove({ ids }: { ids: number[] }): any {
+  return AxiosWrapper.deleteResponse2('/layouts', { id: ids });
 }
 
 function create(layout: ILayout): any {

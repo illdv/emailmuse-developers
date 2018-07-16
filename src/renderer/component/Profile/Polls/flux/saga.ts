@@ -1,4 +1,4 @@
-import { all, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
 
@@ -9,14 +9,18 @@ import { createSagaHandler } from 'src/renderer/flux/saga/utils';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 
+export function* pollsFlow() {
+  yield put(PollsActions.getPoll.REQUEST({}));
+  yield take(PollsActions.getPoll.SUCCESS);
+  yield put(PollsActions.nextQuestion.REQUEST({}));
+  yield put(push('/polls'));
+  yield take(PollsActions.savePoll.SUCCESS);
+}
 const savePoll = createSagaHandler({
   actionCreators: PollsActions.savePoll,
   apiMethod: PollsAPI.savePoll,
   creatorDataForApi: action => action.payload,
-  callbackIfSuccess: [
-    // Должны получить нового пользователя с допуском потом
-    put(push('/emails')),
-  ],
+  callbackIfSuccess: [],
   callbackIfFailure: () => toastError('Server does not available'),
 });
 

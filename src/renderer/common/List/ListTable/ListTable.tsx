@@ -1,16 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import {
-Grid,
-IconButton,
-ListItem,
-Table,
-TableBody,
-TableCell,
-TablePagination,
-TableRow,
-Typography,
-} from '@material-ui/core';
+import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
 import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
 
@@ -20,10 +10,19 @@ import { CustomTableHead } from 'src/renderer/common/List/ListTable/TableHead';
 import HeaderToolbar from 'src/renderer/common/Header/Header';
 
 import './ListTable.scss';
+import { Search } from 'src/renderer/common/Search';
+import { Loading } from 'src/renderer/common/Loading';
 
 const b = block('list-element');
 
-const columnData = [
+export interface IColumn {
+  id: string;
+  label: string;
+  disablePadding: boolean;
+  numeric: boolean;
+}
+
+const defaultColumnData: IColumn[] = [
   { id: '1', label: 'Name', disablePadding: false, numeric: false },
   { id: '2', label: 'Description', disablePadding: false, numeric: false },
   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
@@ -34,25 +33,6 @@ export interface IListItem {
   title: string;
   description: string;
   rightText: string;
-}
-
-function CustomItem(props: { item: IListItem }) {
-  const { title, description, rightText } = props.item;
-  return (
-    <ListItem button>
-      <Grid container spacing={24}>
-        <Grid item xs={4}>
-          <Typography gutterBottom noWrap>{title || '---'}</Typography>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography align={'center'} gutterBottom noWrap>{description || '---'}</Typography>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography align={'right'} gutterBottom noWrap>{rightText || '---'}</Typography>
-        </Grid>
-      </Grid>
-    </ListItem>
-  );
 }
 
 export namespace ListElementSpace {
@@ -66,12 +46,20 @@ export namespace ListElementSpace {
     pagination: IPagination;
     onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
+    isLoading?: boolean;
     title?: string;
     onCopy?: (id: string) => void;
+    onSearch?: (searchWorld: string) => void;
+    columnData?: IColumn[];
   }
 }
 
 export class ListTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
+
+  static defaultProps = {
+    isLoading: false,
+    columnData: defaultColumnData,
+  };
 
   state: ListElementSpace.IState = {
     selectedItemIds: [],
@@ -134,68 +122,105 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     }
   }
 
+  renderTable = () => {
+    const { entities, toItem, onOpenItem, isLoading, columnData } = this.props;
+
+    if (isLoading) {
+      return <Loading style={{ height: 200 }}/>;
+    }
+
+    return (
+      <Table aria-labelledby='tableTitle'>
+        <CustomTableHead
+          onSelectAll={this.onSelectAll}
+          columnData={columnData}
+        />
+        <TableBody>
+          {entities.map((entity: {}) => {
+            const item: IListItem = toItem(entity);
+            const isSelected = this.isSelected(item.id);
+            return (
+              <TableRow
+                role='checkbox'
+                aria-checked={isSelected}
+                tabIndex={-1}
+                key={item.id}
+                selected={isSelected}
+                className={b('row')}
+              >
+                {
+                  this.props.onCopy
+                  &&
+                  <TableCell
+                    style={{ width: 40 }}
+                    onClick={this.onCopy(item.id)}
+                    padding={'checkbox'}
+                  >
+                    <IconButton title={'Create Duplicate'}>
+                      <ContentCopyIcon/>
+                    </IconButton>
+                  </TableCell>
+                  ||
+                  <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                }
+                <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
+                  {item.title}
+                </TableCell>
+                <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
+                <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    );
+  }
+
   render() {
-    const { pagination, onChangePage, entities, toItem, onOpenItem } = this.props;
+    const { pagination, onChangePage, onSearch } = this.props;
 
     return (
       <>
-        <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title} />
-        <div>
-          <Table aria-labelledby='tableTitle'>
-            <CustomTableHead
-              onSelectAll={this.onSelectAll}
-              columnData={columnData}
-            />
-            <TableBody>
-              {entities.map((entity: {}) => {
-                const item: IListItem = toItem(entity);
-                const isSelected      = this.isSelected(item.id);
-                return (
-                  <TableRow
-                    role='checkbox'
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={item.id}
-                    selected={isSelected}
-                    className={b('row')}
-                  >{this.props.onCopy &&
-                    <TableCell
-                      style={{ width: 40 }}
-                      onClick={this.onCopy(item.id)}
-                      padding={'checkbox'}
-                    >
-                      <IconButton title={'Create Duplicate'}>
-                        <ContentCopyIcon/>
-                      </IconButton>
-                    </TableCell>
-                      || <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                    }
-                    <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
-                      {item.title}
-                    </TableCell>
-                    <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
-                    <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+        <Grid item xs={12}>
+          <Grid
+            container
+            spacing={16}
+            alignItems={'center'}
+            justify={'space-between'}
+            style={{ marginTop: 0 }}
+          >
+            <Grid item>
+              <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title}/>
+            </Grid>
+            <Grid style={{ paddingRight: 15 }} item>
+              {
+                onSearch &&
+                <Search search={onSearch}/>
+              }
+            </Grid>
+          </Grid>
+        </Grid>
+        <div style={{ minHeight: 200 }}>
+          {this.renderTable()}
         </div>
         <InCenter>
-          <TablePagination
-            component='div'
-            count={pagination.total || 0}
-            rowsPerPage={pagination.per_page || 0}
-            rowsPerPageOptions={[10]}
-            page={pagination.current_page - 1}
-            backIconButtonProps={{
-              'aria-label': 'Previous Page',
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Next Page',
-            }}
-            onChangePage={onChangePage}
-          />
+          {
+            pagination &&
+            <TablePagination
+              component='div'
+              count={pagination.total || 0}
+              rowsPerPage={pagination.per_page || 0}
+              rowsPerPageOptions={[10]}
+              page={pagination.current_page - 1}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={onChangePage}
+            />
+          }
         </InCenter>
       </>
     );

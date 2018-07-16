@@ -11,6 +11,7 @@ import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Au
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { PollsActions } from 'src/renderer/component/Profile/Polls/flux/actions';
+import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -42,18 +43,12 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     const response: AxiosResponse<ILoginResponse> = yield call(login, action.payload.request);
     const user = extractUser(response);
     yield put(AuthorisationActions.login.SUCCESS({ user }));
-    // ToDO Add Check If User is new
-    yield put(PollsActions.getPoll.REQUEST({}));
-
-    // ToDO Add show Loader
-    yield take(PollsActions.getPoll.SUCCESS);
-    yield put(PollsActions.nextQuestion.REQUEST({}));
-
-    yield put(push('/polls'));
-
+    // Check If User is new
+    if (user.passed_poll === false) {
+      yield call(pollsFlow);
+    }
     // redirect to main page
-
-    // yield put(push('/emails'));
+    yield put(push('/emails'));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
@@ -74,6 +69,9 @@ function* onGoogleLogin(): IterableIterator<any> {
     const user = extractUser({ data: JSON.parse(token) } as any);
 
     yield put(AuthorisationActions.login.SUCCESS({ user }));
+    if (user.passed_poll === false) {
+      yield call(pollsFlow);
+    }
     yield put(push('/emails'));
 
   } catch (error) {
@@ -100,7 +98,7 @@ function getToken() {
 
 function extractUser(response: AxiosResponse<ILoginResponse>) {
   const { user, token } = response.data;
-  return { email: user.email, name: user.name, token };
+  return { ...user, token };
 }
 
 export default [loginSaga, watcherLogout, watcherSetToken];

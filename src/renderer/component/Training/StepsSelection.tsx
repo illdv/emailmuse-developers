@@ -8,8 +8,11 @@ import { KeyboardArrowRight } from '@material-ui/icons';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Breadcrumbs, IBreadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 
-import data from './Data';
 import InCenter from 'src/renderer/common/InCenter';
+import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { ITrainingActions, TrainingActions } from 'src/renderer/component/Training/flux/actions';
+import { ITrainingState } from 'src/renderer/component/Training/flux/reducer';
+import { Loading } from 'src/renderer/common/Loading';
 
 export namespace StepsSelectionSpace {
   export interface IState {
@@ -17,7 +20,8 @@ export namespace StepsSelectionSpace {
   }
 
   export interface IProps extends RouteComponentProps<any> {
-
+    trainingActions?: ITrainingActions;
+    training?: ITrainingState;
   }
 }
 
@@ -29,6 +33,10 @@ interface IItems {
 class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectionSpace.IState> {
 
   state: StepsSelectionSpace.IState = {};
+
+  componentDidMount(): void {
+    this.props.trainingActions.loading.REQUEST({});
+  }
 
   toItem = (props: RouteComponentProps<any>) => (item: IItems) => {
     return (
@@ -48,6 +56,11 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
   }
 
   render() {
+    const { isLoading } = this.props.training;
+    if (isLoading) {
+      return <Loading/>;
+    }
+
     return (
       <Switch>
         <Route exact path='/training' render={this.renderStep}/>
@@ -61,6 +74,8 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
   renderStep = (props: RouteComponentProps<any>) => {
     const breadcrumb: IBreadcrumbs[] = [];
 
+    const { training } = this.props.training;
+
     const { stepOne, stepTwo, stepThree } = props.match.params;
 
     breadcrumb.push({
@@ -70,13 +85,13 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
 
     if (stepOne) {
       breadcrumb.push({
-        title: data[stepOne].title,
+        title: training[stepOne].title,
         onClick: () => props.history.push(`/training/${stepOne}`),
       });
     }
     if (stepTwo) {
       breadcrumb.push({
-        title: data[stepOne].items[stepTwo].title,
+        title: training[stepOne].items[stepTwo].title,
         onClick: () => props.history.push(`/training/${stepOne}/${stepTwo}`),
       });
     }
@@ -87,19 +102,19 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
       });
     }
 
-    let items: IItems[] = data.map((item, index): IItems => ({ title: item.title, id: index }));
+    let items: IItems[] = training.map((item, index): IItems => ({ title: item.title, id: index }));
 
     if (stepThree) {
       items = [];
     } else if (stepTwo) {
-      const itemTraining = data[stepOne].items[stepTwo].item;
+      const itemTraining = training[stepOne].items[stepTwo].item;
 
       const onBack = () => {
         props.history.push(`/training/${stepOne}`);
       };
 
-      const hasNextItem = data[stepOne].items[+stepTwo + 1];
-      const hasNextStep = data[+stepOne + 1];
+      const hasNextItem = training[stepOne].items[+stepTwo + 1];
+      const hasNextStep = training[+stepOne + 1];
 
       const onNext = () => {
         if (hasNextItem) {
@@ -146,7 +161,7 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
         </div>
       );
     } else if (stepOne) {
-      items = data[stepOne].items.map((item, index): IItems => ({ title: item.title, id: index }));
+      items = training[stepOne].items.map((item, index): IItems => ({ title: item.title, id: index }));
     }
 
     return (
@@ -165,15 +180,11 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  /// nameStore: state.nameStore
+  training: state.training,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
+  trainingActions: bindModuleAction(TrainingActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepsSelection);

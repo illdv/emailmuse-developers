@@ -43,7 +43,6 @@ const styles = theme => ({
 export namespace AuthorizationSpace {
 
   export interface IState {
-
   }
 
   export interface IProps {
@@ -91,8 +90,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
       },
     };
 
-    const defaultValue = IS_PRODUCTION ? {} :
-      {
+    const defaultValue = IS_PRODUCTION ? {} : {
         email: 'rpahdeom@yomail.info',
         password: 'rpahdeom@yomail.info',
       };

@@ -122,7 +122,7 @@ describe('<Templates/>', () => {
       expect(mockSelectTemplate).toBeCalledWith(selectedTemplate);
     });
     test('User click on copy icon', () => {
-      const id = 1;  // template id
+      const id = 1;  // template ids
       const render = shallow(<Templates {...props} />) as any;
       render.instance().onCopy(id);
 
@@ -153,7 +153,7 @@ describe('<Templates/>', () => {
       });
     it('user click save button', () => {
       // if it current template
-        // props.templates.selectedTemplate.id != false
+      // props.templates.selectedTemplate.ids != false
         render.instance().onSaveOrCreate(selectedTemplate, false);
 
         expect(mockSaveTemplate).toBeCalledWith({ template: selectedTemplate, saveAndClose: false });
@@ -161,11 +161,11 @@ describe('<Templates/>', () => {
   });
 
   describe('Behavior if it new template', () => {
-    // another case when  selectedTemplate.id = false
+    // another case when  selectedTemplate.ids = false
     let render;
     beforeEach(() => {
       props.templates.selectedTemplate = selectedTemplate;
-      props.templates.selectedTemplate.id = undefined;
+      props.templates.selectedTemplate.ids = undefined;
 
       render                           = shallow(<Templates {...props} />);
     });

@@ -1,37 +1,53 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { push } from 'react-router-redux';
+
+import { put, race, take, takeEvery } from 'redux-saga/effects';
+import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
+import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
 
 export function* menuSaga(action): IterableIterator<any> {
-  let route;
-  // const action: Action<{ selectedItem: MenuItemType }> = yield take(DrawerMenuAction.selectMenuItem);
+
+  // const isEditorOpen: boolean = window.location.href.includes('/editor');
+
+  if (hasEdit) {
+    yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.ConfirmationCloseEditor }));
+
+    const { failure } = yield race({
+      success: take(ModalWindowActions.show.SUCCESS),
+      failure: take(ModalWindowActions.show.FAILURE),
+    });
+
+    if (failure) {
+      return;
+    }
+
+  }
+
+  setEdit(false);
+  const routePath = getRoutePath(action);
+  yield put(push(routePath));
+}
+
+function getRoutePath(action) {
   switch (action.payload.selectedItem) {
     case MenuItemType.ACCOUNT:
-      route = '/account';
-      break;
+      return '/account';
     case MenuItemType.IMAGE_LIBRARY:
-      route = '/image-library';
-      break;
+      return '/image-library';
     case MenuItemType.LAYOUTS:
-      route = '/layouts';
-      break;
+      return '/layouts';
     case MenuItemType.SNIPPETS:
-      route = '/snippets';
-      break;
+      return '/snippets';
     case MenuItemType.SWIPE:
-      route = '/swipe';
-      break;
+      return '/swipe';
     case MenuItemType.TEMPLATES:
-      route = '/emails';
-      break;
+      return '/emails';
     case MenuItemType.TRAINING:
-      route = '/training';
-      break;
+      return '/training';
     default:
-      route = '/';
+      return '/';
   }
-  yield put(push(route));
 }
 
 export const menuWatcher = takeEvery(DrawerMenuAction.selectMenuItem, menuSaga);

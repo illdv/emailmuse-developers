@@ -14,7 +14,7 @@ export const REMOVE  = `${NS}REMOVE`;
 const loading = createAsyncAction2<{ page?: number }, { layouts: ILayout[], pagination: IPagination }>(LOADING);
 const create  = createAsyncAction2<{ layout: ILayout }, {}>(CREATE);
 const edit    = createAsyncAction2<{ layout: ILayout }, {}>(EDIT);
-const remove  = createAsyncAction2<{id: string[]}, {}>(REMOVE);
+const remove = createAsyncAction2<{ ids: string[] }, {}>(REMOVE);
 
 export const LayoutActions: ILayoutActions = {
   loading,

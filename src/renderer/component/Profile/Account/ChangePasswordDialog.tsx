@@ -96,6 +96,7 @@ class ChangePasswordDialog
     this.setState({
       fields: { ...this.state.fields, [type]: event.target.value },
     })
+
   handleMouseDownPassword = event => {
     event.preventDefault();
   }

@@ -17,10 +17,8 @@ import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/La
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import PageCreateLayout from 'src/renderer/component/Layouts/PageCreateLayout';
-import { TemplateEditor } from 'src/renderer/component/Templates/TemplateEditor';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
-import { toItem } from 'src/renderer/component/Layouts/utils';
+import { layoutToEditEntity, toItem } from 'src/renderer/component/Layouts/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
 
@@ -62,30 +60,17 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.createTemplate({ body: 'Example text', title: 'Email' });
   }
 
-  onSelect = (layout: ILayout) => () => {
-    this.createTemplate({ body: layout.body, title: layout.title });
-  }
-
-  removeLayout = (id: string) => event => {
-    event.stopPropagation();
-    this.props.actionLayout.remove.REQUEST({ id: [id] });
-  }
-
-  editLayout = (layout: ILayout) => event => {
-    event.stopPropagation();
-    this.createEditor(layout);
-  }
-
   createOwnTemplate = () => {
     this.setState({ showPopUp: true });
   }
 
+  removeLayout = (id: string) => event => {
+    event.stopPropagation();
+    this.props.actionLayout.remove.REQUEST({ ids: [id] });
+  };
+
   closePopup = () => {
     this.setState({ showPopUp: false });
-  }
-
-  closeEditor = () => {
-    this.setState({ editMode: false });
   }
 
   onCloseOrRemove = (layout: ILayout) => {
@@ -96,24 +81,13 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.props.actionLayout.edit.REQUEST({ layout });
   }
 
-  createEditor = (layout: ILayout) => {
-    const template: ITemplate = {
-      title: layout.title,
-      body: layout.body,
-      description: '',
-      id: String(layout.id),
-    };
+  onSelect = (layout: ILayout) => () => {
+    this.createTemplate({ body: layout.body, title: layout.title });
+  };
 
-    const editor = (
-      <TemplateEditor
-        template={template}
-        close={this.closeEditor}
-        remove={this.removeLayout.bind(layout.id)}
-        save={this.onSaveOrCreate.bind(layout)}
-      />
-    );
-
-    this.setState({ editor, editMode: true });
+  editLayout = (layout: ILayout) => event => {
+    event.stopPropagation();
+    this.props.editorActions.edit.REQUEST(layoutToEditEntity(layout));
   }
 
   render() {

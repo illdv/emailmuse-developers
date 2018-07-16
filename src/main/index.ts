@@ -31,7 +31,7 @@ function createWindow() {
 
   if (isProduction) {
     const loadUrl = urlFormat.format({
-      pathname: path.join(path.resolve(), './build/index.html'),
+      pathname: path.join(__dirname, './index.html'),
       protocol: 'file:',
       slashes: true,
     });
@@ -106,15 +106,22 @@ ipcMain.on('authorized-google', (e, url) => {
 });
 
 function extractResponseFromPage(url, loginWindow) {
-  if (url.includes('emailer-electron-laravel.cronix.life/api/')) {
-    const javaScript = `document.body.children.length === 1 && document.querySelector('pre').innerText;`;
-    loginWindow.webContents.executeJavaScript(javaScript, result => {
-      if (result) {
-        mainWindow.webContents.send(`authorized-google-success`, result);
-        if (!loginWindow.isDestroyed()) {
-          loginWindow.close();
-        }
+  console.log(url);
+  const javaScript = `
+  function getUser() {
+    if(document.body.children.length === 1) {
+        var pre = document.querySelector('pre');
+        return pre ? pre.innerText : false;
+    }
+	  return false;
+   }   
+   getUser();`;
+  loginWindow.webContents.executeJavaScript(javaScript, result => {
+    if (result) {
+      mainWindow.webContents.send(`authorized-google-success`, result);
+      if (!loginWindow.isDestroyed()) {
+        loginWindow.close();
       }
-    });
-  }
+    }
+  });
 }

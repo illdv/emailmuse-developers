@@ -12,13 +12,19 @@ import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
 import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
-import { Confirmation } from 'src/renderer/common/Dialogs/Confirmation';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 import block from 'bem-ts';
 
 import './Editor.scss';
 
 const b = block('editor');
+
+export let hasEdit = false;
+
+export const setEdit = (edit: boolean) => {
+  hasEdit = edit;
+};
 
 export namespace EditorSpace {
   export interface IState {
@@ -65,11 +71,16 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     return null;
   }
 
+  componentDidMount(): void {
+    hasEdit = false;
+  }
+
   onChange = (html: string) => {
     this.setState({
       html,
       hasChange: true,
     });
+    hasEdit = true;
   }
 
   onChangeField = (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +93,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
         [key]: value,
       },
     } as any));
+    hasEdit = true;
   }
 
   getEntity = (): IEditEntity => {
@@ -101,6 +113,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     this.setState({
       hasChange: false,
     });
+    hasEdit = false;
   }
 
   onSaveAndClose = () => {
@@ -158,16 +171,17 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             <Confirmation
               isOpen={this.state.isOpenConfirmationClose}
               onClose={this.onCloseDialogClose}
-              onSelectYes={this.onSaveAndClose}
-              onSelectNo={this.onClose}
+              onSelectYes={this.onClose}
+              onSelectNo={this.onCloseDialogClose}
               title={'Warning'}
-              question={'Your changes are not saved. Do you want to leave this page? Click cancel to stay.'}
+              question={'Your changes are not saved. Do you want to leave this page? Click "No" to stay.'}
             />
             <Confirmation
               isOpen={this.state.isOpenConfirmationDelete}
               onClose={this.onCloseDialogDelete}
               onSelectYes={this.onRemove}
-              question={'You are about to delete a email and this action cannot be undone?'}
+              title={'Confirmation'}
+              question={'Are you sure you want to delete this?'}
             />
             <Fab
               color={'secondary'}

@@ -7,7 +7,7 @@ import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/La
 import { IPagination } from 'src/renderer/common/List/interface';
 
 // const mockTemplate = {
-//   id: null,
+//   ids: null,
 //   user_id: 0,
 //   updated_at: '',
 //   description: 'Description',

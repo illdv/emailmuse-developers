@@ -10,11 +10,12 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { useOrDefault } from 'src/renderer/utils';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
-import { ModalWindowType } from 'src/renderer/common/ModalWindow/flux/actions';
+import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { Action } from 'redux-act';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { EmailAPI } from 'src/renderer/API/EmailAPI';
 
 function getCurrentPageSelector(state: IGlobalState) {
   return useOrDefault(() => state.templates.pagination.current_page, 0);
@@ -22,7 +23,8 @@ function getCurrentPageSelector(state: IGlobalState) {
 
 function* loadingTemplates(action) {
   try {
-    const response: AxiosResponse<ITemplatesResponse> = yield call(Templates.getTemplates, action.payload.page);
+    const response: AxiosResponse<ITemplatesResponse>
+      = yield call(EmailAPI.get, action.payload.page, action.payload.search);
 
     const { total, current_page, data, last_page, per_page } = response.data;
 
@@ -42,7 +44,7 @@ function* loadingTemplates(action) {
 
 function* saveTemplate(action) {
   try {
-    yield call(Templates.editTemplate, action.payload.template);
+    yield call(EmailAPI.edit, action.payload.template);
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
   } catch (error) {
@@ -52,7 +54,7 @@ function* saveTemplate(action) {
 
 function* createTemplate(action: Action<ITemplate>) {
   try {
-    const axionData = yield call(Templates.createTemplate, [action.payload]);
+    const axionData = yield call(EmailAPI.create, [action.payload]);
     yield put(TemplateActions.createSuccess(axionData.data));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
@@ -64,7 +66,7 @@ function* createTemplate(action: Action<ITemplate>) {
 
 function* removeTemplates(action) {
   try {
-    yield call(Templates.removeTemplate, action.payload);
+    yield call(EmailAPI.remove, action.payload);
 
     yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
@@ -76,7 +78,7 @@ function* removeTemplates(action) {
 
 function* copyTemplates(action) {
   try {
-    yield call(Templates.copyTemplate, action.payload.id);
+    yield call(EmailAPI.copy, action.payload.id);
 
     yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);

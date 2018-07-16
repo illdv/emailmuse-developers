@@ -14,7 +14,8 @@ import login from 'src/renderer/component/Profile/Authorisation/flux/sagas/Login
 import templates from 'src/renderer/component/Templates/flux/saga';
 import snippets from 'src/renderer/component/Snippets/flux/saga';
 import layouts from 'src/renderer/component/Layouts/flux/saga';
-import swipe from 'src/renderer/component/Swipe/flux/saga';
+import swipe from 'src/renderer/component/Swipe/flux/saga/saga';
+import training from 'src/renderer/component/Training/flux/saga';
 import editor from 'src/renderer/component/Editor/flux/saga';
 
 export default function* rootSaga() {
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     fork(watcherGetProfile),
     fork(checkCodeSaga),
     ...polls.map(fork),
+    menuWatcher,
     ...login.map(fork),
     ...templates.map(fork),
     ...snippets.map(fork),
@@ -36,5 +38,6 @@ export default function* rootSaga() {
     ...swipe.map(fork),
     ...editor.map(fork),
     menuWatcher,
+    ...training.map(fork),
   ];
 }
