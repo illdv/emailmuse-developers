@@ -2,7 +2,6 @@ import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
-import { Templates } from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { ITemplate, ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';

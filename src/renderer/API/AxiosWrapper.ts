@@ -15,7 +15,7 @@ function get(apiMethod: string, urlParams: { [key: string]: string | number } = 
 }
 
 function post(apiMethod: string, body: any = {}): AxiosPromise<any> {
-  return instance.post(apiMethod, body );
+  return instance.post(apiMethod, body);
 }
 
 function put(apiMethod: string, body: any = {}): AxiosPromise<any> {
@@ -34,7 +34,7 @@ function deleteRequest(apiMethod: string, body: any = {}): AxiosPromise<any> {
   );
 }
 
-function deleteResponse2(apiMethod: string, body: any): AxiosPromise<any> {
+function deleteResponse2(apiMethod: string, body?: any): AxiosPromise<any> {
   return instance.delete(apiMethod, { data: body });
 }
 

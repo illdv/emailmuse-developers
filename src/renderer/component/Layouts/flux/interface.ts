@@ -21,5 +21,5 @@ export interface ILayoutActions {
   loading: IAsyncAction2<{ page?: number }, { layouts: ILayout[], pagination: IPagination }>;
   create: IAsyncAction2<{ layout: ILayout }, {}>;
   edit: IAsyncAction2<{ layout: ILayout }, {}>;
-  remove: IAsyncAction2<{ids: string[]}, {}>;
+  remove: IAsyncAction2<{ ids: string[] }, {}>;
 }

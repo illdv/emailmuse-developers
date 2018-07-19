@@ -10,6 +10,8 @@ import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { PollsActions } from 'src/renderer/component/Profile/Polls/flux/actions';
+import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -39,9 +41,13 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
 
     yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
     const response: AxiosResponse<ILoginResponse> = yield call(login, action.payload.request);
-    yield put(AuthorisationActions.login.SUCCESS({
-      user: extractUser(response),
-    }));
+    const user = extractUser(response);
+    yield put(AuthorisationActions.login.SUCCESS({ user }));
+    // Check If User is new
+    if (user.passed_poll === false) {
+      yield call(pollsFlow);
+    }
+    // redirect to main page
     yield put(push('/emails'));
   } catch (error) {
     yield call(errorHandler, error);
@@ -63,6 +69,9 @@ function* onGoogleLogin(): IterableIterator<any> {
     const user = extractUser({ data: JSON.parse(token) } as any);
 
     yield put(AuthorisationActions.login.SUCCESS({ user }));
+    if (user.passed_poll === false) {
+      yield call(pollsFlow);
+    }
     yield put(push('/emails'));
 
   } catch (error) {

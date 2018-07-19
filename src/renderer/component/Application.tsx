@@ -11,6 +11,7 @@ import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
 import { Route, Switch as SwitchRoute } from 'react-router-dom';
+import Polls from 'src/renderer/component/Profile/Polls/Polls';
 
 export namespace MainLayoutScope {
   export interface IState {
@@ -37,6 +38,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
       <ErrorBoundary>
         <SwitchRoute>
           <Route path='/login' component={Auth}/>
+          <Route path='/polls' component={Polls}/>
           <PrivateRoute path='/' component={MainLayout}/>
         </SwitchRoute>
         <Toast/>

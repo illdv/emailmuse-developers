@@ -67,7 +67,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   removeLayout = (id: string) => event => {
     event.stopPropagation();
     this.props.actionLayout.remove.REQUEST({ ids: [id] });
-  }
+  };
 
   closePopup = () => {
     this.setState({ showPopUp: false });
@@ -83,7 +83,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
 
   onSelect = (layout: ILayout) => () => {
     this.createTemplate({ body: layout.body, title: layout.title });
-  }
+  };
 
   editLayout = (layout: ILayout) => event => {
     event.stopPropagation();

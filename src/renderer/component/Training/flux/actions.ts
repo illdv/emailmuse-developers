@@ -11,5 +11,5 @@ export const TrainingActions: ITrainingActions = {
 };
 
 export interface ITrainingActions {
-  loading: IAsyncAction2<{}, {training: ITraining[]}>;
+  loading: IAsyncAction2<{}, { training: ITraining[] }>;
 }

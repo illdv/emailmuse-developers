@@ -13,18 +13,22 @@ export const LOADING = `${NS}LOADING`;
 export const FAILURE = `${NS}FAILURE`;
 export const LOADED  = `${NS}LOADED`;
 
-export const CREATE              = `${NS}CREATE`;
-export const CREATE_SUCCESS      = `${NS}CREATE_SUCCESS`;
-export const SELECT              = `${NS}SELECT`;
-export const REMOVE              = `${NS}REMOVE`;
-export const SAVE                = `${NS}SAVE`;
-export const COPY                = `${NS}COPY`;
+export const CREATE = `${NS}CREATE`;
+export const CREATE_SUCCESS = `${NS}CREATE_SUCCESS`;
+export const SELECT = `${NS}SELECT`;
+export const REMOVE = `${NS}REMOVE`;
+export const SAVE = `${NS}SAVE`;
+export const COPY = `${NS}COPY`;
 export const SELECT_NEW_TEMPLATE = `${NS}SELECT_NEW_TEMPLATE`;
 
 // TODO: Need refactoring this
 
 const loading = createAction(LOADING,
-  (payload: { page: number, hidePreloader?: boolean, search?: string } = { page: 1, hidePreloader: false, search: ''}) => payload);
+  (payload: { page: number, hidePreloader?: boolean, search?: string } = {
+    page: 1,
+    hidePreloader: false,
+    search: ''
+  }) => payload);
 
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);

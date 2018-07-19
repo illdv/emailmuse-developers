@@ -74,7 +74,7 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
   renderStep = (props: RouteComponentProps<any>) => {
     const breadcrumb: IBreadcrumbs[] = [];
 
-    const { training }                    = this.props.training;
+    const { training } = this.props.training;
 
     const { stepOne, stepTwo, stepThree } = props.match.params;
 

@@ -22,11 +22,11 @@ class CloseEditor extends Component<CloseEditorSpace.IProps, CloseEditorSpace.IS
 
   onClose = () => {
     this.props.modalWindowActions.show.FAILURE({});
-  }
+  };
 
   onSelectYes = () => {
     this.props.modalWindowActions.show.SUCCESS({});
-  }
+  };
 
   render() {
 

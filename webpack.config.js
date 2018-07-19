@@ -6,6 +6,7 @@ const webpackElectron = {
     entry: {
         main: './main/index.ts',
     },
+    devtool: isProduction ? undefined : 'inline-source-map',
 };
 
 const webpackReact = {
@@ -14,6 +15,7 @@ const webpackReact = {
     entry: {
         renderer: './renderer/index.tsx',
     },
+    devtool: isProduction ? undefined : 'inline-source-map',
 };
 
 console.log('isProduction = ' + isProduction);

@@ -138,7 +138,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
         <TableBody>
           {entities.map((entity: {}) => {
             const item: IListItem = toItem(entity);
-            const isSelected      = this.isSelected(item.id);
+            const isSelected = this.isSelected(item.id);
             return (
               <TableRow
                 role='checkbox'
