@@ -120,6 +120,10 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                   }}
                   onChangePage={this.onChangePage}
                 />
+                ||
+                <div style={{ height: 300 }}>
+                  <p>Not found</p>
+                </div>
               }
               <ImageLibraryList
                 items={this.props.items}
