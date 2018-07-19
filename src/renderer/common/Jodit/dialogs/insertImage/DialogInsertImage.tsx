@@ -78,6 +78,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
 
   onSelectImage = (item: IImageLibraryItem) => () => {
     this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
+    this.props.actions.getImagesRequest();
   }
 
   onChangePage = (e, page) => {
@@ -89,6 +90,11 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
     this.setState({ searchWorld });
   }
 
+  onClose = () => {
+    this.props.handleClose();
+    this.props.actions.getImagesRequest();
+  }
+
   render() {
     const { pagination } = this.props;
     return (
@@ -96,7 +102,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
         fullWidth
         className={b('dialog')}
         open={this.props.isOpen}
-        onClose={this.props.handleClose}
+        onClose={this.onClose}
         maxWidth={false}
         aria-labelledby='responsive-dialog-title'
       >

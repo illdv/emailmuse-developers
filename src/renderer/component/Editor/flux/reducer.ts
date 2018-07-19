@@ -16,7 +16,10 @@ const reducer = createReducer({}, initialState());
 
 reducer.on(EditorActions.edit.REQUEST, (state, payload): IEditorState => ({
   ...state,
-  editEntity: payload,
+  editEntity: {
+    ...payload,
+    html: payload.html || ' ',
+  },
 }));
 
 reducer.on(TemplateActions.createSuccess, (state, payload): IEditorState => ({
