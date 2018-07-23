@@ -2,7 +2,6 @@ import { createReducer } from 'redux-act';
 
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
 const initialState = (): ISnippetsState => ({
