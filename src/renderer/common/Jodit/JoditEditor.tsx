@@ -45,28 +45,6 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     },
   };
 
-  private readonly textArea;
-  private editor;
-
-  constructor(props) {
-    super(props);
-    this.textArea = React.createRef();
-  }
-
-  componentDidMount(): void {
-    this.createEditor();
-  }
-
-  componentWillUnmount(): void {
-    this.destructEditor();
-  }
-
-  componentWillUpdate(): void {
-    if (this.props.value === null) {
-      this.destructEditor();
-    }
-  }
-
   destructEditor = () => {
     if (this.editor) {
       this.editor.destruct();
@@ -102,13 +80,13 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
           b: 'strong',
         },
       },
+      toolbarAdaptive: false,
       buttons: [
         'source',
         '|', 'bold', 'italic', 'underline', 'strikethrough',
         '|', 'font', 'fontsize', 'brush', 'paragraph',
         '|', 'ul', 'ol', 'outdent', 'indent', 'align',
-        '|', 'cut', 'hr', 'eraser', 'copyformat',
-        '|', 'undo', 'redo',
+        '|', 'cut', 'undo', 'redo',
         '|', 'table', 'link',
       ],
       extraButtons: [
@@ -158,6 +136,27 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     }
     this.editor.selection.insertHTML(html);
     callback();
+  }
+  private readonly textArea;
+  private editor;
+
+  constructor(props) {
+    super(props);
+    this.textArea = React.createRef();
+  }
+
+  componentDidMount(): void {
+    this.createEditor();
+  }
+
+  componentWillUnmount(): void {
+    this.destructEditor();
+  }
+
+  componentWillUpdate(): void {
+    if (this.props.value === null) {
+      this.destructEditor();
+    }
   }
 
   render() {
