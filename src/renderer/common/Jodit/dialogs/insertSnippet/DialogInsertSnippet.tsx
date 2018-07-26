@@ -45,7 +45,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
 export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IProps, DialogInsertSnippetSpace.IState> {
 
   state: DialogInsertSnippetSpace.IState = { searchWord: '' };
@@ -102,3 +101,5 @@ export class DialogInsertSnippet extends Component<DialogInsertSnippetSpace.IPro
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(DialogInsertSnippet);

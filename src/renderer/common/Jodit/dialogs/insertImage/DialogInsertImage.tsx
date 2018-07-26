@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, Paper, TablePagination } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, Paper, TablePagination, withStyles } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 import block from 'bem-ts';
 
@@ -26,8 +26,15 @@ import './DialogInsertImage.scss';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
 import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
+import { IStyle } from 'type/materialUI';
 
 const b = block('dialogs-select-image');
+const styles: IStyle = theme => ({
+  root: {
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
+});
 
 export namespace DialogSelectImageSpace {
   export interface IState {
@@ -68,7 +75,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }, dispatch),
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
 export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, DialogSelectImageSpace.IState> {
 
   state = {};
@@ -134,7 +140,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                   onChangePage={this.onChangePage}
                 />
                 ||
-                <div style={{ height: 300 }}>
+                <div style={{ height: 50 }}>
                   <p>Not found</p>
                 </div>
               }
@@ -163,3 +169,5 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DialogInsertImage as any));

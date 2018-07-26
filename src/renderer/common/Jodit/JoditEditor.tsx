@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as Jodit from 'jodit';
 
-import { DialogInsertImage } from 'src/renderer/common/Jodit/dialogs/insertImage/DialogInsertImage';
-import { DialogInsertLinkButton } from 'src/renderer/common/Jodit/dialogs/insertLinkButton/DialogInsertLinkButton';
-import { DialogInsertSnippet } from 'src/renderer/common/Jodit/dialogs/insertSnippet/DialogInsertSnippet';
+import DialogInsertImage from 'src/renderer/common/Jodit/dialogs/insertImage/DialogInsertImage';
+import DialogInsertLinkButton from 'src/renderer/common/Jodit/dialogs/insertLinkButton/DialogInsertLinkButton';
+import DialogInsertSnippet from 'src/renderer/common/Jodit/dialogs/insertSnippet/DialogInsertSnippet';
 
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';

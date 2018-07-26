@@ -192,3 +192,5 @@ export class DialogInsertLinkButton
     );
   }
 }
+
+export default DialogInsertLinkButton;
