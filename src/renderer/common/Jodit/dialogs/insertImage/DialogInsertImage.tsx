@@ -25,6 +25,7 @@ import {
 import './DialogInsertImage.scss';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
+import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
 
 const b = block('dialogs-select-image');
 
@@ -95,6 +96,12 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
     this.props.actions.getImagesRequest();
   }
 
+  onDropFile = item => {
+    if (item && item.files) {
+      this.props.actions.uploadImagesRequest(item.files);
+    }
+  }
+
   render() {
     const { pagination } = this.props;
     return (
@@ -131,14 +138,23 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                   <p>Not found</p>
                 </div>
               }
-              <ImageLibraryList
-                items={this.props.items}
-                onSelect={this.onSelectImage}
-              />
+              <DragAndDropTarget
+                onDrop={this.onDropFile}
+                showOverlay={true}
+                overlayMessage={'Drop files here to add them to your image library'}
+              >
+                <ImageLibraryList
+                  items={this.props.items}
+                  onSelect={this.onSelectImage}
+                />
+              </DragAndDropTarget>
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.handleClose} color='primary'>
+            <Button
+              onClick={this.props.handleClose}
+              color='primary'
+            >
               Close
             </Button>
           </DialogActions>
