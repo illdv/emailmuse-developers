@@ -27,6 +27,7 @@ import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
 import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
 import { IStyle } from 'type/materialUI';
+import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 
 const b = block('dialogs-select-image');
 const styles: IStyle = theme => ({
@@ -144,6 +145,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                   <p>Not found</p>
                 </div>
               }
+              <PreloaderLayout/>
               <DragAndDropTarget
                 onDrop={this.onDropFile}
                 showOverlay={true}
