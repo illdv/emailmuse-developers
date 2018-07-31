@@ -37,7 +37,7 @@ import { Search } from 'src/renderer/common/Search';
 import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
 import { IStyle } from 'type/materialUI';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
-import { CloudUpload } from '@material-ui/icons';
+import { Close, CloudUpload } from '@material-ui/icons';
 
 const b = block('dialogs-select-image');
 const styles: IStyle = theme => ({
@@ -97,28 +97,30 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
   onSelectImage = (item: IImageLibraryItem) => () => {
     this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
     this.props.actions.getImagesRequest();
-  };
+  }
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  };
+  }
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
     this.setState({ searchWorld });
-  };
+  }
 
   onClose = () => {
     this.props.handleClose();
     this.props.actions.getImagesRequest();
-  };
+  }
 
   onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
+  }
+  deleteItem = (item: IImageLibraryItem) => () => {
+    this.props.actions.deleteImagesRequest(item.id);
   };
-
   render() {
     const { pagination } = this.props;
     return (
@@ -131,6 +133,14 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
         aria-labelledby='responsive-dialog-title'
       >
         <Paper elevation={4}>
+          <DialogActions>
+            <Button
+              onClick={this.props.handleClose}
+              color='primary'
+            >
+              <Close/>
+            </Button>
+          </DialogActions>
           <DialogContent>
             <div className={b('container')}>
               <div className={b('header')}>
@@ -165,18 +175,11 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                 <ImageLibraryList
                   items={this.props.items}
                   onSelect={this.onSelectImage}
+                  onDelete={this.deleteItem}
                 />
               </DragAndDropTarget>
             </div>
           </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.props.handleClose}
-              color='primary'
-            >
-              Close
-            </Button>
-          </DialogActions>
         </Paper>
       </Dialog>
     );
