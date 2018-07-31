@@ -12,6 +12,7 @@ import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { bindActionCreators } from 'redux';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { Fab } from 'src/renderer/common/Fab';
 
 const styles = ({
   button: {
@@ -72,17 +73,16 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
             </Grid>
           </div>
         </Fade>
-        <div style={{ ...styles.buttonBlock }}>
-          <Button
-            onClick={this.onMoveSubjectInEmail}
-            title={'Use These Email'}
-            variant='contained'
-            color='primary'
-            key={'Enter'}
-            style={{ ...styles.button }}
-          >Use This Email <Check style={{ ...styles.rightIcon }}/>
-          </Button>
-        </div>
+        <Fab
+          onClick={this.onMoveSubjectInEmail}
+          title={'Use These Email'}
+          position={0}
+          variant='contained'
+          color='primary'
+          key={'Enter'}
+          bottom={'30px'}
+        >Use This Email <Check style={{ ...styles.rightIcon }}/>
+        </Fab>
       </div>
     );
   }

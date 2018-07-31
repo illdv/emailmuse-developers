@@ -7,15 +7,18 @@ import { Button, PropTypes, Zoom } from '@material-ui/core/';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 interface IFabProps {
+  position: number;
+  title: string;
   onClick?: any;
   className?: string;
   icon?: ReactElement<any>;
   color?: PropTypes.Color;
-  position: number;
-  title: string;
   hotKey?: string;
   whitCtrl?: boolean;
   isFly?: boolean;
+  children?: any;
+  bottom?: string;
+  variant?: 'fab' | 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'extendedFab';
 }
 
 const initFabProps = (): IFabProps => ({
@@ -30,7 +33,11 @@ const initFabProps = (): IFabProps => ({
 });
 
 export function Fab(props: IFabProps = initFabProps()) {
-  const { color, icon, onClick, position, hotKey, title, whitCtrl, isFly } = { ...initFabProps(), ...props };
+  const {
+    color, icon, onClick, position,
+    hotKey, title, whitCtrl, isFly,
+    children, bottom = null, variant = 'fab',
+  } = { ...initFabProps(), ...props };
   return (
     <Zoom
       in={true}
@@ -39,12 +46,12 @@ export function Fab(props: IFabProps = initFabProps()) {
     >
       <HotKey whitCtrl={whitCtrl} hotKey={hotKey} tooltip={title} onPress={onClick}>
         <Button
-          style={{ zIndex: 99, right: (62 * position) + 20 }}
+          style={{ zIndex: 99, right: (62 * position) + 20, bottom }}
           className={classNames({ fab: isFly })}
           color={color}
-          variant='fab'
+          variant={variant}
           onClick={onClick}
-        >{icon}
+        >{children ? children : icon}
         </Button>
       </HotKey>
     </Zoom>

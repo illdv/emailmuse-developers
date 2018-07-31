@@ -29,6 +29,7 @@ import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
 import './Swipe.scss';
 import { Loading } from 'src/renderer/common/Loading';
+import { Fab } from 'src/renderer/common/Fab';
 
 const b = block('swipe');
 
@@ -121,42 +122,43 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
     }
 
     return (
-        <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
-          <Breadcrumbs
-            items={items}
-          />
-          {
-            selectedSubject
-            &&
-            <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
-            ||
-            <Fade in timeout={500}>
-              <List component='nav'>
-                {
-                  selectedSwipe
-                  &&
-                  selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
-                  ||
-                  swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
-                }
-              </List>
-            </Fade>
-          }
-          {
-            selectedSwipe && !selectedSubject &&
-            <div className={b('button')}>
-              <Button
-                onClick={this.onMoveSwipeInEmail(selectedSwipe)}
-                title={'Use These Emails'}
-                variant='contained'
-                color='primary'
-                key={'Enter'}
-                className={classes.button}
-              >Use These Emails <Check className={classes.rightIcon}/>
-              </Button>
-            </div>
-          }
-        </Paper>
+      <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
+        <Breadcrumbs
+          items={items}
+        />
+        {
+          selectedSubject
+          &&
+          <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
+          ||
+          <Fade in timeout={500}>
+            <List component='nav'>
+              {
+                selectedSwipe
+                &&
+                selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
+                ||
+                swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
+              }
+            </List>
+          </Fade>
+        }
+        {
+          selectedSwipe && !selectedSubject &&
+          <Fab
+            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+            title={'Use These Emails'}
+            position={0}
+            variant='contained'
+            color='primary'
+            key={'Enter'}
+            bottom={'30px'}
+            className={classes.button}
+          >Use These Emails <Check className={classes.rightIcon}/>
+          </Fab>
+        }
+      </Paper>
+
     );
   }
 }
