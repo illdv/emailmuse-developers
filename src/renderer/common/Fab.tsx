@@ -44,8 +44,7 @@ export function Fab(props: IFabProps = initFabProps()) {
           color={color}
           variant='fab'
           onClick={onClick}
-        >
-          {icon}
+        >{icon}
         </Button>
       </HotKey>
     </Zoom>

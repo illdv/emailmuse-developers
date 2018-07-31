@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Divider, Fade, Grid, Typography } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import { Button, Divider, Fade, Grid, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Check, Edit } from '@material-ui/icons';
 
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
-import { Fab } from 'src/renderer/common/Fab';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
@@ -14,11 +13,21 @@ import { bindActionCreators } from 'redux';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
 
+const styles = ({
+  button: {
+    margin: 10,
+  },
+  rightIcon: {
+    marginLeft: 5,
+  },
+  buttonBlock: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+});
 export namespace PreviewMailSpace {
   export interface IState {
-
   }
-
   export interface IProps {
     mail: ITemplate;
     swipe: ISwipe;
@@ -28,7 +37,6 @@ export namespace PreviewMailSpace {
 }
 
 class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IState> {
-
   state: PreviewMailSpace.IState = {};
 
   onMoveSubjectInEmail = () => {
@@ -44,7 +52,6 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
 
   render() {
     const { mail } = this.props;
-
     return (
       <div>
         <Fade in timeout={1000}>
@@ -65,14 +72,17 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
             </Grid>
           </div>
         </Fade>
-        <Fab
-          color={'secondary'}
-          onClick={this.onMoveSubjectInEmail}
-          icon={<Edit/>}
-          position={0}
-          title={'Use This Email'}
-          key={'Enter'}
-        />
+        <div style={{ ...styles.buttonBlock }}>
+          <Button
+            onClick={this.onMoveSubjectInEmail}
+            title={'Use These Email'}
+            variant='contained'
+            color='primary'
+            key={'Enter'}
+            style={{ ...styles.button }}
+          >Use This Email <Check style={{ ...styles.rightIcon }}/>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -85,4 +95,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   drawerMenuAction: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PreviewMail);
+export default connect(mapStateToProps, mapDispatchToProps)
+(PreviewMail);

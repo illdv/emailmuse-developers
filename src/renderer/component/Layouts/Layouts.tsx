@@ -101,9 +101,9 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
       return this.state.editor;
     }
     return (
-      <div>
+      <Paper className={b()} elevation={4} style={{ height: 'auto', paddingBottom: 480 }}>
         <Fade in timeout={1000}>
-          <Paper elevation={4} style={{ paddingBottom: 500 }}>
+          <>
             <div className={b('header')}>
               <Typography variant='headline' align='center'>Choose a layout</Typography>
             </div>
@@ -117,27 +117,29 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
                 onEditItem={this.editLayout}
                 onChangePage={null}
               />
-              {/* <Button
+              {
+                /* <Button
                 className={b('button')}
                 onClick={this.onSkip}
-              >No thanks. I'll start from scratch
-              </Button>*/}
+                >No thanks. I'll start from scratch
+                </Button>*/
+              }
             </div>
-          </Paper>
+            <Fab
+              onClick={this.createOwnTemplate}
+              icon={<Add/>}
+              position={0}
+              title={'Create your own template'}
+              whitCtrl
+              hotKey={'A'}
+            />
+            <PageCreateLayout
+              isOpen={this.state.showPopUp}
+              handleClose={this.closePopup}
+            />
+          </>
         </Fade>
-        <Fab
-          onClick={this.createOwnTemplate}
-          icon={<Add/>}
-          position={0}
-          title={'Create your own template'}
-          whitCtrl
-          hotKey={'A'}
-        />
-        <PageCreateLayout
-          isOpen={this.state.showPopUp}
-          handleClose={this.closePopup}
-        />
-      </div>
+      </Paper>
     );
   }
 }
