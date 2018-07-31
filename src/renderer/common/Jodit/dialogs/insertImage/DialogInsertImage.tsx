@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, Paper, TablePagination, withStyles } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Paper,
+  TablePagination,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 import block from 'bem-ts';
 
@@ -28,6 +37,7 @@ import { Search } from 'src/renderer/common/Search';
 import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
 import { IStyle } from 'type/materialUI';
 import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
+import { CloudUpload } from '@material-ui/icons';
 
 const b = block('dialogs-select-image');
 const styles: IStyle = theme => ({
@@ -87,27 +97,27 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
   onSelectImage = (item: IImageLibraryItem) => () => {
     this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
     this.props.actions.getImagesRequest();
-  }
+  };
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  }
+  };
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
     this.setState({ searchWorld });
-  }
+  };
 
   onClose = () => {
     this.props.handleClose();
     this.props.actions.getImagesRequest();
-  }
+  };
 
   onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
-  }
+  };
 
   render() {
     const { pagination } = this.props;
@@ -123,28 +133,29 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
         <Paper elevation={4}>
           <DialogContent>
             <div className={b('container')}>
-              <Search search={this.onLoading}/>
-              {
-                pagination.total &&
-                <TablePagination
-                  component='div'
-                  count={pagination.total}
-                  rowsPerPage={pagination.per_page}
-                  rowsPerPageOptions={[16]}
-                  page={pagination.current_page - 1}
-                  backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                  }}
-                  nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                  }}
-                  onChangePage={this.onChangePage}
-                />
-                ||
-                <div style={{ height: 50 }}>
-                  <p>Not found</p>
+              <div className={b('header')}>
+                <div className={b('header--search')}>
+                  <Search search={this.onLoading}/>
+                  {
+                    pagination.total &&
+                    <TablePagination
+                      component='div'
+                      count={pagination.total}
+                      rowsPerPage={pagination.per_page}
+                      rowsPerPageOptions={[16]}
+                      page={pagination.current_page - 1}
+                      backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                      nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                      onChangePage={this.onChangePage}
+                    />
+                    ||
+                    <div style={{ height: 20 }}>
+                      <p>Not found</p>
+                    </div>
+                  }
                 </div>
-              }
+                <Typography>Drag and drop image file to upload <CloudUpload/></Typography>
+              </div>
               <PreloaderLayout/>
               <DragAndDropTarget
                 onDrop={this.onDropFile}
