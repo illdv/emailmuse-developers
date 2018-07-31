@@ -54,15 +54,15 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
 
   createTemplate = ({ title, body }: ILayout) => {
     this.props.editorActions.edit.REQUEST(emailToEditEntity({ body, title, description: '---' }));
-  }
+  };
 
   onSkip = () => {
     this.createTemplate({ body: 'Example text', title: 'Email' });
-  }
+  };
 
   createOwnTemplate = () => {
     this.setState({ showPopUp: true });
-  }
+  };
 
   removeLayout = (id: string) => event => {
     event.stopPropagation();
@@ -71,15 +71,15 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
 
   closePopup = () => {
     this.setState({ showPopUp: false });
-  }
+  };
 
   onCloseOrRemove = (layout: ILayout) => {
     this.removeLayout(layout.id);
-  }
+  };
 
   onSaveOrCreate = (layout: ILayout) => {
     this.props.actionLayout.edit.REQUEST({ layout });
-  }
+  };
 
   onSelect = (layout: ILayout) => () => {
     this.createTemplate({ body: layout.body, title: layout.title });
@@ -88,7 +88,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   editLayout = (layout: ILayout) => event => {
     event.stopPropagation();
     this.props.editorActions.edit.REQUEST(layoutToEditEntity(layout));
-  }
+  };
 
   render() {
     const { layouts, pagination } = this.props.layout;
@@ -103,7 +103,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     return (
       <div>
         <Fade in timeout={1000}>
-          <Paper elevation={4}>
+          <Paper elevation={4} style={{ paddingBottom: 500 }}>
             <div className={b('header')}>
               <Typography variant='headline' align='center'>Choose a layout</Typography>
             </div>
@@ -117,11 +117,11 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
                 onEditItem={this.editLayout}
                 onChangePage={null}
               />
-              <Button
+              {/* <Button
                 className={b('button')}
                 onClick={this.onSkip}
               >No thanks. I'll start from scratch
-              </Button>
+              </Button>*/}
             </div>
           </Paper>
         </Fade>

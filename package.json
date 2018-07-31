@@ -18,7 +18,8 @@
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
-    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz"
+    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz",
+    "build-all": "npm run pack &&build -mwl"
   },
   "dependencies": {
     "@material-ui/core": "^1.3.0",
@@ -57,7 +58,7 @@
     "css-loader": "^0.28.11",
     "dotenv": "^6.0.0",
     "electron": "^2.0.2",
-    "electron-builder": "^20.15.1",
+    "electron-builder": "^20.25.0",
     "electron-load-devtool": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
