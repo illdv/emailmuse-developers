@@ -62,8 +62,7 @@ class PreviewMail extends Component<PreviewMailSpace.IProps, PreviewMailSpace.IS
                 <Typography
                   variant='headline'
                   noWrap
-                >
-                  {mail.description}
+                >{mail.description}
                 </Typography>
               </Grid>
               <Grid item xs={12}>

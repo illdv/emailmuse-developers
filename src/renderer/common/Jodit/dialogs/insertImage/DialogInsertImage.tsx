@@ -2,13 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   Paper,
   TablePagination,
-  Typography,
+  Typography, WithStyles,
   withStyles,
 } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
@@ -36,8 +35,8 @@ import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
 import { DragAndDropTarget } from 'src/renderer/component/ImageLibrary/DragAndDropTarget';
 import { IStyle } from 'type/materialUI';
-import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
 import { Close, CloudUpload } from '@material-ui/icons';
+import { PreLoaderLayout } from 'src/renderer/common/PreloaderLayout/PreLoaderLayout';
 
 const b = block('dialogs-select-image');
 const styles: IStyle = theme => ({
@@ -49,7 +48,6 @@ const styles: IStyle = theme => ({
 
 export namespace DialogSelectImageSpace {
   export interface IState {
-
   }
 
   export interface IProps {
@@ -86,8 +84,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }, dispatch),
 });
 
-export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, DialogSelectImageSpace.IState> {
-
+export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps & WithStyles<any>,
+  DialogSelectImageSpace.IState> {
   state = {};
 
   componentDidMount() {
@@ -97,30 +95,31 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
   onSelectImage = (item: IImageLibraryItem) => () => {
     this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
     this.props.actions.getImagesRequest();
-  }
+  };
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  }
+  };
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
     this.setState({ searchWorld });
-  }
+  };
 
   onClose = () => {
     this.props.handleClose();
     this.props.actions.getImagesRequest();
-  }
+  };
 
   onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
-  }
+  };
   deleteItem = (item: IImageLibraryItem) => () => {
     this.props.actions.deleteImagesRequest(item.id);
   };
+
   render() {
     const { pagination } = this.props;
     return (
@@ -134,17 +133,15 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
       >
         <Paper elevation={4}>
           <DialogActions>
-            <Button
+            <Close
+              style={{ cursor: 'pointer' }}
               onClick={this.props.handleClose}
-              color='primary'
-            >
-              <Close/>
-            </Button>
+            />
           </DialogActions>
           <DialogContent>
             <div className={b('container')}>
               <div className={b('header')}>
-                <div className={b('header--search')}>
+                <div className={b('header__search')}>
                   <Search search={this.onLoading}/>
                   {
                     pagination.total &&
@@ -164,9 +161,20 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps, 
                     </div>
                   }
                 </div>
-                <Typography>Drag and drop image file to upload <CloudUpload/></Typography>
+                <div className={b('header__title')}>
+                  <Typography>Drag and drop image file to upload
+                  </Typography>
+                  <CloudUpload
+                    style={{
+                      width: 72,
+                      height: 72,
+                      padding: 16,
+                    }}
+                  />
+                </div>
+
               </div>
-              <PreloaderLayout/>
+              <PreLoaderLayout style={{ padding: 16 }}/>
               <DragAndDropTarget
                 onDrop={this.onDropFile}
                 showOverlay={true}
