@@ -122,17 +122,21 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
                 className={b('button')}
                 onClick={this.onSkip}
                 >No thanks. I'll start from scratch
-                </Button>*/
+                </Button> */
               }
             </div>
-            <Fab
-              onClick={this.createOwnTemplate}
-              icon={<Add/>}
-              position={0}
-              title={'Create your own template'}
-              whitCtrl
-              hotKey={'A'}
-            />
+            <div
+              style={{ zIndex: 99, position: 'absolute', bottom: 35, right: 85 }}
+            >Add a new layout
+              <Fab
+                onClick={this.createOwnTemplate}
+                icon={<Add/>}
+                position={0}
+                title={'Create your own template'}
+                whitCtrl
+                hotKey={'A'}
+              />
+            </div>
             <PageCreateLayout
               isOpen={this.state.showPopUp}
               handleClose={this.closePopup}
