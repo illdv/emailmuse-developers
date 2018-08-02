@@ -29,7 +29,6 @@ exports[`ImageLibrary >>>initialization render ImageLibrary component 1`] = `
           }
         }
         onChangePage={[Function]}
-        onChangeRowsPerPage={[Function]}
         page={0}
         rowsPerPage={15}
         rowsPerPageOptions={
@@ -46,6 +45,7 @@ exports[`ImageLibrary >>>initialization render ImageLibrary component 1`] = `
         <div
           className="image-library__container"
         >
+          <Connect(PreLoaderLayout) />
           <ImageLibraryList
             items={Array []}
             onDelete={[Function]}

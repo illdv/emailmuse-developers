@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
-import { Button, Fade, Paper, Typography } from '@material-ui/core';
+import { Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
 import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -21,6 +21,7 @@ import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { layoutToEditEntity, toItem } from 'src/renderer/component/Layouts/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 const b = block('layout');
 
@@ -29,6 +30,8 @@ export namespace LayoutsSpace {
     showPopUp: boolean;
     editMode: boolean;
     editor: any;
+    isOpenConfirmationDelete: boolean;
+    removedLayout: string;
   }
 
   export interface IProps {
@@ -41,11 +44,12 @@ export namespace LayoutsSpace {
 }
 
 export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState> {
-
   state: LayoutsSpace.IState = {
     showPopUp: false,
     editMode: false,
     editor: {},
+    isOpenConfirmationDelete: false,
+    removedLayout: null,
   };
 
   componentDidMount(): void {
@@ -56,25 +60,31 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.props.editorActions.edit.REQUEST(emailToEditEntity({ body, title, description: '---' }));
   }
 
-  onSkip = () => {
-    this.createTemplate({ body: 'Example text', title: 'Email' });
-  }
+  /*  onSkip = () => {
+      this.createTemplate({ body: 'Example text', title: 'Email' });
+    }*/
 
   createOwnTemplate = () => {
     this.setState({ showPopUp: true });
   }
 
-  removeLayout = (id: string) => event => {
-    event.stopPropagation();
-    this.props.actionLayout.remove.REQUEST({ ids: [id] });
-  };
+  removeLayout = () => {
+    const loyoutId = this.state.removedLayout;
+    this.props.actionLayout.remove.REQUEST({ ids: [loyoutId] });
+    this.onCloseDialogDelete();
+  }
+
+  /* handleRemove = (id: string) => event => {
+     event.stopPropagation();
+     this.setState({ isOpenConfirmationDelete: true });
+   }*/
 
   closePopup = () => {
     this.setState({ showPopUp: false });
   }
 
   onCloseOrRemove = (layout: ILayout) => {
-    this.removeLayout(layout.id);
+    this.props.actionLayout.remove.REQUEST({ ids: [layout.id] });
   }
 
   onSaveOrCreate = (layout: ILayout) => {
@@ -83,11 +93,20 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
 
   onSelect = (layout: ILayout) => () => {
     this.createTemplate({ body: layout.body, title: layout.title });
-  };
+  }
 
   editLayout = (layout: ILayout) => event => {
     event.stopPropagation();
     this.props.editorActions.edit.REQUEST(layoutToEditEntity(layout));
+  }
+
+  onOpenDialogDelete = (id: string) => event => {
+    event.stopPropagation();
+    this.setState({ isOpenConfirmationDelete: true, removedLayout: id });
+  }
+
+  onCloseDialogDelete = () => {
+    this.setState({ isOpenConfirmationDelete: false });
   }
 
   render() {
@@ -101,9 +120,9 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
       return this.state.editor;
     }
     return (
-      <div>
+      <Paper className={b()} elevation={4} style={{ height: 'auto', paddingBottom: 480 }}>
         <Fade in timeout={1000}>
-          <Paper elevation={4}>
+          <>
             <div className={b('header')}>
               <Typography variant='headline' align='center'>Choose a layout</Typography>
             </div>
@@ -113,31 +132,44 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
                 toItem={toItem}
                 pagination={pagination}
                 onSelectItem={this.onSelect}
-                onRemoveItem={this.removeLayout}
+                onRemoveItem={this.onOpenDialogDelete}
                 onEditItem={this.editLayout}
                 onChangePage={null}
               />
-              <Button
+              {
+                /* <Button
                 className={b('button')}
                 onClick={this.onSkip}
-              >No thanks. I'll start from scratch
-              </Button>
+                >No thanks. I'll start from scratch
+                </Button> */
+              }
             </div>
-          </Paper>
+            <div
+              style={{ zIndex: 99, position: 'absolute', bottom: 35, right: 85 }}
+            >Add a new layout
+              <Fab
+                onClick={this.createOwnTemplate}
+                icon={<Add/>}
+                position={0}
+                title={'Create your own template'}
+                whitCtrl
+                hotKey={'A'}
+              />
+            </div>
+            <PageCreateLayout
+              isOpen={this.state.showPopUp}
+              handleClose={this.closePopup}
+            />
+          </>
         </Fade>
-        <Fab
-          onClick={this.createOwnTemplate}
-          icon={<Add/>}
-          position={0}
-          title={'Create your own template'}
-          whitCtrl
-          hotKey={'A'}
+        <Confirmation
+          isOpen={this.state.isOpenConfirmationDelete}
+          onClose={this.onCloseDialogDelete}
+          onSelectYes={this.removeLayout}
+          title={'Confirmation'}
+          question={'Are you sure you want to delete this layout? This action can\'t be undone.'}
         />
-        <PageCreateLayout
-          isOpen={this.state.showPopUp}
-          handleClose={this.closePopup}
-        />
-      </div>
+      </Paper>
     );
   }
 }

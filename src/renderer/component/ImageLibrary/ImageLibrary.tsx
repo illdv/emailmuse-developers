@@ -28,7 +28,7 @@ import { ImageLibraryList } from './ImageLibraryList';
 import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
-import { PreloaderLayout } from 'src/renderer/common/PreloaderLayout/PreloaderLayout';
+import { PreLoaderLayout } from 'src/renderer/common/PreloaderLayout/PreLoaderLayout';
 
 const b = block('image-library');
 
@@ -154,7 +154,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
                     onClose={this.closeDialog}
                   />
                 }
-                <PreloaderLayout/>
+                <PreLoaderLayout/>
                 <ImageLibraryList
                   items={this.props.items}
                   onDelete={this.deleteItem}

@@ -2,15 +2,14 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Button, Grid, Grow, Paper, withStyles } from '@material-ui/core/';
-import { Redirect } from 'react-router-dom';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
+import { Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
-import { ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import { ICreateAccountRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ChevronLeft } from '@material-ui/icons';
@@ -27,11 +26,7 @@ const styles = theme => ({
     paddingTop: 48,
     paddingBottom: 26,
   },
-  button: {
-    'padding': theme.spacing.unit - 3,
-    'text-transform': 'none',
-  },
-  signButton: {
+  signUpButton: {
     'padding': theme.spacing.unit,
     'text-transform': 'none',
   },
@@ -54,20 +49,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+export class SignUp extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
   state = {};
 
-  onClickForgotPassword = () => {
-    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.FORGOT_PASSWORD });
-  }
-
-  onCreateAccount = () => {
-    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.REGISTRATION });
-  }
-
-  onSignIn = (request: ILoginRequest) => {
-    this.props.action.login.REQUEST({ request });
-  }
+  onCreateAccount = (user: ICreateAccountRequest) => {
+    this.props.action.createAccount.REQUEST({ user });
+  };
 
   onBack = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.PRE_LOGIN });
@@ -78,25 +65,25 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
 
     const validationSchema = {
       email: {
-        presence: true,
-        email: true,
+        presence: true, email: true,
       },
       password: {
-        presence: true,
-        length: { minimum: 6 },
+        presence: true, length: { minimum: 6, message: 'minimum is 6 characters' },
       },
-    };
-
-    const defaultValue = IS_PRODUCTION ? {} : {
-      email: 'rpahdeom@yomail.info',
-      password: 'rpahdeom@yomail.info',
+      password_confirmation: {
+        presence: true, length: { minimum: 6, message: 'minimum is 6 characters' },
+        equality: {
+          attribute: 'password',
+          message: 'Passwords didn\'t match.',
+          comparator: (password, confirmPassword) => password === confirmPassword,
+        },
+      },
     };
 
     return (
       <FormValidation
         schema={validationSchema}
-        onValidationSuccessful={this.onSignIn}
-        defaultValue={defaultValue}
+        onValidationSuccessful={this.onCreateAccount}
       >
         <FormContext.Consumer>
           {(context: IFormContext) => (
@@ -119,7 +106,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                       </div>
                     </Grow>
                     <Grid container spacing={24} className={classes.root}>
-                      <Title title={'Sign in'}/>
+                      <Title title={'Sign up'}/>
                       <Grow in timeout={1500}>
                         <Grid item xs={12} style={{ paddingTop: 0 }}>
                           <Grid item xs={12}>
@@ -136,29 +123,21 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                               type='password'
                               margin='dense'
                             />
+                            <TextValidator
+                              id='password_confirmation'
+                              type='password'
+                              label='Confirm password'
+                              margin='normal'
+                            />
                           </Grid>
                           <Grid item xs={12}>
                             <Button
                               color='primary'
                               variant='contained'
                               onClick={context.onSubmit}
-                              className={classes.signButton}
+                              className={classes.signUpButton}
                               size='large'
-                            >Sign In
-                            </Button>
-                          </Grid>
-                          <Grid container justify={'space-around'}>
-                            <Button
-                              className={classes.button}
-                              onClick={this.onCreateAccount}
-                              style={{ marginTop: 110 }}
-                            >Create an account
-                            </Button>
-                            <Button
-                              className={classes.button}
-                              onClick={this.onClickForgotPassword}
-                              style={{ marginTop: 110 }}
-                            >Recover your password
+                            >Register
                             </Button>
                           </Grid>
                         </Grid>
@@ -177,4 +156,4 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
 
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)
-  (Login));
+  (SignUp));
