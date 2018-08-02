@@ -6,7 +6,7 @@ import { ButtonHotKey } from 'src/renderer/common/ButtonHotKey';
 export function Title(props: { title: string, subtitle?: string }) {
   const { title, subtitle } = props;
   return (
-    <Grow in timeout={1000} style={{ paddingBottom: 0 }}>
+    <Grow in timeout={1000} style={{ paddingBottom: 0, paddingTop: 20 }}>
       <Grid item xs={12}>
         <Typography style={{ color: 'Black' }} variant='display1' gutterBottom>
           {title}

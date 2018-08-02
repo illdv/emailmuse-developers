@@ -1,12 +1,25 @@
 .dialogs-select-image__dialog {
-    min-height: 400px;
+  min-height: 400px;
 }
 
 .dialogs-select-image__container {
-    min-height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
+.dialogs-select-image__header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  min-width: 400px;
+  width: 100%;
+  padding: 0 30px 0 30px;
+}
+
+.dialogs-select-image__header__title {
+  display: flex;
+  align-items: center;
+}

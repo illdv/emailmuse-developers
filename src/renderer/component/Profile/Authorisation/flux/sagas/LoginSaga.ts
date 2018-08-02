@@ -10,7 +10,6 @@ import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
-import { PollsActions } from 'src/renderer/component/Profile/Polls/flux/actions';
 import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 
 const { ipcRenderer } = (window as any).require('electron');
