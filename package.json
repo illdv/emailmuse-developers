@@ -13,13 +13,12 @@
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production webpack",
-    "build-prod": "npm run build; cd build; npx electron-builder -lm",
+    "build-prod": "npm run build; cd build; npx electron-builder -wlm",
     "start-build": "cd ./build/dist/linux-unpacked; ./emailer",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
-    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz",
-    "build-all": "npm run pack &&build -mwl"
+    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz"
   },
   "dependencies": {
     "@material-ui/core": "^1.3.0",
