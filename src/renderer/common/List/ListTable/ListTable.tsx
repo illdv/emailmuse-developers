@@ -93,7 +93,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
 
   onSelectAll = () => {
     const selectedItemIds = this.state.selectedItemIds;
-    const entities        = this.props.entities;
+    const entities = this.props.entities;
 
     if (selectedItemIds.length === entities.length) {
       this.unSelectAll();
@@ -128,7 +128,8 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
-
+    {/*<Folder />*/
+    }
     return (
       <Table aria-labelledby='tableTitle'>
         <CustomTableHead
@@ -136,41 +137,43 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
           columnData={columnData}
         />
         <TableBody>
-          {entities.map((entity: {}) => {
-            const item: IListItem = toItem(entity);
-            const isSelected = this.isSelected(item.id);
-            return (
-              <TableRow
-                role='checkbox'
-                aria-checked={isSelected}
-                tabIndex={-1}
-                key={item.id}
-                selected={isSelected}
-                className={b('row')}
-              >
-                {
-                  this.props.onCopy
-                  &&
-                  <TableCell
-                    style={{ width: 40 }}
-                    onClick={this.onCopy(item.id)}
-                    padding={'checkbox'}
-                  >
-                    <IconButton title={'Create Duplicate'}>
-                      <ContentCopyIcon/>
-                    </IconButton>
+          {
+            entities.map((entity: {}) => {
+              const item: IListItem = toItem(entity);
+              const isSelected = this.isSelected(item.id);
+              return (
+                <TableRow
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={item.id}
+                  selected={isSelected}
+                  className={b('row')}
+                >
+                  {
+                    this.props.onCopy
+                    &&
+                    <TableCell
+                      style={{ width: 40 }}
+                      onClick={this.onCopy(item.id)}
+                      padding={'checkbox'}
+                    >
+                      <IconButton title={'Create Duplicate'}>
+                        <ContentCopyIcon/>
+                      </IconButton>
+                    </TableCell>
+                    ||
+                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                  }
+                  <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
+                    {item.title}
                   </TableCell>
-                  ||
-                  <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                }
-                <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
-                  {item.title}
-                </TableCell>
-                <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
-                <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
-              </TableRow>
-            );
-          })}
+                  <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
+                  <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
+                </TableRow>
+              );
+            })
+          }
         </TableBody>
       </Table>
     );

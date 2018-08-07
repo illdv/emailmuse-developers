@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Paper, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, CreateNewFolder } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -17,6 +17,7 @@ import { IColumn, ListTable } from 'src/renderer/common/List/ListTable/ListTable
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
 
 export namespace MailListSpace {
   export interface IProps {
@@ -25,17 +26,19 @@ export namespace MailListSpace {
     swipeActions?: ISwipeActions;
     editorActions?: IEditorActions;
     onShowToast?: (messages: string, type: ToastType) => void;
+    actionFolders: IFolderActions;
   }
 
   export interface IState {
     newTemplate: ITemplate;
+    parentId: number;
   }
 }
 
 export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
-
   state: MailListSpace.IState = {
     newTemplate: null,
+    parentId: 0,
   };
 
   componentDidMount() {
@@ -53,6 +56,10 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
 
   onSelectNewTemplate = () => {
     this.props.action.selectNewTemplate({});
+  }
+
+  onCreateNewFolder = () => {
+    this.props.actionFolders.showModal.REQUEST({ parentId: this.state.parentId });
   }
 
   onCopy = (id: string) => {
@@ -98,6 +105,14 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
               columnData={columnData}
             />
             <Fab
+              onClick={this.onCreateNewFolder}
+              icon={<CreateNewFolder/>}
+              position={1}
+              title={'Add a folder'}
+              whitCtrl
+              hotKey={'F'}
+            />
+            <Fab
               onClick={this.onSelectNewTemplate}
               icon={<Add/>}
               position={0}
@@ -123,6 +138,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   editorActions: bindModuleAction(EditorActions, dispatch),
   swipeActions: bindModuleAction(SwipeActions, dispatch),
+  actionFolders: bindModuleAction(folderActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Templates);
