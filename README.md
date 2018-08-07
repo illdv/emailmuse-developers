@@ -12,6 +12,13 @@ npm run start-webpack-dev-server
 ```
 npm run start-electron
 ```
+### Build app for production
+```
+npm run build-prod
+```
+
+Result in build/dist
+
 ### For login
 ```
 Email: korbin.nastasia@lm0k.com
