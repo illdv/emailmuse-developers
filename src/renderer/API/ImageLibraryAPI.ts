@@ -7,6 +7,7 @@ export function uploadImages(files) {
   for (let i = 0; i < files.length; i++) {
     fd.append(`images[${i}]`, files[i]);
   }
+  console.log('FormData = ' + FormData);
   return AxiosWrapper.post('/images', fd);
 }
 
