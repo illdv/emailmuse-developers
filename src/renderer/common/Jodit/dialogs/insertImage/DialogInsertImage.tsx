@@ -7,7 +7,8 @@ import {
   DialogContent,
   Paper,
   TablePagination,
-  Typography, WithStyles,
+  Typography,
+  WithStyles,
   withStyles,
 } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
@@ -39,6 +40,7 @@ import { Close, CloudUpload } from '@material-ui/icons';
 import { PreLoaderLayout } from 'src/renderer/common/PreloaderLayout/PreLoaderLayout';
 
 const b = block('dialogs-select-image');
+
 const styles: IStyle = theme => ({
   root: {
     width: '100%',
@@ -87,6 +89,13 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps & WithStyles<any>,
   DialogSelectImageSpace.IState> {
   state = {};
+  upload: any;
+
+  constructor(props: Readonly<DialogSelectImageSpace.IProps & WithStyles<any>>) {
+    super(props);
+
+    this.upload = React.createRef();
+  }
 
   componentDidMount() {
     this.props.actions.getImagesRequest();
@@ -95,30 +104,52 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps &
   onSelectImage = (item: IImageLibraryItem) => () => {
     this.props.insertHTML(`<img src="${item.thumb_url}" />`, this.props.handleClose);
     this.props.actions.getImagesRequest();
-  };
+  }
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  };
+  }
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
     this.setState({ searchWorld });
-  };
+  }
 
   onClose = () => {
     this.props.handleClose();
     this.props.actions.getImagesRequest();
-  };
+  }
 
   onDropFile = item => {
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
-  };
+  }
+
   deleteItem = (item: IImageLibraryItem) => () => {
     this.props.actions.deleteImagesRequest(item.id);
-  };
+  }
+
+  onUploadFiles = e => {
+    if (e.target.files) {
+      let files = [];
+      // tslint:disable-next-line
+      for (let i = 0; i < e.target.files.length; i++) {
+        files = files.concat(e.target.files[i]);
+      }
+      if (files.length) {
+        this.props.actions.uploadImagesRequest(files);
+      }
+    }
+  }
+
+  openDialogSelectImage = () => {
+    this.upload.click();
+  }
+
+  initRefUpload = uploadRef => {
+    this.upload = uploadRef;
+  }
 
   render() {
     const { pagination } = this.props;
@@ -161,9 +192,12 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps &
                     </div>
                   }
                 </div>
-                <div className={b('header__title')}>
-                  <Typography>Drag and drop image file to upload
-                  </Typography>
+                <div
+                  className={b('header__title')}
+                  onClick={this.openDialogSelectImage}
+                  style={{cursor: 'pointer'}}
+                >
+                  <Typography>Drag and drop image file to upload</Typography>
                   <CloudUpload
                     style={{
                       width: 72,
@@ -172,7 +206,15 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps &
                     }}
                   />
                 </div>
-
+                <input
+                  id='upload'
+                  className={b('upload-input')}
+                  type='file'
+                  ref={this.initRefUpload}
+                  style={{ display: 'none' }}
+                  multiple
+                  onChange={this.onUploadFiles}
+                />
               </div>
               <PreLoaderLayout style={{ padding: 16 }}/>
               <DragAndDropTarget

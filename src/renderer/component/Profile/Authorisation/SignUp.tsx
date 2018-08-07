@@ -53,12 +53,13 @@ export class SignUp extends Component<AuthorizationSpace.IProps, AuthorizationSp
   state = {};
 
   onCreateAccount = (user: ICreateAccountRequest) => {
+    user.name = 'new user';
     this.props.action.createAccount.REQUEST({ user });
-  };
+  }
 
   onBack = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.PRE_LOGIN });
-  };
+  }
 
   render() {
     const { classes } = this.props;
