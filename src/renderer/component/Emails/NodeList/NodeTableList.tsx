@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@material-ui/core';
-import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
+import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
+import { Dock, Folder } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
 import { IPagination } from 'src/renderer/common/List/interface';
 import HeaderToolbar from 'src/renderer/common/Header/Header';
 
-import './ListTable.scss';
+import './NodeTable.scss';
 import { Search } from 'src/renderer/common/Search';
 import { Loading } from 'src/renderer/common/Loading';
+import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { NodeTableHead } from 'src/renderer/component/Emails/NodeList/NodeTableHead';
 
 const b = block('list-element');
 
@@ -21,17 +23,13 @@ export interface IColumn {
   numeric: boolean;
 }
 
-// const defaultColumnData: IColumn[] = [
-//   { id: '1', label: 'Name', disablePadding: false, numeric: false },
-//   { id: '2', label: 'Description', disablePadding: false, numeric: false },
-//   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
-// ];
-
 export interface IListItem {
   id: string;
   title: string;
   description: string;
   rightText: string;
+  nodeId?: number;
+  type?: string;
 }
 
 export namespace ListElementSpace {
@@ -50,10 +48,11 @@ export namespace ListElementSpace {
     onCopy?: (id: string) => void;
     onSearch?: (searchWorld: string) => void;
     columnData?: IColumn[];
+    onCurrentParentId?: (id: number) => void;
   }
 }
 
-export class ListTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
+export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
   state: ListElementSpace.IState = {
     selectedItemIds: [],
   };
@@ -84,23 +83,23 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     return this.state.selectedItemIds.some(id => id === selectId);
   }
 
-  /*  onSelectAll = () => {
-      const selectedItemIds = this.state.selectedItemIds;
-      const entities = this.props.entities;
+  onSelectAll = () => {
+    const selectedItemIds = this.state.selectedItemIds;
+    const entities = this.props.entities;
 
-      if (selectedItemIds.length === entities.length) {
-        this.unSelectAll();
-      } else {
-        this.selectAll();
-      }
-    }*/
+    if (selectedItemIds.length === entities.length) {
+      this.unSelectAll();
+    } else {
+      this.selectAll();
+    }
+  }
 
-  /*  selectAll = () => {
-      this.setState(state => ({
-        ...state,
-        selectedItemIds: this.props.entities.map(entity => entity.id),
-      }));
-    }*/
+  selectAll = () => {
+    this.setState(state => ({
+      ...state,
+      selectedItemIds: this.props.entities.map(entity => entity.id),
+    }));
+  }
 
   unSelectAll = () => {
     this.setState(state => ({
@@ -115,20 +114,18 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     }
   }
 
-  renderTable = () => {
+  get renderTable() {
     const { entities, toItem, onOpenItem, isLoading, columnData } = this.props;
 
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
-    {/*<Folder />*/
-    }
     return (
       <Table aria-labelledby='tableTitle'>
-        {/*<CustomTableHead*/}
-        {/*onSelectAll={this.onSelectAll}*/}
-        {/*columnData={columnData}*/}
-        {/*/>*/}
+        <NodeTableHead
+          onSelectAll={this.onSelectAll}
+          columnData={columnData}
+        />
         <TableBody>
           {
             entities.map((entity: {}) => {
@@ -139,9 +136,10 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
                   role='checkbox'
                   aria-checked={isSelected}
                   tabIndex={-1}
-                  key={item.id}
+                  key={`${item.id} - ${item.type}`}
                   selected={isSelected}
                   className={b('row')}
+                  onClick={onOpenItem(entity)}
                 >
                   {
                     this.props.onCopy
@@ -151,9 +149,18 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
                       onClick={this.onCopy(item.id)}
                       padding={'checkbox'}
                     >
-                      <IconButton title={'Create Duplicate'}>
+                      {
+                        /*      <IconButton title={'Create Duplicate'}>
                         <ContentCopyIcon/>
-                      </IconButton>
+                      </IconButton>*/
+                      }
+                      {item.type && (item.type === nodeType.email)
+                        ?
+                        <IconButton><Dock/></IconButton>
+                        :
+                        <IconButton><Folder/></IconButton>
+                      }
+
                     </TableCell>
                     ||
                     <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
@@ -161,8 +168,8 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
                   <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
                     {item.title}
                   </TableCell>
-                  <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
-                  <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
+                  <TableCell>{item.description || '---'}</TableCell>
+                  <TableCell>{item.rightText || '---'}</TableCell>
                 </TableRow>
               );
             })
@@ -197,7 +204,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
           </Grid>
         </Grid>
         <div style={{ minHeight: 200 }}>
-          {this.renderTable()}
+          {this.renderTable}
         </div>
         <InCenter>
           {

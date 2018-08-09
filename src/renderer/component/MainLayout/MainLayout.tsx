@@ -16,7 +16,7 @@ import Swipe from 'src/renderer/component/Swipe/Swipe';
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Layouts from 'src/renderer/component/Layouts/Layouts';
 import Account from 'src/renderer/component/Profile/Account/Account';
-import Templates from 'src/renderer/component/Templates/Templates';
+import Emails from 'src/renderer/component/Emails/Emails';
 import Editor from 'src/renderer/component/Editor/Editor';
 import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 
@@ -58,7 +58,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/' component={Menu}/>
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
-            <Route path='/emails' component={Templates}/>
+            <Route path='/emails' component={Emails}/>
             <Route path='/layouts' component={Layouts}/>
             <Route path='/image-library' component={ImageLibrary}/>
             <Route path='/snippets' component={Snippets}/>

@@ -12,12 +12,12 @@ import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
-import { templateToItem } from 'src/renderer/component/Templates/utils';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { nodeToItem } from 'src/renderer/component/Emails/utils';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
+import { IEmailActions, ITemplateState } from 'src/renderer/component/Emails/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
@@ -28,26 +28,26 @@ export namespace PageCreateLayoutSpace {
   export interface IProps {
     isOpen?: boolean;
     templates?: ITemplateState;
-    action?: ITemplateActions;
+    action?: IEmailActions;
     actionLayout?: ILayoutActions;
     onShowToast?: (messages: string, type: ToastType) => void;
     handleClose?: () => void;
   }
 
   export interface IState {
-    newTemplate: ITemplate;
+    newTemplate: INode;
     open: boolean;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  templates: state.templates,
+  templates: state.emailNodes,
 });
 
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actionLayout: bindModuleAction(LayoutActions, dispatch),
-  action: bindActionCreators(TemplateActions, dispatch),
+  action: bindActionCreators(EmailActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -65,7 +65,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
     this.props.action.loading({ page });
   }
 
-  selectTemplate = (template: ITemplate) => () => {
+  selectTemplate = (template: INode) => () => {
     this.props.actionLayout.create.REQUEST({layout: {title: template.title, body: template.body}});
     this.props.handleClose();
   }
@@ -112,7 +112,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
           <DialogContent>
               <ListTable
                 entities={templates}
-                toItem={templateToItem}
+                toItem={nodeToItem}
                 onOpenItem={this.selectTemplate}
                 pagination={pagination}
                 onChangePage={this.onChangePage}

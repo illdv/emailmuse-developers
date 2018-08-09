@@ -5,7 +5,7 @@ import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
 import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
 import { routerReducer } from 'react-router-redux';
 
-import templates from 'src/renderer/component/Templates/flux/module';
+import emailNodes from 'src/renderer/component/Emails/flux/module';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/DialogProvider/flux/reducer';
@@ -14,7 +14,7 @@ import training, { ITrainingState } from 'src/renderer/component/Training/flux/r
 import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import polls, { IPollsState } from 'src/renderer/component/Profile/Polls/flux/reduser';
 
-import { ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { ITemplateState } from 'src/renderer/component/Emails/flux/interface';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
@@ -25,7 +25,7 @@ import { IModalWindowState } from 'src/renderer/common/DialogProvider/flux/reduc
 export interface IGlobalState {
   profile: IProfileState;
   toast: FluxToast.IState;
-  templates: ITemplateState;
+  emailNodes: ITemplateState;
   snippets: ISnippetsState;
   images: ImageLibrary.IState;
   status: StatusConstants.TStatus;
@@ -42,7 +42,7 @@ const appReducers = combineReducers({
   toast: FluxToast.reducer,
   images: ImageLibrary.reducer,
   status: Status.reducer,
-  templates,
+  emailNodes,
   snippets,
   layouts,
   modalWindow,

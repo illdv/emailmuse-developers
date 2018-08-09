@@ -35,10 +35,12 @@ class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayout
       folderName: this.state.folderName,
     });
   }
+
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const folderName: string = event.currentTarget.value;
     this.setState({ folderName });
   }
+
   onClose = () => {
     this.props.modalWindowActions.hide.REQUEST({});
   }

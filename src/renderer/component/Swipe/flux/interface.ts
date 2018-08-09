@@ -1,7 +1,7 @@
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 export interface ISwipe {
   id: string;
   title: string;
-  subjects: ITemplate[];
+  subjects: INode[];
 }

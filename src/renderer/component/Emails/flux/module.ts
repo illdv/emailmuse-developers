@@ -1,8 +1,8 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { ITemplateActions, ITemplateState } from './interface';
-import { ILoadingTemplatePayload } from 'src/renderer/component/Templates/flux/interface';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { IEmailActions, ITemplateState } from './interface';
+import { ILoadingTemplatePayload } from 'src/renderer/component/Emails/flux/interface';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { ActionStatus } from 'src/renderer/flux/interface';
 
@@ -27,21 +27,21 @@ const loading = createAction(LOADING,
   (payload: { page: number, hidePreloader?: boolean, search?: string } = {
     page: 1,
     hidePreloader: false,
-    search: ''
+    search: '',
   }) => payload);
 
 const failure      = createAction(FAILURE);
 const successfully = createAction(LOADED, (payload: ILoadingTemplatePayload) => payload);
 
-const create            = createAction(CREATE, (template: ITemplate) => template);
-const select            = createAction(SELECT, (template: ITemplate) => template);
-const createSuccess     = createAction(CREATE_SUCCESS, (template: ITemplate[]) => template);
-const save              = createAction(SAVE, (payload: { template: ITemplate, saveAndClose: boolean }) => payload);
+const create = createAction(CREATE, (email: INode) => email);
+const select = createAction(SELECT, (email: INode) => email);
+const createSuccess = createAction(CREATE_SUCCESS, (template: INode[]) => template);
+const save = createAction(SAVE, (payload: { email: INode, saveAndClose: boolean }) => payload);
 const remove            = createAction(REMOVE, (templateId: string) => templateId);
 const copy              = createAction(COPY, (payload: { id: string }) => payload);
 const selectNewTemplate = createAction(SELECT_NEW_TEMPLATE);
 
-export const TemplateActions: ITemplateActions = {
+export const EmailActions: IEmailActions = {
   loading,
   failure,
   successfully,

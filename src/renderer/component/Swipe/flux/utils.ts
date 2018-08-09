@@ -1,5 +1,5 @@
 import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 
 const temporaryLayoutToEntity = ({ id, body, title }: ILayout): IEditEntity => ({

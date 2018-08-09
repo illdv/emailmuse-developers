@@ -6,9 +6,9 @@ import { delay } from 'redux-saga';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
@@ -20,7 +20,7 @@ const { temporaryLayoutToEntity } = SwipeUtils;
 
 const insertMarker = 'CONTENTGOESHERE';
 
-function* createTemplates(template: ITemplate[]) {
+function* createTemplates(template: INode[]) {
   try {
     yield call(EmailAPI.create, template);
     yield put(push('/emails'));
@@ -61,11 +61,11 @@ function* toGiveUserToInsertMarker(selectedLayout: ILayout) {
 /**
  * Use for execute step need for create one email from Subjects.
  */
-function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
+function* sagaMoveSubjectInEmail(action: Action<{ email: INode }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmail: ITemplate = action.payload.email;
+  const selectedEmail: INode = action.payload.email;
   const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {
@@ -91,10 +91,10 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
 /**
  * Use for execute step need for create one email from Swipe.
  */
-function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
+function* sagaMoveSwipeInEmail(action: Action<{ emails: INode[] }>) {
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmails: ITemplate[] = action.payload.emails;
+  const selectedEmails: INode[] = action.payload.emails;
   const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {

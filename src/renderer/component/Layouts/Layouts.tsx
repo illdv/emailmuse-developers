@@ -5,9 +5,9 @@ import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
 import { Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ITemplateActions } from 'src/renderer/component/Templates/flux/interface';
+import { IEmailActions } from 'src/renderer/component/Emails/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 import './Layouts.scss';
@@ -20,7 +20,7 @@ import PageCreateLayout from 'src/renderer/component/Layouts/PageCreateLayout';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { layoutToEditEntity, toItem } from 'src/renderer/component/Layouts/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 
 const b = block('layout');
@@ -35,7 +35,7 @@ export namespace LayoutsSpace {
   }
 
   export interface IProps {
-    actions?: ITemplateActions;
+    actions?: IEmailActions;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
     editorActions?: IEditorActions;
@@ -184,7 +184,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     editorActions: bindModuleAction(EditorActions, dispatch),
     actions: {
       selectMenuItem: bindActionCreators(DrawerMenuAction.selectMenuItem, dispatch),
-      create: bindActionCreators(TemplateActions.create, dispatch),
+      create: bindActionCreators(EmailActions.create, dispatch),
     },
   });
 };

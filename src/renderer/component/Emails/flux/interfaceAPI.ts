@@ -1,6 +1,8 @@
-export interface ITemplate {
+export interface INode {
   title: string;
   body: string;
+  type?: nodeType;
+  node_id?: number;
   description?: string;
   id?: string;
   user_id?: number;
@@ -9,9 +11,14 @@ export interface ITemplate {
   deleted_at?: string;
 }
 
+export enum nodeType {
+  email = 'email',
+  folder = 'folder',
+}
+
 export interface ITemplatesResponse {
   current_page: number;
-  data: ITemplate[];
+  data: INode[];
   first_page_url: string;
   from: number;
   last_page: number;

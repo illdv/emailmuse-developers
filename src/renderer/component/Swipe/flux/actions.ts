@@ -1,7 +1,7 @@
 import { createActionCreator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 const createAsyncAction = createActionCreator('SWIPE');
@@ -29,11 +29,11 @@ export const SwipeActions: ISwipeActions = {
 export interface ISwipeActions {
   loading: IAsyncAction2<{}, { swipes: ISwipe[] }>;
 
-  moveSubjectInEmail: IAsyncAction2<{ email: ITemplate }, {}>;
+  moveSubjectInEmail: IAsyncAction2<{ email: INode }, {}>;
   selectLayout: IAsyncAction2<{ layout: ILayout }, {}>;
-  moveSwipeInEmail: IAsyncAction2<{ emails: ITemplate[] }, {}>;
+  moveSwipeInEmail: IAsyncAction2<{ emails: INode[] }, {}>;
 
   selectSwipe: IAsyncAction2<{ selectedSwipe: ISwipe }, {}>;
-  selectSubject: IAsyncAction2<{ selectedSubject: ITemplate }, {}>;
+  selectSubject: IAsyncAction2<{ selectedSubject: INode }, {}>;
   resetSelected: IAsyncAction2<{}, {}>;
 }

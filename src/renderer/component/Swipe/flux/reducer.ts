@@ -1,15 +1,15 @@
 import { createReducer } from 'redux-act';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
 export interface ISwipeState {
-  email: ITemplate;
+  email: INode;
   layout: ILayout;
   selectedSwipe: ISwipe;
-  selectedSubject: ITemplate;
+  selectedSubject: INode;
   swipes: ISwipe[];
   isLoading: boolean;
 }

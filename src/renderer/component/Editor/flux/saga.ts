@@ -6,7 +6,7 @@ import { delay } from 'redux-saga';
 import { createWatch } from 'src/renderer/flux/saga/utils';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { EntityType, IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
@@ -41,17 +41,17 @@ function* sagaSave(action: Action<IEditEntity>) {
   }
 
   if (type === EntityType.Email) {
-    const template = {
+    const email = {
       body: html,
       id,
       description: params.description,
       title: params.subject,
     };
 
-    if (template.id) {
-      yield put(TemplateActions.save({ template, saveAndClose: false }));
+    if (email.id) {
+      yield put(EmailActions.save({ email, saveAndClose: false }));
     } else {
-      yield put(TemplateActions.create(template));
+      yield put(EmailActions.create(email));
     }
   }
 
@@ -105,7 +105,7 @@ function* sagaRemove(action: Action<IEditEntity>) {
   const { type, id } = action.payload;
   if (id) {
     if (type === EntityType.Email) {
-      yield put(TemplateActions.remove(id));
+      yield put(EmailActions.remove(id));
     }
     if (type === EntityType.Snippet) {
       yield put(SnippetsAction.remove.REQUEST({ id }));

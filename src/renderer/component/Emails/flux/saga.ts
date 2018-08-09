@@ -3,8 +3,8 @@ import { AxiosResponse } from 'axios';
 
 import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { ITemplate, ITemplatesResponse } from 'src/renderer/component/Templates/flux/interfaceAPI';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
+import { INode, ITemplatesResponse, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { useOrDefault } from 'src/renderer/utils';
@@ -13,11 +13,11 @@ import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions
 import { Action } from 'redux-act';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
 
 function getCurrentPageSelector(state: IGlobalState) {
-  return useOrDefault(() => state.templates.pagination.current_page, 0);
+  return useOrDefault(() => state.emailNodes.pagination.current_page, 0);
 }
 
 function* loadingTemplates(action) {
@@ -27,7 +27,7 @@ function* loadingTemplates(action) {
 
     const { total, current_page, data, last_page, per_page } = response.data;
 
-    yield put(TemplateActions.successfully({
+    yield put(EmailActions.successfully({
       templates: data,
       pagination: {
         current_page,
@@ -37,7 +37,7 @@ function* loadingTemplates(action) {
       },
     }));
   } catch (error) {
-    yield put(TemplateActions.failure());
+    yield put(EmailActions.failure());
   }
 }
 
@@ -51,10 +51,10 @@ function* saveTemplate(action) {
   }
 }
 
-function* createTemplate(action: Action<ITemplate>) {
+function* createTemplate(action: Action<INode>) {
   try {
     const axionData = yield call(EmailAPI.create, [action.payload]);
-    yield put(TemplateActions.createSuccess(axionData.data));
+    yield put(EmailActions.createSuccess(axionData.data));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
   } catch (error) {
@@ -69,7 +69,7 @@ function* removeTemplates(action) {
 
     yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page }));
+    yield put(EmailActions.loading({ page }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email removed', ToastType.Error));
   }
@@ -81,7 +81,7 @@ function* copyTemplates(action) {
 
     yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
     const page: number = yield select(getCurrentPageSelector);
-    yield put(TemplateActions.loading({ page }));
+    yield put(EmailActions.loading({ page }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed template copy', ToastType.Error));
   }
@@ -89,7 +89,7 @@ function* copyTemplates(action) {
 
 function* watchCopy() {
   while (true) {
-    const data = yield take(TemplateActions.copy(null).type);
+    const data = yield take(EmailActions.copy(null).type);
     yield call(copyTemplates, data);
   }
 }
@@ -132,6 +132,7 @@ function* sagaSelectNewTemplate() {
     title: selectedLayout.title,
     body: selectedLayout.body,
     description: '---',
+    type: nodeType.email,
   })));
 }
 
@@ -140,3 +141,4 @@ function* watchSelectNewTemplate() {
 }
 
 export default [watchLoading, watchSave, watchCreate, watchRemove, watchCopy, watchSelectNewTemplate];
+

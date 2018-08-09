@@ -5,24 +5,25 @@ import { Add, CreateNewFolder } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { emailToEditEntity, templateToItem } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity, nodeToItem } from 'src/renderer/component/Emails/utils';
 import { Fab } from 'src/renderer/common/Fab';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { useOrDefault } from 'src/renderer/utils';
-import { TemplateActions } from 'src/renderer/component/Templates/flux/module';
-import { ITemplateActions, ITemplateState } from 'src/renderer/component/Templates/flux/interface';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
+import { IEmailActions, ITemplateState } from 'src/renderer/component/Emails/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { IColumn, ListTable } from 'src/renderer/common/List/ListTable/ListTable';
+import { IColumn } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
+import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 
-export namespace MailListSpace {
+export namespace EmailListSpace {
   export interface IProps {
-    templates?: ITemplateState;
-    action?: ITemplateActions;
+    emailNodes?: ITemplateState;
+    action?: IEmailActions;
     swipeActions?: ISwipeActions;
     editorActions?: IEditorActions;
     onShowToast?: (messages: string, type: ToastType) => void;
@@ -30,19 +31,19 @@ export namespace MailListSpace {
   }
 
   export interface IState {
-    newTemplate: ITemplate;
-    parentId: number;
+    newEmail: INode;
+    currentNodeId: number;
   }
 }
 
-export class Templates extends React.Component<MailListSpace.IProps, MailListSpace.IState> {
-  state: MailListSpace.IState = {
-    newTemplate: null,
-    parentId: 0,
+export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpace.IState> {
+  state: EmailListSpace.IState = {
+    newEmail: null,
+    currentNodeId: null,
   };
 
   componentDidMount() {
-    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     this.props.action.loading({ page });
   }
 
@@ -50,8 +51,12 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
     this.props.action.loading({ page: page + 1 });
   }
 
-  selectTemplate = (template: ITemplate) => () => {
-    this.props.editorActions.edit.REQUEST(emailToEditEntity(template));
+  selectNode = (node: INode) => () => {
+    if (node.type === nodeType.folder) {
+      this.setState({ currentNodeId: node.node_id });
+    } else {
+      this.props.editorActions.edit.REQUEST(emailToEditEntity(node));
+    }
   }
 
   onSelectNewTemplate = () => {
@@ -59,7 +64,7 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   onCreateNewFolder = () => {
-    this.props.actionFolders.showModal.REQUEST({ parentId: this.state.parentId });
+    this.props.actionFolders.showModal.REQUEST({ parentId: this.state.currentNodeId });
   }
 
   onCopy = (id: string) => {
@@ -67,13 +72,17 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
   }
 
   onSearch = (searchWorld: string) => {
-    const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
+    const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     this.props.action.loading({ page, search: searchWorld });
   }
 
-  render() {
-    const { status, templates, pagination } = this.props.templates;
+  setCurrentParentId = (id: number) => {
+    this.setState({ currentNodeId: id });
+  }
 
+  render() {
+    const { status, templates, pagination } = this.props.emailNodes;
+    console.log('Emails', templates);
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
@@ -92,17 +101,18 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
       <div>
         <Fade in timeout={1000}>
           <Paper>
-            <ListTable
+            <NodeTableList
               title='Emails'
               entities={templates}
-              toItem={templateToItem}
-              onOpenItem={this.selectTemplate}
+              toItem={nodeToItem}
+              onOpenItem={this.selectNode}
               pagination={pagination}
               onChangePage={this.onChangePage}
               onCopy={this.onCopy}
               onSearch={this.onSearch}
               isLoading={status === ActionStatus.REQUEST}
               columnData={columnData}
+              onCurrentParentId={this.setCurrentParentId}
             />
             <Fab
               onClick={this.onCreateNewFolder}
@@ -128,11 +138,11 @@ export class Templates extends React.Component<MailListSpace.IProps, MailListSpa
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  templates: state.templates,
+  emailNodes: state.emailNodes,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  action: bindActionCreators(TemplateActions, dispatch),
+  action: bindActionCreators(EmailActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -141,4 +151,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actionFolders: bindModuleAction(folderActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Templates);
+export default connect(mapStateToProps, mapDispatchToProps)(Emails);

@@ -21,7 +21,7 @@ import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { RouteComponentProps } from 'react-router-dom';
@@ -66,7 +66,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
     this.props.swipeActions.selectSwipe.REQUEST({ selectedSwipe: swipe });
   };
 
-  onSelectSubject = (subject: ITemplate) => () => {
+  onSelectSubject = (subject: INode) => () => {
     this.props.swipeActions.selectSubject.REQUEST({ selectedSubject: subject });
   };
 

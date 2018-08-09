@@ -1,11 +1,11 @@
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
 
 function get(page: number, search: string = ''): any {
   return AxiosWrapper.get(`/emails/`, { page, s: search });
 }
 
-function edit(template: ITemplate) {
+function edit(template: INode) {
   const { id, ...remainingData } = template;
   return AxiosWrapper.put(`/emails/${id}`, remainingData);
 }
@@ -14,7 +14,7 @@ function copy(id: string) {
   return AxiosWrapper.post(`/emails/${id}/copy`);
 }
 
-function create(template: ITemplate[]) {
+function create(template: INode[]) {
   return AxiosWrapper.post(`/emails`, { emails: template });
 }
 

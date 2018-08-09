@@ -5,11 +5,11 @@ import {
 } from '@material-ui/core';
 
 interface IheaderToolbar {
-  numSelected: number;
+  numSelected?: number;
   title?: string;
 }
 
-const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected = 1, title = '' }) => {
+const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '' }) => {
   const render = () => {
     if (numSelected === 0) {
       return (
