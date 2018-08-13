@@ -32,9 +32,9 @@ function validation(params: IEditEntityParameter): string {
 }
 
 function* sagaSave(action: Action<IEditEntity>) {
-  const { type, id, params, html } = action.payload;
-
+  const { type, id, params, html, folderId } = action.payload;
   const validationResult = validation(params);
+
   if (validationResult) {
     yield call(toastError, `${firstSymbolUp(validationResult)} can't be empty`);
     return;
@@ -46,6 +46,7 @@ function* sagaSave(action: Action<IEditEntity>) {
       id,
       description: params.description,
       title: params.subject,
+      folder_id: folderId,
     };
 
     if (email.id) {

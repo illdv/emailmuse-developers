@@ -1,4 +1,4 @@
-import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 
 export interface INodeItem {
@@ -6,24 +6,21 @@ export interface INodeItem {
   title: string;
   description: string;
   rightText: string;
-  nodeId: number;
-  type: string;
 }
 
-export function nodeToItem(node: INode): INodeItem {
+export function nodeToItem(node: IEmail): INodeItem {
   return {
     id: node.id,
     title: node.title,
-    nodeId: node.node_id,
     description: node.description,
     rightText: node.updated_at,
-    type: node.type,
   };
 }
 
-export function emailToEditEntity({ id, body, title, description }: INode): IEditEntity {
+export function emailToEditEntity({ id, body, title, description, folder_id }: IEmail): IEditEntity {
   return {
     id,
+    folderId: folder_id,
     html: body,
     idFrontEnd: new Date().getTime().toString(),
     type: EntityType.Email,

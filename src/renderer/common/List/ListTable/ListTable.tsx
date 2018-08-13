@@ -42,7 +42,7 @@ export namespace ListElementSpace {
   export interface IProps<T> {
     entities: T[];
     toItem: (item: T) => IListItem;
-    pagination: IPagination;
+    pagination?: IPagination;
     onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
     isLoading?: boolean;

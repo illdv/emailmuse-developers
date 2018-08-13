@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
-import { Dock, Folder } from '@material-ui/icons';
-import block from 'bem-ts';
+import { Grid, Table, TableBody, TablePagination } from '@material-ui/core';
 
 import InCenter from 'src/renderer/common/InCenter';
 import { IPagination } from 'src/renderer/common/List/interface';
@@ -11,10 +9,12 @@ import HeaderToolbar from 'src/renderer/common/Header/Header';
 import './NodeTable.scss';
 import { Search } from 'src/renderer/common/Search';
 import { Loading } from 'src/renderer/common/Loading';
-import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { NodeTableHead } from 'src/renderer/component/Emails/NodeList/NodeTableHead';
-
-const b = block('list-element');
+import NodeTableRow from 'src/renderer/component/Emails/NodeList/NodeTableRow';
+import NodeTableFolder from 'src/renderer/component/Emails/NodeList/NodeTableFolder';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IFolder } from 'src/renderer/component/Folder/flux/interface';
+import DragDropContext from 'src/renderer/DragDropContext';
 
 export interface IColumn {
   id: string;
@@ -28,8 +28,6 @@ export interface IListItem {
   title: string;
   description: string;
   rightText: string;
-  nodeId?: number;
-  type?: string;
 }
 
 export namespace ListElementSpace {
@@ -38,11 +36,14 @@ export namespace ListElementSpace {
   }
 
   export interface IProps<T> {
-    entities: T[];
+    emails: IEmail[];
+    folders: IFolder[];
     toItem: (item: T) => IListItem;
-    pagination: IPagination;
-    onOpenItem: (T) => () => void;
+    pagination?: IPagination;
+    onOpenItem: (T) => void;
     onChangePage: (event, page: number) => void;
+    onDeleteFolder: (id: number) => void;
+    onUpdateEmail: (email: IEmail) => void;
     isLoading?: boolean;
     title?: string;
     onCopy?: (id: string) => void;
@@ -52,6 +53,7 @@ export namespace ListElementSpace {
   }
 }
 
+@DragDropContext
 export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
   state: ListElementSpace.IState = {
     selectedItemIds: [],
@@ -85,7 +87,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
 
   onSelectAll = () => {
     const selectedItemIds = this.state.selectedItemIds;
-    const entities = this.props.entities;
+    const entities = this.props.emails;
 
     if (selectedItemIds.length === entities.length) {
       this.unSelectAll();
@@ -97,7 +99,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
   selectAll = () => {
     this.setState(state => ({
       ...state,
-      selectedItemIds: this.props.entities.map(entity => entity.id),
+      selectedItemIds: this.props.emails.map(entity => entity.id),
     }));
   }
 
@@ -108,15 +110,12 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
     }));
   }
 
-  onCopy = (id: string) => () => {
-    if (this.props.onCopy) {
-      this.props.onCopy(id);
-    }
-  }
-
   get renderTable() {
-    const { entities, toItem, onOpenItem, isLoading, columnData } = this.props;
-
+    const {
+      emails, toItem, onOpenItem,
+      isLoading, columnData, onCopy, folders,
+      onDeleteFolder, onUpdateEmail,
+    } = this.props;
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
@@ -128,51 +127,39 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
         />
         <TableBody>
           {
-            entities.map((entity: {}) => {
+            folders && folders.map((item: IFolder) => {
+              // console.log('folders', folders);
+              const isSelected = this.isSelected(String(item.id));
+              return (
+                <NodeTableFolder
+                  key={`${item.id}-folder`}
+                  item={item}
+                  isSelected={isSelected}
+                  onOpenItem={onOpenItem}
+                  onCopy={onCopy}
+                  onUpdateEmail={onUpdateEmail}
+                  onDeleteFolder={onDeleteFolder}
+                />
+              );
+            })
+          }
+          {
+            emails && emails.map((entity: {}) => {
               const item: IListItem = toItem(entity);
               const isSelected = this.isSelected(item.id);
               return (
-                <TableRow
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={`${item.id} - ${item.type}`}
-                  selected={isSelected}
-                  className={b('row')}
-                  onClick={onOpenItem(entity)}
-                >
-                  {
-                    this.props.onCopy
-                    &&
-                    <TableCell
-                      style={{ width: 40 }}
-                      onClick={this.onCopy(item.id)}
-                      padding={'checkbox'}
-                    >
-                      {
-                        /*      <IconButton title={'Create Duplicate'}>
-                        <ContentCopyIcon/>
-                      </IconButton>*/
-                      }
-                      {item.type && (item.type === nodeType.email)
-                        ?
-                        <IconButton><Dock/></IconButton>
-                        :
-                        <IconButton><Folder/></IconButton>
-                      }
-
-                    </TableCell>
-                    ||
-                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                  }
-                  <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
-                    {item.title}
-                  </TableCell>
-                  <TableCell>{item.description || '---'}</TableCell>
-                  <TableCell>{item.rightText || '---'}</TableCell>
-                </TableRow>
+                <NodeTableRow
+                  key={`${item.id}-email`}
+                  entity={entity}
+                  item={item}
+                  isSelected={isSelected}
+                  onOpenItem={onOpenItem}
+                  onUpdateEmail={onUpdateEmail}
+                  onCopy={onCopy}
+                />
               );
             })
+
           }
         </TableBody>
       </Table>
@@ -229,3 +216,18 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
     );
   }
 }
+
+/*  const menuItems = [
+    {
+      label: 'Create a new folder',
+      click: () => alert('I was clicked!'),
+    },
+    {
+      label: 'Update a folder',
+      click: () => alert('I was clicked!'),
+    },
+    {
+      label: 'Delete a folder',
+      click: (e) => console.log('event', e),
+    },
+  ];*/

@@ -1,31 +1,32 @@
-import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { ActionStatus, CreateAction } from 'src/renderer/flux/interface';
 import { ActionCreatorsMapObject } from 'redux';
 import { EmptyActionCreator } from 'redux-act';
 
-export interface ITemplateState {
+export interface IEmailsState {
   status: ActionStatus;
-  pagination: IPagination;
-  templates: INode[];
-  selectedTemplate: INode;
+  emails: IEmail[];
+  selectedEmail: IEmail;
 }
 
 export interface ILoadingTemplatePayload {
   pagination: IPagination;
-  templates: INode[];
+  templates: IEmail[];
 }
 
 // TODO: delete ?
 export interface IEmailActions extends ActionCreatorsMapObject {
-  loading?: CreateAction<{ page: number, hidePreloader?: boolean, search?: string }>;
+  // loading?: CreateAction<{ page: number, hidePreloader?: boolean, search?: string }>;
+  loading: EmptyActionCreator;
   remove?: CreateAction<string>;
-  save?: CreateAction<{ email: INode, saveAndClose: boolean }>;
-  create?: CreateAction<INode>;
-  select?: CreateAction<INode>;
+  save?: CreateAction<{ email: IEmail, saveAndClose: boolean }>;
+  create?: CreateAction<IEmail>;
+  select?: CreateAction<IEmail>;
   failure?: EmptyActionCreator;
-  successfully?: CreateAction<ILoadingTemplatePayload>;
-  createSuccess?: CreateAction<INode[]>;
+  successfully?: CreateAction<IEmail[]>;
+  createSuccess?: CreateAction<IEmail[]>;
   copy?: CreateAction<{ id: string }>;
-  selectNewTemplate?: CreateAction<{}>;
+  selectNewTemplate?: CreateAction<{ parentId: number }>;
+  getEmailFromFolder: CreateAction<{ parentId: number }>;
 }

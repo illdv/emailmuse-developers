@@ -1,16 +1,25 @@
-interface IFolder {
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+
+export interface IFolder {
   id: number;
   name: string;
   parentId: number;
-  description?: string;
+  created_at?: string;
+  deleted_at?: string;
+  updated_at?: string;
+  user_id?: number;
 }
 
-interface ICreateUpdateFolderRequest {
+export interface ICreateUpdateFolderRequest {
   name: string;
   parent_id: number;
-  description: string;
 }
 
-interface IDeleteFolderRequest {
+export interface IDeleteFolderRequest {
   ids: number[];
+}
+
+export interface IGetFoldersEmailsResponse {
+  folders: IFolder[];
+  emails: IEmail[];
 }

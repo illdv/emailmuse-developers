@@ -3,16 +3,15 @@ import { mount, shallow } from 'enzyme';
 import { Emails } from 'src/renderer/component/Emails/Emails';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
-import { INode, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 describe('<Emails/>', () => {
   let props;
-  const selectedTemplate: INode = {
+  const selectedTemplate: IEmail = {
     id: '1',
     user_id: 1,
     title: 'test title',
     description: 'test description',
-    type: nodeType.email,
     body: `<table style="width: 453px; height: 45px;">
            <tbody>
            <tr>
@@ -23,6 +22,7 @@ describe('<Emails/>', () => {
     created_at: '',
     updated_at: '',
     deleted_at: '',
+    folder_id: 0,
   };
   const emptyTemplate = {
     id: null,
@@ -49,10 +49,10 @@ describe('<Emails/>', () => {
 
   beforeEach(() => {
     props = {
-      templates: {
+      emails: {
         status: '',
         pagination: {},
-        templates: {},
+        emails: {},
         selectedTemplate: null,
       },
       editorActions: {
@@ -81,21 +81,21 @@ describe('<Emails/>', () => {
 
   test('Waite initialize', () => {
     // spinner rotates
-    props.templates.status = ActionStatus.REQUEST;
+    props.emails.status = ActionStatus.REQUEST;
     const render = shallow(<Emails {...props} />);
 
     expect(render).toMatchSnapshot();
   });
 
   test('Couldn\'t download the templates', () => {
-    props.templates.status = ActionStatus.FAILURE;
+    props.emails.status = ActionStatus.FAILURE;
     const render = shallow(<Emails {...props} />);
 
     expect(render).toMatchSnapshot();
   });
 
   test('User click on button "Add a new email"', () => {
-    props.templates.selectedTemplate = undefined;
+    props.emails.selectedEmail = undefined;
     const render = shallow(<Emails {...props} />);
     render.find('Fab').simulate('click');
 
@@ -111,7 +111,7 @@ describe('<Emails/>', () => {
           per_page: 15,
           total: 2,
         },
-        templates: arrayTemplates,
+        emails: arrayTemplates,
         selectedTemplate: null,
       };
     });
@@ -150,11 +150,11 @@ describe('<Emails/>', () => {
   describe('Wen user select template', () => {
     let render;
     beforeEach(() => {
-      props.templates.selectedTemplate = selectedTemplate;
+      props.emails.selectedEmail = selectedTemplate;
       render = shallow(<Emails {...props} />);
     });
     it('user select template', () => {
-      expect(props.templates.selectedTemplate).toEqual(selectedTemplate);
+      expect(props.emails.selectedTemplate).toEqual(selectedTemplate);
       expect(render).toMatchSnapshot();
     });
     /* it('user click close button', () => {

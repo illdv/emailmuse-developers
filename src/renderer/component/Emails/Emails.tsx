@@ -7,11 +7,10 @@ import { bindActionCreators } from 'redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { emailToEditEntity, nodeToItem } from 'src/renderer/component/Emails/utils';
 import { Fab } from 'src/renderer/common/Fab';
-import { INode, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { useOrDefault } from 'src/renderer/utils';
 import { EmailActions } from 'src/renderer/component/Emails/flux/module';
-import { IEmailActions, ITemplateState } from 'src/renderer/component/Emails/flux/interface';
+import { IEmailActions, IEmailsState } from 'src/renderer/component/Emails/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { IColumn } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
@@ -19,19 +18,27 @@ import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flu
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
+import { IFolder } from 'src/renderer/component/Folder/flux/interface';
+
+export enum nodeType {
+  email = 'email',
+  folder = ' folder',
+}
 
 export namespace EmailListSpace {
   export interface IProps {
-    emailNodes?: ITemplateState;
-    action?: IEmailActions;
+    emailNodes?: IEmailsState;
+    emailsActions?: IEmailActions;
+    foldersActions: IFolderActions;
     swipeActions?: ISwipeActions;
     editorActions?: IEditorActions;
     onShowToast?: (messages: string, type: ToastType) => void;
     actionFolders: IFolderActions;
+    folders: IFolder[];
   }
 
   export interface IState {
-    newEmail: INode;
+    newEmail: IEmail;
     currentNodeId: number;
   }
 }
@@ -43,37 +50,51 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   };
 
   componentDidMount() {
-    const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
-    this.props.action.loading({ page });
+    // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
+    // this.props.action.loading({ page });
+    this.props.emailsActions.loading();
   }
 
   onChangePage = (e, page: number) => {
-    this.props.action.loading({ page: page + 1 });
+    // this.props.action.loading({ page: page + 1 });
+    this.props.emailsActions.loading();
   }
 
-  selectNode = (node: INode) => () => {
-    if (node.type === nodeType.folder) {
-      this.setState({ currentNodeId: node.node_id });
+  selectNode = (node: { item: IEmail, type }) => {
+    const { item, type } = node;
+    if (type === nodeType.folder) {
+      const parentId = Number(item.id);
+      this.setState({ currentNodeId: parentId });
+      this.props.emailsActions.getEmailFromFolder({ parentId });
     } else {
-      this.props.editorActions.edit.REQUEST(emailToEditEntity(node));
+      this.props.editorActions.edit.REQUEST(emailToEditEntity(item));
     }
   }
 
   onSelectNewTemplate = () => {
-    this.props.action.selectNewTemplate({});
+    this.props.emailsActions.selectNewTemplate({ parentId: this.state.currentNodeId });
   }
 
   onCreateNewFolder = () => {
-    this.props.actionFolders.showModal.REQUEST({ parentId: this.state.currentNodeId });
+    this.props.foldersActions.showModal.REQUEST({ parentId: this.state.currentNodeId });
+  }
+
+  onUpdateEmail = (email: IEmail) => {
+    this.props.emailsActions.save({ email, saveAndClose: false });
+  }
+
+  onDeleteFolder = (id: number) => {
+    this.props.foldersActions.deleteFolder.REQUEST({ ids: [id] });
   }
 
   onCopy = (id: string) => {
-    this.props.action.copy({ id });
+    this.props.emailsActions.copy({ id });
   }
-
+  // ToDo fix me
   onSearch = (searchWorld: string) => {
-    const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
-    this.props.action.loading({ page, search: searchWorld });
+    // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
+    // this.props.action.loading({ page, search: searchWorld });
+    this.props.emailsActions.loading();
   }
 
   setCurrentParentId = (id: number) => {
@@ -81,12 +102,13 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   render() {
-    const { status, templates, pagination } = this.props.emailNodes;
-    console.log('Emails', templates);
+    const { status, emails } = this.props.emailNodes;
+    const folders: IFolder[] = this.props.folders;
+    const { currentNodeId } = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
-          Sorry but we couldn't download the templates.
+          Sorry but we couldn't download the emails.
         </Typography>
       );
     }
@@ -103,25 +125,32 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
           <Paper>
             <NodeTableList
               title='Emails'
-              entities={templates}
+              emails={emails}
+              folders={folders}
               toItem={nodeToItem}
               onOpenItem={this.selectNode}
-              pagination={pagination}
+              onUpdateEmail={this.onUpdateEmail}
               onChangePage={this.onChangePage}
               onCopy={this.onCopy}
               onSearch={this.onSearch}
               isLoading={status === ActionStatus.REQUEST}
               columnData={columnData}
               onCurrentParentId={this.setCurrentParentId}
+              onDeleteFolder={this.onDeleteFolder}
             />
-            <Fab
-              onClick={this.onCreateNewFolder}
-              icon={<CreateNewFolder/>}
-              position={1}
-              title={'Add a folder'}
-              whitCtrl
-              hotKey={'F'}
-            />
+            {
+              (currentNodeId === null) ?
+                <Fab
+                  onClick={this.onCreateNewFolder}
+                  icon={<CreateNewFolder/>}
+                  position={1}
+                  title={'Add a folder'}
+                  whitCtrl
+                  hotKey={'F'}
+                />
+                : null
+            }
+
             <Fab
               onClick={this.onSelectNewTemplate}
               icon={<Add/>}
@@ -138,17 +167,18 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  emailNodes: state.emailNodes,
+  emailNodes: state.emails,
+  folders: state.folders.folders,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  action: bindActionCreators(EmailActions, dispatch),
+  emailsActions: bindActionCreators(EmailActions, dispatch),
+  foldersActions: bindModuleAction(folderActions, dispatch),
+  editorActions: bindModuleAction(EditorActions, dispatch),
+  swipeActions: bindModuleAction(SwipeActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
-  editorActions: bindModuleAction(EditorActions, dispatch),
-  swipeActions: bindModuleAction(SwipeActions, dispatch),
-  actionFolders: bindModuleAction(folderActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emails);

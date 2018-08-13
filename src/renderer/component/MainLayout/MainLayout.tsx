@@ -3,8 +3,8 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
+// import HTML5Backend from 'react-dnd-html5-backend';
+// import { DragDropContext } from 'react-dnd';
 import { Route } from 'react-router-dom';
 
 import Menu from 'src/renderer/component/Menu/Menu';
@@ -19,6 +19,7 @@ import Account from 'src/renderer/component/Profile/Account/Account';
 import Emails from 'src/renderer/component/Emails/Emails';
 import Editor from 'src/renderer/component/Editor/Editor';
 import StepsSelection from 'src/renderer/component/Training/StepsSelection';
+import DragDropContext from 'src/renderer/DragDropContext';
 
 const styles: IStyle = {
   root: {
@@ -44,7 +45,7 @@ export namespace MainLayoutSpace {
   }
 }
 
-@DragDropContext(HTML5Backend)
+@DragDropContext
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
 
   state = {};

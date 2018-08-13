@@ -27,6 +27,7 @@ export function snippetToEditEntity({ id, body, shortcut }: ISnippet): IEditEnti
     idFrontEnd: new Date().getTime().toString(),
     type: EntityType.Snippet,
     html: body,
+    folderId: null, // set root folder
     params: {
       ['shortcut name']: shortcut,
     },

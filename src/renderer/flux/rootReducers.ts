@@ -5,7 +5,8 @@ import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
 import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
 import { routerReducer } from 'react-router-redux';
 
-import emailNodes from 'src/renderer/component/Emails/flux/module';
+import folders from 'src/renderer/component/Folder/flux/reduser';
+import emails from 'src/renderer/component/Emails/flux/module';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/DialogProvider/flux/reducer';
@@ -14,18 +15,20 @@ import training, { ITrainingState } from 'src/renderer/component/Training/flux/r
 import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import polls, { IPollsState } from 'src/renderer/component/Profile/Polls/flux/reduser';
 
-import { ITemplateState } from 'src/renderer/component/Emails/flux/interface';
+import { IEmailsState } from 'src/renderer/component/Emails/flux/interface';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { IModalWindowState } from 'src/renderer/common/DialogProvider/flux/reducer';
+import { IFolderState } from 'src/renderer/component/Folder/flux/reduser';
 
 export interface IGlobalState {
   profile: IProfileState;
   toast: FluxToast.IState;
-  emailNodes: ITemplateState;
+  emails: IEmailsState;
+  folders: IFolderState;
   snippets: ISnippetsState;
   images: ImageLibrary.IState;
   status: StatusConstants.TStatus;
@@ -42,7 +45,8 @@ const appReducers = combineReducers({
   toast: FluxToast.reducer,
   images: ImageLibrary.reducer,
   status: Status.reducer,
-  emailNodes,
+  emails,
+  folders,
   snippets,
   layouts,
   modalWindow,

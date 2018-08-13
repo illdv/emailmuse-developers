@@ -8,6 +8,8 @@ import { folderActions } from './actions';
 import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
+import { IFolder } from 'src/renderer/component/Folder/flux/interface';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 
 function* showFolderModal(action: Action<{ parentId: number }>) {
   const newFolderName: Action<{ folderName: string }> = yield selectFromModal(ModalWindowType.CreateFolder);
@@ -15,7 +17,6 @@ function* showFolderModal(action: Action<{ parentId: number }>) {
     id: null,
     name: newFolderName.payload.folderName,
     parentId: action.payload.parentId,
-    description: null,
   };
   yield put(folderActions.createFolder.REQUEST({ folder }));
 }
@@ -24,6 +25,7 @@ function* createFolder(action: Action<{ folder: IFolder }>) {
   const folder: IFolder = action.payload.folder;
   try {
     yield call(FolderAPI.createFolder, folder);
+    yield put(EmailActions.loading());
     yield put(FluxToast.Actions.showToast('Folder created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -47,6 +49,7 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
   const folderIds: number[] = action.payload.ids;
   try {
     yield call(FolderAPI.deleteFolders, folderIds);
+    yield put(folderActions.deleteFolder.SUCCESS({ ids: folderIds }));
     if (folderIds.length > 1) {
       yield put(FluxToast.Actions.showToast('Folders deleted', ToastType.Success));
     } else {

@@ -6,7 +6,7 @@ import { delay } from 'redux-saga';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
-import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
@@ -20,7 +20,7 @@ const { temporaryLayoutToEntity } = SwipeUtils;
 
 const insertMarker = 'CONTENTGOESHERE';
 
-function* createTemplates(template: INode[]) {
+function* createTemplates(template: IEmail[]) {
   try {
     yield call(EmailAPI.create, template);
     yield put(push('/emails'));
@@ -61,11 +61,11 @@ function* toGiveUserToInsertMarker(selectedLayout: ILayout) {
 /**
  * Use for execute step need for create one email from Subjects.
  */
-function* sagaMoveSubjectInEmail(action: Action<{ email: INode }>) {
+function* sagaMoveSubjectInEmail(action: Action<{ email: IEmail }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmail: INode = action.payload.email;
+  const selectedEmail: IEmail = action.payload.email;
   const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {
@@ -91,10 +91,10 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: INode }>) {
 /**
  * Use for execute step need for create one email from Swipe.
  */
-function* sagaMoveSwipeInEmail(action: Action<{ emails: INode[] }>) {
+function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmails: INode[] = action.payload.emails;
+  const selectedEmails: IEmail[] = action.payload.emails;
   const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {

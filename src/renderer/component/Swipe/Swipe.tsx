@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Check, Edit, KeyboardArrowRight } from '@material-ui/icons';
+import { Check, KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import {
-  Button,
   Divider,
   Fade,
-  Icon,
   List,
   ListItem,
   ListItemText,
@@ -21,7 +19,7 @@ import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
 import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
-import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { RouteComponentProps } from 'react-router-dom';
@@ -60,15 +58,15 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
 
   onResetSelect = () => {
     this.props.swipeActions.resetSelected.REQUEST({});
-  };
+  }
 
   onSelectSwipe = (swipe: ISwipe) => () => {
     this.props.swipeActions.selectSwipe.REQUEST({ selectedSwipe: swipe });
-  };
+  }
 
-  onSelectSubject = (subject: INode) => () => {
+  onSelectSubject = (subject: IEmail) => () => {
     this.props.swipeActions.selectSubject.REQUEST({ selectedSubject: subject });
-  };
+  }
 
   toItem = (title: string, onClick: () => void) => {
     return (
@@ -80,7 +78,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
         <Divider/>
       </div>
     );
-  };
+  }
 
   onMoveSwipeInEmail = (selectedSwipe: ISwipe) => () => {
     const subjects = selectedSwipe.subjects.map(subject => ({
@@ -89,7 +87,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
       description: `${selectedSwipe.title} > ${subject.title}`,
     }));
     this.props.swipeActions.moveSwipeInEmail.REQUEST({ emails: subjects });
-  };
+  }
 
   render() {
 

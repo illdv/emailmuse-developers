@@ -11,7 +11,7 @@ import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { bindActionCreators } from 'redux';
 import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
-import { INode } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { Fab } from 'src/renderer/common/Fab';
 
 const styles = ({
@@ -30,7 +30,7 @@ export namespace PreviewMailSpace {
   export interface IState {
   }
   export interface IProps {
-    mail: INode;
+    mail: IEmail;
     swipe: ISwipe;
     swipeActions?: ISwipeActions;
     drawerMenuAction?: IDrawerMenuActions;
