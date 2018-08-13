@@ -40,6 +40,7 @@ export namespace EmailListSpace {
   export interface IState {
     newEmail: IEmail;
     currentNodeId: number;
+    searchWorld: string;
   }
 }
 
@@ -47,24 +48,28 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   state: EmailListSpace.IState = {
     newEmail: null,
     currentNodeId: null,
+    searchWorld: '',
   };
 
   componentDidMount() {
     // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     // this.props.action.loading({ page });
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({});
   }
 
   onChangePage = (e, page: number) => {
     // this.props.action.loading({ page: page + 1 });
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({});
   }
 
   selectNode = (node: { item: IEmail, type }) => {
     const { item, type } = node;
     if (type === nodeType.folder) {
       const parentId = Number(item.id);
-      this.setState({ currentNodeId: parentId });
+      // TODO: Fix setTimeout
+      setTimeout(() => {
+        this.setState({ currentNodeId: parentId });
+      }, 400);
       this.props.emailsActions.getEmailFromFolder({ parentId });
     } else {
       this.props.editorActions.edit.REQUEST(emailToEditEntity(item));
@@ -94,7 +99,10 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   onSearch = (searchWorld: string) => {
     // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     // this.props.action.loading({ page, search: searchWorld });
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({s: searchWorld});
+    this.setState({
+      searchWorld,
+    });
   }
 
   setCurrentParentId = (id: number) => {
@@ -102,16 +110,17 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   closeFolder = () => {
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({});
     this.setState({
       currentNodeId: null,
     });
   }
 
   render() {
-    const { status, emails } = this.props.emailNodes;
+    let { emails }           = this.props.emailNodes;
+    const { status }         = this.props.emailNodes;
     const folders: IFolder[] = this.props.folders;
-    const { currentNodeId }  = this.state;
+    const { currentNodeId, searchWorld }  = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
@@ -125,6 +134,10 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
       { id: '2', label: 'Description', disablePadding: false, numeric: false },
       { id: '3', label: 'Last update', disablePadding: false, numeric: false },
     ];
+
+    if (currentNodeId === null && searchWorld === '') {
+      emails = emails.filter(email => email.folder_id === null);
+    }
 
     return (
       <div>

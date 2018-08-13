@@ -62,7 +62,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
   componentDidMount() {
     // const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
     // this.props.action.loading({ page });
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({});
   }
 
   selectTemplate = (template: IEmail) => () => {
@@ -72,7 +72,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
 
   onChangePage = (e, page: number) => {
     // this.props.action.loading({ page: page + 1 });
-    this.props.emailsActions.loading();
+    this.props.emailsActions.loading({});
 
   }
 

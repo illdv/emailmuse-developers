@@ -17,6 +17,7 @@ import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { IFolder, IGetFoldersEmailsResponse } from 'src/renderer/component/Folder/flux/interface';
 import { folderActions } from 'src/renderer/component/Folder/flux/actions';
 import { createSelector } from 'reselect';
+import { delay } from 'redux-saga';
 
 // function getCurrentPageSelector(state: IGlobalState) {
 //   return useOrDefault(() => state.emailNodes.pagination.current_page, 0);
@@ -26,13 +27,14 @@ export const getEmailSelector = createSelector(emailSelector,
   (state: IEmail[]): number => state,
 );*/
 
-function* loadingFoldersAndEmails() {
+function* loadingFoldersAndEmails(action: Action<{s: string}>) {
   try {
-    const response: AxiosResponse<IGetFoldersEmailsResponse> = yield call(FolderAPI.getFoldersAndEmails);
+    const response: AxiosResponse<IGetFoldersEmailsResponse>
+            = yield call(FolderAPI.getFoldersAndEmails, action.payload.s);
     const { emails, folders }: { emails: IEmail[], folders: IFolder[] } = response.data;
 
     yield put(folderActions.getFolders.SUCCESS({ folders }));
-    yield put(EmailActions.successfully(emails.filter(email => email.folder_id === null)));
+    yield put(EmailActions.successfully(emails));
   } catch (error) {
     yield put(EmailActions.failure());
   }
@@ -53,7 +55,7 @@ function* getEmailsFromFolders(action: Action<{ parentId: number }>) {
 function* saveTemplate(action: Action<{email: IEmail}>) {
   try {
     yield call(EmailAPI.edit, action.payload.email);
-    yield put(EmailActions.loading());
+    yield put(EmailActions.loading({}));
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
   } catch (error) {
@@ -80,7 +82,8 @@ function* removeTemplates(action) {
     yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
     // const page: number = yield select(getCurrentPageSelector);
     // yield put(EmailActions.loading({ page }));
-    call(loadingFoldersAndEmails);
+    // TODO: Fix
+    call(loadingFoldersAndEmails, {type: '', payload: {s: ''}});
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email removed', ToastType.Error));
   }
@@ -93,7 +96,8 @@ function* copyTemplates(action) {
     yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
     // const page: number = yield select(getCurrentPageSelector);
     // yield put(EmailActions.loading({ page }));
-    call(loadingFoldersAndEmails);
+    // TODO: Fix
+    call(loadingFoldersAndEmails, {type: '', payload: {s: ''}});
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed template copy', ToastType.Error));
   }

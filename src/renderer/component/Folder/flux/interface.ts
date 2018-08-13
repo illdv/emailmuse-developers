@@ -1,9 +1,9 @@
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 export interface IFolder {
-  id: number;
+  id?: number;
   name: string;
-  parentId: number;
+  parentId?: number;
   created_at?: string;
   deleted_at?: string;
   updated_at?: string;

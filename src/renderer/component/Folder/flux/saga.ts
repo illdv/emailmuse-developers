@@ -24,8 +24,10 @@ function* showFolderModal(action: Action<{ parentId: number }>) {
 function* createFolder(action: Action<{ folder: IFolder }>) {
   const folder: IFolder = action.payload.folder;
   try {
-    yield call(FolderAPI.createFolder, folder);
-    yield put(EmailActions.loading());
+    const response = yield call(FolderAPI.createFolder, folder);
+    yield put(folderActions.createFolder.SUCCESS(response.data));
+
+    yield put(EmailActions.loading({}));
     yield put(FluxToast.Actions.showToast('Folder created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);

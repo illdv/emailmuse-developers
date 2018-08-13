@@ -36,7 +36,7 @@ class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayout
     });
   }
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+  handleChange = (event) => {
     const folderName: string = event.currentTarget.value;
     this.setState({ folderName });
   }

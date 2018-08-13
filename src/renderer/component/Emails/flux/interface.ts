@@ -18,7 +18,7 @@ export interface ILoadingTemplatePayload {
 // TODO: delete ?
 export interface IEmailActions extends ActionCreatorsMapObject {
   // loading?: CreateAction<{ page: number, hidePreloader?: boolean, search?: string }>;
-  loading: EmptyActionCreator;
+  loading: CreateAction<{s?: string}>;
   remove?: CreateAction<string>;
   save?: CreateAction<{ email: IEmail, saveAndClose: boolean }>;
   create?: CreateAction<IEmail>;

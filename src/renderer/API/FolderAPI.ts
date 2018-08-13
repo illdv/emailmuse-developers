@@ -5,8 +5,8 @@ import {
   IFolder,
 } from 'src/renderer/component/Folder/flux/interface';
 
-const getFoldersAndEmails = () => {
-  return AxiosWrapper.get(`/folders/`);
+const getFoldersAndEmails = (s: string) => {
+  return AxiosWrapper.get(`/folders?s=${s || ''}`);
 };
 
 function getEmailsInFolder(id: number): any {

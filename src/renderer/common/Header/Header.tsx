@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import { Toolbar, Typography } from '@material-ui/core';
 
 interface IheaderToolbar {
   numSelected?: number;
@@ -20,8 +17,8 @@ const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '' }) =
     }
     return (
       <Typography color='inherit' variant='subheading'>
-      {title} {numSelected} selected
-    </Typography>
+        {title} {numSelected}
+      </Typography>
     );
   };
 

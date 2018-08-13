@@ -1,4 +1,4 @@
-import { all, call, put, race, take, takeEvery } from 'redux-saga/effects';
+import { all, call, put, race, take, takeEvery, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
 import { delay } from 'redux-saga';
@@ -15,6 +15,8 @@ import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SwipeUtils } from 'src/renderer/component/Swipe/flux/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 const { temporaryLayoutToEntity } = SwipeUtils;
 
@@ -65,8 +67,8 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: IEmail }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmail: IEmail = action.payload.email;
-  const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
+  const selectedEmail: IEmail   = action.payload.email;
+  const selectedLayout: ILayout = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {
     yield put(EditorActions.edit.REQUEST(emailToEditEntity({
@@ -88,14 +90,27 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: IEmail }>) {
   }
 }
 
+const getSelectedSwipeTitle = (state: IGlobalState) => state.swipe.selectedSwipe.title;
+
 /**
  * Use for execute step need for create one email from Swipe.
  */
 function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmails: IEmail[] = action.payload.emails;
-  const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
+  let selectedEmails: IEmail[] = action.payload.emails;
+  const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
+
+  const title = yield select(getSelectedSwipeTitle);
+  yield put(folderActions.createFolder.REQUEST({
+    folder: {
+      name: title,
+    },
+  }));
+
+  const actionFolder: any = yield take(folderActions.createFolder.SUCCESS);
+
+  selectedEmails = selectedEmails.map(email => ({...email,  folder_id: actionFolder.payload.id }));
 
   if (selectedLayout.body.includes(insertMarker)) {
     const newEmail = selectedEmails.map(email => ({
@@ -110,7 +125,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
 
     if (save) {
       const temporaryLayout: IEditEntity = save.payload;
-      const newEmail = selectedEmails.map(email => ({
+      const newEmail                     = selectedEmails.map(email => ({
         ...email,
         body: temporaryLayout.html.replace(insertMarker, email.body),
       }));
