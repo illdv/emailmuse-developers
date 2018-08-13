@@ -43,7 +43,7 @@ export namespace ListElementSpace {
     onOpenItem: (T) => void;
     onChangePage: (event, page: number) => void;
     onDeleteFolder: (id: number) => void;
-    onUpdateEmail: (email: IEmail) => void;
+    onUpdateEmail: (data: {id: number, folder_id: number }) => void;
     isLoading?: boolean;
     title?: string;
     onCopy?: (id: string) => void;

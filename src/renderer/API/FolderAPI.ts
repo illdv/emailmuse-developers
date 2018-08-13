@@ -10,7 +10,7 @@ const getFoldersAndEmails = () => {
 };
 
 function getEmailsInFolder(id: number): any {
-  return AxiosWrapper.get(`/folders/${id}`);
+  return AxiosWrapper.get(`/folders/${id || ''}`);
 }
 
 function createFolder(payload: IFolder): any {

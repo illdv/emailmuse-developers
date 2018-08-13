@@ -68,12 +68,12 @@ export const INodeTypes = {
   EMAIL: 'email',
   FOLDER: 'folder',
 };
+
 const folderTarget = {
   drop({ item, onUpdateEmail }, monitor) {
     console.log('Target folder =>', item);
-    // onUpdateEmail(item);
     const targetEmail = monitor.getItem();
-    console.log('Target Email =>', targetEmail);
+    onUpdateEmail({id: targetEmail.itemId, folder_id: item.id });
   },
 };
 

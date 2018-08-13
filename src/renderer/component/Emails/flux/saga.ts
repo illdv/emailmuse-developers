@@ -32,7 +32,7 @@ function* loadingFoldersAndEmails() {
     const { emails, folders }: { emails: IEmail[], folders: IFolder[] } = response.data;
 
     yield put(folderActions.getFolders.SUCCESS({ folders }));
-    yield put(EmailActions.successfully(emails));
+    yield put(EmailActions.successfully(emails.filter(email => email.folder_id === null)));
   } catch (error) {
     yield put(EmailActions.failure());
   }
@@ -50,9 +50,10 @@ function* getEmailsFromFolders(action: Action<{ parentId: number }>) {
   }
 }
 
-function* saveTemplate(action) {
+function* saveTemplate(action: Action<{email: IEmail}>) {
   try {
     yield call(EmailAPI.edit, action.payload.email);
+    yield put(EmailActions.loading());
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
   } catch (error) {

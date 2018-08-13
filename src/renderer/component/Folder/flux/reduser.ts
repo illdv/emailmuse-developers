@@ -21,4 +21,5 @@ reducer.on(folderActions.deleteFolder.SUCCESS, (state, payload): IFolderState =>
   ...state,
   folders: state.folders.filter(folder => payload.ids.indexOf(folder.id)),
 }));
+
 export default reducer;

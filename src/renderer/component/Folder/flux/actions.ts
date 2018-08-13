@@ -2,7 +2,7 @@ import { createActionCreator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 
-const createAsyncAction = createActionCreator('actions');
+const createAsyncAction = createActionCreator('FOLDERS');
 const getFolders = createAsyncAction('GET_FOLDER_MODAL');
 const createFolder = createAsyncAction('CREATE_FOLDER');
 const updateFolder = createAsyncAction('UPDATE_FOLDER');

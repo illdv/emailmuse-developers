@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Paper, Typography } from '@material-ui/core';
-import { Add, CreateNewFolder } from '@material-ui/icons';
+import { Add, Close, CreateNewFolder } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
@@ -21,7 +21,7 @@ import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableL
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 
 export enum nodeType {
-  email = 'email',
+  email  = 'email',
   folder = ' folder',
 }
 
@@ -79,15 +79,15 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.props.foldersActions.showModal.REQUEST({ parentId: this.state.currentNodeId });
   }
 
-  onUpdateEmail = (email: IEmail) => {
-    this.props.emailsActions.save({ email, saveAndClose: false });
+  onUpdateEmail = (data: { id: number, folder_id: number }) => {
+    this.props.emailsActions.save({ email: data } as any);
   }
 
   onDeleteFolder = (id: number) => {
     this.props.foldersActions.deleteFolder.REQUEST({ ids: [id] });
   }
 
-  onCopy = (id: string) => {
+  onCopy   = (id: string) => {
     this.props.emailsActions.copy({ id });
   }
   // ToDo fix me
@@ -101,10 +101,17 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.setState({ currentNodeId: id });
   }
 
+  closeFolder = () => {
+    this.props.emailsActions.loading();
+    this.setState({
+      currentNodeId: null,
+    });
+  }
+
   render() {
     const { status, emails } = this.props.emailNodes;
     const folders: IFolder[] = this.props.folders;
-    const { currentNodeId } = this.state;
+    const { currentNodeId }  = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
@@ -148,9 +155,21 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
                   whitCtrl
                   hotKey={'F'}
                 />
-                : null
-            }
+                :
+                null
 
+            }
+            {
+              (currentNodeId !== null) ?
+                <Fab
+                  onClick={this.closeFolder}
+                  icon={<Close/>}
+                  position={1}
+                  title={'Close'}
+                />
+                :
+                null
+            }
             <Fab
               onClick={this.onSelectNewTemplate}
               icon={<Add/>}
