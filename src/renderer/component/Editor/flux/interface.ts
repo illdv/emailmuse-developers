@@ -5,6 +5,7 @@
  */
 export interface IEditEntity {
   id: string;
+  folderId: number;
   idFrontEnd: string;
   html: string;
   type: EntityType;

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
+import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@material-ui/core';
 import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
 import { IPagination } from 'src/renderer/common/List/interface';
-import { CustomTableHead } from 'src/renderer/common/List/ListTable/TableHead';
 import HeaderToolbar from 'src/renderer/common/Header/Header';
 
 import './ListTable.scss';
@@ -22,11 +21,11 @@ export interface IColumn {
   numeric: boolean;
 }
 
-const defaultColumnData: IColumn[] = [
-  { id: '1', label: 'Name', disablePadding: false, numeric: false },
-  { id: '2', label: 'Description', disablePadding: false, numeric: false },
-  { id: '3', label: 'Last update', disablePadding: false, numeric: false },
-];
+// const defaultColumnData: IColumn[] = [
+//   { id: '1', label: 'Name', disablePadding: false, numeric: false },
+//   { id: '2', label: 'Description', disablePadding: false, numeric: false },
+//   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
+// ];
 
 export interface IListItem {
   id: string;
@@ -43,7 +42,7 @@ export namespace ListElementSpace {
   export interface IProps<T> {
     entities: T[];
     toItem: (item: T) => IListItem;
-    pagination: IPagination;
+    pagination?: IPagination;
     onOpenItem: (T) => () => void;
     onChangePage: (event, page: number) => void;
     isLoading?: boolean;
@@ -55,12 +54,6 @@ export namespace ListElementSpace {
 }
 
 export class ListTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
-
-  static defaultProps = {
-    isLoading: false,
-    columnData: defaultColumnData,
-  };
-
   state: ListElementSpace.IState = {
     selectedItemIds: [],
   };
@@ -91,23 +84,23 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     return this.state.selectedItemIds.some(id => id === selectId);
   }
 
-  onSelectAll = () => {
-    const selectedItemIds = this.state.selectedItemIds;
-    const entities        = this.props.entities;
+  /*  onSelectAll = () => {
+      const selectedItemIds = this.state.selectedItemIds;
+      const entities = this.props.entities;
 
-    if (selectedItemIds.length === entities.length) {
-      this.unSelectAll();
-    } else {
-      this.selectAll();
-    }
-  }
+      if (selectedItemIds.length === entities.length) {
+        this.unSelectAll();
+      } else {
+        this.selectAll();
+      }
+    }*/
 
-  selectAll = () => {
-    this.setState(state => ({
-      ...state,
-      selectedItemIds: this.props.entities.map(entity => entity.id),
-    }));
-  }
+  /*  selectAll = () => {
+      this.setState(state => ({
+        ...state,
+        selectedItemIds: this.props.entities.map(entity => entity.id),
+      }));
+    }*/
 
   unSelectAll = () => {
     this.setState(state => ({
@@ -128,49 +121,52 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
-
+    {/*<Folder />*/
+    }
     return (
       <Table aria-labelledby='tableTitle'>
-        <CustomTableHead
-          onSelectAll={this.onSelectAll}
-          columnData={columnData}
-        />
+        {/*<CustomTableHead*/}
+        {/*onSelectAll={this.onSelectAll}*/}
+        {/*columnData={columnData}*/}
+        {/*/>*/}
         <TableBody>
-          {entities.map((entity: {}) => {
-            const item: IListItem = toItem(entity);
-            const isSelected = this.isSelected(item.id);
-            return (
-              <TableRow
-                role='checkbox'
-                aria-checked={isSelected}
-                tabIndex={-1}
-                key={item.id}
-                selected={isSelected}
-                className={b('row')}
-              >
-                {
-                  this.props.onCopy
-                  &&
-                  <TableCell
-                    style={{ width: 40 }}
-                    onClick={this.onCopy(item.id)}
-                    padding={'checkbox'}
-                  >
-                    <IconButton title={'Create Duplicate'}>
-                      <ContentCopyIcon/>
-                    </IconButton>
+          {
+            entities.map((entity: {}) => {
+              const item: IListItem = toItem(entity);
+              const isSelected = this.isSelected(item.id);
+              return (
+                <TableRow
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={item.id}
+                  selected={isSelected}
+                  className={b('row')}
+                >
+                  {
+                    this.props.onCopy
+                    &&
+                    <TableCell
+                      style={{ width: 40 }}
+                      onClick={this.onCopy(item.id)}
+                      padding={'checkbox'}
+                    >
+                      <IconButton title={'Create Duplicate'}>
+                        <ContentCopyIcon/>
+                      </IconButton>
+                    </TableCell>
+                    ||
+                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
+                  }
+                  <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
+                    {item.title}
                   </TableCell>
-                  ||
-                  <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                }
-                <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
-                  {item.title}
-                </TableCell>
-                <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
-                <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
-              </TableRow>
-            );
-          })}
+                  <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
+                  <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
+                </TableRow>
+              );
+            })
+          }
         </TableBody>
       </Table>
     );
@@ -190,7 +186,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
             style={{ marginTop: 0 }}
           >
             <Grid item>
-              <HeaderToolbar numSelected={this.state.selectedItemIds.length} title={this.props.title}/>
+              <HeaderToolbar title={this.props.title}/>
             </Grid>
             <Grid style={{ paddingRight: 15 }} item>
               {

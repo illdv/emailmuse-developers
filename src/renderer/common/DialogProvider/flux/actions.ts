@@ -6,6 +6,7 @@ const createAsyncAction = createActionCreator('MODAL_WINDOW');
 export enum ModalWindowType {
   SelectLayout   = 'SelectLayout',
   NeedInsertBody = 'NeedInsertBody',
+  CreateFolder = 'CreateFolder',
   ConfirmationCloseEditor = 'ConfirmationCloseEditor',
 }
 

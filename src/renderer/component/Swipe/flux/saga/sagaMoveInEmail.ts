@@ -1,4 +1,4 @@
-import { all, call, put, race, take, takeEvery } from 'redux-saga/effects';
+import { all, call, put, race, take, takeEvery, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
 import { delay } from 'redux-saga';
@@ -6,21 +6,23 @@ import { delay } from 'redux-saga';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
+import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SwipeUtils } from 'src/renderer/component/Swipe/flux/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 const { temporaryLayoutToEntity } = SwipeUtils;
 
 const insertMarker = 'CONTENTGOESHERE';
 
-function* createTemplates(template: ITemplate[]) {
+function* createTemplates(template: IEmail[]) {
   try {
     yield call(EmailAPI.create, template);
     yield put(push('/emails'));
@@ -61,12 +63,12 @@ function* toGiveUserToInsertMarker(selectedLayout: ILayout) {
 /**
  * Use for execute step need for create one email from Subjects.
  */
-function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
+function* sagaMoveSubjectInEmail(action: Action<{ email: IEmail }>) {
 
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmail: ITemplate = action.payload.email;
-  const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
+  const selectedEmail: IEmail   = action.payload.email;
+  const selectedLayout: ILayout = actionSelectLayout.payload.layout;
 
   if (selectedLayout.body.includes(insertMarker)) {
     yield put(EditorActions.edit.REQUEST(emailToEditEntity({
@@ -88,14 +90,27 @@ function* sagaMoveSubjectInEmail(action: Action<{ email: ITemplate }>) {
   }
 }
 
+const getSelectedSwipeTitle = (state: IGlobalState) => state.swipe.selectedSwipe.title;
+
 /**
  * Use for execute step need for create one email from Swipe.
  */
-function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
+function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(ModalWindowType.SelectLayout);
 
-  const selectedEmails: ITemplate[] = action.payload.emails;
-  const selectedLayout: ILayout     = actionSelectLayout.payload.layout;
+  let selectedEmails: IEmail[] = action.payload.emails;
+  const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
+
+  const title = yield select(getSelectedSwipeTitle);
+  yield put(folderActions.createFolder.REQUEST({
+    folder: {
+      name: title,
+    },
+  }));
+
+  const actionFolder: any = yield take(folderActions.createFolder.SUCCESS);
+
+  selectedEmails = selectedEmails.map(email => ({...email,  folder_id: actionFolder.payload.id }));
 
   if (selectedLayout.body.includes(insertMarker)) {
     const newEmail = selectedEmails.map(email => ({
@@ -110,7 +125,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: ITemplate[] }>) {
 
     if (save) {
       const temporaryLayout: IEditEntity = save.payload;
-      const newEmail = selectedEmails.map(email => ({
+      const newEmail                     = selectedEmails.map(email => ({
         ...email,
         body: temporaryLayout.html.replace(insertMarker, email.body),
       }));

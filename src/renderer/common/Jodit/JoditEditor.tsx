@@ -35,6 +35,10 @@ export namespace JoditEditorSpace {
 }
 
 export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
+  constructor(props) {
+    super(props);
+    this.textArea = React.createRef();
+  }
 
   state: JoditEditorSpace.IState<DialogName> = {
     current: null,
@@ -128,7 +132,6 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       },
     });
   }
-
   insertHTML = (html: string, callback: () => void) => {
     const current = this.state.current;
     if (current) {
@@ -138,12 +141,8 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     callback();
   }
   private readonly textArea;
-  private editor;
 
-  constructor(props) {
-    super(props);
-    this.textArea = React.createRef();
-  }
+  private editor;
 
   componentDidMount(): void {
     this.createEditor();

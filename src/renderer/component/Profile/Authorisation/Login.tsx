@@ -88,8 +88,8 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
     };
 
     const defaultValue = IS_PRODUCTION ? {} : {
-      email: 'rpahdeom@yomail.info',
-      password: 'rpahdeom@yomail.info',
+      email: 'sivtsev.s@cronix.ms',
+      password: '111111',
     };
 
     return (

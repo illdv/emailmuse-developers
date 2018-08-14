@@ -56,15 +56,15 @@ export class PreLogin extends Component<AuthorizationSpace.IProps, Authorization
 
   onLoginGoogle = () => {
     this.props.action.loginInGoogle.REQUEST({});
-  };
+  }
 
   onCreateAccount = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.PRE_SIGN_UP });
-  };
+  }
 
   onSignWithEmail = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN_WITH_EMAIL });
-  };
+  }
 
   render() {
     const { classes } = this.props;

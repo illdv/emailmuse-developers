@@ -1,15 +1,13 @@
 import * as React from 'react';
-import {
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import { Toolbar, Typography } from '@material-ui/core';
 
 interface IheaderToolbar {
-  numSelected: number;
+  numSelected?: number;
   title?: string;
+  onClick?: () => void;
 }
 
-const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected = 1, title = '' }) => {
+const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '', onClick }) => {
   const render = () => {
     if (numSelected === 0) {
       return (
@@ -20,13 +18,13 @@ const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected = 1, title = '' 
     }
     return (
       <Typography color='inherit' variant='subheading'>
-      {title} {numSelected} selected
-    </Typography>
+        {title} {numSelected}
+      </Typography>
     );
   };
 
   return (
-    <Toolbar>
+    <Toolbar onClick={onClick}>
       <div style={{ flex: '0 0 auto' }}>
         {render()}
       </div>
