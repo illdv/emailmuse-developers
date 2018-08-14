@@ -12,6 +12,7 @@ import {
   ModalWindowActions,
   ModalWindowType,
 } from 'src/renderer/common/DialogProvider/flux/actions';
+import CreateFolderModal from 'src/renderer/common/DialogProvider/Dialogs/CreateFolderModal';
 
 export namespace ModalProviderSpace {
   export interface IState {
@@ -27,6 +28,7 @@ const modalWindowMap: {[key in ModalWindowType]: any} = {
   [ModalWindowType.SelectLayout]: <SelectLayout/>,
   [ModalWindowType.NeedInsertBody]: <NeedInsertBody/>,
   [ModalWindowType.ConfirmationCloseEditor]: <CloseEditor/>,
+  [ModalWindowType.CreateFolder]: <CreateFolderModal/>,
 };
 
 class ModalProvider extends Component<ModalProviderSpace.IProps, ModalProviderSpace.IState> {

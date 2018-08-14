@@ -8,6 +8,7 @@ const instance = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
+  timeout: 15 * 1000,
 });
 
 function get(apiMethod: string, urlParams: { [key: string]: string | number } = {}): AxiosPromise<any> {

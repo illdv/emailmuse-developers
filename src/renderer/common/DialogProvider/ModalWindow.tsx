@@ -31,12 +31,11 @@ export namespace SelectLayoutSpace {
 }
 
 class ModalWindow extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
+  state: SelectLayoutSpace.IState = {};
 
   static defaultProps: SelectLayoutSpace.IProps = {
     actions: [],
   };
-
-  state: SelectLayoutSpace.IState = {};
 
   onClose = () => {
     this.props.modalWindowActions.hide.REQUEST({});

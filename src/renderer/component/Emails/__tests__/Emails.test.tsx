@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { Templates } from 'src/renderer/component/Templates/Templates';
+import { Emails } from 'src/renderer/component/Emails/Emails';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { emailToEditEntity } from 'src/renderer/component/Templates/utils';
-import { ITemplate } from 'src/renderer/component/Templates/flux/interfaceAPI';
+import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
+import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
-describe('<Templates/>', () => {
+describe('<Emails/>', () => {
   let props;
-  const selectedTemplate: ITemplate = {
+  const selectedTemplate: IEmail = {
     id: '1',
     user_id: 1,
     title: 'test title',
@@ -22,6 +22,7 @@ describe('<Templates/>', () => {
     created_at: '',
     updated_at: '',
     deleted_at: '',
+    folder_id: 0,
   };
   const emptyTemplate = {
     id: null,
@@ -48,10 +49,10 @@ describe('<Templates/>', () => {
 
   beforeEach(() => {
     props = {
-      templates: {
+      emails: {
         status: '',
         pagination: {},
-        templates: {},
+        emails: {},
         selectedTemplate: null,
       },
       editorActions: {
@@ -80,22 +81,22 @@ describe('<Templates/>', () => {
 
   test('Waite initialize', () => {
     // spinner rotates
-    props.templates.status = ActionStatus.REQUEST;
-    const render = shallow(<Templates {...props} />);
+    props.emails.status = ActionStatus.REQUEST;
+    const render = shallow(<Emails {...props} />);
 
     expect(render).toMatchSnapshot();
   });
 
   test('Couldn\'t download the templates', () => {
-    props.templates.status = ActionStatus.FAILURE;
-    const render = shallow(<Templates {...props} />);
+    props.emails.status = ActionStatus.FAILURE;
+    const render = shallow(<Emails {...props} />);
 
     expect(render).toMatchSnapshot();
   });
 
   test('User click on button "Add a new email"', () => {
-    props.templates.selectedTemplate = undefined;
-    const render = shallow(<Templates {...props} />);
+    props.emails.selectedEmail = undefined;
+    const render = shallow(<Emails {...props} />);
     render.find('Fab').simulate('click');
 
     expect(mockSelectTemplate).toBeCalled();
@@ -110,18 +111,18 @@ describe('<Templates/>', () => {
           per_page: 15,
           total: 2,
         },
-        templates: arrayTemplates,
+        emails: arrayTemplates,
         selectedTemplate: null,
       };
     });
     test('show list', () => {
-      const render = mount(<Templates {...props} />);
+      const render = mount(<Emails {...props} />);
 
       expect(render).toMatchSnapshot();
     });
     test('change page', () => {
       const page = 1;
-      const render = shallow(<Templates {...props} />) as any;
+      const render = shallow(<Emails {...props} />) as any;
       render.instance().onChangePage('e', page);
 
       expect(mockLoadingTemplate).toBeCalled();
@@ -129,8 +130,8 @@ describe('<Templates/>', () => {
     });
 
     test('User click on template item row', () => {
-      const render = shallow(<Templates {...props} />) as any;
-      render.instance().selectTemplate(selectedTemplate)();
+      const render = shallow(<Emails {...props} />) as any;
+      render.instance().selectNode(selectedTemplate)();
       const mockEmailToEditEntity = emailToEditEntity(selectedTemplate);
 
       expect(props.editorActions.edit.REQUEST).toBeCalled();
@@ -138,7 +139,7 @@ describe('<Templates/>', () => {
     });
     test('User click on copy icon', () => {
       const id = 1;  // template ids
-      const render = shallow(<Templates {...props} />) as any;
+      const render = shallow(<Emails {...props} />) as any;
       render.instance().onCopy(id);
 
       expect(mockCopyTemplate).toBeCalled();
@@ -149,11 +150,11 @@ describe('<Templates/>', () => {
   describe('Wen user select template', () => {
     let render;
     beforeEach(() => {
-      props.templates.selectedTemplate = selectedTemplate;
-      render = shallow(<Templates {...props} />);
+      props.emails.selectedEmail = selectedTemplate;
+      render = shallow(<Emails {...props} />);
     });
     it('user select template', () => {
-      expect(props.templates.selectedTemplate).toEqual(selectedTemplate);
+      expect(props.emails.selectedTemplate).toEqual(selectedTemplate);
       expect(render).toMatchSnapshot();
     });
     /* it('user click close button', () => {
@@ -183,7 +184,7 @@ describe('<Templates/>', () => {
       props.templates.selectedTemplate = selectedTemplate;
       props.templates.selectedTemplate.ids = undefined;
 
-      render = shallow(<Templates {...props} />);
+      render = shallow(<Emails {...props} />);
     });
     it('user click remove button', () => {
       render.instance().onCloseOrRemove();

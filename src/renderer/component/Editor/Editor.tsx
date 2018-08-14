@@ -43,7 +43,6 @@ export namespace EditorSpace {
 }
 
 class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
-
   state: EditorSpace.IState = {
     html: '',
     idFrontEnd: '',
@@ -96,7 +95,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     hasEdit = true;
   }
 
-  getEntity = (): IEditEntity => {
+  get getEntity(): IEditEntity {
     return {
       ...this.props.editor.editEntity,
       html: this.state.html,
@@ -105,23 +104,21 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   onRemove = () => {
-    this.props.editorActions.remove.REQUEST(this.getEntity());
+    this.props.editorActions.remove.REQUEST(this.getEntity);
   }
 
   onSave = () => {
-    this.props.editorActions.save.REQUEST(this.getEntity());
-    this.setState({
-      hasChange: false,
-    });
+    this.props.editorActions.save.REQUEST(this.getEntity);
+    this.setState({ hasChange: false });
     hasEdit = false;
   }
 
   onSaveAndClose = () => {
-    this.props.editorActions.saveAndClose.REQUEST(this.getEntity());
+    this.props.editorActions.saveAndClose.REQUEST(this.getEntity);
   }
 
   onClose = () => {
-    this.props.editorActions.close.REQUEST(this.getEntity());
+    this.props.editorActions.close.REQUEST(this.getEntity);
   }
 
   renderParameters = () => {
