@@ -34,14 +34,15 @@ describe('<Emails/>', () => {
     created_at: '',
     deleted_at: '',
   };
+
   const arrayTemplates = [selectedTemplate, emptyTemplate];
-  const mockSelectTemplate = jest.fn();
-  const mockRemoveTemplate = jest.fn();
-  const mockSaveTemplate = jest.fn();
-  const mockCreateTemplate = jest.fn();
+  const mockSelectEmail = jest.fn();
+  const mockRemoveEmail = jest.fn();
+  const mockSaveEmail = jest.fn();
+  const mockCreateEmail = jest.fn();
   const mockCopyTemplate = jest.fn();
   const mockLoadingTemplate = jest.fn();
-  const asyncActionOnject = {
+  const asyncActionObject = {
     REQUEST: jest.fn(),
     SUCCESS: jest.fn(),
     FAILURE: jest.fn(),
@@ -51,31 +52,36 @@ describe('<Emails/>', () => {
     props = {
       emails: {
         status: '',
-        pagination: {},
         emails: {},
         selectedTemplate: null,
       },
+      folders: [],
       editorActions: {
-        edit: asyncActionOnject,
-        save: asyncActionOnject,
-        close: asyncActionOnject,
-        remove: asyncActionOnject,
-        saveAndClose: asyncActionOnject,
+        edit: asyncActionObject,
+        save: asyncActionObject,
+        close: asyncActionObject,
+        remove: asyncActionObject,
+        saveAndClose: asyncActionObject,
       },
-      action: {
-        loading: mockLoadingTemplate,
-        remove: mockRemoveTemplate,
-        save: mockSaveTemplate,
-        create: mockCreateTemplate,
-        select: jest.fn(),
-        copy: mockCopyTemplate,
+      foldersActions: {
+        showModal: jest.fn(),
+        createFolder: jest.fn(),
+        updateFolder: jest.fn(),
+        deleteFolder: jest.fn(),
+        getFolders: jest.fn(),
+      },
+      emailsActions: {
+        loading: jest.fn(),
+        remove: mockRemoveEmail,
+        save: mockSaveEmail,
+        create: mockCreateEmail,
+        select: mockSelectEmail,
         failure: jest.fn(),
-        successfully: jest.fn(),
+        copy: jest.fn(),
         createSuccess: jest.fn(),
-        selectNewTemplate: mockSelectTemplate,
+        selectNewTemplate: jest.fn(),
+        getEmailFromFolder: jest.fn(),
       },
-      onShowToast: jest.fn(),
-      newTemplate: {},
     };
   });
 
@@ -99,7 +105,7 @@ describe('<Emails/>', () => {
     const render = shallow(<Emails {...props} />);
     render.find('Fab').simulate('click');
 
-    expect(mockSelectTemplate).toBeCalled();
+    expect(mockSelectEmail).toBeCalled();
   });
   describe('Render template list', () => {
     beforeEach(() => {
@@ -159,7 +165,7 @@ describe('<Emails/>', () => {
     });
     /* it('user click close button', () => {
        render.instance().onClose();
-       expect(mockSelectTemplate).toBeCalledWith(null);
+       expect(mockSelectEmail).toBeCalledWith(null);
      });*/
 
     /*it('user click remove button', () => {
@@ -188,7 +194,7 @@ describe('<Emails/>', () => {
     });
     it('user click remove button', () => {
       render.instance().onCloseOrRemove();
-      expect(mockSelectTemplate).toBeCalledWith(null);
+      expect(mockSelectEmail).toBeCalledWith(null);
     });
     it('user click save button', () => {
       render.instance().onSaveOrCreate(selectedTemplate, false);

@@ -8,14 +8,12 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { emailToEditEntity, nodeToItem } from 'src/renderer/component/Emails/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
-import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { IEmailActions, IEmailsState } from 'src/renderer/component/Emails/flux/interface';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { IColumn } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
@@ -28,14 +26,11 @@ export enum nodeType {
 
 export namespace EmailListSpace {
   export interface IProps {
-    emailNodes?: IEmailsState;
-    emailsActions?: IEmailActions;
-    foldersActions: IFolderActions;
-    swipeActions?: ISwipeActions;
-    editorActions?: IEditorActions;
-    onShowToast?: (messages: string, type: ToastType) => void;
-    actionFolders: IFolderActions;
+    emails: IEmailsState;
     folders: IFolder[];
+    emailsActions: IEmailActions;
+    foldersActions: IFolderActions;
+    editorActions: IEditorActions;
   }
 
   export interface IState {
@@ -125,8 +120,8 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   render() {
-    let { emails } = this.props.emailNodes;
-    const { status } = this.props.emailNodes;
+    let { emails } = this.props.emails;
+    const { status } = this.props.emails;
     const folders: IFolder[] = this.props.folders;
     const { currentNodeId, searchWorld, currentFolder } = this.state;
     if (status === ActionStatus.FAILURE) {
@@ -242,7 +237,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
-  emailNodes: state.emails,
+  emails: state.emails,
   folders: state.folders.folders,
 });
 
@@ -250,10 +245,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   emailsActions: bindActionCreators(EmailActions, dispatch),
   foldersActions: bindModuleAction(folderActions, dispatch),
   editorActions: bindModuleAction(EditorActions, dispatch),
-  swipeActions: bindModuleAction(SwipeActions, dispatch),
-  onShowToast: (messages: string, type: ToastType) => {
-    dispatch(FluxToast.Actions.showToast(messages, type));
-  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emails);
