@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Fade, Paper, Typography } from '@material-ui/core';
+import { Fade, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Add, Close, CreateNewFolder } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
@@ -19,9 +19,10 @@ import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/a
 import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
+import { Search } from 'src/renderer/common/Search';
 
 export enum nodeType {
-  email  = 'email',
+  email = 'email',
   folder = ' folder',
 }
 
@@ -39,6 +40,7 @@ export namespace EmailListSpace {
 
   export interface IState {
     newEmail: IEmail;
+    currentFolder: IFolder;
     currentNodeId: number;
     searchWorld: string;
   }
@@ -49,6 +51,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     newEmail: null,
     currentNodeId: null,
     searchWorld: '',
+    currentFolder: null,
   };
 
   componentDidMount() {
@@ -62,13 +65,13 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.props.emailsActions.loading({});
   }
 
-  selectNode = (node: { item: IEmail, type }) => {
+  selectNode = (node: { item: any, type }) => {
     const { item, type } = node;
     if (type === nodeType.folder) {
       const parentId = Number(item.id);
       // TODO: Fix setTimeout
       setTimeout(() => {
-        this.setState({ currentNodeId: parentId });
+        this.setState({ currentNodeId: parentId, currentFolder: item });
       }, 400);
       this.props.emailsActions.getEmailFromFolder({ parentId });
     } else {
@@ -92,14 +95,19 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.props.foldersActions.deleteFolder.REQUEST({ ids: [id] });
   }
 
-  onCopy   = (id: string) => {
+  onOpenRootFolder = () => {
+    this.setState({ currentNodeId: null, currentFolder: null });
+    this.props.emailsActions.loading({});
+  }
+
+  onCopy = (id: string) => {
     this.props.emailsActions.copy({ id });
   }
   // ToDo fix me
   onSearch = (searchWorld: string) => {
     // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     // this.props.action.loading({ page, search: searchWorld });
-    this.props.emailsActions.loading({s: searchWorld});
+    this.props.emailsActions.loading({ s: searchWorld });
     this.setState({
       searchWorld,
     });
@@ -117,10 +125,10 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   render() {
-    let { emails }           = this.props.emailNodes;
-    const { status }         = this.props.emailNodes;
+    let { emails } = this.props.emailNodes;
+    const { status } = this.props.emailNodes;
     const folders: IFolder[] = this.props.folders;
-    const { currentNodeId, searchWorld }  = this.state;
+    const { currentNodeId, searchWorld, currentFolder } = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
@@ -143,8 +151,44 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
       <div>
         <Fade in timeout={1000}>
           <Paper>
+            <Grid item xs={12}>
+              <Grid
+                container
+                spacing={16}
+                alignItems={'center'}
+                justify={'space-between'}
+                style={{ marginTop: 0 }}
+              >
+                <Grid item>
+                  <Toolbar>
+                    <Typography
+                      color='inherit'
+                      variant='subheading'
+                      onClick={this.onOpenRootFolder}
+                      style={{ cursor: 'pointer' }}
+                    >Emails
+                    </Typography>
+                    {
+                      currentFolder ?
+                        <>
+                          <span style={{ padding: '0 3px 0 3px' }}> / </span>
+                          <Typography
+                            color='inherit'
+                            variant='subheading'
+                          >
+                            {currentFolder.name}
+                          </Typography>
+                        </>
+                        : null
+                    }
+                  </Toolbar>
+                </Grid>
+                <Grid style={{ paddingRight: 15 }} item>
+                  <Search search={this.onSearch}/>
+                </Grid>
+              </Grid>
+            </Grid>
             <NodeTableList
-              title='Emails'
               emails={emails}
               folders={folders}
               toItem={nodeToItem}
@@ -152,7 +196,6 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               onUpdateEmail={this.onUpdateEmail}
               onChangePage={this.onChangePage}
               onCopy={this.onCopy}
-              onSearch={this.onSearch}
               isLoading={status === ActionStatus.REQUEST}
               columnData={columnData}
               onCurrentParentId={this.setCurrentParentId}

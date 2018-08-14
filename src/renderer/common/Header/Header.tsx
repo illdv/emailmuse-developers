@@ -4,9 +4,10 @@ import { Toolbar, Typography } from '@material-ui/core';
 interface IheaderToolbar {
   numSelected?: number;
   title?: string;
+  onClick?: () => void;
 }
 
-const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '' }) => {
+const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '', onClick }) => {
   const render = () => {
     if (numSelected === 0) {
       return (
@@ -23,7 +24,7 @@ const HeaderToolbar: React.SFC<IheaderToolbar> = ({ numSelected, title = '' }) =
   };
 
   return (
-    <Toolbar>
+    <Toolbar onClick={onClick}>
       <div style={{ flex: '0 0 auto' }}>
         {render()}
       </div>

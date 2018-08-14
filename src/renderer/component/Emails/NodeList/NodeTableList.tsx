@@ -45,9 +45,7 @@ export namespace ListElementSpace {
     onDeleteFolder: (id: number) => void;
     onUpdateEmail: (data: {id: number, folder_id: number }) => void;
     isLoading?: boolean;
-    title?: string;
     onCopy?: (id: string) => void;
-    onSearch?: (searchWorld: string) => void;
     columnData?: IColumn[];
     onCurrentParentId?: (id: number) => void;
   }
@@ -167,33 +165,14 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
   }
 
   render() {
-    const { pagination, onChangePage, onSearch } = this.props;
+    const { pagination, onChangePage } = this.props;
 
     return (
       <>
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={16}
-            alignItems={'center'}
-            justify={'space-between'}
-            style={{ marginTop: 0 }}
-          >
-            <Grid item>
-              <HeaderToolbar title={this.props.title}/>
-            </Grid>
-            <Grid style={{ paddingRight: 15 }} item>
-              {
-                onSearch &&
-                <Search search={onSearch}/>
-              }
-            </Grid>
-          </Grid>
-        </Grid>
         <div style={{ minHeight: 200 }}>
           {this.renderTable}
         </div>
-        <InCenter>
+        {/*<InCenter>
           {
             pagination &&
             <TablePagination
@@ -211,7 +190,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
               onChangePage={onChangePage}
             />
           }
-        </InCenter>
+        </InCenter>*/}
       </>
     );
   }
