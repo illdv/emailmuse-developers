@@ -7,9 +7,6 @@ import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogP
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
 
 export function* menuSaga(action): IterableIterator<any> {
-
-  // const isEditorOpen: boolean = window.location.href.includes('/editor');
-
   if (hasEdit) {
     yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.ConfirmationCloseEditor }));
 
@@ -21,7 +18,6 @@ export function* menuSaga(action): IterableIterator<any> {
     if (failure) {
       return;
     }
-
   }
 
   setEdit(false);
@@ -41,7 +37,7 @@ function getRoutePath(action) {
       return '/snippets';
     case MenuItemType.SWIPE:
       return '/swipe';
-    case MenuItemType.TEMPLATES:
+    case MenuItemType.EMAILS:
       return '/emails';
     case MenuItemType.TRAINING:
       return '/training';

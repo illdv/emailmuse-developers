@@ -166,7 +166,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
                     {
                       currentFolder ?
                         <>
-                          <span style={{ padding: '0 3px 0 3px' }}> / </span>
+                          <span style={{ padding: '0 5px 0 5px' }}> / </span>
                           <Typography
                             color='inherit'
                             variant='subheading'
