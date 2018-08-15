@@ -5,6 +5,7 @@ import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions'
 
 export function* menuSaga(action): IterableIterator<any> {
   if (hasEdit) {
@@ -22,6 +23,9 @@ export function* menuSaga(action): IterableIterator<any> {
 
   setEdit(false);
   const routePath = getRoutePath(action);
+  if (routePath === '/emails') {
+    yield put(folderActions.openFolder.REQUEST({}));
+  }
   yield put(push(routePath));
 }
 

@@ -11,6 +11,8 @@ import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Au
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
+import { EmailActions } from 'src/renderer/component/Emails/flux/module'
+import { folderActions } from 'src/renderer/component/Folder/flux/actions'
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -47,7 +49,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
       yield call(pollsFlow);
     }
     // redirect to main page
-    yield put(push('/emails'));
+    yield put(folderActions.openFolder.REQUEST({}));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));

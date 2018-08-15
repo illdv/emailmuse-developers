@@ -38,7 +38,6 @@ export namespace EmailListSpace {
   export interface IState {
     newEmail: IEmail;
     currentFolder: IFolder;
-    currentNodeId: number;
     searchWorld: string;
   }
 }
@@ -46,7 +45,6 @@ export namespace EmailListSpace {
 export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpace.IState> {
   state: EmailListSpace.IState = {
     newEmail: null,
-    currentNodeId: null,
     searchWorld: '',
     currentFolder: null,
   };
@@ -55,27 +53,17 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     const { match } = props;
     const newState = prevState;
     if (match.params.id) {
-      console.log('params.id', match.params.id);
-      newState.currentNodeId = match.params.id;
       newState.currentFolder = {
         name: match.params.name,
         id: match.params.id,
       };
     } else {
-      newState.currentNodeId = null;
       newState.currentFolder = { name: null, id: null };
     }
     return newState;
   }
 
-  componentDidMount() {
-    // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
-    // this.props.action.loading({ page });
-    this.props.emailsActions.loading({});
-  }
-
   onChangePage = (e, page: number) => {
-    // this.props.action.loading({ page: page + 1 });
     this.props.emailsActions.loading({});
   }
 
@@ -83,7 +71,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     const { item, type } = node;
     if (type === nodeType.folder) {
       const parentId = Number(item.id);
-      this.setState({ currentNodeId: parentId, currentFolder: item });
+      this.setState({ currentFolder: item });
       this.props.foldersActions.openFolder.REQUEST({ folder: item });
       this.props.emailsActions.getEmailFromFolder({ parentId });
     } else {
@@ -92,11 +80,11 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   onSelectNewTemplate = () => {
-    this.props.emailsActions.selectNewTemplate({ parentId: this.state.currentNodeId });
+    this.props.emailsActions.selectNewTemplate({ parentId: this.state.currentFolder.id });
   }
 
   onCreateNewFolder = () => {
-    this.props.foldersActions.showModal.REQUEST({ parentId: this.state.currentNodeId });
+    this.props.foldersActions.showModal.REQUEST({ parentId: this.state.currentFolder.id });
   }
 
   onUpdateEmail = (data: { id: number, folder_id: number }) => {
@@ -113,30 +101,24 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
 
   // ToDo fix me
   onSearch = (searchWorld: string) => {
-    // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
-    // this.props.action.loading({ page, search: searchWorld });
     this.props.emailsActions.loading({ s: searchWorld });
     this.setState({ searchWorld });
   }
 
   setCurrentParentId = (id: number) => {
-    this.setState({ currentNodeId: id });
+    this.setState({ currentFolder: { ...this.state.currentFolder, id } });
   }
 
   onOpenRootFolder = () => {
-    this.setState({ currentNodeId: null, currentFolder: null });
+    this.setState({ currentFolder: null });
     this.props.foldersActions.openFolder.REQUEST({});
-  }
-
-  closeFolder = () => {
-    this.setState({ currentNodeId: null, currentFolder: null });
   }
 
   render() {
     let { emails } = this.props.emails;
     const { status } = this.props.emails;
     const folders: IFolder[] = this.props.folders;
-    const { currentNodeId, searchWorld, currentFolder } = this.state;
+    const { searchWorld, currentFolder } = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
         <Typography variant='headline' noWrap align='center'>
@@ -151,7 +133,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
       { id: '3', label: 'Last update', disablePadding: false, numeric: false },
     ];
 
-    if (currentNodeId === null && searchWorld === '') {
+    if (currentFolder && currentFolder.id === null && searchWorld === '') {
       emails = emails.filter(email => email.folder_id === null);
     }
 
@@ -210,7 +192,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               onDeleteFolder={this.onDeleteFolder}
             />
             {
-              (currentNodeId === null) ?
+              (currentFolder && currentFolder.id === null) ?
                 <Fab
                   onClick={this.onCreateNewFolder}
                   icon={<CreateNewFolder/>}
@@ -224,9 +206,9 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
 
             }
             {
-              (currentNodeId !== null) ?
+              (currentFolder && currentFolder.id !== null) ?
                 <Fab
-                  onClick={this.closeFolder}
+                  onClick={this.onOpenRootFolder}
                   icon={<Close/>}
                   position={1}
                   title={'Close'}

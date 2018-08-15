@@ -66,10 +66,8 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
 function* openFolder(action: Action<{ folder: IFolder }>) {
   const { folder } = action.payload;
   if (folder) {
-    console.log('folder', folder);
     yield put(push(`/emails/${folder.id}/${folder.name}`));
   } else {
-    console.log('NOT folder', folder);
     yield put(push(`/emails`));
     yield put(EmailActions.loading({}));
   }
