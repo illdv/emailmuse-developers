@@ -8,6 +8,7 @@ const createFolder = createAsyncAction('CREATE_FOLDER');
 const updateFolder = createAsyncAction('UPDATE_FOLDER');
 const deleteFolder = createAsyncAction('DELETE_FOLDER');
 const showModal = createAsyncAction('SHOW_FOLDER_MODAL');
+const openFolder = createAsyncAction('OPEN');
 
 export interface IFolderActions {
   showModal: IAsyncAction2<{ parentId: number }, {}>;
@@ -15,8 +16,10 @@ export interface IFolderActions {
   updateFolder: IAsyncAction2<{ folder: IFolder }, {}>;
   deleteFolder: IAsyncAction2<{ ids: number[] }, { ids: number[] }>;
   getFolders: IAsyncAction2<{}, { folders: IFolder[] }>;
+  openFolder: IAsyncAction2<{ folder?: IFolder }, {}>;
+
 }
 
 export const folderActions: IFolderActions = {
-  createFolder, updateFolder, deleteFolder, showModal, getFolders,
+  createFolder, updateFolder, deleteFolder, showModal, getFolders, openFolder,
 };

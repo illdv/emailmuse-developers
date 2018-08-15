@@ -31,6 +31,8 @@ export namespace EmailListSpace {
     emailsActions: IEmailActions;
     foldersActions: IFolderActions;
     editorActions: IEditorActions;
+    history: any;
+    location: any;
   }
 
   export interface IState {
@@ -49,6 +51,23 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     currentFolder: null,
   };
 
+  static getDerivedStateFromProps(props, prevState) {
+    const { match } = props;
+    const newState = prevState;
+    if (match.params.id) {
+      console.log('params.id', match.params.id);
+      newState.currentNodeId = match.params.id;
+      newState.currentFolder = {
+        name: match.params.name,
+        id: match.params.id,
+      };
+    } else {
+      newState.currentNodeId = null;
+      newState.currentFolder = { name: null, id: null };
+    }
+    return newState;
+  }
+
   componentDidMount() {
     // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     // this.props.action.loading({ page });
@@ -64,10 +83,8 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     const { item, type } = node;
     if (type === nodeType.folder) {
       const parentId = Number(item.id);
-      // TODO: Fix setTimeout
-      setTimeout(() => {
-        this.setState({ currentNodeId: parentId, currentFolder: item });
-      }, 400);
+      this.setState({ currentNodeId: parentId, currentFolder: item });
+      this.props.foldersActions.openFolder.REQUEST({ folder: item });
       this.props.emailsActions.getEmailFromFolder({ parentId });
     } else {
       this.props.editorActions.edit.REQUEST(emailToEditEntity(item));
@@ -90,33 +107,29 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.props.foldersActions.deleteFolder.REQUEST({ ids: [id] });
   }
 
-  onOpenRootFolder = () => {
-    this.setState({ currentNodeId: null, currentFolder: null });
-    this.props.emailsActions.loading({});
-  }
-
   onCopy = (id: string) => {
     this.props.emailsActions.copy({ id });
   }
+
   // ToDo fix me
   onSearch = (searchWorld: string) => {
     // const page = useOrDefault(() => (this.props.emailNodes.pagination.current_page), 1);
     // this.props.action.loading({ page, search: searchWorld });
     this.props.emailsActions.loading({ s: searchWorld });
-    this.setState({
-      searchWorld,
-    });
+    this.setState({ searchWorld });
   }
 
   setCurrentParentId = (id: number) => {
     this.setState({ currentNodeId: id });
   }
 
+  onOpenRootFolder = () => {
+    this.setState({ currentNodeId: null, currentFolder: null });
+    this.props.foldersActions.openFolder.REQUEST({});
+  }
+
   closeFolder = () => {
-    this.props.emailsActions.loading({});
-    this.setState({
-      currentNodeId: null,
-    });
+    this.setState({ currentNodeId: null, currentFolder: null });
   }
 
   render() {
@@ -164,7 +177,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
                     >Emails
                     </Typography>
                     {
-                      currentFolder ?
+                      currentFolder && currentFolder.name ?
                         <>
                           <span style={{ padding: '0 5px 0 5px' }}> / </span>
                           <Typography

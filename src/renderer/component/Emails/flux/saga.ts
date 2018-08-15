@@ -16,8 +16,6 @@ import { EmailAPI } from 'src/renderer/API/EmailAPI';
 import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { IFolder, IGetFoldersEmailsResponse } from 'src/renderer/component/Folder/flux/interface';
 import { folderActions } from 'src/renderer/component/Folder/flux/actions';
-import { createSelector } from 'reselect';
-import { delay } from 'redux-saga';
 
 // function getCurrentPageSelector(state: IGlobalState) {
 //   return useOrDefault(() => state.emailNodes.pagination.current_page, 0);
@@ -128,7 +126,6 @@ function* watcher() {
     takeEvery(EmailActions.copy(null).type, copyTemplates),
     takeEvery(EmailActions.getEmailFromFolder, getEmailsFromFolders),
     takeEvery(EmailActions.save, saveTemplate),
-
   ]);
 }
 

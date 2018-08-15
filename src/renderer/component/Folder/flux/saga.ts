@@ -9,7 +9,7 @@ import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
+import { EmailActions, LOADING } from 'src/renderer/component/Emails/flux/module';
 
 function* showFolderModal(action: Action<{ parentId: number }>) {
   const newFolderName: Action<{ folderName: string }> = yield selectFromModal(ModalWindowType.CreateFolder);
@@ -63,12 +63,25 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
   }
 }
 
+function* openFolder(action: Action<{ folder: IFolder }>) {
+  const { folder } = action.payload;
+  if (folder) {
+    console.log('folder', folder);
+    yield put(push(`/emails/${folder.id}/${folder.name}`));
+  } else {
+    console.log('NOT folder', folder);
+    yield put(push(`/emails`));
+    yield put(EmailActions.loading({}));
+  }
+}
+
 function* watcher() {
   yield all([
     takeEvery(folderActions.showModal.REQUEST, showFolderModal),
     takeEvery(folderActions.createFolder.REQUEST, createFolder),
     takeEvery(folderActions.updateFolder.REQUEST, updateFolder),
     takeEvery(folderActions.deleteFolder.REQUEST, deleteFolder),
+    takeEvery(folderActions.openFolder.REQUEST, openFolder),
   ]);
 }
 
