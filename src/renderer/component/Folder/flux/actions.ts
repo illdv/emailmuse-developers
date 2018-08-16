@@ -3,10 +3,10 @@ import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 
 const createAsyncAction = createActionCreator('FOLDERS');
-const getFolders = createAsyncAction('GET_FOLDER_MODAL');
-const createFolder = createAsyncAction('CREATE_FOLDER');
-const updateFolder = createAsyncAction('UPDATE_FOLDER');
-const deleteFolder = createAsyncAction('DELETE_FOLDER');
+const getFolders = createAsyncAction('GET');
+const createFolder = createAsyncAction('CREATE');
+const updateFolder = createAsyncAction('UPDATE');
+const deleteFolder = createAsyncAction('DELETE');
 const showModal = createAsyncAction('SHOW_FOLDER_MODAL');
 const openFolder = createAsyncAction('OPEN');
 

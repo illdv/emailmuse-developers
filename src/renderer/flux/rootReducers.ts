@@ -6,7 +6,7 @@ import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/con
 import { routerReducer } from 'react-router-redux';
 
 import folders from 'src/renderer/component/Folder/flux/reduser';
-import emails from 'src/renderer/component/Emails/flux/module';
+import emails, { IEmailsState } from 'src/renderer/component/Emails/flux/module';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/DialogProvider/flux/reducer';
@@ -15,7 +15,6 @@ import training, { ITrainingState } from 'src/renderer/component/Training/flux/r
 import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import polls, { IPollsState } from 'src/renderer/component/Profile/Polls/flux/reduser';
 
-import { IEmailsState } from 'src/renderer/component/Emails/flux/interface';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
 import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';

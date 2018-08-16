@@ -3,14 +3,15 @@ import { mount, shallow } from 'enzyme';
 import { Emails } from 'src/renderer/component/Emails/Emails';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 describe('<Emails/>', () => {
   let props;
   const selectedTemplate: IEmail = {
-    id: '1',
+    id: 1,
     user_id: 1,
     title: 'test title',
+    type: nodeType.email,
     description: 'test description',
     body: `<table style="width: 453px; height: 45px;">
            <tbody>

@@ -16,16 +16,6 @@ const selectSwipe = createAsyncAction('SELECT_SWIPE');
 const selectSubject = createAsyncAction('SELECT_SUBJECT');
 const resetSelected = createAsyncAction('RESET_SELECTED');
 
-export const SwipeActions: ISwipeActions = {
-  loading,
-  moveSubjectInEmail,
-  selectLayout,
-  moveSwipeInEmail,
-  selectSwipe,
-  selectSubject,
-  resetSelected,
-};
-
 export interface ISwipeActions {
   loading: IAsyncAction2<{}, { swipes: ISwipe[] }>;
 
@@ -37,3 +27,13 @@ export interface ISwipeActions {
   selectSubject: IAsyncAction2<{ selectedSubject: IEmail }, {}>;
   resetSelected: IAsyncAction2<{}, {}>;
 }
+
+export const SwipeActions: ISwipeActions = {
+  loading,
+  moveSubjectInEmail,
+  selectLayout,
+  moveSwipeInEmail,
+  selectSwipe,
+  selectSubject,
+  resetSelected,
+};

@@ -1,8 +1,8 @@
 import { createReducer } from 'redux-act';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { IEditEntity } from 'src/renderer/component/Editor/flux/interface';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 export interface IEditorState {
   editEntity: IEditEntity;
@@ -22,11 +22,12 @@ reducer.on(EditorActions.edit.REQUEST, (state, payload): IEditorState => ({
   },
 }));
 
-reducer.on(EmailActions.createSuccess, (state, payload): IEditorState => ({
+reducer.on(emailActions.createSuccess.REQUEST, (state, payload): IEditorState => ({
   ...state,
   editEntity: {
     ...state.editEntity,
-    id: payload[0].id,
+    // id: payload[0].id,
+    id: payload.emails[0].id,
   },
 }));
 
@@ -34,7 +35,7 @@ reducer.on(SnippetsAction.add.SUCCESS, (state, payload): IEditorState => ({
   ...state,
   editEntity: {
     ...state.editEntity,
-    id: payload.snippet.id.toString(),
+    id: payload.snippet.id,
   },
 }));
 

@@ -7,8 +7,7 @@ import block from 'bem-ts';
 const b = block('node_table_custom_row');
 
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
-import { nodeType } from 'src/renderer/component/Emails/Emails';
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 interface INodeTableRow<T> {
   onCopy?: (id: string) => void;

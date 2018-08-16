@@ -5,11 +5,13 @@ import { Add, Close, CreateNewFolder } from '@material-ui/icons';
 import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { emailToEditEntity, nodeToItem } from 'src/renderer/component/Emails/utils';
+import {
+  folderEmailToEntity,
+  folderEmailToFolder,
+  nodeToItem,
+} from 'src/renderer/component/Emails/utils';
 import { Fab } from 'src/renderer/common/Fab';
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
-import { IEmailActions, IEmailsState } from 'src/renderer/component/Emails/flux/interface';
+import { IEmail, IFolderEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { IColumn } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
@@ -18,17 +20,14 @@ import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flu
 import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import { Search } from 'src/renderer/common/Search';
-
-export enum nodeType {
-  email = 'email',
-  folder = ' folder',
-}
+import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
+import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
 
 export namespace EmailListSpace {
   export interface IProps {
     emails: IEmailsState;
     folders: IFolder[];
-    emailsActions: IEmailActions;
+    emailsActions: IEmailsActions;
     foldersActions: IFolderActions;
     editorActions: IEditorActions;
     history: any;
@@ -64,44 +63,46 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   onChangePage = (e, page: number) => {
-    this.props.emailsActions.loading({});
+    this.props.emailsActions.loading.REQUEST({});
   }
 
-  selectNode = (node: { item: any, type }) => {
-    const { item, type } = node;
-    if (type === nodeType.folder) {
-      const parentId = Number(item.id);
-      this.setState({ currentFolder: item });
-      this.props.foldersActions.openFolder.REQUEST({ folder: item });
-      this.props.emailsActions.getEmailFromFolder({ parentId });
+  handleOpenItem = (item: IFolderEmail) => {
+    if (item.type === nodeType.folder) {
+      const folder = folderEmailToFolder(item);
+      this.props.foldersActions.openFolder.REQUEST({ folder });
+      // this.props.emailsActions.getEmailFromFolder({ parentId: item.id });
     } else {
-      this.props.editorActions.edit.REQUEST(emailToEditEntity(item));
+      this.props.editorActions.edit.REQUEST(folderEmailToEntity(item));
     }
   }
 
   onSelectNewTemplate = () => {
-    this.props.emailsActions.selectNewTemplate({ parentId: this.state.currentFolder.id });
+    this.props.emailsActions.selectNewTemplate.REQUEST({ parentId: this.state.currentFolder.id });
   }
 
   onCreateNewFolder = () => {
     this.props.foldersActions.showModal.REQUEST({ parentId: this.state.currentFolder.id });
   }
 
-  onUpdateEmail = (data: { id: number, folder_id: number }) => {
-    this.props.emailsActions.save({ email: data } as any);
+  handleUpdateItem = (data: { id: number, folder_id: number }) => {
+    this.props.emailsActions.save.REQUEST({ email: data } as any);
   }
 
-  onDeleteFolder = (id: number) => {
-    this.props.foldersActions.deleteFolder.REQUEST({ ids: [id] });
+  handleDeleteItem = (item: IFolderEmail) => {
+    if (item.type === nodeType.folder) {
+      this.props.foldersActions.deleteFolder.REQUEST({ ids: [item.id] });
+    } else {
+      this.props.emailsActions.remove.REQUEST({ id: item.id });
+    }
   }
 
   onCopy = (id: string) => {
-    this.props.emailsActions.copy({ id });
+    this.props.emailsActions.copy.REQUEST({ id });
   }
 
   // ToDo fix me
   onSearch = (searchWorld: string) => {
-    this.props.emailsActions.loading({ s: searchWorld });
+    this.props.emailsActions.loading.REQUEST({ s: searchWorld });
     this.setState({ searchWorld });
   }
 
@@ -182,14 +183,14 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               emails={emails}
               folders={folders}
               toItem={nodeToItem}
-              onOpenItem={this.selectNode}
-              onUpdateEmail={this.onUpdateEmail}
+              onOpenItem={this.handleOpenItem}
+              onDeleteItem={this.handleDeleteItem}
+              onUpdateItem={this.handleUpdateItem}
               onChangePage={this.onChangePage}
               onCopy={this.onCopy}
               isLoading={status === ActionStatus.REQUEST}
               columnData={columnData}
               onCurrentParentId={this.setCurrentParentId}
-              onDeleteFolder={this.onDeleteFolder}
             />
             {
               (currentFolder && currentFolder.id === null) ?
@@ -237,7 +238,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  emailsActions: bindActionCreators(EmailActions, dispatch),
+  emailsActions: bindModuleAction(emailActions, dispatch),
   foldersActions: bindModuleAction(folderActions, dispatch),
   editorActions: bindModuleAction(EditorActions, dispatch),
 });

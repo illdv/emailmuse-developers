@@ -9,7 +9,8 @@ import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
-import { EmailActions, LOADING } from 'src/renderer/component/Emails/flux/module';
+import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* showFolderModal(action: Action<{ parentId: number }>) {
   const newFolderName: Action<{ folderName: string }> = yield selectFromModal(ModalWindowType.CreateFolder);
@@ -17,6 +18,7 @@ function* showFolderModal(action: Action<{ parentId: number }>) {
     id: null,
     name: newFolderName.payload.folderName,
     parentId: action.payload.parentId,
+    type: nodeType.folder,
   };
   yield put(folderActions.createFolder.REQUEST({ folder }));
 }
@@ -27,7 +29,7 @@ function* createFolder(action: Action<{ folder: IFolder }>) {
     const response = yield call(FolderAPI.createFolder, folder);
     yield put(folderActions.createFolder.SUCCESS(response.data));
 
-    yield put(EmailActions.loading({}));
+    yield put(emailActions.loading.REQUEST({}));
     yield put(FluxToast.Actions.showToast('Folder created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -63,13 +65,14 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
   }
 }
 
-function* openFolder(action: Action<{ folder: IFolder }>) {
+function* openFolder(action: Action<{ folder?: IFolder }>) {
   const { folder } = action.payload;
   if (folder) {
+    yield put(emailActions.getEmailFromFolder.REQUEST({ parentId: folder.id }));
     yield put(push(`/emails/${folder.id}/${folder.name}`));
   } else {
     yield put(push(`/emails`));
-    yield put(EmailActions.loading({}));
+    yield put(emailActions.loading.REQUEST({}));
   }
 }
 

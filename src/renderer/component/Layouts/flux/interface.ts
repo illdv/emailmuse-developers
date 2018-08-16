@@ -2,7 +2,7 @@ import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IPagination } from 'src/renderer/common/List/interface';
 
 export interface ILayout {
-  id?: string;
+  id?: number;
   title: string;
   body: string;
   user_id?: number;

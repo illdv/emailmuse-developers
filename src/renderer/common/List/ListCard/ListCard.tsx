@@ -27,7 +27,7 @@ export namespace ListBlocksSpace {
 }
 
 export interface IListCardItem {
-  id: string;
+  id: number;
   title: string;
   content: JSX.Element;
 }
@@ -46,7 +46,7 @@ export class ListCard extends Component<ListBlocksSpace.IProps<any>, ListBlocksS
               key={item.id}
               cardTitle={item.title}
               onClick={onSelectItem(entity)}
-              onDelete={onRemoveItem && onRemoveItem(item.id)}
+              onDelete={onRemoveItem && onRemoveItem(String(item.id))}
               onEdit={onEditItem && onEditItem(entity)}
             >
               {item.content}

@@ -33,7 +33,7 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   }
 
   toItem = (item: ILayout): IListItem => {
-    return { id: item.id, title: item.title, description: '---', rightText: item.updated_at };
+    return { id: String(item.id), title: item.title, description: '---', rightText: item.updated_at };
   }
 
   onSelect = (item: ILayout) => () => {
