@@ -34,11 +34,10 @@ function* getEmailsFromFolders(action: Action<{ parentId: number }>) {
   try {
     const response: AxiosResponse<any> = yield call(FolderAPI.getEmailsInFolder, parentId);
     const emails: IEmail[] = response.data;
-    console.log('we get emails', emails);
-    yield put(emailActions.successfully.REQUEST({ emails }));
-    yield put(folderActions.getFolders.SUCCESS({ folders: null })); // set null for delete folders from folderList
+
+    yield put(emailActions.getEmailFromFolder.SUCCESS({ emails }));
   } catch (error) {
-    yield put(emailActions.failure.REQUEST({}));
+    yield put(emailActions.getEmailFromFolder.FAILURE({}));
   }
 }
 

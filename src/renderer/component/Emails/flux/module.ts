@@ -5,6 +5,8 @@ import { ActionStatus } from 'src/renderer/flux/interface';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
+// TODO: rename in store
+
 export interface IEmailsState {
   status: ActionStatus;
   emails: IEmail[];
@@ -25,6 +27,12 @@ reducer.on(emailActions.save.REQUEST, state => ({
 }));
 
 reducer.on(emailActions.successfully.REQUEST, (state, payload): IEmailsState => ({
+  ...state,
+  emails: payload.emails,
+  status: ActionStatus.SUCCESS,
+}));
+
+reducer.on(emailActions.getEmailFromFolder.SUCCESS, (state, payload): IEmailsState => ({
   ...state,
   emails: payload.emails,
   status: ActionStatus.SUCCESS,

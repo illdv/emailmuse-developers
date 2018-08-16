@@ -26,7 +26,7 @@ export interface IEmailsActions {
   createSuccess?: IAsyncAction2<{ emails: IEmail[] }, {}>;
   copy?: IAsyncAction2<{ id: string }>;
   selectNewTemplate?: IAsyncAction2<{ parentId: number }>;
-  getEmailFromFolder: IAsyncAction2<{ parentId: number }>;
+  getEmailFromFolder: IAsyncAction2<{ parentId: number }, {emails: IEmail[]}>;
 }
 
 export const emailActions: IEmailsActions = {

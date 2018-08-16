@@ -70,9 +70,9 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     if (item.type === nodeType.folder) {
       const folder = folderEmailToFolder(item);
       this.props.foldersActions.openFolder.REQUEST({ folder });
-      // this.props.emailsActions.getEmailFromFolder({ parentId: item.id });
     } else {
-      this.props.editorActions.edit.REQUEST(folderEmailToEntity(item));
+      const entity = folderEmailToEntity(item);
+      this.props.editorActions.edit.REQUEST(entity);
     }
   }
 
@@ -100,7 +100,6 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     this.props.emailsActions.copy.REQUEST({ id });
   }
 
-  // ToDo fix me
   onSearch = (searchWorld: string) => {
     this.props.emailsActions.loading.REQUEST({ s: searchWorld });
     this.setState({ searchWorld });
