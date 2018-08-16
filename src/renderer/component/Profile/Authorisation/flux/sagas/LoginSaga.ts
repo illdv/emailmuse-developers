@@ -71,7 +71,7 @@ function* onGoogleLogin(): IterableIterator<any> {
     if (user.passed_poll === false) {
       yield call(pollsFlow);
     }
-    yield put(push('/emails'));
+    yield put(folderActions.openFolder.REQUEST({}));
 
   } catch (error) {
     yield call(errorHandler, error);
