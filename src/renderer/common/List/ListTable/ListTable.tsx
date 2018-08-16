@@ -21,12 +21,6 @@ export interface IColumn {
   numeric: boolean;
 }
 
-// const defaultColumnData: IColumn[] = [
-//   { id: '1', label: 'Name', disablePadding: false, numeric: false },
-//   { id: '2', label: 'Description', disablePadding: false, numeric: false },
-//   { id: '3', label: 'Last update', disablePadding: false, numeric: false },
-// ];
-
 export interface IListItem {
   id: string;
   title: string;
@@ -84,24 +78,6 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     return this.state.selectedItemIds.some(id => id === selectId);
   }
 
-  /*  onSelectAll = () => {
-      const selectedItemIds = this.state.selectedItemIds;
-      const entities = this.props.entities;
-
-      if (selectedItemIds.length === entities.length) {
-        this.unSelectAll();
-      } else {
-        this.selectAll();
-      }
-    }*/
-
-  /*  selectAll = () => {
-      this.setState(state => ({
-        ...state,
-        selectedItemIds: this.props.entities.map(entity => entity.id),
-      }));
-    }*/
-
   unSelectAll = () => {
     this.setState(state => ({
       ...state,
@@ -116,19 +92,13 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
   }
 
   renderTable = () => {
-    const { entities, toItem, onOpenItem, isLoading, columnData } = this.props;
+    const { entities, toItem, onOpenItem, isLoading } = this.props;
 
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
-    {/*<Folder />*/
-    }
     return (
       <Table aria-labelledby='tableTitle'>
-        {/*<CustomTableHead*/}
-        {/*onSelectAll={this.onSelectAll}*/}
-        {/*columnData={columnData}*/}
-        {/*/>*/}
         <TableBody>
           {
             entities.map((entity: {}) => {

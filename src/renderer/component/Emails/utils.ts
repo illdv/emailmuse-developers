@@ -21,20 +21,20 @@ export function nodeToItem(node: IEmail): INodeItem {
 export function emailToFolderEmail(email: IEmail): IFolderEmail {
   return {
     id: email.id,
-    title: email.title,
+    title: email.title || '',
     type: email.type,
     updated_at: email.updated_at,
-    description: email.description,
+    description: email.description || '',
   };
 }
 
 export function folderToFolderEmail(folder: IFolder): IFolderEmail {
   return {
     id: folder.id,
-    title: folder.name,
+    title: folder.name || '',
     type: folder.type,
     updated_at: folder.updated_at,
-    description: null,
+    description: '---',
   };
 }
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Table, TableBody } from '@material-ui/core';
+import moment from 'moment-es6';
 
 import './NodeTable.scss';
 import { Loading } from 'src/renderer/common/Loading';
@@ -11,11 +12,19 @@ import DragDropContext from 'src/renderer/DragDropContext';
 import NodeTableFolderEmail from 'src/renderer/component/Emails/NodeList/NodeTableFolderEmail';
 import { emailToFolderEmail, folderToFolderEmail } from 'src/renderer/component/Emails/utils';
 
-export interface IColumn {
+export enum SortingType {
+  Subject     = 'Subject',
+  Description = 'Description',
+  LastUpdate  = 'LastUpdate',
+}
+
+export interface IColumnNodeTable {
   id: string;
   label: string;
   disablePadding: boolean;
   numeric: boolean;
+  sortingType: SortingType;
+  active: boolean;
 }
 
 export interface IListItem {
@@ -28,6 +37,7 @@ export interface IListItem {
 export namespace ListElementSpace {
   export interface IState {
     selectedItemIds: number[];
+    selectedFilter: SortingType;
   }
 
   export interface IProps<T> {
@@ -37,11 +47,9 @@ export namespace ListElementSpace {
     onOpenItem: (item: T) => void;
     onDeleteItem: (item: T) => void;
     onUpdateItem: (data: { id: number, folder_id: number }) => void;
-
     onChangePage: (event, page: number) => void;
     isLoading?: boolean;
     onCopy?: (id: string) => void;
-    columnData?: IColumn[];
     onCurrentParentId?: (id: number) => void;
   }
 }
@@ -50,6 +58,7 @@ export namespace ListElementSpace {
 export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
   state: ListElementSpace.IState = {
     selectedItemIds: [],
+    selectedFilter: SortingType.Subject,
   };
 
   onSelect = (selectId: string) => () => {
@@ -60,8 +69,8 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
     }
   }
 
-  get nodes(): IFolderEmail[] {
-    const emails: IFolderEmail[] = !this.props.emails ? [] :
+  getNodes(): IFolderEmail[] {
+    const emails: IFolderEmail[]  = !this.props.emails ? [] :
       this.props.emails.map(email => emailToFolderEmail(email));
     const folders: IFolderEmail[] = !this.props.folders ? [] :
       this.props.folders.map(folder => folderToFolderEmail(folder));
@@ -89,7 +98,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
 
   onSelectAll = () => {
     const selectedItemIds = this.state.selectedItemIds;
-    const entities = this.props.emails;
+    const entities        = this.props.emails;
 
     if (selectedItemIds.length === entities.length) {
       this.unSelectAll();
@@ -112,21 +121,79 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
     }));
   }
 
+  onSorting = (type: SortingType) => {
+    this.setState({
+      selectedFilter: type,
+    });
+  }
+
+  filterNode = (nodes: IFolderEmail[]): IFolderEmail[] => {
+    const { selectedFilter } = this.state;
+    if (selectedFilter === SortingType.Subject) {
+      return nodes.sort((node1, node2) => node1.title.localeCompare(node2.title));
+    }
+
+    if (selectedFilter === SortingType.Description) {
+      return nodes.sort((node1, node2) => node1.description.localeCompare(node2.description));
+    }
+
+    if (selectedFilter === SortingType.LastUpdate) {
+      return nodes.sort((node1, node2) => {
+        return moment(node2.updated_at).diff(node1.updated_at);
+      });
+    }
+
+    return nodes;
+  }
+
   render() {
-    const { onOpenItem, isLoading, columnData, onDeleteItem, onUpdateItem } = this.props;
+    const { onOpenItem, isLoading, onDeleteItem, onUpdateItem } = this.props;
     if (isLoading) {
       return <Loading style={{ height: 200 }}/>;
     }
+
+    const nodes = this.filterNode(this.getNodes());
+
+    const { selectedFilter } = this.state;
+
+    const columnData: IColumnNodeTable[] = [
+      {
+        id: '1',
+        label: 'Subject',
+        disablePadding: true,
+        numeric: false,
+        sortingType: SortingType.Subject,
+        active: selectedFilter === SortingType.Subject,
+      },
+      {
+        id: '2',
+        label: 'Description',
+        disablePadding: false,
+        numeric: true,
+        sortingType: SortingType.Description,
+        active: selectedFilter === SortingType.Description,
+      },
+      {
+        id: '3',
+        label: 'Last update',
+        disablePadding: false,
+        numeric: false,
+        sortingType: SortingType.LastUpdate,
+        active: selectedFilter === SortingType.LastUpdate,
+      },
+    ];
+
     return (
       <div style={{ minHeight: 200 }}>
         <Table aria-labelledby='tableTitle'>
           <NodeTableHead
             onSelectAll={this.onSelectAll}
             columnData={columnData}
+            onSorting={this.onSorting}
           />
           <TableBody>
             {
-              this.nodes.map((item: any) => {
+              nodes.map((item: any) => {
                 return (
                   <NodeTableFolderEmail
                     key={`${item.id}-${item.type}`}

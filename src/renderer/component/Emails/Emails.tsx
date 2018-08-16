@@ -2,22 +2,16 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Fade, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Add, Close, CreateNewFolder } from '@material-ui/icons';
-import { bindActionCreators } from 'redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import {
-  folderEmailToEntity,
-  folderEmailToFolder,
-  nodeToItem,
-} from 'src/renderer/component/Emails/utils';
+import { folderEmailToEntity, folderEmailToFolder, nodeToItem } from 'src/renderer/component/Emails/utils';
 import { Fab } from 'src/renderer/common/Fab';
 import { IEmail, IFolderEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { IColumn } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
-import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
+import { IColumnNodeTable, NodeTableList, SortingType } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import { Search } from 'src/renderer/common/Search';
 import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
@@ -50,7 +44,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
 
   static getDerivedStateFromProps(props, prevState) {
     const { match } = props;
-    const newState = prevState;
+    const newState  = prevState;
     if (match.params.id) {
       newState.currentFolder = {
         name: match.params.name,
@@ -115,9 +109,9 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
   }
 
   render() {
-    let { emails } = this.props.emails;
-    const { status } = this.props.emails;
-    const folders: IFolder[] = this.props.folders;
+    let { emails }                       = this.props.emails;
+    const { status }                     = this.props.emails;
+    const folders: IFolder[]             = this.props.folders;
     const { searchWorld, currentFolder } = this.state;
     if (status === ActionStatus.FAILURE) {
       return (
@@ -126,12 +120,6 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
         </Typography>
       );
     }
-
-    const columnData: IColumn[] = [
-      { id: '1', label: 'Subject', disablePadding: false, numeric: false },
-      { id: '2', label: 'Description', disablePadding: false, numeric: false },
-      { id: '3', label: 'Last update', disablePadding: false, numeric: false },
-    ];
 
     if (currentFolder && currentFolder.id === null && searchWorld === '') {
       emails = emails.filter(email => email.folder_id === null);
@@ -188,7 +176,6 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               onChangePage={this.onChangePage}
               onCopy={this.onCopy}
               isLoading={status === ActionStatus.REQUEST}
-              columnData={columnData}
               onCurrentParentId={this.setCurrentParentId}
             />
             {
