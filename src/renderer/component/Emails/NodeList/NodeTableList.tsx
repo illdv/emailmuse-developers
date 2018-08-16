@@ -9,7 +9,7 @@ import { NodeTableHead } from 'src/renderer/component/Emails/NodeList/NodeTableH
 import { IEmail, IFolderEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import DragDropContext from 'src/renderer/DragDropContext';
-import NodeTableFolderEmail from 'src/renderer/component/Emails/NodeList/NodeTableFolderEmail';
+import { NodeTableFolderEmail } from 'src/renderer/component/Emails/NodeList/NodeTableFolderEmail';
 import { emailToFolderEmail, folderToFolderEmail } from 'src/renderer/component/Emails/utils';
 
 export enum SortingType {
