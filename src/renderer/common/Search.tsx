@@ -15,7 +15,6 @@ export namespace SearchSpace {
 }
 
 export class Search extends Component<SearchSpace.IProps, SearchSpace.IState> {
-
   state: SearchSpace.IState = {
     searchWord: '',
   };
