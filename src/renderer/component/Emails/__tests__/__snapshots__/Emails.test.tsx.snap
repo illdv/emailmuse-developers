@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Emails/> Couldn't download the templates 1`] = `
+<WithStyles(Typography)
+  align="center"
+  noWrap={true}
+  variant="headline"
+>
+  Sorry but we couldn't download the emails.
+</WithStyles(Typography)>
+`;

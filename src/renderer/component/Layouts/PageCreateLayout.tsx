@@ -8,27 +8,24 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core';
-import { bindActionCreators } from 'redux';
-
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Loading } from 'src/renderer/common/Loading';
 import { nodeToItem } from 'src/renderer/component/Emails/utils';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
-import { IEmailActions, IEmailsState } from 'src/renderer/component/Emails/flux/interface';
+import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
-import { useOrDefault } from 'src/renderer/utils';
+import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
 
 export namespace PageCreateLayoutSpace {
   export interface IProps {
     isOpen?: boolean;
     emails?: IEmailsState;
-    emailsActions?: IEmailActions;
+    emailsActions?: IEmailsActions;
     layoutActions?: ILayoutActions;
     onShowToast?: (messages: string, type: ToastType) => void;
     handleClose?: () => void;
@@ -47,7 +44,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 // TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   layoutActions: bindModuleAction(LayoutActions, dispatch),
-  emailsActions: bindActionCreators(EmailActions, dispatch),
+  emailsActions: bindModuleAction(emailActions, dispatch),
   onShowToast: (messages: string, type: ToastType) => {
     dispatch(FluxToast.Actions.showToast(messages, type));
   },
@@ -62,7 +59,7 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
   componentDidMount() {
     // const page = useOrDefault(() => (this.props.templates.pagination.current_page), 1);
     // this.props.action.loading({ page });
-    this.props.emailsActions.loading({});
+    this.props.emailsActions.loading.REQUEST({});
   }
 
   selectTemplate = (template: IEmail) => () => {
@@ -72,12 +69,12 @@ export class PageCreateLayout extends React.Component<PageCreateLayoutSpace.IPro
 
   onChangePage = (e, page: number) => {
     // this.props.action.loading({ page: page + 1 });
-    this.props.emailsActions.loading({});
+    this.props.emailsActions.loading.REQUEST({});
 
   }
 
   onClose = () => {
-    this.props.emailsActions.select(null);
+    this.props.emailsActions.select.REQUEST(null);
   }
 
   handleClose = () => {

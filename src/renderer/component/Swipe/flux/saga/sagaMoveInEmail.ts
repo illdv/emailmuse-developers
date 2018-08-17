@@ -6,7 +6,7 @@ import { delay } from 'redux-saga';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
@@ -105,6 +105,8 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
   yield put(folderActions.createFolder.REQUEST({
     folder: {
       name: title,
+      type: nodeType.folder,
+      id: null,
     },
   }));
 

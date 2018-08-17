@@ -6,13 +6,15 @@ import { delay } from 'redux-saga';
 import { createWatch } from 'src/renderer/flux/saga/utils';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { EntityType, IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* sagaEdit() {
   yield put(push('/editor'));
@@ -41,18 +43,19 @@ function* sagaSave(action: Action<IEditEntity>) {
   }
 
   if (type === EntityType.Email) {
-    const email = {
+    const email: IEmail = {
       body: html,
       id,
       description: params.description,
       title: params.subject,
       folder_id: folderId,
+      type: nodeType.email,
     };
 
     if (email.id) {
-      yield put(EmailActions.save({ email, saveAndClose: false }));
+      yield put(emailActions.save.REQUEST({ email, saveAndClose: false }));
     } else {
-      yield put(EmailActions.create(email));
+      yield put(emailActions.create.REQUEST({ email }));
     }
   }
 
@@ -90,7 +93,7 @@ function* sagaClose(action: Action<{ type: EntityType }>) {
   yield delay(100);
 
   if (action.payload.type === EntityType.Email) {
-    yield put(push('/emails'));
+    yield put(folderActions.openFolder.REQUEST({}));
   }
 
   if (action.payload.type === EntityType.Layout) {
@@ -106,13 +109,13 @@ function* sagaRemove(action: Action<IEditEntity>) {
   const { type, id } = action.payload;
   if (id) {
     if (type === EntityType.Email) {
-      yield put(EmailActions.remove(id));
+      yield put(emailActions.remove.REQUEST({ id }));
     }
     if (type === EntityType.Snippet) {
-      yield put(SnippetsAction.remove.REQUEST({ id }));
+      yield put(SnippetsAction.remove.REQUEST({ id: String(id) }));
     }
     if (type === EntityType.Layout) {
-      yield put(LayoutActions.remove.REQUEST({ ids: [id] }));
+      yield put(LayoutActions.remove.REQUEST({ ids: [String(id)] }));
     }
   }
 

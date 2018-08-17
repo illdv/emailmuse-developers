@@ -1,9 +1,10 @@
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
 export interface IFolder {
-  id?: number;
+  id: number;
   name: string;
-  parentId?: number;
+  type: nodeType.folder;
+  parentId?: number;   // now this field doesn't come fom backend
   created_at?: string;
   deleted_at?: string;
   updated_at?: string;

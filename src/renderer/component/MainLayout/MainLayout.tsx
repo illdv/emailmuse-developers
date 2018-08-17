@@ -5,7 +5,7 @@ import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
 // import HTML5Backend from 'react-dnd-html5-backend';
 // import { DragDropContext } from 'react-dnd';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Menu from 'src/renderer/component/Menu/Menu';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
@@ -44,7 +44,6 @@ export namespace MainLayoutSpace {
     drawerMenu?: IDrawerMenuState;
   }
 }
-
 @DragDropContext
 class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
 
@@ -59,7 +58,10 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/' component={Menu}/>
           </Grid>
           <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
-            <Route path='/emails' component={Emails}/>
+            <Switch>
+              <Route path='/emails/:id/:name' component={Emails}/>
+              <Route path='/emails' component={Emails}/>
+            </Switch>
             <Route path='/layouts' component={Layouts}/>
             <Route path='/image-library' component={ImageLibrary}/>
             <Route path='/snippets' component={Snippets}/>

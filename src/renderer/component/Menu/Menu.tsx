@@ -25,15 +25,14 @@ import {
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 
-// TODO: delete route
 const createMenuSchema = (): IMenuItem[] => {
   return [
-    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.TEMPLATES, route: '/emails' },
-    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY, route: '/image-library' },
-    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, route: '/snippets' },
-    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, route: '/layouts' },
-    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, route: '/swipe' },
-    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, route: '/training' },
+    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.EMAILS },
+    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
+    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
+    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS },
+    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE },
+    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING },
   ];
 };
 
@@ -53,7 +52,7 @@ const styles: IStyle = theme => ({
   },
 });
 
-function Item(props: { title: string, icon, route, className?, onClick?: any }) {
+const Item = (props: { title: string, icon, className?, onClick?: any }) => {
   const { className, icon, title, onClick } = props;
   return (
       <ListItem button className={className} onClick={onClick}>
@@ -63,14 +62,13 @@ function Item(props: { title: string, icon, route, className?, onClick?: any }) 
         <Typography variant='subheading' noWrap>{title}</Typography>
       </ListItem>
   );
-}
+};
 
 interface IMenuItem {
   title: string;
   icon: ReactElement<any>;
   className?: string;
   type: MenuItemType;
-  route: string;
 }
 
 export namespace MenuSpace {
@@ -107,7 +105,6 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
           <Item
             title={item.title}
             icon={item.icon}
-            route={item.route}
             className={item.className}
             onClick={this.selectItem(item.type)}
           />

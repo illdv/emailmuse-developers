@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
 import { Fade, Paper, Typography } from '@material-ui/core';
 import block from 'bem-ts';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
+import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { IEmailActions } from 'src/renderer/component/Emails/flux/interface';
-import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
-
-import './Layouts.scss';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
@@ -22,6 +17,8 @@ import { layoutToEditEntity, toItem } from 'src/renderer/component/Layouts/utils
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
+import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import './Layouts.scss';
 
 const b = block('layout');
 
@@ -35,7 +32,7 @@ export namespace LayoutsSpace {
   }
 
   export interface IProps {
-    actions?: IEmailActions;
+    emailsActions: IEmailsActions;
     actionLayout: ILayoutActions;
     layout: ILayoutState;
     editorActions?: IEditorActions;
@@ -58,7 +55,9 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
 
 // ToDo fix folder
   createTemplate = ({ title, body }: ILayout) => {
-    this.props.editorActions.edit.REQUEST(emailToEditEntity({ body, title, description: '---', folder_id: 0 }));
+    this.props.editorActions.edit.REQUEST(emailToEditEntity({
+      body, title, description: '---', folder_id: 0, type: nodeType.email, id: null,
+    }));
   }
 
   /*  onSkip = () => {
@@ -85,7 +84,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
   }
 
   onCloseOrRemove = (layout: ILayout) => {
-    this.props.actionLayout.remove.REQUEST({ ids: [layout.id] });
+    this.props.actionLayout.remove.REQUEST({ ids: [String(layout.id)] });
   }
 
   onSaveOrCreate = (layout: ILayout) => {
@@ -183,10 +182,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return ({
     actionLayout: bindModuleAction(LayoutActions, dispatch),
     editorActions: bindModuleAction(EditorActions, dispatch),
-    actions: {
-      selectMenuItem: bindActionCreators(DrawerMenuAction.selectMenuItem, dispatch),
-      create: bindActionCreators(EmailActions.create, dispatch),
-    },
+    emailsActions: bindModuleAction(emailActions, dispatch),
   });
 };
 

@@ -1,8 +1,9 @@
 export interface IEmail {
+  id: number;
   title: string;
+  type: nodeType.email;
   body: string;
   folder_id: number;
-  id?: string;
   description?: string;
   user_id?: number;
   created_at?: string;
@@ -10,10 +11,21 @@ export interface IEmail {
   deleted_at?: string;
 }
 
-// export enum nodeType {
-//   email = 'email',
-//   folder = 'folder',
-// }
+export enum nodeType {
+  email = 'email',
+  folder = 'folder',
+}
+
+export interface IFolderEmail {
+  id: number;
+  type: nodeType;
+  title: string;
+  updated_at: string;
+
+  body?: string;
+  description?: string;
+  folderId?: number;
+}
 
 export interface INodesResponse {
   current_page: number;

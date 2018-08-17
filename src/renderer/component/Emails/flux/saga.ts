@@ -1,10 +1,8 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
-import { CREATE, LOADING, REMOVE, SAVE, SELECT_NEW_TEMPLATE } from './module';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
-import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
-import { EmailActions } from 'src/renderer/component/Emails/flux/module';
+import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
@@ -16,16 +14,7 @@ import { EmailAPI } from 'src/renderer/API/EmailAPI';
 import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { IFolder, IGetFoldersEmailsResponse } from 'src/renderer/component/Folder/flux/interface';
 import { folderActions } from 'src/renderer/component/Folder/flux/actions';
-import { createSelector } from 'reselect';
-import { delay } from 'redux-saga';
-
-// function getCurrentPageSelector(state: IGlobalState) {
-//   return useOrDefault(() => state.emailNodes.pagination.current_page, 0);
-// }
-/*const emailSelector = (state): IEmail[] => state.email;
-export const getEmailSelector = createSelector(emailSelector,
-  (state: IEmail[]): number => state,
-);*/
+import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* loadingFoldersAndEmails(action: Action<{s: string}>) {
   try {
@@ -34,9 +23,9 @@ function* loadingFoldersAndEmails(action: Action<{s: string}>) {
     const { emails, folders }: { emails: IEmail[], folders: IFolder[] } = response.data;
 
     yield put(folderActions.getFolders.SUCCESS({ folders }));
-    yield put(EmailActions.successfully(emails));
+    yield put(emailActions.successfully.REQUEST({ emails }));
   } catch (error) {
-    yield put(EmailActions.failure());
+    yield put(emailActions.failure.REQUEST({}));
   }
 }
 
@@ -45,17 +34,17 @@ function* getEmailsFromFolders(action: Action<{ parentId: number }>) {
   try {
     const response: AxiosResponse<any> = yield call(FolderAPI.getEmailsInFolder, parentId);
     const emails: IEmail[] = response.data;
-    yield put(EmailActions.successfully(emails));
-    yield put(folderActions.getFolders.SUCCESS({ folders: null })); // set null for delete folders from folderList
+
+    yield put(emailActions.getEmailFromFolder.SUCCESS({ emails }));
   } catch (error) {
-    yield put(EmailActions.failure());
+    yield put(emailActions.getEmailFromFolder.FAILURE({}));
   }
 }
 
 function* saveTemplate(action: Action<{email: IEmail}>) {
   try {
     yield call(EmailAPI.edit, action.payload.email);
-    yield put(EmailActions.loading({}));
+    yield put(emailActions.loading.REQUEST({}));
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
   } catch (error) {
@@ -63,10 +52,10 @@ function* saveTemplate(action: Action<{email: IEmail}>) {
   }
 }
 
-function* createTemplate(action: Action<IEmail>) {
+function* createTemplate(action: Action<{ email: IEmail }>) {
   try {
-    const axionData = yield call(EmailAPI.create, [action.payload]);
-    yield put(EmailActions.createSuccess(axionData.data));
+    const response = yield call(EmailAPI.create, [action.payload.email]);
+    yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
 
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
   } catch (error) {
@@ -81,9 +70,9 @@ function* removeTemplates(action) {
 
     yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
     // const page: number = yield select(getCurrentPageSelector);
-    // yield put(EmailActions.loading({ page }));
+    // yield put(emailActions.loading({ page }));
     // TODO: Fix
-    call(loadingFoldersAndEmails, {type: '', payload: {s: ''}});
+    yield put(folderActions.openFolder.REQUEST({}));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email removed', ToastType.Error));
   }
@@ -95,7 +84,7 @@ function* copyTemplates(action) {
 
     yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
     // const page: number = yield select(getCurrentPageSelector);
-    // yield put(EmailActions.loading({ page }));
+    // yield put(emailActions.loading({ page }));
     // TODO: Fix
     call(loadingFoldersAndEmails, {type: '', payload: {s: ''}});
   } catch (error) {
@@ -115,20 +104,20 @@ function* sagaSelectNewTemplate(action) {
       body: selectedLayout.body,
       description: '---',
       folder_id: action.payload.parentId,
+      type: nodeType.email,
     })));
 }
 
 function* watcher() {
   yield all([
-    takeEvery(SAVE, saveTemplate),
-    takeEvery(CREATE, createTemplate),
-    takeEvery(REMOVE, removeTemplates),
-    takeEvery(LOADING, loadingFoldersAndEmails),
-    takeEvery(SELECT_NEW_TEMPLATE, sagaSelectNewTemplate),
-    takeEvery(EmailActions.copy(null).type, copyTemplates),
-    takeEvery(EmailActions.getEmailFromFolder, getEmailsFromFolders),
-    takeEvery(EmailActions.save, saveTemplate),
-
+    takeEvery(emailActions.save.REQUEST, saveTemplate),
+    takeEvery(emailActions.create.REQUEST, createTemplate),
+    takeEvery(emailActions.remove.REQUEST, removeTemplates),
+    takeEvery(emailActions.loading.REQUEST, loadingFoldersAndEmails),
+    takeEvery(emailActions.selectNewTemplate.REQUEST, sagaSelectNewTemplate),
+    takeEvery(emailActions.copy.REQUEST, copyTemplates),
+    takeEvery(emailActions.getEmailFromFolder.REQUEST, getEmailsFromFolders),
+    takeEvery(emailActions.save.REQUEST, saveTemplate),
   ]);
 }
 

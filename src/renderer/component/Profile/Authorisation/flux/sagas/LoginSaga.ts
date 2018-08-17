@@ -11,6 +11,7 @@ import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Au
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -37,7 +38,6 @@ function* watcherLogout() {
 
 function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<any> {
   try {
-
     yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
     const response: AxiosResponse<ILoginResponse> = yield call(login, action.payload.request);
     const user = extractUser(response);
@@ -47,7 +47,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
       yield call(pollsFlow);
     }
     // redirect to main page
-    yield put(push('/emails'));
+    yield put(folderActions.openFolder.REQUEST({}));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
@@ -71,7 +71,7 @@ function* onGoogleLogin(): IterableIterator<any> {
     if (user.passed_poll === false) {
       yield call(pollsFlow);
     }
-    yield put(push('/emails'));
+    yield put(folderActions.openFolder.REQUEST({}));
 
   } catch (error) {
     yield call(errorHandler, error);

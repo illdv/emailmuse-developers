@@ -4,7 +4,7 @@
  * idFrontEnd use
  */
 export interface IEditEntity {
-  id: string;
+  id: number;
   folderId: number;
   idFrontEnd: string;
   html: string;

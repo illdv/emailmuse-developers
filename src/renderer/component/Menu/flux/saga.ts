@@ -5,11 +5,9 @@ import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
+import { folderActions } from 'src/renderer/component/Folder/flux/actions'
 
 export function* menuSaga(action): IterableIterator<any> {
-
-  // const isEditorOpen: boolean = window.location.href.includes('/editor');
-
   if (hasEdit) {
     yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.ConfirmationCloseEditor }));
 
@@ -21,11 +19,13 @@ export function* menuSaga(action): IterableIterator<any> {
     if (failure) {
       return;
     }
-
   }
 
   setEdit(false);
   const routePath = getRoutePath(action);
+  if (routePath === '/emails') {
+    yield put(folderActions.openFolder.REQUEST({}));
+  }
   yield put(push(routePath));
 }
 
@@ -41,7 +41,7 @@ function getRoutePath(action) {
       return '/snippets';
     case MenuItemType.SWIPE:
       return '/swipe';
-    case MenuItemType.TEMPLATES:
+    case MenuItemType.EMAILS:
       return '/emails';
     case MenuItemType.TRAINING:
       return '/training';
