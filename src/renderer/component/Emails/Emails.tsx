@@ -14,7 +14,7 @@ import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flu
 import { IColumnNodeTable, NodeTableList, SortingType } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import { Search } from 'src/renderer/common/Search';
-import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
+import { IEmailsState } from 'src/renderer/component/Emails/flux/reducer';
 import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
 
 export namespace EmailListSpace {
