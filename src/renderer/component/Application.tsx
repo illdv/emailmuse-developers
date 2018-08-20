@@ -6,7 +6,7 @@ import MainLayout from 'src/renderer/component/MainLayout/MainLayout';
 import Auth from 'src/renderer/component/Profile/Authorisation/Auth';
 
 import './Application.scss';
-import { Toast } from 'src/renderer/common/Toast/Toast';
+import Toast from 'src/renderer/common/Toast/Toast';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
