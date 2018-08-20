@@ -48,7 +48,6 @@ export class Toast extends Component<ToastSpace.IProps, ToastSpace.IState> {
     const { messages, isOpen, type } = this.props.toast;
 
     return (
-      <div>
         <Snackbar
           open={isOpen}
           onClose={this.handleClose}
@@ -61,7 +60,6 @@ export class Toast extends Component<ToastSpace.IProps, ToastSpace.IState> {
           }}
           message={<span id='message-id'>{messages}</span>}
         />
-      </div>
     );
   }
 }

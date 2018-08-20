@@ -15,8 +15,7 @@ import { Search } from 'src/renderer/common/Search';
 import './DialogInsertSnippet.scss';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
-// TODO: fix name on dialogs-select-snippet
-const b = block('dialogs-select-image');
+const b = block('dialogs-select-snippet');
 
 export namespace DialogInsertSnippetSpace {
   export interface IState {
