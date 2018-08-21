@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
@@ -9,7 +9,7 @@ export interface IChangePasswordPayload {
   password_confirmation: string;
 }
 
-const createAsyncAction = createActionCreator('AUTHORISATION');
+const createAsyncAction = createActionGenerator('AUTHORISATION');
 
 const loadingProfile     = createAsyncAction('GET_PROFILE');
 const changePassword = createAsyncAction('CHANGE_PASSWORD');

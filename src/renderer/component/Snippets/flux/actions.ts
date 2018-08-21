@@ -1,20 +1,26 @@
-import { ISnippetsAction } from 'src/renderer/component/Snippets/flux/interface';
-import { createAsyncAction2 } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
+import { IPagination } from 'src/renderer/common/List/interface';
+import { IAsyncAction } from 'src/renderer/flux/interface';
+import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 
-const REDUCER = 'SNIPPETS';
-const NS      = `${REDUCER}__`;
+const createAction = createActionGenerator('SNIPPETS');
 
-export const LOADING_SNIPPETS = `${NS}LOADING_SNIPPETS`;
-export const REMOVE_SNIPPETS  = `${NS}REMOVE_SNIPPETS`;
-export const ADD_SNIPPETS     = `${NS}ADD_SNIPPETS`;
-export const EDIT_SNIPPETS    = `${NS}EDIT_SNIPPETS`;
-export const SAVE_AND_CLOSE   = `${NS}SAVE_AND_CLOSE`;
+const loading = createAction('LOADING_SNIPPETS');
+const remove = createAction('REMOVE_SNIPPETS');
+const add = createAction('ADD_SNIPPETS');
+const edit = createAction('EDIT_SNIPPETS');
 
-// TODO: I use any for experiment. May be don't need add type for createAsyncAction2 because has ISnippetsAction
-const loading = createAsyncAction2<any, any>(LOADING_SNIPPETS);
-const remove  = createAsyncAction2<any, any>(REMOVE_SNIPPETS);
-const add     = createAsyncAction2<any, any>(ADD_SNIPPETS);
-const edit    = createAsyncAction2<any, any>(EDIT_SNIPPETS);
+export interface ISnippetsAction {
+  loading: IAsyncAction<{ page?: number, shortcut?: string }, ISuccessfullyPayload, {}>;
+  remove: IAsyncAction<{ id: string }, {}, {}>;
+  add: IAsyncAction<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
+  edit: IAsyncAction<{ snippet: ISnippet }, {}, {}>;
+}
+
+export interface ISuccessfullyPayload {
+  snippets: ISnippet[];
+  pagination: IPagination;
+}
 
 export const SnippetsAction: ISnippetsAction = {
   loading,

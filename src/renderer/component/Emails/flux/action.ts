@@ -1,8 +1,8 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 
-const createAsyncAction = createActionCreator('EMAILS');
+const createAsyncAction = createActionGenerator('EMAILS');
 const loading = createAsyncAction('LOADING');
 const remove = createAsyncAction('REMOVE');
 const save = createAsyncAction('SAVE');

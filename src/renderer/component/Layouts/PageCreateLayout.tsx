@@ -41,7 +41,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   emails: state.emails,
 });
 
-// TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   layoutActions: bindModuleAction(LayoutActions, dispatch),
   emailsActions: bindModuleAction(emailActions, dispatch),

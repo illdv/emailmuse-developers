@@ -1,4 +1,4 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import {
   ICreateAccountRequest,
   ILoginRequest,
@@ -7,7 +7,7 @@ import {
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
 
-const createAsyncAction = createActionCreator('AUTHORISATION');
+const createAsyncAction = createActionGenerator('AUTHORISATION');
 
 const setToken      = createAsyncAction('SET_TOKEN');
 const login         = createAsyncAction('LOGIN_ACCOUNT');

@@ -1,8 +1,8 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
 
-const createAsyncAction = createActionCreator('EDITOR');
+const createAsyncAction = createActionGenerator('EDITOR');
 
 const edit         = createAsyncAction('EDIT');
 const save         = createAsyncAction('SAVE');

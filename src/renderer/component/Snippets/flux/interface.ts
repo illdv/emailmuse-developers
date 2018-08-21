@@ -7,15 +7,3 @@ export interface ISnippetsState {
   pagination: IPagination;
   status: ActionStatus;
 }
-
-export interface ISnippetsAction {
-  loading: IAsyncAction<{ page?: number, shortcut?: string }, ISuccessfullyPayload, {}>;
-  remove: IAsyncAction<{ id: string }, {}, {}>;
-  add: IAsyncAction<{ snippet: ISnippet }, { snippet: ISnippet }, {}>;
-  edit: IAsyncAction<{ snippet: ISnippet }, {}, {}>;
-}
-
-export interface ISuccessfullyPayload {
-  snippets: ISnippet[];
-  pagination: IPagination;
-}
