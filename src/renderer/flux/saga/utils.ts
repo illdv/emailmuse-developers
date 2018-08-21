@@ -5,7 +5,7 @@ import { all, call, put, race, take } from 'redux-saga/effects';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
-import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 
 export function* selectFromModal(type: ModalWindowType) {
   yield put(ModalWindowActions.show.REQUEST({ type }));
@@ -17,14 +17,14 @@ export function* selectFromModal(type: ModalWindowType) {
   return success || null;
 }
 
-// TODO: fix any
 /**
  * Use for map dispatch actions from Module.
  */
-export function bindModuleAction(moduleActions: any, dispatch: any): ActionCreatorsMapObject {
-  return Object.entries(moduleActions).reduce((result, [key, value]): ActionCreatorsMapObject => {
-    return { ...result, [key]: bindActionCreators(value as any, dispatch) };
-  }, {});
+export function bindModuleAction<T>(moduleActions: T, dispatch: any): T {
+  return Object.entries(moduleActions).reduce((result, [key, value]): T => {
+    result[key] = bindActionCreators(value as any, dispatch);
+    return result;
+  }, {} as T);
 }
 
 export function createWatch(actionCreators: IAsyncAction2<any, any>, handler: (action: any) => void) {

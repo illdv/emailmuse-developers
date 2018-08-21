@@ -16,7 +16,6 @@ function* uploadImagesWorker(action: IActionPayload<File[]>): IterableIterator<a
     yield put(actions.getImagesRequest(currentPage));
     yield put(FluxToast.Actions.showToast('Image saved'));
   } catch (error) {
-    // TODO: Check this
     const messages = useOrDefault(() => (error.response.data.errors['images.0']['0']), null);
     if (messages) {
       yield put(FluxToast.Actions.showToast(messages, ToastType.Error));

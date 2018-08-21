@@ -53,16 +53,18 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
     this.props.actionLayout.loading.REQUEST({ page: 0 });
   }
 
-// ToDo fix folder
   createTemplate = ({ title, body }: ILayout) => {
-    this.props.editorActions.edit.REQUEST(emailToEditEntity({
-      body, title, description: '---', folder_id: 0, type: nodeType.email, id: null,
-    }));
+    this.props.editorActions.edit.REQUEST(
+      emailToEditEntity({
+        body,
+        title,
+        description: '---',
+        folder_id: 0,
+        type: nodeType.email,
+        id: null,
+      }),
+    );
   }
-
-  /*  onSkip = () => {
-      this.createTemplate({ body: 'Example text', title: 'Email' });
-    }*/
 
   createOwnTemplate = () => {
     this.setState({ showPopUp: true });
