@@ -79,7 +79,6 @@ export function createAsyncAction2<R, S>(actionName: string): IAsyncAction<R, S,
   return helperCreateAction<R, S, IPayloadError>(actionName);
 }
 
-// TODO: bad name
-export const createActionCreator = (reducer: string) => (actionType: string) => {
+export const createActionGenerator = (reducer: string) => (actionType: string) => {
   return createAsyncAction2<any, any>(`${reducer}__${actionType}`);
 };

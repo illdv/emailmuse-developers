@@ -1,11 +1,168 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Emails/> Couldn't download the templates 1`] = `
-<WithStyles(Typography)
-  align="center"
-  noWrap={true}
-  variant="headline"
+<Component>
+  <Emails
+    editorActions={
+      Object {
+        "close": Object {
+          "FAILURE": [MockFunction],
+          "REQUEST": [MockFunction],
+          "SUCCESS": [MockFunction],
+        },
+        "edit": Object {
+          "FAILURE": [MockFunction],
+          "REQUEST": [MockFunction],
+          "SUCCESS": [MockFunction],
+        },
+        "remove": Object {
+          "FAILURE": [MockFunction],
+          "REQUEST": [MockFunction],
+          "SUCCESS": [MockFunction],
+        },
+        "save": Object {
+          "FAILURE": [MockFunction],
+          "REQUEST": [MockFunction],
+          "SUCCESS": [MockFunction],
+        },
+        "saveAndClose": Object {
+          "FAILURE": [MockFunction],
+          "REQUEST": [MockFunction],
+          "SUCCESS": [MockFunction],
+        },
+      }
+    }
+    emails={
+      Object {
+        "emails": Object {},
+        "selectedTemplate": null,
+        "status": "FAILURE",
+      }
+    }
+    emailsActions={
+      Object {
+        "copy": [MockFunction],
+        "create": [MockFunction],
+        "createSuccess": [MockFunction],
+        "failure": [MockFunction],
+        "getEmailFromFolder": [MockFunction],
+        "loading": [MockFunction],
+        "remove": [MockFunction],
+        "save": [MockFunction],
+        "select": [MockFunction],
+        "selectNewTemplate": [MockFunction],
+      }
+    }
+    folders={Array []}
+    foldersActions={
+      Object {
+        "createFolder": [MockFunction],
+        "deleteFolder": [MockFunction],
+        "getFolders": [MockFunction],
+        "showModal": [MockFunction],
+        "updateFolder": [MockFunction],
+      }
+    }
+  />
+</Component>
+`;
+
+exports[`<Emails/> Waite initialize 1`] = `
+<Provider
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
 >
-  Sorry but we couldn't download the emails.
-</WithStyles(Typography)>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Emails
+      editorActions={
+        Object {
+          "close": Object {
+            "FAILURE": [MockFunction],
+            "REQUEST": [MockFunction],
+            "SUCCESS": [MockFunction],
+          },
+          "edit": Object {
+            "FAILURE": [MockFunction],
+            "REQUEST": [MockFunction],
+            "SUCCESS": [MockFunction],
+          },
+          "remove": Object {
+            "FAILURE": [MockFunction],
+            "REQUEST": [MockFunction],
+            "SUCCESS": [MockFunction],
+          },
+          "save": Object {
+            "FAILURE": [MockFunction],
+            "REQUEST": [MockFunction],
+            "SUCCESS": [MockFunction],
+          },
+          "saveAndClose": Object {
+            "FAILURE": [MockFunction],
+            "REQUEST": [MockFunction],
+            "SUCCESS": [MockFunction],
+          },
+        }
+      }
+      emails={
+        Object {
+          "emails": Object {},
+          "selectedTemplate": null,
+          "status": "REQUEST",
+        }
+      }
+      emailsActions={
+        Object {
+          "copy": [MockFunction],
+          "create": [MockFunction],
+          "createSuccess": [MockFunction],
+          "failure": [MockFunction],
+          "getEmailFromFolder": [MockFunction],
+          "loading": [MockFunction],
+          "remove": [MockFunction],
+          "save": [MockFunction],
+          "select": [MockFunction],
+          "selectNewTemplate": [MockFunction],
+        }
+      }
+      folders={Array []}
+      foldersActions={
+        Object {
+          "createFolder": [MockFunction],
+          "deleteFolder": [MockFunction],
+          "getFolders": [MockFunction],
+          "showModal": [MockFunction],
+          "updateFolder": [MockFunction],
+        }
+      }
+    />
+  </Router>
+</Provider>
 `;

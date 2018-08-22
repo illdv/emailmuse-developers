@@ -13,7 +13,7 @@ import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
-import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* sagaEdit() {
@@ -93,7 +93,7 @@ function* sagaClose(action: Action<{ type: EntityType }>) {
   yield delay(100);
 
   if (action.payload.type === EntityType.Email) {
-    yield put(folderActions.openFolder.REQUEST({}));
+    yield put(FolderActions.openFolder.REQUEST({}));
   }
 
   if (action.payload.type === EntityType.Layout) {

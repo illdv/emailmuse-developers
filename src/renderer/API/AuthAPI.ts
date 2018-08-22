@@ -3,7 +3,7 @@ import { AxiosPromise } from 'axios';
 import {
   ICreateAccountRequest,
   ILoginRequest,
-  ILoginResponse,
+  ILoginResponse, IResetPasswordRequest,
 } from 'src/renderer/component/Profile/Authorisation/flux/interface';
 
 export function login(request: ILoginRequest): AxiosPromise<ILoginResponse> {
@@ -24,13 +24,6 @@ export function sendCodeOnMail(email: string) {
 
 export function oAuthGoogle(token: string) {
   return AxiosWrapper.get('/google/auth', {token} );
-}
-// TODO: move in Authorisation module
-interface IResetPasswordRequest {
-  email: string;
-  token: string;
-  password: string;
-  passwordConfirmation: string;
 }
 
 export function resetPassword({ email, token, password, passwordConfirmation }: IResetPasswordRequest) {

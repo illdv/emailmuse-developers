@@ -1,7 +1,7 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 
-const createAsyncAction = createActionCreator('MODAL_WINDOW');
+const createAsyncAction = createActionGenerator('MODAL_WINDOW');
 
 export enum ModalWindowType {
   SelectLayout   = 'SelectLayout',

@@ -10,11 +10,11 @@ import { IEmail, IFolderEmail, nodeType } from 'src/renderer/component/Emails/fl
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { folderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
-import { IColumnNodeTable, NodeTableList, SortingType } from 'src/renderer/component/Emails/NodeList/NodeTableList';
+import { FolderActions, IFolderActions } from 'src/renderer/component/Folder/flux/actions';
+import { NodeTableList } from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import { Search } from 'src/renderer/common/Search';
-import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
+import { IEmailsState } from 'src/renderer/component/Emails/flux/reducer';
 import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
 
 export namespace EmailListSpace {
@@ -225,7 +225,7 @@ const mapStateToProps = (state: IGlobalState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   emailsActions: bindModuleAction(emailActions, dispatch),
-  foldersActions: bindModuleAction(folderActions, dispatch),
+  foldersActions: bindModuleAction(FolderActions, dispatch),
   editorActions: bindModuleAction(EditorActions, dispatch),
 });
 

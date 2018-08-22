@@ -1,13 +1,13 @@
 import { call, put, take } from 'redux-saga/effects';
 import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
-import * as EmailerAPI from 'src/renderer/API/EmailerAPI';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
+import { ProfileAPI } from 'src/renderer/API/EmailerAPI';
 
 function* getProfileSaga() {
   try {
-    const response = yield call(EmailerAPI.Accounts.getProfile);
+    const response = yield call(ProfileAPI.getProfile);
     yield put(AccountActions.loadingProfile.SUCCESS({user: response.data}));
   } catch (error) {
     yield call(errorHandler, error);
@@ -26,7 +26,7 @@ export function* watcherGetProfile() {
 function* changePasswordSaga(action): IterableIterator<any> {
   const data = action.payload;
   try {
-    yield call(EmailerAPI.Accounts.changePassword, data);
+    yield call(ProfileAPI.changePassword, data);
     yield put(FluxToast.Actions.showToast('Your password has been successfully changed', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -44,7 +44,7 @@ export function* watcherChangePassword() {
 function* changeNameSaga(action): IterableIterator<any> {
   try {
     const newName = action.payload.name;
-    yield call(EmailerAPI.Accounts.changeName, newName);
+    yield call(ProfileAPI.changeName, newName);
     yield put(FluxToast.Actions.showToast('Name change success', ToastType.Success));
     yield put(AccountActions.changeName.SUCCESS({name: newName}));
   } catch (error) {

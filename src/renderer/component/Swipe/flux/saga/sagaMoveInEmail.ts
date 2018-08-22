@@ -15,7 +15,7 @@ import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SwipeUtils } from 'src/renderer/component/Swipe/flux/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
-import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 const { temporaryLayoutToEntity } = SwipeUtils;
@@ -102,7 +102,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
   const selectedLayout: ILayout  = actionSelectLayout.payload.layout;
 
   const title = yield select(getSelectedSwipeTitle);
-  yield put(folderActions.createFolder.REQUEST({
+  yield put(FolderActions.createFolder.REQUEST({
     folder: {
       name: title,
       type: nodeType.folder,
@@ -110,7 +110,7 @@ function* sagaMoveSwipeInEmail(action: Action<{ emails: IEmail[] }>) {
     },
   }));
 
-  const actionFolder: any = yield take(folderActions.createFolder.SUCCESS);
+  const actionFolder: any = yield take(FolderActions.createFolder.SUCCESS);
 
   selectedEmails = selectedEmails.map(email => ({...email,  folder_id: actionFolder.payload.id }));
 

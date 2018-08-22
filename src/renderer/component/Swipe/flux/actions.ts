@@ -1,10 +1,10 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
-const createAsyncAction = createActionCreator('SWIPE');
+const createAsyncAction = createActionGenerator('SWIPE');
 
 const loading = createAsyncAction('LOADING');
 

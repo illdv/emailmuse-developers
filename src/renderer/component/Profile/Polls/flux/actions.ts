@@ -1,9 +1,9 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { IPoll } from './interfase';
 import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 
-const createAsyncAction = createActionCreator('POLLS');
+const createAsyncAction = createActionGenerator('POLLS');
 
 const savePoll = createAsyncAction('CREATE');
 const getPoll = createAsyncAction('GET');

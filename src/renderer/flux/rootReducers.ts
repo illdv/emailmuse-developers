@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { FluxToast } from 'src/renderer/common/Toast/flux/actions';
-import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducers';
+import { ImageLibrary } from 'src/renderer/component/ImageLibrary/store/reducer';
 import { Status } from 'src/renderer/common/PreloaderLayout/Status/reducers';
 import * as StatusConstants from 'src/renderer/common/PreloaderLayout/Status/constants';
 import { routerReducer } from 'react-router-redux';
 
 import folders from 'src/renderer/component/Folder/flux/reduser';
-import emails, { IEmailsState } from 'src/renderer/component/Emails/flux/module';
+import emails, { IEmailsState } from 'src/renderer/component/Emails/flux/reducer';
 import snippets from 'src/renderer/component/Snippets/flux/reducer';
 import layouts from 'src/renderer/component/Layouts/flux/module';
 import modalWindow from 'src/renderer/common/DialogProvider/flux/reducer';

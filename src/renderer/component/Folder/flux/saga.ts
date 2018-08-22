@@ -4,7 +4,7 @@ import { Action } from 'redux-act';
 
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
-import { folderActions } from './actions';
+import { FolderActions } from './actions';
 import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { selectFromModal } from 'src/renderer/flux/saga/utils';
 import { ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
@@ -20,14 +20,14 @@ function* showFolderModal(action: Action<{ parentId: number }>) {
     parentId: action.payload.parentId,
     type: nodeType.folder,
   };
-  yield put(folderActions.createFolder.REQUEST({ folder }));
+  yield put(FolderActions.createFolder.REQUEST({ folder }));
 }
 
 function* createFolder(action: Action<{ folder: IFolder }>) {
   const folder: IFolder = action.payload.folder;
   try {
     const response = yield call(FolderAPI.createFolder, folder);
-    yield put(folderActions.createFolder.SUCCESS(response.data));
+    yield put(FolderActions.createFolder.SUCCESS(response.data));
 
     yield put(emailActions.loading.REQUEST({}));
     yield put(FluxToast.Actions.showToast('Folder created', ToastType.Success));
@@ -53,7 +53,7 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
   const folderIds: number[] = action.payload.ids;
   try {
     yield call(FolderAPI.deleteFolders, folderIds);
-    yield put(folderActions.deleteFolder.SUCCESS({ ids: folderIds }));
+    yield put(FolderActions.deleteFolder.SUCCESS({ ids: folderIds }));
     if (folderIds.length > 1) {
       yield put(FluxToast.Actions.showToast('Folders deleted', ToastType.Success));
     } else {
@@ -87,11 +87,11 @@ function* openFolder(action: Action<{ folder?: IFolder }>) {
 
 function* watcher() {
   yield all([
-    takeEvery(folderActions.showModal.REQUEST, showFolderModal),
-    takeEvery(folderActions.createFolder.REQUEST, createFolder),
-    takeEvery(folderActions.updateFolder.REQUEST, updateFolder),
-    takeEvery(folderActions.deleteFolder.REQUEST, deleteFolder),
-    takeEvery(folderActions.openFolder.REQUEST, openFolder),
+    takeEvery(FolderActions.showModal.REQUEST, showFolderModal),
+    takeEvery(FolderActions.createFolder.REQUEST, createFolder),
+    takeEvery(FolderActions.updateFolder.REQUEST, updateFolder),
+    takeEvery(FolderActions.deleteFolder.REQUEST, deleteFolder),
+    takeEvery(FolderActions.openFolder.REQUEST, openFolder),
   ]);
 }
 

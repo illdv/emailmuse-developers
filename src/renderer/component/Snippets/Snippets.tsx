@@ -6,13 +6,13 @@ import { connect, Dispatch } from 'react-redux';
 import { Add } from '@material-ui/icons';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { ISnippetsAction, ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
+import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { Fab } from 'src/renderer/common/Fab';
 import { createEmptySnippet, snippetToEditEntity, snippetToItem } from 'src/renderer/component/Snippets/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import { ISnippetsAction, SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
 import Flex from 'src/renderer/common/Flex';

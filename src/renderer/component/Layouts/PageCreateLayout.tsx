@@ -19,7 +19,7 @@ import { ActionStatus } from 'src/renderer/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ILayoutActions } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
-import { IEmailsState } from 'src/renderer/component/Emails/flux/module';
+import { IEmailsState } from 'src/renderer/component/Emails/flux/reducer';
 
 export namespace PageCreateLayoutSpace {
   export interface IProps {
@@ -41,7 +41,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   emails: state.emails,
 });
 
-// TODO: Use createActions!
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   layoutActions: bindModuleAction(LayoutActions, dispatch),
   emailsActions: bindModuleAction(emailActions, dispatch),

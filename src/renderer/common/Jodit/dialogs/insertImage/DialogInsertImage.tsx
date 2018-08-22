@@ -172,11 +172,12 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps &
           <DialogContent>
             <div className={b('container')}>
               <div className={b('header')}>
-                <div className={b('header__search')}>
+                <div className={b('header-search')}>
                   <Search search={this.onLoading}/>
                   {
                     pagination.total &&
                     <TablePagination
+                      style={{ padding: '0 35px 0 0' }}
                       component='div'
                       count={pagination.total}
                       rowsPerPage={pagination.per_page}
@@ -195,7 +196,7 @@ export class DialogInsertImage extends Component<DialogSelectImageSpace.IProps &
                 <div
                   className={b('header__title')}
                   onClick={this.openDialogSelectImage}
-                  style={{cursor: 'pointer'}}
+                  style={{ cursor: 'pointer' }}
                 >
                   <Typography>Drag and drop image file to upload</Typography>
                   <CloudUpload

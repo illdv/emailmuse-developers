@@ -13,7 +13,7 @@ import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { EmailAPI } from 'src/renderer/API/EmailAPI';
 import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { IFolder, IGetFoldersEmailsResponse } from 'src/renderer/component/Folder/flux/interface';
-import { folderActions } from 'src/renderer/component/Folder/flux/actions';
+import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* loadingFoldersAndEmails(action: Action<{s: string}>) {
@@ -22,7 +22,7 @@ function* loadingFoldersAndEmails(action: Action<{s: string}>) {
             = yield call(FolderAPI.getFoldersAndEmails, action.payload.s);
     const { emails, folders }: { emails: IEmail[], folders: IFolder[] } = response.data;
 
-    yield put(folderActions.getFolders.SUCCESS({ folders }));
+    yield put(FolderActions.getFolders.SUCCESS({ folders }));
     yield put(emailActions.successfully.REQUEST({ emails }));
   } catch (error) {
     yield put(emailActions.failure.REQUEST({}));
@@ -67,12 +67,8 @@ function* createTemplate(action: Action<{ email: IEmail }>) {
 function* removeTemplates(action) {
   try {
     yield call(EmailAPI.remove, action.payload);
-
     yield put(FluxToast.Actions.showToast('Email removed', ToastType.Success));
-    // const page: number = yield select(getCurrentPageSelector);
-    // yield put(emailActions.loading({ page }));
-    // TODO: Fix
-    yield put(folderActions.openFolder.REQUEST({}));
+    yield put(FolderActions.openFolder.REQUEST({}));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed email removed', ToastType.Error));
   }
@@ -83,9 +79,6 @@ function* copyTemplates(action) {
     yield call(EmailAPI.copy, action.payload.id);
 
     yield put(FluxToast.Actions.showToast('Template copy', ToastType.Success));
-    // const page: number = yield select(getCurrentPageSelector);
-    // yield put(emailActions.loading({ page }));
-    // TODO: Fix
     call(loadingFoldersAndEmails, {type: '', payload: {s: ''}});
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed template copy', ToastType.Error));

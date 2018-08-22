@@ -26,11 +26,14 @@ const createDefaultState = (): FluxToast.IState => {
 };
 
 const handle = handleActions({
-  [SHOW_TOAST]: (state, action): FluxToast.IState => {
+  [SHOW_TOAST]: (state: FluxToast.IState, action): FluxToast.IState => {
     return { ...state, ...action.payload, isOpen: true };
   },
-  [CLEAR_TOAST]: () => {
-    return createDefaultState();
+  [CLEAR_TOAST]: (state: FluxToast.IState) => {
+    return {
+      ...state,
+      isOpen: false,
+    };
   },
 }, createDefaultState());
 

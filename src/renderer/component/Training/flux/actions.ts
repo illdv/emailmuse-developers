@@ -1,8 +1,8 @@
-import { createActionCreator } from 'src/renderer/flux/utils';
+import { createActionGenerator } from 'src/renderer/flux/utils';
 import { IAsyncAction2 } from 'src/renderer/flux/interface';
 import { ITraining } from 'src/renderer/component/Training/flux/interface';
 
-const createAsyncAction = createActionCreator('TRAINING');
+const createAsyncAction = createActionGenerator('TRAINING');
 
 const loading = createAsyncAction('LOADING');
 

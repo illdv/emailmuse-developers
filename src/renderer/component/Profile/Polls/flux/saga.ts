@@ -33,17 +33,17 @@ const getPoll = createSagaHandler({
 
 function* nextQuestion(action?: Action<{ answer: string }>) {
   let answers: string[];
-  let questions;
+  let questions: IQuestion[];
   let currentQuestionId: number;
   let currentQuestion: IQuestion;
-  const getQuestions         = state => state.polls.poll.questions;
+  const getQuestions = state => state.polls.poll.questions;
   const getCurrentQuestionId = state => state.polls.currentQuestionId;
-  const getAnswers           = state => state.polls.answers;
+  const getAnswers = state => state.polls.answers;
 
   currentQuestionId = yield select(getCurrentQuestionId);
-  questions         = yield select(getQuestions);
-  answers           = yield select(getAnswers);
-  currentQuestion   = yield questions[currentQuestionId];
+  questions = yield select(getQuestions);
+  answers = yield select(getAnswers);
+  currentQuestion = yield questions[currentQuestionId];
   currentQuestionId++;
 
   if (!action.payload.answer) {
@@ -55,8 +55,7 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
       done: false,
     }));
   } else {
-    // TODO move in function isPollsCompleted
-    if (answers.length && (answers.length === questions.length - 1)) {
+    if (isPollsCompleted(answers, questions)) {
       // done
       yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));
       yield put(PollsActions.savePoll.REQUEST({ answers }));
@@ -70,6 +69,12 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
     }));
   }
 }
+
+const isPollsCompleted = (answers: string[], questions: IQuestion[]): boolean => {
+  const answersCount = answers.length;
+  const questionsCount = questions.length - 1;
+  return answersCount && (answersCount === questionsCount);
+};
 
 function* watcher() {
   yield all([
