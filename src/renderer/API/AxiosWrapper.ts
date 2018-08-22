@@ -1,9 +1,16 @@
 import axios, { AxiosPromise } from 'axios';
 
-axios.defaults.baseURL = API_URL;
+let baseURL = null;
+try {
+  baseURL = API_URL;
+} catch (e) {
+  console.log('API_URL not defined');
+}
+
+axios.defaults.baseURL = baseURL;
 
 const instance = axios.create({
-  baseURL: API_URL,
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

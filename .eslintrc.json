@@ -8,6 +8,13 @@
     "plugin:react/recommended",
     "eslint:recommended"
   ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.karma.config.js"
+      }
+    }
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,

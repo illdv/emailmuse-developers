@@ -4,6 +4,12 @@ import { Emails } from 'src/renderer/component/Emails/Emails';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { RootMock } from 'src/renderer/__mock__/rootMock';
+import toJson from 'enzyme-to-json';
+
+jest.mock('../../../src/components/ui/ColorList');
+
+const EmailMock = props => <RootMock><Emails {...props} /></RootMock>;
 
 describe('<Emails/>', () => {
   let props;
@@ -89,25 +95,27 @@ describe('<Emails/>', () => {
   test('Waite initialize', () => {
     // spinner rotates
     props.emails.status = ActionStatus.REQUEST;
-    const render = shallow(<Emails {...props} />);
+    const render = shallow(<RootMock><Emails {...props} /></RootMock>);
 
-    expect(render).toMatchSnapshot();
+    expect(toJson(render)).toMatchSnapshot();
   });
 
   test('Couldn\'t download the templates', () => {
     props.emails.status = ActionStatus.FAILURE;
-    const render = shallow(<Emails {...props} />);
+    const render = shallow(<EmailMock {...props} />);
 
     expect(render).toMatchSnapshot();
   });
 
   test('User click on button "Add a new email"', () => {
     props.emails.selectedEmail = undefined;
-    const render = shallow(<Emails {...props} />);
+    const render = shallow(<RootMock><Emails {...props} /></RootMock>);
+
     render.find('Fab').simulate('click');
 
     expect(mockSelectEmail).toBeCalled();
   });
+
   describe('Render template list', () => {
     beforeEach(() => {
       props.templates = {
@@ -123,7 +131,7 @@ describe('<Emails/>', () => {
       };
     });
     test('show list', () => {
-      const render = mount(<Emails {...props} />);
+      const render = mount(<EmailMock {...props} />);
 
       expect(render).toMatchSnapshot();
     });
@@ -137,7 +145,7 @@ describe('<Emails/>', () => {
     });
 
     test('User click on template item row', () => {
-      const render = shallow(<Emails {...props} />) as any;
+      const render = shallow(<EmailMock {...props} />) as any;
       render.instance().selectNode(selectedTemplate)();
       const mockEmailToEditEntity = emailToEditEntity(selectedTemplate);
 
@@ -146,7 +154,7 @@ describe('<Emails/>', () => {
     });
     test('User click on copy icon', () => {
       const id = 1;  // template ids
-      const render = shallow(<Emails {...props} />) as any;
+      const render = shallow(<EmailMock {...props} />) as any;
       render.instance().onCopy(id);
 
       expect(mockCopyTemplate).toBeCalled();
@@ -158,7 +166,7 @@ describe('<Emails/>', () => {
     let render;
     beforeEach(() => {
       props.emails.selectedEmail = selectedTemplate;
-      render = shallow(<Emails {...props} />);
+      render = shallow(<EmailMock {...props} />);
     });
     it('user select template', () => {
       expect(props.emails.selectedTemplate).toEqual(selectedTemplate);
