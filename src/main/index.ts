@@ -1,23 +1,51 @@
 const electron  = require('electron');
-const path      = require('path');
-const urlFormat = require('url');
-
 const {
         app,
         BrowserWindow,
         Menu,
         ipcMain,
         shell,
-      } = require('electron');
+        autoUpdater, dialog
+      }         = require('electron');
+const path      = require('path');
+const urlFormat = require('url');
 
 let mainWindow;
+setInterval(() => {
+  autoUpdater.checkForUpdates();
+}, 60000);
 
-let isProduction = false;
+let isProduction    = false;
+const UPDATE_SERVER = 'https://bitbucket.org/surefirejb/email-writer-frontend';
 
 try {
   isProduction = IS_PRODUCTION;
 } catch (e) {
   console.log('Failed get IS_PRODUCTION in Electron!');
+}
+
+if (isProduction && UPDATE_SERVER) {
+ /* const autoUpdateTime = 600000; // 1 hour
+  const feed           = `${UPDATE_SERVER}/update/${process.platform}/${app.getVersion()}`;
+  autoUpdater.setFeedURL({ url: feed });
+
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, autoUpdateTime);
+
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'Application Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+    }
+
+    dialog.showMessageBox(dialogOpts, (response) => {
+      if (response === 0) autoUpdater.quitAndInstall()
+    })
+  })*/
 }
 
 function createWindow() {

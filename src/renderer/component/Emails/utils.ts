@@ -25,6 +25,7 @@ export function emailToFolderEmail(email: IEmail): IFolderEmail {
     type: email.type,
     updated_at: email.updated_at,
     description: email.description || '',
+    body: email.body,
   };
 }
 

@@ -183,8 +183,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
       },
     ];
 
-    return (
-      <div style={{ minHeight: 200 }}>
+    return <div style={{ minHeight: 200 }}>
         <Table aria-labelledby='tableTitle'>
           <NodeTableHead
             onSelectAll={this.onSelectAll}
@@ -208,7 +207,6 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
           </TableBody>
         </Table>
       </div>
-    );
   }
 }
 

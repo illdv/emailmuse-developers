@@ -65,7 +65,9 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
       const folder = folderEmailToFolder(item);
       this.props.foldersActions.openFolder.REQUEST({ folder });
     } else {
+      console.log("item", item);
       const entity = folderEmailToEntity(item);
+      console.log("entity", entity)
       this.props.editorActions.edit.REQUEST(entity);
     }
   }
