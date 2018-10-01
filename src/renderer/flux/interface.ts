@@ -17,6 +17,7 @@ export type CreateAction<T> = ComplexActionCreator1<T, T>;
 
 export interface IPayloadError {
   error?: string;
+  status?: number;
 }
 
 export enum ActionStatus {

@@ -5,6 +5,9 @@ import InCenter from 'src/renderer/common/InCenter';
 import { Grid, Grow, Paper, WithStyles, withStyles } from '@material-ui/core/';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
 import { Navigation, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
+import Button from '@material-ui/core/Button';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { put } from 'redux-saga/effects';
 
 const styles = () => ({
   root: {
@@ -27,6 +30,7 @@ export namespace PaperDialogSpace {
 
   export interface IProps {
     classes?: any;
+    email?: string;
     title: string;
     subtitle?: string;
     label: string;
@@ -42,6 +46,7 @@ export namespace PaperDialogSpace {
      * Happened if indicator click onBack.
      */
     onBack?: () => void;
+    onSendNewCode?: (value: string) => void;
   }
 }
 
@@ -67,6 +72,12 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
     return null;
   }
 
+  onSendNewCode = () => {
+    console.log('done');
+    const email = this.props.email;
+    this.props.onSendNewCode(email);
+  }
+
   onBack = () => {
     this.props.onBack();
   }
@@ -76,7 +87,7 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
   }
 
   render() {
-    const { classes, title, label, subtitle, body, id } = this.props;
+    const { classes, title, label, subtitle, body, id} = this.props;
 
     return (
       <InCenter>
@@ -95,6 +106,11 @@ class PaperDialog extends Component<PaperDialogSpace.IProps & WithStyles<any>, P
                   />
                   }
                 </Grid>
+                <Button
+                    className={classes.button}
+                    onClick={this.onSendNewCode}
+                >Send new code
+                </Button>
               </Grid>
             </Grow>
             <Navigation onBack={this.onBack} onNext={this.onNext} canNext={this.props.canNext}/>

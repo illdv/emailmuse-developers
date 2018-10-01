@@ -20,17 +20,33 @@ const reducer = createReducer({}, initialState(CustomStorage.getItem('token')));
 
 const actions = AuthorisationActions;
 
+reducer.on(actions.login.REQUEST, (state, payload): IAuthState => ({
+  ...state,
+  user: {
+    ...state.user,
+    email: payload.request.email,
+  },
+}));
+
 reducer.on(actions.login.SUCCESS, (state, payload): IAuthState => ({
   ...state,
   ...payload,
   authStep: AuthStep.LOGIN,
 }));
 
-reducer.on(actions.login.FAILURE, (state, payload): IAuthState => ({
-  ...state,
-  ...payload,
-  authStep: AuthStep.LOGIN,
-}));
+reducer.on(actions.login.FAILURE, (state, payload): IAuthState => {
+  if (payload.status === 403) {
+    return ({
+        ...state,
+        authStep: AuthStep.CHECK_CODE,
+    });
+  } else {
+    return ({
+        ...state,
+        authStep: AuthStep.LOGIN,
+    });
+  }
+});
 
 reducer.on(actions.createAccount.REQUEST, (state, payload): IAuthState => ({
   ...state,

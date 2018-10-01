@@ -19,8 +19,8 @@ function* watcherSetToken() {
   while (true) {
     const action: Action<{ user: IUser }> = yield take(AuthorisationActions.login.SUCCESS(null).type);
     const token                           = action.payload.user.token;
-
-    CustomStorage.setItem('token', token, false);
+    const time                            = Date.now();
+    CustomStorage.setItemWithTimer({ time, key: 'token', value: token, isRemembered: true });
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }
@@ -40,7 +40,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
   try {
     yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
     const response: AxiosResponse<ILoginResponse> = yield call(login, action.payload.request);
-    const user = extractUser(response);
+    const user                                    = extractUser(response);
     yield put(AuthorisationActions.login.SUCCESS({ user }));
     // Check If User is new
     if (user.passed_poll === false) {
@@ -49,8 +49,9 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     // redirect to main page
     yield put(FolderActions.openFolder.REQUEST({}));
   } catch (error) {
+    const status = error.response.status;
     yield call(errorHandler, error);
-    yield put(AuthorisationActions.login.FAILURE({}));
+    yield put(AuthorisationActions.login.FAILURE({ status }));
   }
 }
 
@@ -62,11 +63,8 @@ function* getAccessToken() {
 
 function* onGoogleLogin(): IterableIterator<any> {
   try {
-
     const token = yield call(getAccessToken);
-
     const user = extractUser({ data: JSON.parse(token) } as any);
-
     yield put(AuthorisationActions.login.SUCCESS({ user }));
     if (user.passed_poll === false) {
       yield call(pollsFlow);
@@ -80,7 +78,6 @@ function* onGoogleLogin(): IterableIterator<any> {
 }
 
 function* loginSaga(): IterableIterator<any> {
-
   yield all([
     takeEvery(AuthorisationActions.login.REQUEST(null).type, onLogin),
     takeEvery(AuthorisationActions.loginInGoogle.REQUEST(null).type, onGoogleLogin),

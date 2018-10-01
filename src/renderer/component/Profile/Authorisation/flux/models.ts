@@ -26,4 +26,6 @@ export interface IAuthState {
   user: IUser;
   authStep: AuthStep;
   error: string;
+  email?: string;
+  status?: number;
 }

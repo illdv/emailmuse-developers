@@ -43,6 +43,10 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN });
   }
 
+  onSendNewCode = email => {
+    this.props.action.sendNewCode.REQUEST({ email });
+  }
+
   render() {
     const { profile } = this.props;
 
@@ -53,9 +57,11 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
             <PaperDialog
               title={'Check your email and enter code.'}
               subtitle={`A message was sent to ${profile.auth.user.email}.`}
+              email={profile.auth.user.email}
               canNext={true}
               onEnterCompleted={context.onSubmit}
               onBack={this.onClickBack}
+              onSendNewCode={this.onSendNewCode}
               id={'check_code'}
               label={'Code'}
               defaultValue={''}
