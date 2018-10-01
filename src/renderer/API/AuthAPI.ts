@@ -18,6 +18,10 @@ export function sendCode(user: ICreateAccountRequest) {
   return AxiosWrapper.post('/register', user);
 }
 
+export function sendNewCodeOnMail(email: string) {
+  return AxiosWrapper.post('/reset-confirmation-code', { email });
+}
+
 export function sendCodeOnMail(email: string) {
   return AxiosWrapper.post('/password/email', { email });
 }

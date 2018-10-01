@@ -20,7 +20,7 @@ function* watcherSetToken() {
     const action: Action<{ user: IUser }> = yield take(AuthorisationActions.login.SUCCESS(null).type);
     const token                           = action.payload.user.token;
     const time                            = Date.now();
-    CustomStorage.setItemWithTimer({ time, key: 'token', value: token, isRemembered: false });
+    CustomStorage.setItemWithTimer({ time, key: 'token', value: token, isRemembered: true });
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }
@@ -49,8 +49,9 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
     // redirect to main page
     yield put(FolderActions.openFolder.REQUEST({}));
   } catch (error) {
+    const status = error.response.status;
     yield call(errorHandler, error);
-    yield put(AuthorisationActions.login.FAILURE({}));
+    yield put(AuthorisationActions.login.FAILURE({ status }));
   }
 }
 
