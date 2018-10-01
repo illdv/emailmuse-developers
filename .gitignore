@@ -12,6 +12,8 @@ src/main/*.js
 # production
 /build
 /build_ts
+/buildTs
+/cypress/videos
 
 # misc
 .DS_Store

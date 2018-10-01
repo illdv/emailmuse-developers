@@ -19,7 +19,6 @@ export function* watcherGetProfile() {
   while (true) {
     yield take(AccountActions.loadingProfile.REQUEST(null).type);
     yield call(getProfileSaga);
-
   }
 }
 
