@@ -25,27 +25,27 @@ try {
 }
 
 if (isProduction && UPDATE_SERVER) {
- /* const autoUpdateTime = 600000; // 1 hour
-  const feed           = `${UPDATE_SERVER}/update/${process.platform}/${app.getVersion()}`;
-  autoUpdater.setFeedURL({ url: feed });
+  /* const autoUpdateTime = 600000; // 1 hour
+   const feed           = `${UPDATE_SERVER}/update/${process.platform}/${app.getVersion()}`;
+   autoUpdater.setFeedURL({ url: feed });
 
-  setInterval(() => {
-    autoUpdater.checkForUpdates();
-  }, autoUpdateTime);
+   setInterval(() => {
+     autoUpdater.checkForUpdates();
+   }, autoUpdateTime);
 
-  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-    const dialogOpts = {
-      type: 'info',
-      buttons: ['Restart', 'Later'],
-      title: 'Application Update',
-      message: process.platform === 'win32' ? releaseNotes : releaseName,
-      detail: 'A new version has been downloaded. Restart the application to apply the updates.'
-    }
+   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+     const dialogOpts = {
+     type: 'info',
+     buttons: ['Restart', 'Later'],
+     title: 'Application Update',
+     message: process.platform === 'win32' ? releaseNotes : releaseName,
+     detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+     }
 
-    dialog.showMessageBox(dialogOpts, (response) => {
-      if (response === 0) autoUpdater.quitAndInstall()
-    })
-  })*/
+     dialog.showMessageBox(dialogOpts, (response) => {
+     if (response === 0) autoUpdater.quitAndInstall()
+     })
+   })*/
 }
 
 function createWindow() {
@@ -76,7 +76,10 @@ function createWindow() {
     event.preventDefault();
     shell.openExternal(url);
   });
-  // mainWindow.webContents.session.clearStorageData();
+  // const storages = [
+  //   'appcache', 'cookies', 'filesystem', 'indexdb',
+  //   'shadercache', 'websql', 'serviceworkers', 'cachestorage'];
+  // mainWindow.webContents.session.clearStorageData({ storages });
 }
 
 app.on('activate', () => {
@@ -131,6 +134,7 @@ ipcMain.on('authorized-google', (e, url) => {
   });
 
   loginWindow.loadURL(url);
+  loginWindow.webContents.session.clearStorageData({});
 });
 
 function extractResponseFromPage(url, loginWindow) {

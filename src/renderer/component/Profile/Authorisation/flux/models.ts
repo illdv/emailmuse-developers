@@ -28,4 +28,6 @@ export interface IAuthState {
   error: string;
   email?: string;
   status?: number;
+  password?: string;
+  password_confirmation?: string;
 }

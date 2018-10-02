@@ -39,7 +39,7 @@ export interface IAuthorisationActions {
   setToken: IAsyncAction2<{ token: string }, {}>;
   login: IAsyncAction2<{ request: ILoginRequest }, { user: IUser }>;
   createAccount: IAsyncAction2<{ user: ICreateAccountRequest }, { user: IUser }>;
-  checkCode: IAsyncAction2<{ code: string }, {}>;
+  checkCode: IAsyncAction2<{ code: string; email: string; password: string; }, {}>;
   resetPassword: IAsyncAction2<{ request: IResetPasswordRequest }, {}>;
   setAuthStep: IAsyncAction2<{ authStep: AuthStep }, {}>;
   sendCode: IAsyncAction2<{ email: string }, {}>;
