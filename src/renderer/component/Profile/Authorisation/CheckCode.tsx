@@ -36,7 +36,10 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
 
   onCheckCode = value => {
     // noinspection TsLint
-    this.props.action.checkCode.REQUEST({ code: value['check_code'] });
+    this.props.action.checkCode.REQUEST({ code: value['check_code'],
+        email:this.props.profile.auth.user.email,
+        password:this.props.profile.auth.password
+    });
   }
 
   onClickBack = () => {

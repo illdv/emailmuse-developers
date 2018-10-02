@@ -3,11 +3,16 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { checkCode } from 'src/renderer/API/AuthAPI';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
-function* onCheckCode(action): IterableIterator<any> {
+function* onCheckCode(action) {
   try {
     yield checkCode(action.payload.code);
     yield put(AuthorisationActions.checkCode.SUCCESS({}));
     yield put(FluxToast.Actions.showToast('Account activation successfully', ToastType.Success));
+    const request = {
+      email: action.payload.email,
+      password: action.payload.password,
+    };
+    yield put(AuthorisationActions.login.REQUEST({ request }));
   } catch (error) {
     yield put(FluxToast.Actions.showToast('The code is invalid!', ToastType.Error));
     yield put(AuthorisationActions.checkCode.FAILURE({}));

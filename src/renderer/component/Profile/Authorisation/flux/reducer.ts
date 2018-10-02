@@ -22,6 +22,7 @@ const actions = AuthorisationActions;
 
 reducer.on(actions.login.REQUEST, (state, payload): IAuthState => ({
   ...state,
+  password: payload.request.password,
   user: {
     ...state.user,
     email: payload.request.email,
@@ -31,7 +32,9 @@ reducer.on(actions.login.REQUEST, (state, payload): IAuthState => ({
 reducer.on(actions.login.SUCCESS, (state, payload): IAuthState => ({
   ...state,
   ...payload,
-  authStep: AuthStep.LOGIN,
+  authStep: AuthStep.LOADING,
+  password: '',
+  password_confirmation: '',
 }));
 
 reducer.on(actions.login.FAILURE, (state, payload): IAuthState => {
@@ -68,11 +71,11 @@ reducer.on(actions.createAccount.FAILURE, (state, payload): IAuthState => ({
   authStep: AuthStep.REGISTRATION,
 }));
 
-reducer.on(actions.checkCode.SUCCESS, (state, payload): IAuthState => ({
-  ...state,
-  ...payload,
-  authStep: AuthStep.LOGIN,
-}));
+// reducer.on(actions.checkCode.SUCCESS, (state, payload): IAuthState => ({
+//   ...state,
+//   ...payload,
+//   authStep: AuthStep.LOGIN,
+// }));
 
 reducer.on(actions.resetPassword.SUCCESS, (state, payload): IAuthState => ({
   ...state,
