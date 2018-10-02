@@ -16,6 +16,8 @@ namespace CustomStorage {
     if (isRemembered) {
       localStorage.setItem(key, value);
       localStorage.setItem(timeKey, String(time));
+      sessionStorage.setItem(key, value);
+      sessionStorage.setItem(timeKey, String(time));
     } else {
       sessionStorage.setItem(key, value);
       sessionStorage.setItem(timeKey, String(time));

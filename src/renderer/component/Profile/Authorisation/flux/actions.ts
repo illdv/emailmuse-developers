@@ -16,6 +16,7 @@ const checkCode     = createAsyncAction('CHECK_CODE');
 const resetPassword = createAsyncAction('RESET_PASSWORD');
 const setAuthStep   = createAsyncAction('SET_AUTH_STEP');
 const logout        = createAsyncAction('LOGOUT');
+const initializeApp = createAsyncAction('INITIALIZE_APP');
 const loginInGoogle = createAsyncAction('LOGIN_IN_GOOGLE');
 const sendCode      = createAsyncAction('SEND_CODE');
 const sendNewCode   = createAsyncAction('SEND_NEW_CODE');
@@ -31,6 +32,7 @@ export const AuthorisationActions: IAuthorisationActions = {
   loginInGoogle,
   sendCode,
   sendNewCode,
+  initializeApp,
 };
 
 export interface IAuthorisationActions {
@@ -43,5 +45,6 @@ export interface IAuthorisationActions {
   sendCode: IAsyncAction2<{ email: string }, {}>;
   sendNewCode: IAsyncAction2<{ email: string }, {}>;
   logout: IAsyncAction2<{}, {}>;
+  initializeApp: IAsyncAction2<{}, {}>;
   loginInGoogle: IAsyncAction2<{}, {}>;
 }

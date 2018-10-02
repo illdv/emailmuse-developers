@@ -76,7 +76,7 @@ function createWindow() {
     event.preventDefault();
     shell.openExternal(url);
   });
-  mainWindow.webContents.session.clearStorageData();
+  // mainWindow.webContents.session.clearStorageData();
 }
 
 app.on('activate', () => {
