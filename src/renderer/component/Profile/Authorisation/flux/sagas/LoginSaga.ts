@@ -12,6 +12,7 @@ import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisati
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
+import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -20,7 +21,7 @@ function* watcherSetToken() {
     const action: Action<{ user: IUser }> = yield take(AuthorisationActions.login.SUCCESS(null).type);
     const token                           = action.payload.user.token;
     const time                            = Date.now();
-    CustomStorage.setItemWithTimer({ time, key: 'token', value: token, isRemembered: true });
+    CustomStorage.setItemWithTimer({ key: 'token', value: token, isRemembered: true, time });
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }
@@ -33,6 +34,29 @@ function* watcherLogout() {
     // noinspection TsLint
     axios.defaults.headers.common.authorization = ``;
     yield put(push('/login'));
+  }
+}
+
+function* watcherInitApp() {
+  const oneDay: number = 86_400_000;
+  while (true) {
+    yield take(AuthorisationActions.initializeApp.REQUEST(null).type);
+    if (localStorage.getItem('token')) {
+      if (Date.now() - parseInt(localStorage.getItem('time_token'), 10) < (30 * oneDay) ) {
+        yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common.authorization = `Bearer ${token}`;
+        yield put(AccountActions.loadingProfile.REQUEST({}));
+        yield take(AccountActions.loadingProfile.SUCCESS(null).type);
+        yield put(FolderActions.openFolder.REQUEST({}));
+        localStorage.setItem('time_token', String(Date.now()));
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('time_token', String(Date.now()));
+      } else {
+        sessionStorage.clear();
+        localStorage.clear();
+      }
+    }
   }
 }
 
@@ -97,4 +121,4 @@ function extractUser(response: AxiosResponse<ILoginResponse>) {
   return { ...user, token };
 }
 
-export default [loginSaga, watcherLogout, watcherSetToken];
+export default [loginSaga, watcherLogout, watcherSetToken, watcherInitApp];
