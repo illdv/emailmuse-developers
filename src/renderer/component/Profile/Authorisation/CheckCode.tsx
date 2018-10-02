@@ -9,6 +9,7 @@ import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/V
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 export namespace CheckCodeSpace {
   export interface IState {
@@ -54,24 +55,26 @@ export class CheckCode extends Component<CheckCodeSpace.IProps, CheckCodeSpace.I
     const { profile } = this.props;
 
     return (
-      <FormValidation onValidationSuccessful={this.onCheckCode} schema={{}}>
-        <FormContext.Consumer>
-          {(context: IFormContext) => (
-            <PaperDialog
-              title={'Check your email and enter code.'}
-              subtitle={`A message was sent to ${profile.auth.user.email}.`}
-              email={profile.auth.user.email}
-              canNext={true}
-              onEnterCompleted={context.onSubmit}
-              onBack={this.onClickBack}
-              onSendNewCode={this.onSendNewCode}
-              id={'check_code'}
-              label={'Code'}
-              defaultValue={''}
-            />
-          )}
-        </FormContext.Consumer>
-      </FormValidation>
+        <FormValidation onValidationSuccessful={this.onCheckCode} schema={{}}>
+          <FormContext.Consumer>
+            {(context: IFormContext) => (
+              <HotKey hotKey={'Enter'} onPress={context.onSubmit}>
+                <PaperDialog
+                  title={'Check your email and enter code.'}
+                  subtitle={`A message was sent to ${profile.auth.user.email}.`}
+                  email={profile.auth.user.email}
+                  canNext={true}
+                  onEnterCompleted={context.onSubmit}
+                  onBack={this.onClickBack}
+                  onSendNewCode={this.onSendNewCode}
+                  id={'check_code'}
+                  label={'Code'}
+                  defaultValue={''}
+                />
+              </HotKey>
+            )}
+          </FormContext.Consumer>
+        </FormValidation>
     );
   }
 }
