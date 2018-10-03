@@ -5,7 +5,8 @@ const {
         Menu,
         ipcMain,
         shell,
-        autoUpdater, dialog
+        autoUpdater,
+        dialog,
       }         = require('electron');
 const path      = require('path');
 const urlFormat = require('url');
@@ -25,27 +26,52 @@ try {
 }
 
 if (isProduction && UPDATE_SERVER) {
-  /* const autoUpdateTime = 600000; // 1 hour
-   const feed           = `${UPDATE_SERVER}/update/${process.platform}/${app.getVersion()}`;
-   autoUpdater.setFeedURL({ url: feed });
+//   const autoUpdateTime = 600000; // 1 hour
+//   const feed           = `${UPDATE_SERVER}/update/${process.platform}/${app.getVersion()}`;
+//   autoUpdater.setFeedURL({ url: feed });
+//
+//   setInterval(() => {
+//     autoUpdater.checkForUpdates();
+//   }, autoUpdateTime);
+//
+//   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+//     const dialogOpts = {
+//       type: 'info',
+//       buttons: ['Restart', 'Later'],
+//       title: 'Application Update',
+//       message: process.platform === 'win32' ? releaseNotes : releaseName,
+//       detail: 'A new version has been downloaded. Restart the application to apply the updates.',
+//     };
+//
+//     dialog.showMessageBox(dialogOpts, response => {
+//      if (response === 0) {
+//        autoUpdater.quitAndInstall();
+//      }
+//     });
+//    });
+//
+//   autoUpdater.on('update-not-available', () => {
+//
+//     dialog.showErrorBox('Update', 'You have the latest version of app.');
+//
+//     const dialogOpts = {
+//       type: 'info',
+//       buttons: ['OK'],
+//       title: 'Application Update',
+//       message: 'Update',
+//       detail: 'You have the latest version of app.',
+//     };
+//
+//     dialog.showMessageBox(dialogOpts, response => {
+//       if (response === 0) {
+//         return null;
+//       }
+//     });
+//   });
+}
 
-   setInterval(() => {
-     autoUpdater.checkForUpdates();
-   }, autoUpdateTime);
-
-   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-     const dialogOpts = {
-     type: 'info',
-     buttons: ['Restart', 'Later'],
-     title: 'Application Update',
-     message: process.platform === 'win32' ? releaseNotes : releaseName,
-     detail: 'A new version has been downloaded. Restart the application to apply the updates.'
-     }
-
-     dialog.showMessageBox(dialogOpts, (response) => {
-     if (response === 0) autoUpdater.quitAndInstall()
-     })
-   })*/
+function create() {
+  dialog.showErrorBox('Update', 'You have the latest version of app.');
 }
 
 function createWindow() {
@@ -90,6 +116,7 @@ app.on('activate', () => {
 
 app.on('ready', () => {
   createWindow();
+  createMenu();
   if (process.platform === 'darwin') {
     createMenuForMac();
   }
@@ -116,6 +143,15 @@ function createMenuForMac() {
         { role: 'delete' },
         { role: 'selectall' },
       ],
+    },
+  ]));
+}
+
+function createMenu() {
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    {
+      label: 'Check for updates',
+      click() { create(); },
     },
   ]));
 }
