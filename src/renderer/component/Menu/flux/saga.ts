@@ -5,7 +5,7 @@ import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
-import { FolderActions } from 'src/renderer/component/Folder/flux/actions'
+import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 
 export function* menuSaga(action): IterableIterator<any> {
   if (hasEdit) {
