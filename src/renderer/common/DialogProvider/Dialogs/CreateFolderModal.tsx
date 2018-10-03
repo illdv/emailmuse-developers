@@ -13,6 +13,7 @@ import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, TextField } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import { Check } from '@material-ui/icons';
+import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 export namespace SelectLayoutSpace {
   export interface IState {
@@ -68,7 +69,9 @@ class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayout
         </DialogContent>
         <DialogActions>
           <Button onClick={this.onClose}>Close</Button>
-          <Button onClick={this.onSave} color='primary' variant='contained'>Save <Check/></Button>
+          <HotKey hotKey={'Enter'} onPress={this.onSave}>
+            <Button onClick={this.onSave} color='primary' variant='contained'>Save <Check/></Button>
+          </HotKey>
         </DialogActions>
       </Dialog>
     );

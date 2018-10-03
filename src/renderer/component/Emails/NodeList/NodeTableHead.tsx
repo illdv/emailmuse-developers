@@ -13,6 +13,7 @@ export namespace TableHeadSpace {
     columnData: IColumnNodeTable[];
     onSelectAll: () => void;
     onSorting: (type: SortingType) => void;
+    reverse: boolean;
   }
 }
 
@@ -34,21 +35,21 @@ export class NodeTableHead extends Component<TableHeadSpace.IProps, TableHeadSpa
   }
 
   render() {
+    const { reverse } = this.props;
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding='checkbox'/>
           {this.props.columnData.map((column: IColumnNodeTable) => {
             return (
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
-                padding={column.disablePadding ? 'none' : 'default'}
-                sortDirection={'asc'}
+                padding={column.padding || 'default'}
+                sortDirection={reverse ? 'desc' : 'asc'}
               >
                 <TableSortLabel
                   active={column.active}
-                  direction={'asc'}
+                  direction={reverse ? 'desc' : 'asc'}
                   onClick={this.onSortColumn(column.sortingType)}
                 >
                   {column.label}
