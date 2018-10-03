@@ -13,9 +13,9 @@ import { NodeTableFolderEmail } from 'src/renderer/component/Emails/NodeList/Nod
 import { emailToFolderEmail, folderToFolderEmail } from 'src/renderer/component/Emails/utils';
 
 export enum SortingType {
-  Subject     = 'Subject',
-  Description = 'Description',
-  LastUpdate  = 'LastUpdate',
+  Subject            = 'Subject',
+  Description        = 'Description',
+  LastUpdate         = 'LastUpdate',
 }
 
 export interface IColumnNodeTable {
@@ -38,6 +38,7 @@ export namespace ListElementSpace {
   export interface IState {
     selectedItemIds: number[];
     selectedFilter: SortingType;
+    reverse: boolean;
   }
 
   export interface IProps<T> {
@@ -59,6 +60,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
   state: ListElementSpace.IState = {
     selectedItemIds: [],
     selectedFilter: SortingType.Subject,
+    reverse: false,
   };
 
   onSelect = (selectId: string) => () => {
@@ -124,26 +126,33 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
   onSorting = (type: SortingType) => {
     this.setState({
       selectedFilter: type,
+      reverse: false,
     });
   }
 
   filterNode = (nodes: IFolderEmail[]): IFolderEmail[] => {
     const { selectedFilter } = this.state;
+    let filteredNodes = nodes;
     if (selectedFilter === SortingType.Subject) {
-      return nodes.sort((node1, node2) => node1.title.localeCompare(node2.title));
+      filteredNodes = nodes.sort((node1, node2) => node1.title.localeCompare(node2.title));
     }
 
     if (selectedFilter === SortingType.Description) {
-      return nodes.sort((node1, node2) => node1.description.localeCompare(node2.description));
+      filteredNodes = nodes.sort((node1, node2) => node1.description.localeCompare(node2.description));
     }
 
     if (selectedFilter === SortingType.LastUpdate) {
-      return nodes.sort((node1, node2) => {
+      filteredNodes = nodes.sort((node1, node2) => {
         return moment(node2.updated_at).diff(node1.updated_at);
       });
     }
-
-    return nodes;
+    if (this.state.reverse) {
+      this.setState({ reverse: !this.state.reverse });
+      return filteredNodes.reverse();
+    } else {
+      this.setState({ reverse: !this.state.reverse });
+      return filteredNodes;
+    }
   }
 
   render() {
