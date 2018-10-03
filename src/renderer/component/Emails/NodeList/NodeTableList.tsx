@@ -6,22 +6,24 @@ import moment from 'moment-es6';
 import './NodeTable.scss';
 import { Loading } from 'src/renderer/common/Loading';
 import { NodeTableHead } from 'src/renderer/component/Emails/NodeList/NodeTableHead';
-import { IEmail, IFolderEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import { IEmail, IFolderEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import DragDropContext from 'src/renderer/DragDropContext';
 import { NodeTableFolderEmail } from 'src/renderer/component/Emails/NodeList/NodeTableFolderEmail';
 import { emailToFolderEmail, folderToFolderEmail } from 'src/renderer/component/Emails/utils';
+import { Padding } from '@material-ui/core/TableCell/TableCell';
 
 export enum SortingType {
   Subject            = 'Subject',
   Description        = 'Description',
   LastUpdate         = 'LastUpdate',
+  Type               = 'Type',
 }
 
 export interface IColumnNodeTable {
   id: string;
   label: string;
-  disablePadding: boolean;
+  padding: Padding;
   numeric: boolean;
   sortingType: SortingType;
   active: boolean;
@@ -124,15 +126,21 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
   }
 
   onSorting = (type: SortingType) => {
-    this.setState({
-      selectedFilter: type,
-      reverse: false,
-    });
+    if (this.state.selectedFilter === type) {
+      this.setState({
+        reverse: !this.state.reverse,
+      });
+    } else {
+      this.setState({
+        selectedFilter: type,
+        reverse: false,
+      });
+    }
   }
 
   filterNode = (nodes: IFolderEmail[]): IFolderEmail[] => {
     const { selectedFilter } = this.state;
-    let filteredNodes = nodes;
+    let filteredNodes = [];
     if (selectedFilter === SortingType.Subject) {
       filteredNodes = nodes.sort((node1, node2) => node1.title.localeCompare(node2.title));
     }
@@ -146,11 +154,23 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
         return moment(node2.updated_at).diff(node1.updated_at);
       });
     }
+
+    if (selectedFilter === SortingType.Type) {
+      filteredNodes = nodes.sort((node1, node2) => node1.title.localeCompare(node2.title));
+      const filteredFolders = filteredNodes.filter(item => item.type === nodeType.folder);
+      const filteredEmails = filteredNodes.filter(item => item.type === nodeType.email);
+      if (this.state.reverse) {
+        Array.prototype.push.apply(filteredEmails, filteredFolders);
+        return filteredEmails;
+      } else {
+        Array.prototype.push.apply(filteredFolders, filteredEmails);
+        return filteredFolders;
+      }
+    }
+
     if (this.state.reverse) {
-      this.setState({ reverse: !this.state.reverse });
       return filteredNodes.reverse();
     } else {
-      this.setState({ reverse: !this.state.reverse });
       return filteredNodes;
     }
   }
@@ -168,34 +188,44 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
     const columnData: IColumnNodeTable[] = [
       {
         id: '1',
+        label: 'Type',
+        padding: 'checkbox',
+        numeric: false,
+        sortingType: SortingType.Type,
+        active: selectedFilter === SortingType.Type,
+      },
+      {
+        id: '2',
         label: 'Subject',
-        disablePadding: true,
+        padding: 'none',
         numeric: false,
         sortingType: SortingType.Subject,
         active: selectedFilter === SortingType.Subject,
       },
       {
-        id: '2',
+        id: '3',
         label: 'Description',
-        disablePadding: false,
-        numeric: true,
+        padding: 'default',
+        numeric: false,
         sortingType: SortingType.Description,
         active: selectedFilter === SortingType.Description,
       },
       {
-        id: '3',
+        id: '4',
         label: 'Last update',
-        disablePadding: false,
+        padding: 'default',
         numeric: false,
         sortingType: SortingType.LastUpdate,
         active: selectedFilter === SortingType.LastUpdate,
       },
     ];
 
-    return <div style={{ minHeight: 200 }}>
+    return (
+      <div style={{ minHeight: 200 }}>
         <Table aria-labelledby='tableTitle'>
           <NodeTableHead
             onSelectAll={this.onSelectAll}
+            reverse={this.state.reverse}
             columnData={columnData}
             onSorting={this.onSorting}
           />
@@ -216,6 +246,7 @@ export class NodeTableList extends Component<ListElementSpace.IProps<any>, ListE
           </TableBody>
         </Table>
       </div>
+    );
   }
 }
 
