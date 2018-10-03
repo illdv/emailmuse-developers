@@ -13,6 +13,7 @@ import { ICreateAccountRequest } from 'src/renderer/component/Profile/Authorisat
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ChevronLeft } from '@material-ui/icons';
+import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 const styles = theme => ({
   root: {
@@ -132,14 +133,16 @@ export class SignUp extends Component<AuthorizationSpace.IProps, AuthorizationSp
                             />
                           </Grid>
                           <Grid item xs={12}>
-                            <Button
-                              color='primary'
-                              variant='contained'
-                              onClick={context.onSubmit}
-                              className={classes.signUpButton}
-                              size='large'
-                            >Register
-                            </Button>
+                            <HotKey hotKey={'Enter'} onPress={context.onSubmit}>
+                              <Button
+                                color='primary'
+                                variant='contained'
+                                onClick={context.onSubmit}
+                                className={classes.signUpButton}
+                                size='large'
+                              >Register
+                              </Button>
+                            </HotKey>
                           </Grid>
                         </Grid>
                       </Grow>

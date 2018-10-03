@@ -6,5 +6,6 @@ export interface IProfileState {
     checkCodeSuccess: boolean;
     authStep: AuthStep;
     error: string;
+    password?: string;
   };
 }
