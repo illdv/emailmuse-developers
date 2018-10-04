@@ -18,7 +18,10 @@
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
-    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz"
+    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz",
+    "cy": "cypress open",
+    "cy:all": "cypress --record",
+    "cy:re": "cypress run --record --parallel --key --ci-build-id test"
   },
   "dependencies": {
     "@material-ui/core": "^1.3.0",
@@ -47,6 +50,7 @@
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
+    "@cypress/snapshot": "^2.0.1",
     "@types/enzyme": "^3.1.10",
     "@types/jest": "^23.1.0",
     "@types/node": "^10.1.2",
@@ -55,6 +59,7 @@
     "awesome-typescript-loader": "^5.0.0",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
+    "cypress": "^3.1.0",
     "dotenv": "^6.0.0",
     "electron": "^2.0.2",
     "electron-builder": "^20.25.0",
