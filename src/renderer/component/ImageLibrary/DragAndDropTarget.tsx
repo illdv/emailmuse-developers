@@ -3,6 +3,7 @@ import { DropTarget } from 'react-dnd';
 
 import 'src/renderer/component/ImageLibrary/DragAndDropTarget.scss';
 import block from 'bem-ts';
+import { classNamesImage } from 'src/renderer/component/Tutorial/steps/image';
 
 const b = block('dnd-target');
 
@@ -51,7 +52,7 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
   render() {
     const { connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children } = this.props;
     return connectDropTarget(
-      <div className={b()}>
+      <div className={`${b()} ${classNamesImage.IMAGES}`}>
         {showOverlay ?
           <div className={b('overlay', { 'can-drop': canDrop, 'drag-over': dragOver })}>
             {overlayMessage ? <span>{overlayMessage}</span> : null}

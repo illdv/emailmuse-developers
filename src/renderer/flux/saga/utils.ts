@@ -36,6 +36,15 @@ export function createWatch(actionCreators: IAsyncAction2<any, any>, handler: (a
   };
 }
 
+export function createWatchSuccess(actionCreators: IAsyncAction2<any, any>, handler: (action: any) => void) {
+  return function* watchSaga() {
+    while (true) {
+      const action = yield take(actionCreators.SUCCESS(null).type);
+      yield call(handler, action);
+    }
+  };
+}
+
 function responseHandlerDefault(response: AxiosResponse<any>) {
   return response.data;
 }

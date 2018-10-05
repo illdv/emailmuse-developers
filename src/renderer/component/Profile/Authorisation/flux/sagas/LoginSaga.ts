@@ -30,7 +30,7 @@ function* watcherSetToken() {
 function* watcherLogout() {
   while (true) {
     yield take(AuthorisationActions.logout.REQUEST(null).type);
-    CustomStorage.clear();
+    CustomStorage.clearToken();
     // noinspection TsLint
     axios.defaults.headers.common.authorization = ``;
     yield put(push('/login'));

@@ -5,6 +5,7 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
 import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -23,6 +24,9 @@ function* loadingSnippetsSaga(action) {
         },
       },
     ));
+    if (localStorage.getItem('SNIPPETS')) {
+      yield put(runTutorial({}));
+    }
   } catch (error) {
     yield put(FluxToast.Actions.showToast('Failed snippets loading', ToastType.Error));
   }
