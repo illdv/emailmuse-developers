@@ -3,6 +3,7 @@ import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
+import { classNamesImage } from 'src/renderer/component/Tutorial/steps/image';
 
 export namespace SearchSpace {
   export interface IState {
@@ -35,7 +36,9 @@ export class Search extends Component<SearchSpace.IProps, SearchSpace.IState> {
 
   render() {
     return (
-      <FormControl>
+      <FormControl
+       className={classNamesImage.SEARCH}
+      >
         <InputLabel htmlFor='search'>Search</InputLabel>
         <Input
           id='search'

@@ -4,9 +4,13 @@ import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { LayoutAPI } from 'src/renderer/API/LayoutAPI';
 import { extractPagination } from 'src/renderer/common/List/utils';
 import { toastError, toastSuccess } from 'src/renderer/flux/saga/toast';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));
+  if (localStorage.getItem('LAYOUTS')) {
+    yield put(runTutorial({}));
+  }
 }
 
 const sagaLoading = createSagaHandler({

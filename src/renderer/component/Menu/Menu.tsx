@@ -24,15 +24,16 @@ import {
 } from '@material-ui/core/';
 import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
+import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 
 const createMenuSchema = (): IMenuItem[] => {
   return [
-    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.EMAILS },
-    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
-    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
-    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS },
-    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE },
-    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING },
+    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.EMAILS, className: classNamesEmails.EMAILS },
+    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY, className: classNamesEmails.IMAGE_LIBRARY },
+    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, className: classNamesEmails.SNIPPETS },
+    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, className: classNamesEmails.LAYOUTS },
+    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, className: classNamesEmails.SWIPE },
+    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, className: classNamesEmails.TRAINING },
   ];
 };
 
@@ -94,6 +95,15 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   }
+  select = () => {
+    localStorage.setItem('EMAILS', '0');
+    localStorage.setItem('SNIPPETS', '0');
+    localStorage.setItem('LAYOUTS', '0');
+    localStorage.setItem('IMAGE_LIBRARY', '0');
+    localStorage.setItem('SWIPE', '0');
+    localStorage.setItem('TRAINING', '0');
+    localStorage.setItem('ACCOUNT', '0');
+  }
 
   render() {
     const { classes } = this.props;
@@ -117,6 +127,11 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
         <Paper elevation={4} className={classes.root}>
           <MenuList>
             {toItem(menuSchema)}
+            <Item
+              title={'State'}
+              icon={<Drafts/>}
+              onClick={this.select}
+            />
           </MenuList>
           <Grid
             style={{ height: '100%', marginBottom: 10, marginLeft: 10 }}
@@ -129,6 +144,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
                 variant='fab'
                 color='primary'
                 aria-label='add'
+                className={classNamesEmails.ACCOUNT}
                 onClick={this.selectItem(MenuItemType.ACCOUNT)}
               >
                 <SupervisorAccount/>

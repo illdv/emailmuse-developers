@@ -19,6 +19,7 @@ import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
 import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import './Layouts.scss';
+import { classNamesLayout } from 'src/renderer/component/Tutorial/steps/layouts';
 
 const b = block('layout');
 
@@ -122,7 +123,11 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
       return this.state.editor;
     }
     return (
-      <Paper className={b()} elevation={4} style={{ height: 'auto', paddingBottom: 480 }}>
+      <Paper
+        className={`${b()} ${classNamesLayout.LAYOUT_BODY}`}
+        elevation={4}
+        style={{ height: 'auto', paddingBottom: 480 }}
+      >
         <Fade in timeout={1000}>
           <>
             <div className={b('header')}>
@@ -156,6 +161,7 @@ export class Layouts extends Component<LayoutsSpace.IProps, LayoutsSpace.IState>
                 title={'Create your own template'}
                 whitCtrl
                 hotKey={'A'}
+                className={classNamesLayout.CREATE_LAYOUT}
               />
             </div>
             <PageCreateLayout

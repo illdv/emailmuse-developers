@@ -7,24 +7,15 @@ import Auth from 'src/renderer/component/Profile/Authorisation/Auth';
 
 import './Application.scss';
 import Toast from 'src/renderer/common/Toast/Toast';
-import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { ErrorBoundary } from 'src/renderer/common/ErrorBoundary';
 import PrivateRoute from 'src/renderer/common/PrivateRoute/PrivateRoute';
 import { Route, Switch as SwitchRoute } from 'react-router-dom';
 import Polls from 'src/renderer/component/Profile/Polls/Polls';
-import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import Tour from 'src/renderer/component/Tutorial/Tour';
 
-export namespace MainLayoutScope {
-  export interface IState {
-  }
-
-  export interface IProps {
-    profile?: IProfileState;
-    actionAuthorisation: IAuthorisationActions;
-  }
-}
-
+type Props = injectMapStateToProps & injectMapDispatchToProps;
 const mapStateToProps = (state: IGlobalState) => ({
   profile: state.profile,
 });
@@ -33,13 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actionAuthorisation: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-@(connect(mapStateToProps))
-class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScope.IState> {
-
-  constructor(props: MainLayoutScope.IProps) {
-    super(props);
-  }
-
+class Application extends React.Component<Props, object> {
   componentDidMount() {
     this.props.actionAuthorisation.initializeApp.REQUEST({});
   }
@@ -47,6 +32,7 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   render() {
     return (
       <ErrorBoundary>
+        <Tour/>
         <SwitchRoute>
           <Route path='/login' component={Auth}/>
           <Route path='/polls' component={Polls}/>
@@ -58,5 +44,6 @@ class Application extends React.Component<MainLayoutScope.IProps, MainLayoutScop
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)
-(Application);
+type injectMapDispatchToProps = ReturnType<typeof mapDispatchToProps>;
+type injectMapStateToProps = ReturnType<typeof mapStateToProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(Application);

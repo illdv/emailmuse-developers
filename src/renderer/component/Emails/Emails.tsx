@@ -16,6 +16,7 @@ import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 import { Search } from 'src/renderer/common/Search';
 import { IEmailsState } from 'src/renderer/component/Emails/flux/reducer';
 import { emailActions, IEmailsActions } from 'src/renderer/component/Emails/flux/action';
+import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 
 export namespace EmailListSpace {
   export interface IProps {
@@ -65,9 +66,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
       const folder = folderEmailToFolder(item);
       this.props.foldersActions.openFolder.REQUEST({ folder });
     } else {
-      console.log("item", item);
       const entity = folderEmailToEntity(item);
-      console.log("entity", entity)
       this.props.editorActions.edit.REQUEST(entity);
     }
   }
@@ -130,7 +129,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
     return (
       <div>
         <Fade in timeout={1000}>
-          <Paper>
+          <Paper className={classNamesEmails.EMAILS_BODY}>
             <Grid item xs={12}>
               <Grid
                 container
@@ -189,6 +188,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
                   title={'Add a folder'}
                   whitCtrl
                   hotKey={'F'}
+                  className={classNamesEmails.NEW_FOLDER}
                 />
                 :
                 null
@@ -212,6 +212,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               title={'Add a new email'}
               whitCtrl
               hotKey={'A'}
+              className={classNamesEmails.NEW_EMAIL}
             />
           </Paper>
         </Fade>

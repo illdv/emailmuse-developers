@@ -29,6 +29,7 @@ import { DragAndDropTarget } from './DragAndDropTarget';
 import { IPagination } from 'src/renderer/common/List/interface';
 import { Search } from 'src/renderer/common/Search';
 import { PreLoaderLayout } from 'src/renderer/common/PreloaderLayout/PreLoaderLayout';
+import { classNamesImage } from 'src/renderer/component/Tutorial/steps/image';
 
 const b = block('image-library');
 
@@ -163,7 +164,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
               </div>
             </DragAndDropTarget>
             <div className={b('footer')}>
-              <Button color='primary'>
+              <Button color='primary' className={classNamesImage.UPLOAD}>
                 <label htmlFor='upload'>
                   Upload images
                 </label>

@@ -13,6 +13,7 @@ import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ITrainingActions, TrainingActions } from 'src/renderer/component/Training/flux/actions';
 import { ITrainingState } from 'src/renderer/component/Training/flux/reducer';
 import { Loading } from 'src/renderer/common/Loading';
+import { classNamesTraining } from 'src/renderer/component/Tutorial/steps/training';
 
 export namespace StepsSelectionSpace {
   export interface IState {
@@ -169,7 +170,7 @@ class StepsSelection extends Component<StepsSelectionSpace.IProps, StepsSelectio
         <Paper style={{ padding: 30, height: 'auto' }}>
           <Breadcrumbs items={breadcrumb}/>
           <Fade in timeout={500}>
-            <List component='nav'>
+            <List component='nav' className={classNamesTraining.TRAINING_BODY}>
               {items.map(this.toItem(props))}
             </List>
           </Fade>
