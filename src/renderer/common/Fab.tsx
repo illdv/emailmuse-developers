@@ -34,7 +34,7 @@ const initFabProps = (): IFabProps => ({
 
 export function Fab(props: IFabProps = initFabProps()) {
   const {
-    color, icon, onClick, position,
+    color, icon, onClick, position, className,
     hotKey, title, whitCtrl, isFly,
     children, bottom = null, variant = 'fab',
   } = { ...initFabProps(), ...props };
@@ -47,7 +47,7 @@ export function Fab(props: IFabProps = initFabProps()) {
       <HotKey whitCtrl={whitCtrl} hotKey={hotKey} tooltip={title} onPress={onClick}>
         <Button
           style={{ zIndex: 99, right: (62 * position) + 20, bottom }}
-          className={classNames({ fab: isFly })}
+          className={`${classNames({ fab: isFly })} ${className}`}
           color={color}
           variant={variant}
           onClick={onClick}

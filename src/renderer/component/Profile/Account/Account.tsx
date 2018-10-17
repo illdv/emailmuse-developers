@@ -15,6 +15,7 @@ import ChangePasswordDialog from './ChangePasswordDialog';
 import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
+import { classNamesAccount } from 'src/renderer/component/Tutorial/steps/account';
 
 const styles: IStyle = theme => ({
   root: {
@@ -138,7 +139,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
     return (
       <Fade in timeout={1000}>
         <div className={classes.container}>
-          <Paper className={classes.root}>
+          <Paper className={`${classes.root} ${classNamesAccount.ACCOUNT_BODY}`}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
@@ -148,7 +149,7 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   id='name'
                   label='Your name'
                   value={this.state.name}
-                  className={classes.textField}
+                  className={`${classes.textField} ${classNamesAccount.NAME}`}
                   margin='normal'
                   onChange={this.onChangeName}
                 />
@@ -161,17 +162,35 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
                   value={email}
                   margin='normal'
                   helperText='Email cannot be changed'
+                  className={classNamesAccount.MAIL}
                 />
               </Grid>
               <Grid item xs={12} style={{ paddingTop: 20 }}>
                 <InCenter>
-                  <Button onClick={this.onOpenDialogChangePassword} variant='raised' color='primary'>
+                  <Button
+                    onClick={this.onOpenDialogChangePassword}
+                    variant='raised'
+                    color='primary'
+                    className={classNamesAccount.PASSWORD}
+                  >
                     Change password
                   </Button>
-                  <Button onClick={this.onSave} variant='raised' color='primary' style={{ marginLeft: 10 }}>
+                  <Button
+                    onClick={this.onSave}
+                    variant='raised'
+                    color='primary'
+                    style={{ marginLeft: 10 }}
+                    className={classNamesAccount.SAVE_NAME}
+                  >
                     Save setting
                   </Button>
-                  <Button variant='raised' color='secondary' onClick={this.onLogout} style={{ marginLeft: 10 }}>
+                  <Button
+                    variant='raised'
+                    color='secondary'
+                    onClick={this.onLogout}
+                    style={{ marginLeft: 10 }}
+                    className={classNamesAccount.LOGOUT_BTN}
+                  >
                     Logout
                   </Button>
                 </InCenter>

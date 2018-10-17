@@ -14,6 +14,7 @@ import swipe, { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 import training, { ITrainingState } from 'src/renderer/component/Training/flux/reducer';
 import editor, { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import polls, { IPollsState } from 'src/renderer/component/Profile/Polls/flux/reduser';
+import tutorial, { ITutorialState } from 'src/renderer/component/Tutorial/flux/reducer';
 
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { profileReducer } from 'src/renderer/component/Profile/flux/module';
@@ -37,6 +38,7 @@ export interface IGlobalState {
   editor: IEditorState;
   polls: IPollsState;
   training: ITrainingState;
+  tutorial: ITutorialState;
 }
 
 const appReducers = combineReducers({
@@ -53,6 +55,7 @@ const appReducers = combineReducers({
   editor,
   polls,
   training,
+  tutorial,
   router: routerReducer,
 });
 

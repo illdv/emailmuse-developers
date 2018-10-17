@@ -19,6 +19,7 @@ import Flex from 'src/renderer/common/Flex';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { useOrDefault } from 'src/renderer/utils';
 import InCenter from 'src/renderer/common/InCenter';
+import { classNamesSnippets } from 'src/renderer/component/Tutorial/steps/snippets';
 
 export namespace SnippetsSpace {
   export interface IState {
@@ -99,6 +100,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           whitCtrl
           hotKey={'A'}
           isFly={false}
+          className={classNamesSnippets.CREATE_SNIPPET}
         />
         <div style={{ width: 560, height: 315, paddingTop: 20 }}>
           <iframe
@@ -106,6 +108,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
             hidden={this.state.videoLoading}
             src='https://www.youtube.com/embed/eSdoidIMGNk'
             onLoad={this.onLoadVideo}
+            className={classNamesSnippets.VIDEO}
           />
           {
             this.state.videoLoading &&

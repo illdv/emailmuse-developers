@@ -29,6 +29,13 @@ namespace CustomStorage {
     return sessionStorage.getItem(key) || localStorage.getItem(key);
   }
 
+  export function clearToken() {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('time_token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('time_token');
+  }
+
   export function clear() {
     sessionStorage.clear();
     localStorage.clear();

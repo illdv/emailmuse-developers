@@ -55,11 +55,6 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
       done: false,
     }));
   } else {
-    if (isPollsCompleted(answers, questions)) {
-      // done
-      yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));
-      yield put(PollsActions.savePoll.REQUEST({ answers }));
-    }
     // next
     yield put(PollsActions.nextQuestion.SUCCESS({
       currentQuestion,
@@ -67,6 +62,19 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
       currentQuestionId,
       answers: [...answers, ...[action.payload.answer]],
     }));
+    if (isPollsCompleted(answers, questions)) {
+      // done
+      answers = [...answers, ...[action.payload.answer]];
+      yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));
+      yield put(PollsActions.savePoll.REQUEST({ answers }));
+      localStorage.setItem('EMAILS', '0');
+      localStorage.setItem('SNIPPETS', '0');
+      localStorage.setItem('LAYOUTS', '0');
+      localStorage.setItem('IMAGE_LIBRARY', '0');
+      localStorage.setItem('SWIPE', '0');
+      localStorage.setItem('TRAINING', '0');
+      localStorage.setItem('ACCOUNT', '0');
+    }
   }
 }
 
