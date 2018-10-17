@@ -1,12 +1,12 @@
 {
-  "name": "Emailer",
+  "name": "EmailMuse",
   "version": "0.3.5",
   "author": {
-    "name": "Nikita Kamyshenko",
-    "email": "kamyshenko.n@cronix.ms"
+    "name": "Vyacheslav Sinyakov",
+    "email": "vyacheslav.sinyakov@gmail.com"
   },
   "homepage": "homepage.example",
-  "description": "Emailer",
+  "description": "EmailMuse",
   "private": true,
   "main": "./main.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlm",
-    "start-build": "cd ./build/dist/linux-unpacked; ./emailer",
+    "start-build": "cd ./build/dist/linux-unpacked; ./emailmuse",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
@@ -97,8 +97,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "build": {
-    "productName": "Emailer",
-    "appId": "cronix.ms.emailer",
+    "productName": "EmailMuse",
+    "appId": "jack.and.slava.emailmuse",
     "linux": {
       "target": "deb",
       "category": "Office"

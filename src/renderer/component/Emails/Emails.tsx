@@ -211,7 +211,7 @@ export class Emails extends React.Component<EmailListSpace.IProps, EmailListSpac
               position={0}
               title={'Add a new email'}
               whitCtrl
-              hotKey={'A'}
+              hotKey={'N'}
               className={classNamesEmails.NEW_EMAIL}
             />
           </Paper>

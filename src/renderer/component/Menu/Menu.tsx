@@ -32,7 +32,7 @@ const createMenuSchema = (): IMenuItem[] => {
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY, className: classNamesEmails.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, className: classNamesEmails.SNIPPETS },
     { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, className: classNamesEmails.LAYOUTS },
-    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, className: classNamesEmails.SWIPE },
+    { title: 'Swipes', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, className: classNamesEmails.SWIPE },
     { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, className: classNamesEmails.TRAINING },
   ];
 };
