@@ -31,7 +31,7 @@ const createMenuSchema = (): IMenuItem[] => {
     { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY },
     { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS },
     { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS },
-    { title: 'Swipe', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE },
+    { title: 'Swipes', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE },
     { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING },
   ];
 };
