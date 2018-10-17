@@ -30,7 +30,7 @@ function* watcherSetToken() {
 function* watcherLogout() {
   while (true) {
     yield take(AuthorisationActions.logout.REQUEST(null).type);
-    CustomStorage.clear();
+    CustomStorage.clearToken();
     // noinspection TsLint
     axios.defaults.headers.common.authorization = ``;
     yield put(push('/login'));
@@ -81,7 +81,9 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
 
 function* getAccessToken() {
   const response = yield AxiosWrapper.get('/google/auth/redirect-url');
-  ipcRenderer.send('authorized-google', response.data.url);
+  if (IS_PRODUCTION) {
+    ipcRenderer.send('authorized-google', response.data.url);
+  }
   return yield call(getToken);
 }
 
@@ -110,9 +112,11 @@ function* loginSaga(): IterableIterator<any> {
 
 function getToken() {
   return new Promise((resolve, reject) => {
-    ipcRenderer.on('authorized-google-success', (event, value) => {
-      resolve(value);
-    });
+    if (IS_PRODUCTION) {
+      ipcRenderer.on('authorized-google-success', (event, value) => {
+        resolve(value);
+      });
+    }
   });
 }
 

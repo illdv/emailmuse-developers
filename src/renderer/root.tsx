@@ -9,6 +9,7 @@ import createHistory from 'history/createBrowserHistory';
 
 import reducer from './flux/rootReducers';
 import rootSaga from 'src/renderer/flux/rootSaga';
+import logger from 'redux-logger';
 
 const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
@@ -16,7 +17,7 @@ const routeMiddleware = routerMiddleware(history);
 
 const store = createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(routeMiddleware, sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(routeMiddleware, sagaMiddleware, logger)),
 );
 sagaMiddleware.run(rootSaga);
 

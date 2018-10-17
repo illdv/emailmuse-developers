@@ -3,6 +3,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { TableCell, TableRow, TableSortLabel, TableHead } from '@material-ui/core';
 import { IColumnNodeTable, SortingType } from 'src/renderer/component/Emails/NodeList/NodeTableList';
+import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 
 export namespace TableHeadSpace {
   export interface IState {
@@ -37,7 +38,9 @@ export class NodeTableHead extends Component<TableHeadSpace.IProps, TableHeadSpa
   render() {
     const { reverse } = this.props;
     return (
-      <TableHead>
+      <TableHead
+        className={classNamesEmails.EMAILS_HEADER}
+      >
         <TableRow>
           {this.props.columnData.map((column: IColumnNodeTable) => {
             return (

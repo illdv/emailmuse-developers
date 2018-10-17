@@ -28,6 +28,7 @@ import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 import './Swipe.scss';
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
+import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipe';
 
 const b = block('swipe');
 
@@ -130,7 +131,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
           <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
           ||
           <Fade in timeout={500}>
-            <List component='nav'>
+            <List component='nav' className={classNamesSwipe.SWIPE_BODY}>
               {
                 selectedSwipe
                 &&

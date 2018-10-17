@@ -3,6 +3,7 @@ import * as constants from 'src/renderer/component/ImageLibrary/store/constants'
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { getImages } from 'src/renderer/API/ImageLibraryAPI';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* getImagesWorker(action: IActionPayload<{page: number, name: string}>): IterableIterator<any> {
   try {
@@ -20,6 +21,9 @@ function* getImagesWorker(action: IActionPayload<{page: number, name: string}>):
       response = yield call (getImages, lastPage || 1);
     }
     yield put(actions.getImagesSuccess(response.data));
+    if (localStorage.getItem('IMAGE_LIBRARY')) {
+      yield put(runTutorial({}));
+    }
   } catch (e) {
     yield put(actions.getImagesFailure());
   }

@@ -4,11 +4,15 @@ import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { ProfileAPI } from 'src/renderer/API/EmailerAPI';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* getProfileSaga() {
   try {
     const response = yield call(ProfileAPI.getProfile);
     yield put(AccountActions.loadingProfile.SUCCESS({user: response.data}));
+    if (localStorage.getItem('ACCOUNT')) {
+      yield put(runTutorial({}));
+    }
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AccountActions.loadingProfile.FAILURE({}));

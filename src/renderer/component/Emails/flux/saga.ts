@@ -15,6 +15,7 @@ import { FolderAPI } from 'src/renderer/API/FolderAPI';
 import { IFolder, IGetFoldersEmailsResponse } from 'src/renderer/component/Folder/flux/interface';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* loadingFoldersAndEmails(action: Action<{s: string}>) {
   try {
@@ -24,6 +25,9 @@ function* loadingFoldersAndEmails(action: Action<{s: string}>) {
 
     yield put(FolderActions.getFolders.SUCCESS({ folders }));
     yield put(emailActions.successfully.REQUEST({ emails }));
+    if (localStorage.getItem('EMAILS')) {
+      yield put(runTutorial({}));
+    }
   } catch (error) {
     yield put(emailActions.failure.REQUEST({}));
   }
