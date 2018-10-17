@@ -1,6 +1,7 @@
 import { createAction, createReducer } from 'redux-act';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 
 export interface ITutorialState {
   name: MenuItemType;
@@ -9,7 +10,7 @@ export interface ITutorialState {
 
 const initialState: ITutorialState = ({
   name: MenuItemType.EMAILS,
-  run: true,
+  run: false,
 });
 
 export const RUN_TUTORIAL = 'RUN_TUTORIAL';
@@ -21,6 +22,11 @@ const reducer = createReducer({}, initialState);
 reducer.on(DrawerMenuAction.selectMenuItem, (state, payload): ITutorialState => ({
   ...state,
   name: payload.selectedItem,
+  run: false,
+}));
+
+reducer.on(AuthorisationActions.logout.REQUEST, (state): ITutorialState => ({
+  ...state,
   run: false,
 }));
 

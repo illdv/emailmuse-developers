@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { createSagaHandler, createWatch} from 'src/renderer/flux/saga/utils';
+import { createSagaHandler, createWatch, createWatchSuccess } from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { LayoutAPI } from 'src/renderer/API/LayoutAPI';
 import { extractPagination } from 'src/renderer/common/List/utils';
@@ -8,6 +8,12 @@ import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
 function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));
+  if (localStorage.getItem('LAYOUTS')) {
+    yield put(runTutorial({}));
+  }
+}
+
+function* sagaLoadingSuccess() {
   if (localStorage.getItem('LAYOUTS')) {
     yield put(runTutorial({}));
   }
@@ -56,8 +62,9 @@ const sagaEdit = createSagaHandler({
 });
 
 const watchLoading = createWatch(LayoutActions.loading, sagaLoading);
+const watchLoadingSuccess = createWatchSuccess(LayoutActions.loading, sagaLoadingSuccess);
 const watchRemove  = createWatch(LayoutActions.remove, sagaRemove);
 const watchCreate  = createWatch(LayoutActions.create, sagaCreate);
 const watchEdit  = createWatch(LayoutActions.edit, sagaEdit);
 
-export default [watchLoading, watchCreate, watchRemove, watchEdit];
+export default [watchLoading, watchCreate, watchRemove, watchEdit, watchLoadingSuccess];

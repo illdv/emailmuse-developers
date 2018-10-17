@@ -7,7 +7,7 @@ import { SwipeAPI } from 'src/renderer/API/SwipeAPI';
 import sagaMoveInEmail from 'src/renderer/component/Swipe/flux/saga/sagaMoveInEmail';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 
-function* layoutLoading() {
+function* swipeLoading() {
   if (localStorage.getItem('SWIPE')) {
     yield put(runTutorial({}));
   }
@@ -25,7 +25,7 @@ const sagaLoading = createSagaHandler({
 function* watcher() {
   yield all([
     takeEvery(SwipeActions.loading.REQUEST, sagaLoading),
-    takeEvery(SwipeActions.loading.SUCCESS, layoutLoading),
+    takeEvery(SwipeActions.loading.SUCCESS, swipeLoading),
   ]);
 }
 

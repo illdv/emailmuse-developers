@@ -128,7 +128,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
           <MenuList>
             {toItem(menuSchema)}
             <Item
-              title={'State'}
+              title={'Restart TUTORIALS'}
               icon={<Drafts/>}
               onClick={this.select}
             />
