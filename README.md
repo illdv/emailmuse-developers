@@ -1,4 +1,4 @@
-# Emailer electron 
+# EmailMuse App 
 
 ### Install dependencies
 ```

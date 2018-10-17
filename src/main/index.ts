@@ -79,7 +79,7 @@ function createWindow() {
   mainWindow              = new BrowserWindow({
     width: width - 500,
     height: height - 200,
-    title: 'Emailer',
+    title: 'EmailMuse',
     center: true,
   });
 

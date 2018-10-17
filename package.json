@@ -1,12 +1,12 @@
 {
-  "name": "Emailer",
+  "name": "EmailMuse",
   "version": "0.3.4",
   "author": {
-    "name": "Nikita Kamyshenko",
-    "email": "kamyshenko.n@cronix.ms"
+    "name": "Vyacheslav Sinyakov",
+    "email": "vyacheslav.sinyakov@gmail.com"
   },
   "homepage": "homepage.example",
-  "description": "Emailer",
+  "description": "EmailMuse",
   "private": true,
   "main": "./main.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlm",
-    "start-build": "cd ./build/dist/linux-unpacked; ./emailer",
+    "start-build": "cd ./build/dist/linux-unpacked; ./emailmuse",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
@@ -28,7 +28,7 @@
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",
     "jodit": "https://github.com/Kamys/jodit/tarball/master",
-    "log4js": "^2.6.1",
+    "log4js": "^3.0.6",
     "moment-es6": "^1.0.0",
     "react": "^16.3.2",
     "react-color": "^2.14.1",
@@ -72,7 +72,7 @@
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.9.0",
     "react-addons-test-utils": "^15.6.2",
-    "react-dev-utils": "^5.0.1",
+    "react-dev-utils": "^6.0.5",
     "react-test-renderer": "^16.4.1",
     "redux-devtools": "^3.4.1",
     "redux-devtools-extension": "^2.13.2",
@@ -90,8 +90,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "build": {
-    "productName": "Emailer",
-    "appId": "cronix.ms.emailer",
+    "productName": "EmailMuse",
+    "appId": "jack.and.slava.emailmuse",
     "linux": {
       "target": "deb",
       "category": "Office"

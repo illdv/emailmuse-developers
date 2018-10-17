@@ -5,6 +5,6 @@ import { Provider } from 'react-redux';
 import Root from './root';
 import Application from 'src/renderer/component/Application';
 
-document.title = `Emailer ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
+document.title = `EmailMuse ${APP_VERSION} ${IS_PRODUCTION ? '' : 'develop'}`;
 
 ReactDOM.render(<Root><Application/></Root>, document.getElementById('root'));
