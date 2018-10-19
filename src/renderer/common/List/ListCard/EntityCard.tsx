@@ -17,7 +17,7 @@ const EntityCard = props => {
         </Typography>
       </CardContent>
       <Typography variant='headline' align='center' noWrap>
-        {cardTitle}
+        <span className={ 'smallText' }>{cardTitle}</span>
       </Typography>
       <Grid container justify={'flex-end'}>
         {
