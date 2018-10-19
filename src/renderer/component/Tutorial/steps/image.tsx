@@ -7,18 +7,18 @@ export enum classNamesImage {
 }
 
 export const image = [
-  {
-    content: 'These are our super awesome text! for ' + classNamesImage.SEARCH,
-    placement: 'bottom',
-    disableBeacon: true,
-    styles: {
-      options: {
-        width: 900,
-      },
-    },
-    target: '.' + classNamesImage.SEARCH,
-    title: 'Our projects',
-  },
+  // {
+  //   content: 'These are our super awesome text! for ' + classNamesImage.SEARCH,
+  //   placement: 'bottom',
+  //   disableBeacon: true,
+  //   styles: {
+  //     options: {
+  //       width: 900,
+  //     },
+  //   },
+  //   target: '.' + classNamesImage.SEARCH,
+  //   title: 'Our projects',
+  // },
   {
     content: 'These are our super awesome text! for ' + classNamesImage.IMAGES,
     placement: 'top',

@@ -6,8 +6,21 @@ export enum classNamesLayout {
 }
 
 export const layouts = [
-  {
-    content: 'These are our super awesome text! for ' + classNamesLayout.CREATE_LAYOUT,
+    {
+        content: 'You can edit or delete existing layouts to fit your design needs.',
+        placement: 'left',
+        styles: {
+            options: {
+                width: 600,
+            },
+        },
+        target: '.' + classNamesLayout.LAYOUT_BODY,
+        title: 'Our projects',
+    },
+    {
+    content: 'Turn one of your favorite emails into a layout you ' +
+             'can use to quickly create more emails with the same ' +
+             'style and even starter text.',
     placement: 'top-end',
     disableBeacon: true,
     styles: {
@@ -16,17 +29,6 @@ export const layouts = [
       },
     },
     target: '.' + classNamesLayout.CREATE_LAYOUT,
-    title: 'Our projects',
-  },
-  {
-    content: 'These are our super awesome text! for ' + classNamesLayout.LAYOUT_BODY,
-    placement: 'left',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesLayout.LAYOUT_BODY,
     title: 'Our projects',
   },
 ];
