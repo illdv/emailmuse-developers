@@ -62,7 +62,7 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
     ];
 
     return (
-      <ModalWindow actions={actions}>
+      <ModalWindow actions={actions} title={ 'Choose your email layout' }>
         <ListCard
           entities={layouts}
           toItem={toItem}
