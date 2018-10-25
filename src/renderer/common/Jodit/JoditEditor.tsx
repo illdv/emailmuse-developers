@@ -14,27 +14,29 @@ interface IDialog {
 }
 
 enum DialogName {
-  insertImage      = 'insertImage',
+  insertImage = 'insertImage',
   insertLinkButton = 'insertLinkButton',
-  insertSnippet    = 'insertSnippet',
+  insertSnippet = 'insertSnippet',
 }
 
 export namespace JoditEditorSpace {
-
   export interface IState<T extends string> {
     current: any;
-    dialogs: {
-      [keys in T]?: IDialog;
-    };
+    dialogs: { [keys in T]?: IDialog };
+    isOpenSourse: boolean;
   }
 
   export interface IProps {
     value: string;
     onChangeValue?: (value: string) => void;
+    preheader: string;
   }
 }
 
-export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
+export class JoditEditor extends Component<
+  JoditEditorSpace.IProps,
+  JoditEditorSpace.IState<DialogName>
+> {
   constructor(props) {
     super(props);
     this.textArea = React.createRef();
@@ -47,6 +49,7 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       [DialogName.insertImage]: { open: false },
       [DialogName.insertSnippet]: { open: false },
     },
+    isOpenSourse: false,
   };
 
   destructEditor = () => {
@@ -62,9 +65,13 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
-      this.editor                    = new Jodit(this.textArea.current, this.createOption());
-      const { value, onChangeValue } = this.props;
-      this.editor.value              = value || '';
+      this.editor = new Jodit(this.textArea.current, this.createOption());
+      const { value, onChangeValue, preheader } = this.props;
+      this.editor.value = this.state.isOpenSourse
+        ? `<p>${preheader}</p>${value}` || ''
+        : `${value}` || '';
+
+      // this.editor.insertHTML('<div>qqqqqqqqqqqqqqqqqqqqqqqq</div>');
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
@@ -87,11 +94,29 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       toolbarAdaptive: false,
       buttons: [
         'source',
-        '|', 'bold', 'italic', 'underline', 'strikethrough',
-        '|', 'font', 'fontsize', 'brush', 'paragraph',
-        '|', 'ul', 'ol', 'outdent', 'indent', 'align',
-        '|', 'cut', 'undo', 'redo',
-        '|', 'table', 'link',
+        '|',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        '|',
+        'font',
+        'fontsize',
+        'brush',
+        'paragraph',
+        '|',
+        'ul',
+        'ol',
+        'outdent',
+        'indent',
+        'align',
+        '|',
+        'cut',
+        'undo',
+        'redo',
+        '|',
+        'table',
+        'link',
       ],
       extraButtons: [
         {
@@ -160,9 +185,18 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   render() {
     const dialogs = this.state.dialogs;
+    const foo = document.querySelector('.jodit_toolbar_btn-source');
+    let isOpenSourse = false;
+    const fn = e => {
+      isOpenSourse = !isOpenSourse;
+    };
+
+    foo && foo.addEventListener('click', fn, false);
+    console.log(this.state.isOpenSourse);
+
     return (
       <>
-        <textarea ref={this.textArea}/>
+        <textarea ref={this.textArea} />
         <DialogInsertImage
           isOpen={dialogs[DialogName.insertImage].open}
           insertHTML={this.insertHTML}

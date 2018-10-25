@@ -5,14 +5,21 @@ import { delay } from 'redux-saga';
 
 import { createWatch } from 'src/renderer/flux/saga/utils';
 import { EditorActions } from 'src/renderer/component/Editor/flux/actions';
-import { EntityType, IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
+import {
+  EntityType,
+  IEditEntity,
+  IEditEntityParameter,
+} from 'src/renderer/component/Editor/flux/interface';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { ILayout } from 'src/renderer/component/Layouts/flux/interface';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
-import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import {
+  IEmail,
+  nodeType,
+} from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
@@ -23,10 +30,10 @@ function* sagaEdit() {
 function validation(params: IEditEntityParameter): string {
   for (const key of Object.keys(params)) {
     const value = params[key];
-    if (!value) {
+    if (!value && key !== 'description') {
       return key;
     }
-    if (value.length === 0) {
+    if (value.length === 0 && key !== 'description') {
       return key;
     }
   }
@@ -48,6 +55,7 @@ function* sagaSave(action: Action<IEditEntity>) {
       id,
       description: params.description,
       title: params.subject,
+      preheader: params.preheader,
       folder_id: folderId,
       type: nodeType.email,
     };
@@ -128,10 +136,19 @@ function* sagaSaveAndClose(action: Action<IEditEntity>) {
   yield put(EditorActions.close.REQUEST({ type: action.payload.type }));
 }
 
-const watchEdit         = createWatch(EditorActions.edit, sagaEdit);
-const watchSave         = createWatch(EditorActions.save, sagaSave);
-const watchClose        = createWatch(EditorActions.close, sagaClose);
-const watchRemove       = createWatch(EditorActions.remove, sagaRemove);
-const watchSaveAndClose = createWatch(EditorActions.saveAndClose, sagaSaveAndClose);
+const watchEdit = createWatch(EditorActions.edit, sagaEdit);
+const watchSave = createWatch(EditorActions.save, sagaSave);
+const watchClose = createWatch(EditorActions.close, sagaClose);
+const watchRemove = createWatch(EditorActions.remove, sagaRemove);
+const watchSaveAndClose = createWatch(
+  EditorActions.saveAndClose,
+  sagaSaveAndClose,
+);
 
-export default [watchEdit, watchSave, watchSaveAndClose, watchClose, watchRemove];
+export default [
+  watchEdit,
+  watchSave,
+  watchSaveAndClose,
+  watchClose,
+  watchRemove,
+];

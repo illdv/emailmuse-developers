@@ -14,29 +14,40 @@ const initialState = (): IEditorState => ({
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(EditorActions.edit.REQUEST, (state, payload): IEditorState => ({
-  ...state,
-  editEntity: {
-    ...payload,
-    html: payload.html || ' ',
+reducer.on(
+  EditorActions.edit.REQUEST,
+  (state, payload): IEditorState => {
+    return {
+      ...state,
+      editEntity: {
+        ...payload,
+        html: payload.html || ' ',
+      },
+    };
   },
-}));
+);
 
-reducer.on(emailActions.createSuccess.REQUEST, (state, payload): IEditorState => ({
-  ...state,
-  editEntity: {
-    ...state.editEntity,
-    // id: payload[0].id,
-    id: payload.emails[0].id,
-  },
-}));
+reducer.on(
+  emailActions.createSuccess.REQUEST,
+  (state, payload): IEditorState => ({
+    ...state,
+    editEntity: {
+      ...state.editEntity,
+      // id: payload[0].id,
+      id: payload.emails[0].id,
+    },
+  }),
+);
 
-reducer.on(SnippetsAction.add.SUCCESS, (state, payload): IEditorState => ({
-  ...state,
-  editEntity: {
-    ...state.editEntity,
-    id: payload.snippet.id,
-  },
-}));
+reducer.on(
+  SnippetsAction.add.SUCCESS,
+  (state, payload): IEditorState => ({
+    ...state,
+    editEntity: {
+      ...state.editEntity,
+      id: payload.snippet.id,
+    },
+  }),
+);
 
 export default reducer;

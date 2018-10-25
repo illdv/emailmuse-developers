@@ -4,7 +4,10 @@ import { connect, Dispatch } from 'react-redux';
 import { TextField } from '@material-ui/core/';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
 
-import { FormContext, IFormContext } from 'src/renderer/common/Validation/FormValidation';
+import {
+  FormContext,
+  IFormContext,
+} from 'src/renderer/common/Validation/FormValidation';
 import { useOrDefault } from 'src/renderer/utils';
 
 export namespace TextValidatorSpace {
@@ -13,17 +16,19 @@ export namespace TextValidatorSpace {
     id: string;
   }
 
-  export interface IProps {
-  }
+  export interface IProps {}
 }
 
-export class TextValidator extends Component<TextValidatorSpace.IProps & TextFieldProps, TextValidatorSpace.IState> {
-
+export class TextValidator extends Component<
+  TextValidatorSpace.IProps & TextFieldProps,
+  TextValidatorSpace.IState
+> {
   state = { value: this.props.value as any, id: '' };
 
   static getDerivedStateFromProps(
     nextProps: TextValidatorSpace.IProps & TextFieldProps,
-    prevState: TextValidatorSpace.IState): TextValidatorSpace.IState {
+    prevState: TextValidatorSpace.IState,
+  ): TextValidatorSpace.IState {
     const { id } = nextProps;
     if (id !== prevState.id) {
       return {
@@ -44,9 +49,8 @@ export class TextValidator extends Component<TextValidatorSpace.IProps & TextFie
     return (
       <FormContext.Consumer>
         {(context: IFormContext) => {
-          const errorMessage = useOrDefault(() => (context.errors[id][0]), '');
-          const showError    = !!errorMessage && context.activeField[id];
-
+          const errorMessage = useOrDefault(() => context.errors[id][0], '');
+          const showError = !!errorMessage && context.activeField[id];
           return (
             <TextField
               error={showError}
