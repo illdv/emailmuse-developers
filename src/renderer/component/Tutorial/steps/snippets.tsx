@@ -2,31 +2,20 @@ import React = require('react');
 
 export enum classNamesSnippets {
   CREATE_SNIPPET = 'CREATE_SNIPPET',
-  VIDEO = 'VIDEO',
 }
 
 export const snippets = [
   {
-    content: 'These are our super awesome text! for ' + classNamesSnippets.CREATE_SNIPPET,
+    content: 'Click the plus sign to start creating a new Email Snippet.' +
+    'You can type from scratch or copy and paste from an existing email.',
     placement: 'left',
-    disableBeacon: true,
+    // disableBeacon: true,
     styles: {
       options: {
         width: 600,
       },
     },
     target: '.' + classNamesSnippets.CREATE_SNIPPET,
-    title: 'Our projects',
-  },
-  {
-    content: 'These are our super awesome text! for ' + classNamesSnippets.VIDEO,
-    placement: 'left',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesSnippets.VIDEO,
     title: 'Our projects',
   },
 ];

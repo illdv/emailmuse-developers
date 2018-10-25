@@ -7,8 +7,6 @@ export enum classNamesAccount {
   PASSWORD = 'PASSWORD',
   SAVE_NAME = 'SAVE_NAME',
   LOGOUT_BTN = 'LOGOUT_BTN',
-
-
 }
 
 export const account = [

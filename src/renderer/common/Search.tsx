@@ -36,9 +36,7 @@ export class Search extends Component<SearchSpace.IProps, SearchSpace.IState> {
 
   render() {
     return (
-      <FormControl
-       className={classNamesImage.SEARCH}
-      >
+      <FormControl>
         <InputLabel htmlFor='search'>Search</InputLabel>
         <Input
           id='search'

@@ -38,9 +38,7 @@ export class NodeTableHead extends Component<TableHeadSpace.IProps, TableHeadSpa
   render() {
     const { reverse } = this.props;
     return (
-      <TableHead
-        className={classNamesEmails.EMAILS_HEADER}
-      >
+      <TableHead>
         <TableRow>
           {this.props.columnData.map((column: IColumnNodeTable) => {
             return (

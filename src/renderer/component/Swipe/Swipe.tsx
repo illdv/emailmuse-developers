@@ -101,7 +101,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
 
     const items = [
       {
-        title: 'Swipe Vault',
+        title: 'Email Swipes Vault',
         onClick: this.onResetSelect,
       },
     ];

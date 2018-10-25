@@ -8,7 +8,6 @@ export enum classNamesEmails {
   LAYOUTS = 'LAYOUTS',
   SWIPE = 'SWIPE',
   TRAINING = 'TRAINING',
-  EMAILS_HEADER = 'EMAILS_HEADER',
   EMAILS_BODY = 'EMAILS_BODY',
   NEW_FOLDER = 'NEW_FOLDER',
   NEW_EMAIL = 'NEW_EMAIL',
@@ -117,17 +116,6 @@ export const emails = [
     target: '.' + classNamesEmails.EMAILS_BODY,
     title: 'Our projects',
   },
-  // {
-  //   content: 'These are our super awesome text! for ' + classNamesEmails.EMAILS_HEADER,
-  //   placement: 'bottom',
-  //   styles: {
-  //     options: {
-  //       width: 600,
-  //     },
-  //   },
-  //   target: '.' + classNamesEmails.EMAILS_HEADER,
-  //   title: 'Our projects',
-  // },
   {
     content: 'Organize your emails into folders so you can find them quickly.',
     placement: 'top-end',

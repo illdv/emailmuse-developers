@@ -98,7 +98,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           position={0}
           title={'Add a new snippet'}
           whitCtrl
-          hotKey={'A'}
+          hotKey={'N'}
           isFly={false}
           className={classNamesSnippets.CREATE_SNIPPET}
         />
@@ -108,7 +108,6 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
             hidden={this.state.videoLoading}
             src='https://www.youtube.com/embed/eSdoidIMGNk'
             onLoad={this.onLoadVideo}
-            className={classNamesSnippets.VIDEO}
           />
           {
             this.state.videoLoading &&
@@ -154,7 +153,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
           position={0}
           title={'Add a new snippet'}
           whitCtrl
-          hotKey={'A'}
+          hotKey={'N'}
         />
       </Paper>
     );

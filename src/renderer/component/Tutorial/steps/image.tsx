@@ -1,37 +1,13 @@
 import React = require('react');
 
 export enum classNamesImage {
-  SEARCH = 'SEARCH',
-  IMAGES = 'IMAGES',
   UPLOAD = 'UPLOAD',
 }
 
 export const image = [
-  // {
-  //   content: 'These are our super awesome text! for ' + classNamesImage.SEARCH,
-  //   placement: 'bottom',
-  //   disableBeacon: true,
-  //   styles: {
-  //     options: {
-  //       width: 900,
-  //     },
-  //   },
-  //   target: '.' + classNamesImage.SEARCH,
-  //   title: 'Our projects',
-  // },
   {
-    content: 'These are our super awesome text! for ' + classNamesImage.IMAGES,
-    placement: 'top',
-    styles: {
-      options: {
-        width: 900,
-      },
-    },
-    target: '.' + classNamesImage.IMAGES,
-    title: 'Our projects',
-  },
-  {
-    content: 'These are our super awesome text! for ' + classNamesImage.UPLOAD,
+    content: 'Images in your library are available for you to use in your emails. ' +
+    'Drag and drop images from your hard drive to add them to the library',
     placement: 'top',
     styles: {
       options: {

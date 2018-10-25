@@ -52,7 +52,7 @@ export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IP
   render() {
     const { connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children } = this.props;
     return connectDropTarget(
-      <div className={`${b()} ${classNamesImage.IMAGES}`}>
+      <div className={`${b()}`}>
         {showOverlay ?
           <div className={b('overlay', { 'can-drop': canDrop, 'drag-over': dragOver })}>
             {overlayMessage ? <span>{overlayMessage}</span> : null}
