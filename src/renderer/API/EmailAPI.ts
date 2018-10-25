@@ -20,9 +20,7 @@ function create(template: IEmail[]) {
 }
 
 function remove(templateId: string) {
-  return AxiosWrapper.deleteResponse2(`/emails`,
-    { id: [templateId] },
-  );
+  return AxiosWrapper.deleteResponse2(`/emails`, { id: [templateId] });
 }
 
 export const EmailAPI = {

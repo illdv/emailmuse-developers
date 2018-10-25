@@ -14,11 +14,9 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 class Tour extends React.Component<Props, object> {
-
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
-    console.log('handleJoyrideCallback', action, index, type );
     if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
       localStorage.removeItem(name);
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
@@ -32,7 +30,7 @@ class Tour extends React.Component<Props, object> {
   render() {
     const { tutorial } = this.props;
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
-    console.log('Render', getStepNumber, 'name - ', tutorial.name, 'run -', tutorial.run);
+
     return (
       <>
         <Joyride

@@ -1,4 +1,7 @@
 .editor__text-field {
-    margin: 5px 10px !important;
-    width: 30%;
+    width: 50%;
+    margin-bottom: 15px !important;
+}
+.editor__text-field:nth-child(1){
+    padding-right: 20px !important;
 }

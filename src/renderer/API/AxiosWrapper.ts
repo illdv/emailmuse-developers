@@ -13,12 +13,15 @@ const instance = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    "Accept": 'application/json',
   },
   timeout: 15 * 1000,
 });
 
-function get(apiMethod: string, urlParams: { [key: string]: string | number } = {}): AxiosPromise<any> {
+function get(
+  apiMethod: string,
+  urlParams: { [key: string]: string | number } = {},
+): AxiosPromise<any> {
   return instance.get(apiMethod, { params: urlParams });
 }
 
@@ -37,9 +40,7 @@ function put(apiMethod: string, body: any = {}): AxiosPromise<any> {
  * @returns {AxiosPromise<any>}
  */
 function deleteRequest(apiMethod: string, body: any = {}): AxiosPromise<any> {
-  return instance.post(apiMethod,
-    { ...body, _method: 'DELETE' },
-  );
+  return instance.post(apiMethod, { ...body, _method: 'DELETE' });
 }
 
 function deleteResponse2(apiMethod: string, body?: any): AxiosPromise<any> {
