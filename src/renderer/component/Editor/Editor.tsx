@@ -1,9 +1,16 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Fade, TextField, withStyles } from '@material-ui/core';
+import {
+  Fade,
+  TextField,
+  withStyles,
+  Tooltip,
+  IconButton,
+  InputAdornment,
+} from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
-
+import HelpIcon from '@material-ui/icons/HelpOutline';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import {
   EditorActions,
@@ -47,7 +54,8 @@ export namespace EditorSpace {
     editorActions?: IEditorActions;
   }
 }
-
+// const findSourseBtn = () => document.querySelector('.jodit_toolbar_btn-source');
+// let sourceBtn;
 class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   state: EditorSpace.IState = {
     html: '',
@@ -63,6 +71,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
     prevState: EditorSpace.IState,
   ): EditorSpace.IState {
     const { html, params, idFrontEnd } = nextProps.editor.editEntity;
+
     if (idFrontEnd !== prevState.idFrontEnd) {
       return {
         hasChange: false,
@@ -78,8 +87,13 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   componentDidMount(): void {
     hasEdit = false;
+    // sourceBtn = findSourseBtn();
+    // sourceBtn.addEventListener('click', this.onOpenSourse);
   }
 
+  // componentWillUnmount() {
+  //   sourceBtn.removeEventListener('click', this.onOpenSourse);
+  // }
   onChange = (html: string) => {
     this.setState({
       html,
@@ -132,24 +146,51 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   renderParameters = () => {
     return Object.keys(this.state.params).map(key => {
-      return (
-        key !== 'description' && (
-          <TextField
-            key={key}
-            className={b('text-field')}
-            id={key}
-            label={firstSymbolUp(key)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={this.state.params[key]}
-            onChange={this.onChangeField(key)}
-          />
-        )
+      if (key === 'description') {
+        return null;
+      }
+      return key === 'preheader' ? (
+        <TextField
+          key={key}
+          className={b('text-field')}
+          id={key}
+          label={firstSymbolUp(key)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={this.state.params[key]}
+          onChange={this.onChangeField(key)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='start'>
+                <Tooltip
+                  title='A preheader is the short summary text you see in your inbox after the subject line'
+                  placement='top'
+                >
+                  <HelpIcon color='primary' />
+                </Tooltip>
+              </InputAdornment>
+            ),
+          }}
+        />
+      ) : (
+        <TextField
+          key={key}
+          className={b('text-field')}
+          id={key}
+          label={firstSymbolUp(key)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={this.state.params[key]}
+          onChange={this.onChangeField(key)}
+        />
       );
     });
   }
-
+  // shouldComponentUpdate(nextProps: any, nextState: any): any {
+  //   return nextState.isOpenSourse !== this.state.isOpenSourse;
+  // }
   onOpenDialogClose = () => {
     if (this.state.hasChange) {
       this.setState({ isOpenConfirmationClose: true });
@@ -169,7 +210,20 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   onCloseDialogDelete = () => {
     this.setState({ isOpenConfirmationDelete: false });
   }
+  get handleValueHtml(): any {
+    return `<span name="preheader" style="display:none">${
+      this.state.params.preheader
+    }</span>${this.state.html}`;
+  }
 
+  // onOpenSourse = () => {
+  //   this.setState(state => {
+  //     const openSource = sourceBtn.classList.contains('jodit_active');
+  //     return {
+  //       isOpenSourse: openSource,
+  //     };
+  //   });
+  // }
   render() {
     return (
       <Fade in timeout={2000}>
@@ -177,9 +231,9 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
           {this.renderParameters()}
           <JoditEditor
             onChangeValue={this.onChange}
-            value={this.state.html}
-            preheader={this.state.params.preheader}
+            value={this.handleValueHtml}
           />
+
           <div>
             <Confirmation
               isOpen={this.state.isOpenConfirmationClose}
@@ -237,4 +291,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  { pure: false },
 )(Editor);

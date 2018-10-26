@@ -23,13 +23,11 @@ export namespace JoditEditorSpace {
   export interface IState<T extends string> {
     current: any;
     dialogs: { [keys in T]?: IDialog };
-    isOpenSourse: boolean;
   }
 
   export interface IProps {
     value: string;
     onChangeValue?: (value: string) => void;
-    preheader: string;
   }
 }
 
@@ -49,7 +47,6 @@ export class JoditEditor extends Component<
       [DialogName.insertImage]: { open: false },
       [DialogName.insertSnippet]: { open: false },
     },
-    isOpenSourse: false,
   };
 
   destructEditor = () => {
@@ -66,12 +63,8 @@ export class JoditEditor extends Component<
     this.destructEditor();
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
-      const { value, onChangeValue, preheader } = this.props;
-      this.editor.value = this.state.isOpenSourse
-        ? `<p>${preheader}</p>${value}` || ''
-        : `${value}` || '';
-
-      // this.editor.insertHTML('<div>qqqqqqqqqqqqqqqqqqqqqqqq</div>');
+      const { value, onChangeValue } = this.props;
+      this.editor.value = value;
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
@@ -185,19 +178,6 @@ export class JoditEditor extends Component<
 
   render() {
     const dialogs = this.state.dialogs;
-
-    const foo = document.querySelector('.jodit_toolbar_btn-source');
-
-    const observer = new MutationObserver(mutations => {
-      let isOpenSourse;
-
-      return mutations.forEach(mutation => {
-        return (isOpenSourse =
-          mutation.oldValue === 'jodit_toolbar_btn jodit_toolbar_btn-source');
-      });
-    });
-
-    foo && observer.observe(foo, { attributes: true, attributeOldValue: true });
 
     return (
       <>
