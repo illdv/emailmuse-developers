@@ -23,10 +23,12 @@ export namespace JoditEditorSpace {
   export interface IState<T extends string> {
     current: any;
     dialogs: { [keys in T]?: IDialog };
+    preheader: string;
   }
 
   export interface IProps {
     value: string;
+    preheader: string;
     onChangeValue?: (value: string) => void;
   }
 }
@@ -47,6 +49,7 @@ export class JoditEditor extends Component<
       [DialogName.insertImage]: { open: false },
       [DialogName.insertSnippet]: { open: false },
     },
+    preheader: '',
   };
 
   destructEditor = () => {
@@ -64,11 +67,26 @@ export class JoditEditor extends Component<
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue } = this.props;
-      this.editor.value = value;
+
+      this.editor.value =
+        `<span style="display:none !important"; mso-hide: all; visibility:hidden; opacity:0>${
+          this.state.preheader
+        }</span>` + value;
+      console.log(this.editor.value);
+
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
     }
+  }
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any): any {
+    if (nextProps.preheader !== prevState.preheader) {
+      return {
+        preheader: nextProps.preheader,
+      };
+    }
+    return null;
   }
 
   createOption = () => {
@@ -165,7 +183,10 @@ export class JoditEditor extends Component<
   componentDidMount(): void {
     this.createEditor();
   }
-
+  // componentDidUpdate() {
+  //   this.createValue()
+  // }
+  // createValue = () =>
   componentWillUnmount(): void {
     this.destructEditor();
   }
@@ -178,7 +199,6 @@ export class JoditEditor extends Component<
 
   render() {
     const dialogs = this.state.dialogs;
-
     return (
       <>
         <textarea ref={this.textArea} />

@@ -87,23 +87,25 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   componentDidMount(): void {
     hasEdit = false;
-    // sourceBtn = findSourseBtn();
-    // sourceBtn.addEventListener('click', this.onOpenSourse);
   }
 
-  // componentWillUnmount() {
-  //   sourceBtn.removeEventListener('click', this.onOpenSourse);
-  // }
   onChange = (html: string) => {
-    this.setState({
+    const end = html.indexOf('</span>');
+    const start = html.indexOf('none">') + 6;
+
+    const preheder = html.substring(start, end);
+
+    this.setState(state => ({
+      ...state,
       html,
       hasChange: true,
-    });
+    }));
     hasEdit = true;
   }
 
   onChangeField = (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     this.setState(
       state =>
         ({
@@ -188,9 +190,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       );
     });
   }
-  // shouldComponentUpdate(nextProps: any, nextState: any): any {
-  //   return nextState.isOpenSourse !== this.state.isOpenSourse;
-  // }
+
   onOpenDialogClose = () => {
     if (this.state.hasChange) {
       this.setState({ isOpenConfirmationClose: true });
@@ -210,20 +210,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   onCloseDialogDelete = () => {
     this.setState({ isOpenConfirmationDelete: false });
   }
-  get handleValueHtml(): any {
-    return `<span name="preheader" style="display:none">${
-      this.state.params.preheader
-    }</span>${this.state.html}`;
-  }
 
-  // onOpenSourse = () => {
-  //   this.setState(state => {
-  //     const openSource = sourceBtn.classList.contains('jodit_active');
-  //     return {
-  //       isOpenSourse: openSource,
-  //     };
-  //   });
-  // }
   render() {
     return (
       <Fade in timeout={2000}>
@@ -231,7 +218,8 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
           {this.renderParameters()}
           <JoditEditor
             onChangeValue={this.onChange}
-            value={this.handleValueHtml}
+            value={this.state.html}
+            preheader={this.state.params.preheader}
           />
 
           <div>
