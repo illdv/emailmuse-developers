@@ -23,7 +23,6 @@ export namespace JoditEditorSpace {
   export interface IState<T extends string> {
     current: any;
     dialogs: { [keys in T]?: IDialog };
-    preheader: string;
   }
 
   export interface IProps {
@@ -49,7 +48,6 @@ export class JoditEditor extends Component<
       [DialogName.insertImage]: { open: false },
       [DialogName.insertSnippet]: { open: false },
     },
-    preheader: '',
   };
 
   destructEditor = () => {
@@ -66,27 +64,16 @@ export class JoditEditor extends Component<
     this.destructEditor();
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
-      const { value, onChangeValue } = this.props;
+      const { value, onChangeValue, preheader } = this.props;
 
       this.editor.value =
-        `<span style="display:none !important"; mso-hide: all; visibility:hidden; opacity:0>${
-          this.state.preheader
-        }</span>` + value;
-      console.log(this.editor.value);
+        `<span style="display:none !important"; mso-hide: all; visibility:hidden; opacity:0>${preheader}</span>` +
+        value;
 
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
     }
-  }
-
-  static getDerivedStateFromProps(nextProps: any, prevState: any): any {
-    if (nextProps.preheader !== prevState.preheader) {
-      return {
-        preheader: nextProps.preheader,
-      };
-    }
-    return null;
   }
 
   createOption = () => {
@@ -183,10 +170,11 @@ export class JoditEditor extends Component<
   componentDidMount(): void {
     this.createEditor();
   }
-  // componentDidUpdate() {
-  //   this.createValue()
-  // }
-  // createValue = () =>
+  componentDidUpdate(prevProps) {
+    if (prevProps.preheader !== this.props.preheader) {
+      this.createEditor();
+    }
+  }
   componentWillUnmount(): void {
     this.destructEditor();
   }
@@ -199,6 +187,7 @@ export class JoditEditor extends Component<
 
   render() {
     const dialogs = this.state.dialogs;
+
     return (
       <>
         <textarea ref={this.textArea} />
