@@ -185,14 +185,19 @@ export class JoditEditor extends Component<
 
   render() {
     const dialogs = this.state.dialogs;
-    const foo = document.querySelector('.jodit_toolbar_btn-source');
-    let isOpenSourse = false;
-    const fn = e => {
-      isOpenSourse = !isOpenSourse;
-    };
 
-    foo && foo.addEventListener('click', fn, false);
-    console.log(this.state.isOpenSourse);
+    const foo = document.querySelector('.jodit_toolbar_btn-source');
+
+    const observer = new MutationObserver(mutations => {
+      let isOpenSourse;
+
+      return mutations.forEach(mutation => {
+        return (isOpenSourse =
+          mutation.oldValue === 'jodit_toolbar_btn jodit_toolbar_btn-source');
+      });
+    });
+
+    foo && observer.observe(foo, { attributes: true, attributeOldValue: true });
 
     return (
       <>
