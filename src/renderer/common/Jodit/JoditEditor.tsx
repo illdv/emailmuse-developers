@@ -59,16 +59,15 @@ export class JoditEditor extends Component<
       }
     }
   }
+  wrapperPreheader = preheader =>
+    `<span style="display:none !important; mso-hide: all; visibility:hidden; opacity:0">${preheader}</span>`
 
   createEditor = () => {
     this.destructEditor();
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue, preheader } = this.props;
-
-      this.editor.value =
-        `<span style="display:none !important"; mso-hide: all; visibility:hidden; opacity:0>${preheader}</span>` +
-        value;
+      this.editor.value = this.wrapperPreheader(preheader) + value;
 
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
@@ -171,10 +170,15 @@ export class JoditEditor extends Component<
     this.createEditor();
   }
   componentDidUpdate(prevProps) {
+    console.log('update');
+
     if (prevProps.preheader !== this.props.preheader) {
+      console.log('update');
+
       this.createEditor();
     }
   }
+
   componentWillUnmount(): void {
     this.destructEditor();
   }

@@ -14,45 +14,27 @@ const mapStateToProps = (state: IGlobalState) => ({
 });
 
 class Tour extends React.Component<Props, any> {
-  state = {
-    run: true,
-    action: '',
-  };
+  tour: any = React.createRef();
 
-  static getDerivedStateFromProps(nextProps: any, prevState: any): any {
-    if (
-      nextProps.tutorial.run !== prevState.run &&
-      prevState.action === ACTIONS.CLOSE
-    ) {
-      console.log(1);
-
-      return {
-        run: prevState.run,
-      };
-    }
-    console.log(2);
-
-    return {
-      run: nextProps.tutorial.run,
-    };
-  }
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
 
-    if (action === ACTIONS.CLOSE) {
-      this.setState(state => ({
-        run: false,
-        action: ACTIONS.CLOSE,
-      }));
-    }
-    if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
       localStorage.removeItem(name);
-    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
-      localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
-    } else if (type === EVENTS.TOOLTIP_CLOSE) {
-      localStorage.setItem(name, index + 1);
+      this.tour.current.helpers.stop();
+    } else {
+      if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
+        localStorage.removeItem(name);
+      } else if (
+        type === EVENTS.STEP_AFTER ||
+        type === EVENTS.TARGET_NOT_FOUND
+      ) {
+        localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
+      }
     }
+
+    this.forceUpdate();
   }
 
   render() {
@@ -62,12 +44,13 @@ class Tour extends React.Component<Props, any> {
     return (
       <>
         <Joyride
+          ref={this.tour}
           continuous
           showProgress
           showSkipButton
           stepIndex={getStepNumber}
           steps={Steps[StepItemType[tutorial.name]]}
-          run={this.state.run}
+          run={tutorial.run}
           callback={this.handleJoyrideCallback}
         />
       </>
