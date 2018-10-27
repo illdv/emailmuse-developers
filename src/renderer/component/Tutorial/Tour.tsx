@@ -13,10 +13,39 @@ const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
 });
 
-class Tour extends React.Component<Props, object> {
+class Tour extends React.Component<Props, any> {
+  state = {
+    run: true,
+    action: '',
+  };
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any): any {
+    if (
+      nextProps.tutorial.run !== prevState.run &&
+      prevState.action === ACTIONS.CLOSE
+    ) {
+      console.log(1);
+
+      return {
+        run: prevState.run,
+      };
+    }
+    console.log(2);
+
+    return {
+      run: nextProps.tutorial.run,
+    };
+  }
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
+
+    if (action === ACTIONS.CLOSE) {
+      this.setState(state => ({
+        run: false,
+        action: ACTIONS.CLOSE,
+      }));
+    }
     if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
       localStorage.removeItem(name);
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
@@ -24,7 +53,6 @@ class Tour extends React.Component<Props, object> {
     } else if (type === EVENTS.TOOLTIP_CLOSE) {
       localStorage.setItem(name, index + 1);
     }
-    this.setState({});
   }
 
   render() {
@@ -39,7 +67,7 @@ class Tour extends React.Component<Props, object> {
           showSkipButton
           stepIndex={getStepNumber}
           steps={Steps[StepItemType[tutorial.name]]}
-          run={tutorial.run}
+          run={this.state.run}
           callback={this.handleJoyrideCallback}
         />
       </>
