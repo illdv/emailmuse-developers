@@ -36,10 +36,7 @@ export class JoditEditor extends Component<
   JoditEditorSpace.IProps,
   JoditEditorSpace.IState<DialogName>
 > {
-  constructor(props) {
-    super(props);
-    this.textArea = React.createRef();
-  }
+  textArea = React.createRef<HTMLTextAreaElement>();
 
   state: JoditEditorSpace.IState<DialogName> = {
     current: null,
@@ -54,16 +51,18 @@ export class JoditEditor extends Component<
     if (this.editor) {
       this.editor.destruct();
       const querySelector = document.querySelector('.jodit_container');
+
       if (querySelector) {
         querySelector.remove();
       }
     }
   }
   wrapperPreheader = preheader =>
-    `<span style="display:none !important; mso-hide: all; visibility:hidden; opacity:0">${preheader}</span>`
+    `<span class="jodit_preheader">${preheader}</span>`
 
   createEditor = () => {
     this.destructEditor();
+
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue, preheader } = this.props;
@@ -162,7 +161,6 @@ export class JoditEditor extends Component<
     this.editor.selection.insertHTML(html);
     callback();
   }
-  private readonly textArea;
 
   private editor;
 
@@ -170,11 +168,7 @@ export class JoditEditor extends Component<
     this.createEditor();
   }
   componentDidUpdate(prevProps) {
-    console.log('update');
-
     if (prevProps.preheader !== this.props.preheader) {
-      console.log('update');
-
       this.createEditor();
     }
   }
