@@ -13,18 +13,28 @@ const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
 });
 
-class Tour extends React.Component<Props, object> {
+class Tour extends React.Component<Props, any> {
+  tour: any = React.createRef();
+
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
-    if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
       localStorage.removeItem(name);
-    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
-      localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
-    } else if (type === EVENTS.TOOLTIP_CLOSE) {
-      localStorage.setItem(name, index + 1);
+      this.tour.current.helpers.stop();
+    } else {
+      if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
+        localStorage.removeItem(name);
+      } else if (
+        type === EVENTS.STEP_AFTER ||
+        type === EVENTS.TARGET_NOT_FOUND
+      ) {
+        localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
+      }
     }
-    this.setState({});
+
+    this.forceUpdate();
   }
 
   render() {
@@ -34,6 +44,7 @@ class Tour extends React.Component<Props, object> {
     return (
       <>
         <Joyride
+          ref={this.tour}
           continuous
           showProgress
           showSkipButton
