@@ -58,7 +58,7 @@ export class JoditEditor extends Component<
     }
   }
   wrapperPreheader = (preheader, tag) =>
-    `<${tag} id="editor-preheader">${preheader}</${tag}>`
+    `<${tag} style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all;">${preheader}</${tag}>`
 
   createEditor = () => {
     this.destructEditor();
@@ -68,7 +68,6 @@ export class JoditEditor extends Component<
       const { value, onChangeValue, preheader } = this.props;
       this.editor.value =
         this.wrapperPreheader(preheader, tagPreheader) + value;
-
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
