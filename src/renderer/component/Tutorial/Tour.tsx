@@ -13,29 +13,52 @@ const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
 });
 
-class Tour extends React.Component<Props, object> {
+class Tour extends React.Component<Props, any> {
+  tour: any = React.createRef();
+
+  stopedTour = name => {
+    localStorage.removeItem(name);
+    this.tour.current.helpers.stop();
+  }
 
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
-    console.log('handleJoyrideCallback', action, index, type );
-    if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
-      localStorage.removeItem(name);
-    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
-      localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
-    } else if (type === EVENTS.TOOLTIP_CLOSE) {
-      localStorage.setItem(name, index + 1);
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
+      this.stopedTour(name);
+    } else {
+      if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
+        localStorage.removeItem(name);
+      } else if (
+        type === EVENTS.STEP_AFTER ||
+        type === EVENTS.TARGET_NOT_FOUND
+      ) {
+        localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
+      }
     }
-    this.setState({});
+
+    this.forceUpdate();
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('keydown', () =>
+      this.stopedTour(this.props.tutorial.name),
+    );
+  }
+  componentDidUpdate() {
+    document.addEventListener('keydown', () =>
+      this.stopedTour(this.props.tutorial.name),
+    );
+  }
   render() {
     const { tutorial } = this.props;
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
-    console.log('Render', getStepNumber, 'name - ', tutorial.name, 'run -', tutorial.run);
+
     return (
       <>
         <Joyride
+          ref={this.tour}
           continuous
           showProgress
           showSkipButton
