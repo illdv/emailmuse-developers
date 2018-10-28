@@ -31,15 +31,12 @@ export namespace JoditEditorSpace {
     onChangeValue?: (value: string) => void;
   }
 }
-
+const tagPreheader = 'span';
 export class JoditEditor extends Component<
   JoditEditorSpace.IProps,
   JoditEditorSpace.IState<DialogName>
 > {
-  constructor(props) {
-    super(props);
-    this.textArea = React.createRef();
-  }
+  textArea = React.createRef<HTMLTextAreaElement>();
 
   state: JoditEditorSpace.IState<DialogName> = {
     current: null,
@@ -54,20 +51,23 @@ export class JoditEditor extends Component<
     if (this.editor) {
       this.editor.destruct();
       const querySelector = document.querySelector('.jodit_container');
+
       if (querySelector) {
         querySelector.remove();
       }
     }
   }
-  wrapperPreheader = preheader =>
-    `<span style="display:none !important; mso-hide: all; visibility:hidden; opacity:0">${preheader}</span>`
+  wrapperPreheader = (preheader, tag) =>
+    `<${tag} id="editor-preheader">${preheader}</${tag}>`
 
   createEditor = () => {
     this.destructEditor();
+
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue, preheader } = this.props;
-      this.editor.value = this.wrapperPreheader(preheader) + value;
+      this.editor.value =
+        this.wrapperPreheader(preheader, tagPreheader) + value;
 
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
@@ -162,20 +162,24 @@ export class JoditEditor extends Component<
     this.editor.selection.insertHTML(html);
     callback();
   }
-  private readonly textArea;
 
   private editor;
 
   componentDidMount(): void {
     this.createEditor();
   }
+  deletePrevPreheader = (value: string, endTag: string) => {
+    const arrValue = value.split(`</${endTag}>`);
+    arrValue.length > 1 ? arrValue.shift() : arrValue.join('');
+    return arrValue;
+  }
+
   componentDidUpdate(prevProps) {
-    console.log('update');
-
     if (prevProps.preheader !== this.props.preheader) {
-      console.log('update');
-
-      this.createEditor();
+      const { value, preheader } = this.props;
+      this.editor.value =
+        this.wrapperPreheader(preheader, tagPreheader) +
+        this.deletePrevPreheader(value, tagPreheader);
     }
   }
 
