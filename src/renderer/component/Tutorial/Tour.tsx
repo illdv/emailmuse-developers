@@ -16,13 +16,17 @@ const mapStateToProps = (state: IGlobalState) => ({
 class Tour extends React.Component<Props, any> {
   tour: any = React.createRef();
 
+  stopedTour = name => {
+    localStorage.removeItem(name);
+    this.tour.current.helpers.stop();
+  }
+
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
 
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
-      localStorage.removeItem(name);
-      this.tour.current.helpers.stop();
+      this.stopedTour(name);
     } else {
       if (type === EVENTS.TOUR_END && localStorage.getItem(name)) {
         localStorage.removeItem(name);
@@ -35,6 +39,18 @@ class Tour extends React.Component<Props, any> {
     }
 
     this.forceUpdate();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', () =>
+      this.stopedTour(this.props.tutorial.name),
+    );
+  }
+
+  componentDidUpdate() {
+    document.addEventListener('keydown', () =>
+      this.stopedTour(this.props.tutorial.name),
+    );
   }
 
   render() {
@@ -60,4 +76,5 @@ class Tour extends React.Component<Props, any> {
 
 // type injectMapDispatchToProps = ReturnType<typeof mapDispatchToProps>;
 type injectMapStateToProps = ReturnType<typeof mapStateToProps>;
+
 export default connect(mapStateToProps)(Tour);
