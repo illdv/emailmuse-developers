@@ -31,7 +31,7 @@ export namespace JoditEditorSpace {
     onChangeValue?: (value: string) => void;
   }
 }
-
+const tagPreheader = 'span';
 export class JoditEditor extends Component<
   JoditEditorSpace.IProps,
   JoditEditorSpace.IState<DialogName>
@@ -57,8 +57,8 @@ export class JoditEditor extends Component<
       }
     }
   }
-  wrapperPreheader = preheader =>
-    `<span class="jodit_preheader">${preheader}</span>`
+  wrapperPreheader = (preheader, tag) =>
+    `<${tag} id="editor-preheader">${preheader}</${tag}>`
 
   createEditor = () => {
     this.destructEditor();
@@ -66,7 +66,8 @@ export class JoditEditor extends Component<
     if (this.textArea) {
       this.editor = new Jodit(this.textArea.current, this.createOption());
       const { value, onChangeValue, preheader } = this.props;
-      this.editor.value = this.wrapperPreheader(preheader) + value;
+      this.editor.value =
+        this.wrapperPreheader(preheader, tagPreheader) + value;
 
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
@@ -167,9 +168,18 @@ export class JoditEditor extends Component<
   componentDidMount(): void {
     this.createEditor();
   }
+  deletePrevPreheader = (value: string, endTag: string) => {
+    const arrValue = value.split(`</${endTag}>`);
+    arrValue.length > 1 ? arrValue.shift() : arrValue.join('');
+    return arrValue;
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.preheader !== this.props.preheader) {
-      this.createEditor();
+      const { value, preheader } = this.props;
+      this.editor.value =
+        this.wrapperPreheader(preheader, tagPreheader) +
+        this.deletePrevPreheader(value, tagPreheader);
     }
   }
 
