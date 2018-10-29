@@ -1,20 +1,29 @@
-import { call, put } from 'redux-saga/effects';
-import { createSagaHandler, createWatch, createWatchSuccess } from 'src/renderer/flux/saga/utils';
+import { call, put, select } from 'redux-saga/effects';
+import {
+  createSagaHandler,
+  createWatch,
+  createWatchSuccess,
+} from 'src/renderer/flux/saga/utils';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 import { LayoutAPI } from 'src/renderer/API/LayoutAPI';
 import { extractPagination } from 'src/renderer/common/List/utils';
 import { toastError, toastSuccess } from 'src/renderer/flux/saga/toast';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));
-  if (localStorage.getItem('LAYOUTS')) {
+  if (localStorage.getItem(MenuItemType.LAYOUTS)) {
     yield put(runTutorial({}));
   }
 }
 
 function* sagaLoadingSuccess() {
-  if (localStorage.getItem('LAYOUTS')) {
+  const { tutorial } = yield select();
+  if (
+    localStorage.getItem(MenuItemType.LAYOUTS) &&
+    tutorial.name === MenuItemType.LAYOUTS
+  ) {
     yield put(runTutorial({}));
   }
 }
@@ -54,17 +63,23 @@ const sagaEdit = createSagaHandler({
   actionCreators: LayoutActions.edit,
   apiMethod: LayoutAPI.edit,
   creatorDataForApi: action => action.payload.layout,
-  callbackIfSuccess: [
-    call(layoutLoading),
-    call(toastSuccess, 'Layout saved'),
-  ],
+  callbackIfSuccess: [call(layoutLoading), call(toastSuccess, 'Layout saved')],
   callbackIfFailure: () => toastError('Failed layout saved'),
 });
 
 const watchLoading = createWatch(LayoutActions.loading, sagaLoading);
-const watchLoadingSuccess = createWatchSuccess(LayoutActions.loading, sagaLoadingSuccess);
-const watchRemove  = createWatch(LayoutActions.remove, sagaRemove);
-const watchCreate  = createWatch(LayoutActions.create, sagaCreate);
-const watchEdit  = createWatch(LayoutActions.edit, sagaEdit);
+const watchLoadingSuccess = createWatchSuccess(
+  LayoutActions.loading,
+  sagaLoadingSuccess,
+);
+const watchRemove = createWatch(LayoutActions.remove, sagaRemove);
+const watchCreate = createWatch(LayoutActions.create, sagaCreate);
+const watchEdit = createWatch(LayoutActions.edit, sagaEdit);
 
-export default [watchLoading, watchCreate, watchRemove, watchEdit, watchLoadingSuccess];
+export default [
+  watchLoading,
+  watchCreate,
+  watchRemove,
+  watchEdit,
+  watchLoadingSuccess,
+];
