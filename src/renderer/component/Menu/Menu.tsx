@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Lock } from '@material-ui/icons';
+
 import {
   Collections,
   Drafts,
@@ -55,6 +57,19 @@ const styles: IStyle = theme => ({
 
 const Item = (props: { title: string, icon, className?, onClick?: any }) => {
   const { className, icon, title, onClick } = props;
+
+  if (title === 'Swipes') {
+      return (
+        <ListItem button className={className} onClick={onClick}>
+            <ListItemIcon>
+                {icon}
+            </ListItemIcon>
+            <Typography variant='subheading' noWrap>{title}</Typography>
+            <Lock />
+        </ListItem>
+      );
+  }
+
   return (
       <ListItem button className={className} onClick={onClick}>
         <ListItemIcon>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Check, KeyboardArrowRight } from '@material-ui/icons';
+import { Check, KeyboardArrowRight, Lock } from '@material-ui/icons';
+import { Grid, TextField, Typography } from '@material-ui/core';
 import { connect, Dispatch } from 'react-redux';
 import {
   Divider,
@@ -39,6 +40,7 @@ export namespace SwipeSpace {
   export interface IProps extends RouteComponentProps<any> {
     swipeActions: ISwipeActions;
     swipe: ISwipeState;
+    profile?: any;
   }
 }
 const styles = theme => ({
@@ -91,6 +93,47 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
   }
 
   render() {
+    const user = this.props.profile.auth.user;
+
+    if (user.is_swipe_locked) {
+      // TODO make it APP_DOMAIN constant
+      const url = 'http://app.emailmuse.com/r/' + user.id;
+
+      return (
+          <Fade in timeout={1000}>
+              <div className={this.props.classes.container}>
+                  <Paper className={`${this.props.classes.root}`}>
+                      <Grid container spacing={24}>
+                          <Grid item xs={12}>
+                              <Typography variant='headline' noWrap align='left'>
+                                  Swipe Vault: Locked
+                                  <Lock />
+                              </Typography>
+                          </Grid>
+
+                          <Grid item xs={12}>
+                              Unlock the Swipe Vault by sharing EmailMuse with your
+                              friends on Facebook or Twitter
+                          </Grid>
+
+                          <Grid item xs={12}>
+                              <TextField id='site' value={ url } margin='normal'/>
+                          </Grid>
+
+                          <Grid item xs={12}>
+                              Share on Facebook, Twitter, email, mobile or however you want.
+                          </Grid>
+
+                          <Grid item xs={12}>
+                              When just one new person downloads EmailMuse (which is free for them)
+                              you will get instant access to the Swipe Vault
+                          </Grid>
+                      </Grid>
+                  </Paper>
+              </div>
+          </Fade>
+        );
+    }
 
     const { selectedSwipe, selectedSubject, swipes, isLoading } = this.props.swipe;
     const { classes } = this.props;
@@ -164,6 +207,7 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
 
 const mapStateToProps = (state: IGlobalState) => ({
   swipe: state.swipe,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
