@@ -6,7 +6,8 @@ export enum classNamesTraining {
 
 export const training = [
   {
-    content: 'These are our super awesome text! for ' + classNamesTraining.TRAINING_BODY,
+    content: 'Improve your marketing with training from some ' +
+    'of the brightest thought leaders in direct response marketing.',
     placement: 'left',
     disableBeacon: true,
     styles: {
@@ -15,6 +16,6 @@ export const training = [
       },
     },
     target: '.' + classNamesTraining.TRAINING_BODY,
-    title: 'Our projects',
+    title: 'Training',
   },
 ];

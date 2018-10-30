@@ -16,6 +16,6 @@ export const snippets = [
       },
     },
     target: '.' + classNamesSnippets.CREATE_SNIPPET,
-    title: 'Our projects',
+    title: 'Add a New Snippet',
   },
 ];

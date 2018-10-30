@@ -35,7 +35,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.EMAILS,
-    title: 'Our projects',
+    title: 'Emails',
   },
   {
     content: 'Images you want to use in your emails can be added and organized here',
@@ -46,7 +46,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.IMAGE_LIBRARY,
-    title: 'Our projects',
+    title: 'Image Library',
   },
   {
     content: 'Got text and images you reuse in your emails frequently? ' +
@@ -58,7 +58,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.SNIPPETS,
-    title: 'Our projects',
+    title: 'Snippets',
   },
   {
     content: 'Give our emails a professional and consistent look. ' +
@@ -70,7 +70,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.LAYOUTS,
-    title: 'Our projects',
+    title: 'Layouts',
   },
   {
     content: 'Email starter files and inspiration for sequences, save a sale, onboarding, webinars, launches, and more',
@@ -81,7 +81,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.SWIPE,
-    title: 'Our projects',
+    title: 'Swipes',
   },
   {
     content: 'Email marketing advice from the brightest minds',
@@ -92,7 +92,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.TRAINING,
-    title: 'Our projects',
+    title: 'Training',
   },
   {
     content: 'Update your email and settings here.',
@@ -103,7 +103,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.ACCOUNT,
-    title: 'Our projects',
+    title: 'Profile',
   },
   {
     content: 'This is where you\'ll find emails that you\'ve written or loaded from the Swipes email library.',
@@ -114,7 +114,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.EMAILS_BODY,
-    title: 'Our projects',
+    title: 'Emails',
   },
   {
     content: 'Organize your emails into folders so you can find them quickly.',
@@ -125,7 +125,7 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.NEW_FOLDER,
-    title: 'Our projects',
+    title: 'Create a Folder',
   },
   {
     content: 'Just click on this icon when you want to create a new email from scratch.',
@@ -136,6 +136,6 @@ export const emails = [
       },
     },
     target: '.' + classNamesEmails.NEW_EMAIL,
-    title: 'Our projects',
+    title: 'Create a New Email',
   },
 ];

@@ -15,7 +15,7 @@ export const layouts = [
             },
         },
         target: '.' + classNamesLayout.LAYOUT_BODY,
-        title: 'Our projects',
+        title: 'Layouts',
     },
     {
     content: 'Turn one of your favorite emails into a layout you ' +
@@ -29,6 +29,6 @@ export const layouts = [
       },
     },
     target: '.' + classNamesLayout.CREATE_LAYOUT,
-    title: 'Our projects',
+    title: 'Create a New Custom Layout',
   },
 ];
