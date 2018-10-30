@@ -4,11 +4,13 @@ export enum classNamesTraining {
   TRAINING_BODY = 'TRAINING_BODY',
 }
 
-export const training = [
+export const training = disableBeacon => [
   {
-    content: 'These are our super awesome text! for ' + classNamesTraining.TRAINING_BODY,
+    content:
+      'These are our super awesome text! for ' +
+      classNamesTraining.TRAINING_BODY,
     placement: 'left',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,

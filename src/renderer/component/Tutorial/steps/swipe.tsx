@@ -4,11 +4,12 @@ export enum classNamesSwipe {
   SWIPE_BODY = 'SWIPE_BODY',
 }
 
-export const swipe = [
+export const swipe = disableBeacon => [
   {
-    content: 'These are our super awesome text! for ' + classNamesSwipe.SWIPE_BODY,
+    content:
+      'These are our super awesome text! for ' + classNamesSwipe.SWIPE_BODY,
     placement: 'bottom',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 900,

@@ -1,14 +1,20 @@
 import { push } from 'react-router-redux';
-import { all, call, put, take, takeEvery } from 'redux-saga/effects';
+import { all, call, put, take, takeEvery, select } from 'redux-saga/effects';
 
 import { createSagaHandler } from 'src/renderer/flux/saga/utils';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { TrainingActions } from 'src/renderer/component/Training/flux/actions';
 import { TrainingAPI } from 'src/renderer/API/TrainingAPI';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from '../../Menu/flux/interface';
 
 function* layoutLoading() {
-  if (localStorage.getItem('TRAINING')) {
+  const { tutorial } = yield select();
+
+  if (
+    localStorage.getItem(MenuItemType.TRAINING) &&
+    tutorial.name === MenuItemType.TRAINING
+  ) {
     yield put(runTutorial({}));
   }
 }
@@ -29,6 +35,4 @@ function* watcher() {
   ]);
 }
 
-export default [
-  watcher,
-];
+export default [watcher];
