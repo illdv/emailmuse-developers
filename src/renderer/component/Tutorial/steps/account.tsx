@@ -9,12 +9,12 @@ export enum classNamesAccount {
   LOGOUT_BTN = 'LOGOUT_BTN',
 }
 
-export const account = [
+export const account = disableBeacon => [
   {
     content:
       'These are our super awesome text! for ' + classNamesAccount.ACCOUNT_BODY,
     placement: 'left',
-    disableBeacon: false,
+    disableBeacon,
     styles: {
       options: {
         width: 600,

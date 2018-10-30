@@ -10,14 +10,14 @@ import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 type Props = injectMapStateToProps;
+type State = {
+  isDisableBeacon: boolean;
+};
 const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
 });
-export const onRestartBeacon = toggle => {
-  return toggle;
-};
 
-class Tour extends React.Component<Props, any> {
+class Tour extends React.Component<Props, State> {
   tour: any = React.createRef();
   state = {
     isDisableBeacon: true,
@@ -63,8 +63,6 @@ class Tour extends React.Component<Props, any> {
   render() {
     const { tutorial } = this.props;
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
-    // console.log(this.state.isDisableBeacon);
-
     return (
       <>
         <Joyride

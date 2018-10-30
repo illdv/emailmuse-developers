@@ -9,7 +9,7 @@ export enum MenuItemType {
   IMAGE_LIBRARY = 'IMAGE_LIBRARY',
   SNIPPETS = 'SNIPPETS',
   LAYOUTS = 'LAYOUTS',
-  SWIPE = 'SWIPES',
+  SWIPE = 'SWIPE',
   TRAINING = 'TRAINING',
 }
 
@@ -24,5 +24,5 @@ export interface IDrawerMenuActions {
   /**
    * Use for definitions selected item in menu.
    */
-  selectMenuItem: CreateAction<{ selectedItem: MenuItemType  }>;
+  selectMenuItem: CreateAction<{ selectedItem: MenuItemType }>;
 }

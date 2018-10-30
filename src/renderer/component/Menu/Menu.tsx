@@ -30,7 +30,6 @@ import {
 } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
-import { onRestartBeacon } from 'src/renderer/component/Tutorial/Tour';
 const createMenuSchema = (): IMenuItem[] => {
   return [
     {
@@ -143,7 +142,6 @@ class Menu extends React.Component<
     localStorage.setItem('SWIPE', '0');
     localStorage.setItem('TRAINING', '0');
     localStorage.setItem('ACCOUNT', '0');
-    onRestartBeacon(false);
   }
 
   render() {
