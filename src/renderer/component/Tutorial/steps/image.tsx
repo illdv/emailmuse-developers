@@ -6,7 +6,7 @@ export enum classNamesImage {
   UPLOAD = 'UPLOAD',
 }
 
-export const image = [
+export const image = disableBeacon => [
   // {
   //   content: 'These are our super awesome text! for ' + classNamesImage.SEARCH,
   //   placement: 'bottom',
@@ -21,6 +21,7 @@ export const image = [
   // },
   {
     content: 'These are our super awesome text! for ' + classNamesImage.IMAGES,
+    disableBeacon,
     placement: 'top',
     styles: {
       options: {

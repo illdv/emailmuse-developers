@@ -1,20 +1,25 @@
 import { AxiosResponse } from 'axios';
 
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, take, select } from 'redux-saga/effects';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { SnippetsAPI } from 'src/renderer/API/SnippetsAPI';
 import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from '../../Menu/flux/interface';
 
 function* loadingSnippetsSaga(action) {
   try {
-    const { page, shortcut }                        = action.payload;
-    const response: AxiosResponse<ILoadingResponse> = yield call(SnippetsAPI.loadingSnippets, page, shortcut);
+    const { page, shortcut } = action.payload;
+    const response: AxiosResponse<ILoadingResponse> = yield call(
+      SnippetsAPI.loadingSnippets,
+      page,
+      shortcut,
+    );
 
     const { data, last_page, per_page, current_page, total } = response.data;
-    yield put(SnippetsAction.loading.SUCCESS(
-      {
+    yield put(
+      SnippetsAction.loading.SUCCESS({
         snippets: data,
         pagination: {
           last_page,
@@ -22,13 +27,20 @@ function* loadingSnippetsSaga(action) {
           current_page,
           total,
         },
-      },
-    ));
-    if (localStorage.getItem('SNIPPETS')) {
+      }),
+    );
+    const { tutorial } = yield select();
+
+    if (
+      localStorage.getItem(MenuItemType.SNIPPETS) &&
+      tutorial.name === MenuItemType.SNIPPETS
+    ) {
       yield put(runTutorial({}));
     }
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Failed snippets loading', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed snippets loading', ToastType.Error),
+    );
   }
 }
 
@@ -42,11 +54,14 @@ function* watchLoadingSnippets() {
 function* removeSnippetsSaga(action) {
   try {
     yield call(SnippetsAPI.deleteSnippets, [action.payload.id]);
-    yield put(FluxToast.Actions.showToast('Snippet deleted', ToastType.Success));
+    yield put(
+      FluxToast.Actions.showToast('Snippet deleted', ToastType.Success),
+    );
     yield put(SnippetsAction.remove.SUCCESS({}));
-
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Failed snippet deleted', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed snippet deleted', ToastType.Error),
+    );
   }
 }
 
@@ -59,13 +74,19 @@ function* watchRemoveSnippets() {
 
 function* addSnippetsSaga(action) {
   try {
-    const axionData = yield call(SnippetsAPI.addSnippets, action.payload.snippet);
+    const axionData = yield call(
+      SnippetsAPI.addSnippets,
+      action.payload.snippet,
+    );
     yield put(SnippetsAction.add.SUCCESS({ snippet: axionData.data }));
 
-    yield put(FluxToast.Actions.showToast('Snippet created', ToastType.Success));
-
+    yield put(
+      FluxToast.Actions.showToast('Snippet created', ToastType.Success),
+    );
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Failed snippet created', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed snippet created', ToastType.Error),
+    );
   }
 }
 
@@ -81,7 +102,9 @@ function* editSnippetsSaga(action) {
     yield call(SnippetsAPI.editSnippets, action.payload.snippet);
     yield put(FluxToast.Actions.showToast('Snippet saved', ToastType.Success));
   } catch (error) {
-    yield put(FluxToast.Actions.showToast('Failed snippet saved', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed snippet saved', ToastType.Error),
+    );
   }
 }
 

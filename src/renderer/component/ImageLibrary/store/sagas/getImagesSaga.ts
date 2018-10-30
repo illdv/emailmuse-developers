@@ -1,11 +1,14 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, take, select } from 'redux-saga/effects';
 import * as constants from 'src/renderer/component/ImageLibrary/store/constants';
 import * as actions from 'src/renderer/component/ImageLibrary/store/actions';
 import { IActionPayload } from 'src/renderer/flux/utils';
 import { getImages } from 'src/renderer/API/ImageLibraryAPI';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
-function* getImagesWorker(action: IActionPayload<{page: number, name: string}>): IterableIterator<any> {
+function* getImagesWorker(
+  action: IActionPayload<{ page: number; name: string }>,
+): IterableIterator<any> {
   try {
     // Check for currentPage === undefined || null
     let requestedPage = action.payload.page || 1;
@@ -18,10 +21,15 @@ function* getImagesWorker(action: IActionPayload<{page: number, name: string}>):
     const lastPage = response.data.lastPage;
     // Check for current currentPage > last currentPage
     if (currentPage > lastPage) {
-      response = yield call (getImages, lastPage || 1);
+      response = yield call(getImages, lastPage || 1);
     }
     yield put(actions.getImagesSuccess(response.data));
-    if (localStorage.getItem('IMAGE_LIBRARY')) {
+    const { tutorial } = yield select();
+
+    if (
+      localStorage.getItem(MenuItemType.IMAGE_LIBRARY) &&
+      tutorial.name === MenuItemType.IMAGE_LIBRARY
+    ) {
       yield put(runTutorial({}));
     }
   } catch (e) {

@@ -5,11 +5,13 @@ export enum classNamesSnippets {
   VIDEO = 'VIDEO',
 }
 
-export const snippets = [
+export const snippets = disableBeacon => [
   {
-    content: 'These are our super awesome text! for ' + classNamesSnippets.CREATE_SNIPPET,
+    content:
+      'These are our super awesome text! for ' +
+      classNamesSnippets.CREATE_SNIPPET,
     placement: 'left',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,
@@ -19,7 +21,8 @@ export const snippets = [
     title: 'Our projects',
   },
   {
-    content: 'These are our super awesome text! for ' + classNamesSnippets.VIDEO,
+    content:
+      'These are our super awesome text! for ' + classNamesSnippets.VIDEO,
     placement: 'left',
     styles: {
       options: {

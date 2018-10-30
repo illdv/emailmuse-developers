@@ -8,27 +8,33 @@ export interface ITutorialState {
   run: boolean;
 }
 
-const initialState: ITutorialState = ({
+const initialState: ITutorialState = {
   name: MenuItemType.EMAILS,
   run: false,
-});
+};
 
 export const RUN_TUTORIAL = 'RUN_TUTORIAL';
 
-export const runTutorial = createAction(RUN_TUTORIAL, (payload: {}) => (payload));
+export const runTutorial = createAction(RUN_TUTORIAL, (payload: {}) => payload);
 
 const reducer = createReducer({}, initialState);
 
-reducer.on(DrawerMenuAction.selectMenuItem, (state, payload): ITutorialState => ({
-  ...state,
-  name: payload.selectedItem,
-  run: false,
-}));
+reducer.on(
+  DrawerMenuAction.selectMenuItem,
+  (state, payload): ITutorialState => ({
+    ...state,
+    name: payload.selectedItem,
+    run: false,
+  }),
+);
 
-reducer.on(AuthorisationActions.logout.REQUEST, (state): ITutorialState => ({
-  ...state,
-  run: false,
-}));
+reducer.on(
+  AuthorisationActions.logout.REQUEST,
+  (state): ITutorialState => ({
+    ...state,
+    run: false,
+  }),
+);
 
 reducer.on(runTutorial, (state): ITutorialState => ({ ...state, run: true }));
 

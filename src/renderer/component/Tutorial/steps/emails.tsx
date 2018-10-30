@@ -14,11 +14,11 @@ export enum classNamesEmails {
   NEW_EMAIL = 'NEW_EMAIL',
 }
 
-export const emails = [
+export const emails = disableBeacon => [
   {
     content: <h2>Let's start the tour!</h2>,
     placement: 'center',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         zIndex: 10000,
@@ -39,7 +39,8 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'Images you want to use in your emails can be added and organized here',
+    content:
+      'Images you want to use in your emails can be added and organized here',
     placement: 'right',
     styles: {
       options: {
@@ -50,7 +51,8 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'Got text and images you reuse in your emails frequently? ' +
+    content:
+      'Got text and images you reuse in your emails frequently? ' +
       'Save them as a Snippet and add them to your emails in one click.',
     placement: 'right',
     styles: {
@@ -62,8 +64,9 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'Give our emails a professional and consistent look. ' +
-             'And you can save your own favorite custom layout for future use.',
+    content:
+      'Give our emails a professional and consistent look. ' +
+      'And you can save your own favorite custom layout for future use.',
     placement: 'right',
     styles: {
       options: {
@@ -74,7 +77,8 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'Email starter files and inspiration for sequences, save a sale, onboarding, webinars, launches, and more',
+    content:
+      'Email starter files and inspiration for sequences, save a sale, onboarding, webinars, launches, and more',
     placement: 'right',
     styles: {
       options: {
@@ -107,7 +111,8 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'This is where you\'ll find emails that you\'ve written or loaded from the Swipes email library.',
+    content:
+      'This is where you\'ll find emails that you\'ve written or loaded from the Swipes email library.',
     placement: 'bottom',
     styles: {
       options: {
@@ -140,8 +145,9 @@ export const emails = [
     title: 'Our projects',
   },
   {
-    content: 'Just click on this icon when you want to create a new email from scratch.',
-      placement: 'top-end',
+    content:
+      'Just click on this icon when you want to create a new email from scratch.',
+    placement: 'top-end',
     styles: {
       options: {
         width: 300,
