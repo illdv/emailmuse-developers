@@ -20,20 +20,54 @@ import {
   Paper,
   Slide,
   Tooltip,
-  Typography, WithStyles, withStyles,
+  Typography,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core/';
-import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import {
+  IDrawerMenuActions,
+  MenuItemType,
+} from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
-
 const createMenuSchema = (): IMenuItem[] => {
   return [
-    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.EMAILS, className: classNamesEmails.EMAILS },
-    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY, className: classNamesEmails.IMAGE_LIBRARY },
-    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, className: classNamesEmails.SNIPPETS },
-    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, className: classNamesEmails.LAYOUTS },
-    { title: 'Swipes', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, className: classNamesEmails.SWIPE },
-    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, className: classNamesEmails.TRAINING },
+    {
+      title: 'Emails',
+      icon: <Drafts />,
+      type: MenuItemType.EMAILS,
+      className: classNamesEmails.EMAILS,
+    },
+    {
+      title: 'Image library',
+      icon: <Collections />,
+      type: MenuItemType.IMAGE_LIBRARY,
+      className: classNamesEmails.IMAGE_LIBRARY,
+    },
+    {
+      title: 'Snippets',
+      icon: <ViewCompact />,
+      type: MenuItemType.SNIPPETS,
+      className: classNamesEmails.SNIPPETS,
+    },
+    {
+      title: 'Layouts',
+      icon: <PictureInPictureAlt />,
+      type: MenuItemType.LAYOUTS,
+      className: classNamesEmails.LAYOUTS,
+    },
+    {
+      title: 'Swipes',
+      icon: <PlayCircleOutline />,
+      type: MenuItemType.SWIPE,
+      className: classNamesEmails.SWIPE,
+    },
+    {
+      title: 'Training',
+      icon: <PlayCircleOutline />,
+      type: MenuItemType.TRAINING,
+      className: classNamesEmails.TRAINING,
+    },
   ];
 };
 
@@ -53,15 +87,15 @@ const styles: IStyle = theme => ({
   },
 });
 
-const Item = (props: { title: string, icon, className?, onClick?: any }) => {
+const Item = (props: { title: string; icon; className?; onClick?: any }) => {
   const { className, icon, title, onClick } = props;
   return (
-      <ListItem button className={className} onClick={onClick}>
-        <ListItemIcon>
-          {icon}
-        </ListItemIcon>
-        <Typography variant='subheading' noWrap>{title}</Typography>
-      </ListItem>
+    <ListItem button className={className} onClick={onClick}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <Typography variant='subheading' noWrap>
+        {title}
+      </Typography>
+    </ListItem>
   );
 };
 
@@ -89,9 +123,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
-@(connect(null, mapDispatchToProps))
-class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
-
+@connect(
+  null,
+  mapDispatchToProps,
+)
+class Menu extends React.Component<
+  MenuSpace.IProps & WithStyles<any>,
+  MenuSpace.IState
+> {
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   }
@@ -129,7 +168,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
             {toItem(menuSchema)}
             <Item
               title={'Restart TUTORIALS'}
-              icon={<Drafts/>}
+              icon={<Drafts />}
               onClick={this.select}
             />
           </MenuList>
@@ -147,7 +186,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
                 className={classNamesEmails.ACCOUNT}
                 onClick={this.selectItem(MenuItemType.ACCOUNT)}
               >
-                <SupervisorAccount/>
+                <SupervisorAccount />
               </Button>
             </Tooltip>
           </Grid>

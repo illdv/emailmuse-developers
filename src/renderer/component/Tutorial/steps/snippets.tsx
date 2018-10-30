@@ -4,12 +4,13 @@ export enum classNamesSnippets {
   CREATE_SNIPPET = 'CREATE_SNIPPET',
 }
 
-export const snippets = [
+export const snippets = disableBeacon => [
   {
-    content: 'Click the plus sign to start creating a new Email Snippet.' +
-    'You can type from scratch or copy and paste from an existing email.',
+    content:
+      'Click the plus sign to start creating a new Email Snippet.' +
+      'You can type from scratch or copy and paste from an existing email.',
     placement: 'left',
-    // disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,

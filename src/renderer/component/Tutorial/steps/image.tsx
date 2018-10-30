@@ -4,10 +4,11 @@ export enum classNamesImage {
   UPLOAD = 'UPLOAD',
 }
 
-export const image = [
+export const image = disableBeacon => [
   {
     content: 'Images in your library are available for you to use in your emails. ' +
     'Drag and drop images from your hard drive to add them to the library',
+    disableBeacon,
     placement: 'top',
     styles: {
       options: {

@@ -1,16 +1,22 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, take, select } from 'redux-saga/effects';
 import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { ProfileAPI } from 'src/renderer/API/EmailerAPI';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 function* getProfileSaga() {
   try {
     const response = yield call(ProfileAPI.getProfile);
-    yield put(AccountActions.loadingProfile.SUCCESS({user: response.data}));
-    if (localStorage.getItem('ACCOUNT')) {
+    yield put(AccountActions.loadingProfile.SUCCESS({ user: response.data }));
+
+    const { tutorial } = yield select();
+    if (
+      localStorage.getItem(MenuItemType.ACCOUNT) &&
+      tutorial.name === MenuItemType.ACCOUNT
+    ) {
       yield put(runTutorial({}));
     }
   } catch (error) {
@@ -30,7 +36,12 @@ function* changePasswordSaga(action): IterableIterator<any> {
   const data = action.payload;
   try {
     yield call(ProfileAPI.changePassword, data);
-    yield put(FluxToast.Actions.showToast('Your password has been successfully changed', ToastType.Success));
+    yield put(
+      FluxToast.Actions.showToast(
+        'Your password has been successfully changed',
+        ToastType.Success,
+      ),
+    );
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
@@ -48,8 +59,10 @@ function* changeNameSaga(action): IterableIterator<any> {
   try {
     const newName = action.payload.name;
     yield call(ProfileAPI.changeName, newName);
-    yield put(FluxToast.Actions.showToast('Name change success', ToastType.Success));
-    yield put(AccountActions.changeName.SUCCESS({name: newName}));
+    yield put(
+      FluxToast.Actions.showToast('Name change success', ToastType.Success),
+    );
+    yield put(AccountActions.changeName.SUCCESS({ name: newName }));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AccountActions.changeName.FAILURE({}));

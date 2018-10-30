@@ -13,7 +13,11 @@ import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));
-  if (localStorage.getItem(MenuItemType.LAYOUTS)) {
+  const { tutorial } = yield select();
+  if (
+    localStorage.getItem(MenuItemType.LAYOUTS) &&
+    tutorial.name === MenuItemType.LAYOUTS
+  ) {
     yield put(runTutorial({}));
   }
 }

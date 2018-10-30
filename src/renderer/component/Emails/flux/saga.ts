@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, select } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
@@ -22,6 +22,7 @@ import {
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { MenuItemType } from '../../Menu/flux/interface';
 
 function* loadingFoldersAndEmails(action: Action<{ s: string }>) {
   try {
@@ -36,7 +37,11 @@ function* loadingFoldersAndEmails(action: Action<{ s: string }>) {
 
     yield put(FolderActions.getFolders.SUCCESS({ folders }));
     yield put(emailActions.successfully.REQUEST({ emails }));
-    if (localStorage.getItem('EMAILS')) {
+    const { tutorial } = yield select();
+    if (
+      localStorage.getItem(MenuItemType.EMAILS) &&
+      tutorial.name === MenuItemType.EMAILS
+    ) {
       yield put(runTutorial({}));
     }
   } catch (error) {

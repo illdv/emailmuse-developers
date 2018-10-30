@@ -4,12 +4,13 @@ export enum classNamesTraining {
   TRAINING_BODY = 'TRAINING_BODY',
 }
 
-export const training = [
+export const training = disableBeacon => [
   {
-    content: 'Improve your marketing with training from some ' +
-    'of the brightest thought leaders in direct response marketing.',
+    content:
+      'These are our super awesome text! for ' +
+      classNamesTraining.TRAINING_BODY,
     placement: 'left',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,

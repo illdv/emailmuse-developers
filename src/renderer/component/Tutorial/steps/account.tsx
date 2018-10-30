@@ -9,11 +9,12 @@ export enum classNamesAccount {
   LOGOUT_BTN = 'LOGOUT_BTN',
 }
 
-export const account = [
+export const account = disableBeacon => [
   {
-    content: 'These are our super awesome text! for ' + classNamesAccount.ACCOUNT_BODY,
+    content:
+      'These are our super awesome text! for ' + classNamesAccount.ACCOUNT_BODY,
     placement: 'left',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,
@@ -45,7 +46,8 @@ export const account = [
     title: 'Our projects',
   },
   {
-    content: 'These are our super awesome text! for ' + classNamesAccount.SAVE_NAME,
+    content:
+      'These are our super awesome text! for ' + classNamesAccount.SAVE_NAME,
     placement: 'top',
     styles: {
       options: {
@@ -56,7 +58,8 @@ export const account = [
     title: 'Our projects',
   },
   {
-    content: 'These are our super awesome text! for ' + classNamesAccount.PASSWORD,
+    content:
+      'These are our super awesome text! for ' + classNamesAccount.PASSWORD,
     placement: 'top',
     styles: {
       options: {
@@ -67,7 +70,8 @@ export const account = [
     title: 'Our projects',
   },
   {
-    content: 'These are our super awesome text! for ' + classNamesAccount.LOGOUT_BTN,
+    content:
+      'These are our super awesome text! for ' + classNamesAccount.LOGOUT_BTN,
     placement: 'top',
     styles: {
       options: {

@@ -5,24 +5,26 @@ export enum classNamesLayout {
   LAYOUT_BODY = 'LAYOUT_BODY',
 }
 
-export const layouts = [
-    {
-        content: 'You can edit or delete existing layouts to fit your design needs.',
-        placement: 'left',
-        styles: {
-            options: {
-                width: 600,
-            },
-        },
-        target: '.' + classNamesLayout.LAYOUT_BODY,
-        title: 'Layouts',
+export const layouts = disableBeacon => [
+  {
+    content:
+      'You can edit or delete existing layouts to fit your design needs.',
+    placement: 'left',
+    styles: {
+      options: {
+        width: 600,
+      },
     },
-    {
-    content: 'Turn one of your favorite emails into a layout you ' +
-             'can use to quickly create more emails with the same ' +
-             'style and even starter text.',
+    target: '.' + classNamesLayout.LAYOUT_BODY,
+    title: 'Our projects',
+  },
+  {
+    content:
+      'Turn one of your favorite emails into a layout you ' +
+      'can use to quickly create more emails with the same ' +
+      'style and even starter text.',
     placement: 'top-end',
-    disableBeacon: true,
+    disableBeacon,
     styles: {
       options: {
         width: 600,
