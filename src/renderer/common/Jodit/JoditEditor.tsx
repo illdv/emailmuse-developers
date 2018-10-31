@@ -59,7 +59,7 @@ export class JoditEditor extends Component<
   }
   wrapperPreheader = (preheader, tag) => {
     return preheader
-      ? `<${tag} style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all;">${preheader}</${tag}>`
+      ? `<${tag} style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all; font-family: sans-serif">${preheader}</${tag}>`
       : '';
   }
 

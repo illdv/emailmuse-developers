@@ -23,7 +23,7 @@ class Tour extends React.Component<Props, State> {
     isDisableBeacon: true,
   };
   stopedTour = () => {
-    this.tour.current.helpers.stop();
+    this.tour.current.helpers.skip();
     this.setState({
       isDisableBeacon: false,
     });
