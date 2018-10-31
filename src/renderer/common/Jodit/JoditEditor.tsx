@@ -31,7 +31,7 @@ export namespace JoditEditorSpace {
     onChangeValue?: (value: string) => void;
   }
 }
-const tagPreheader = 'span';
+const tagPreheader = 'pre';
 export class JoditEditor extends Component<
   JoditEditorSpace.IProps,
   JoditEditorSpace.IState<DialogName>
@@ -180,8 +180,10 @@ export class JoditEditor extends Component<
   }
   deletePrevPreheader = (value: string, endTag: string) => {
     const arrValue = value.split(`</${endTag}>`);
+
     arrValue.length > 1 ? arrValue.shift() : arrValue.join('');
-    return arrValue;
+
+    return arrValue.join('');
   }
 
   componentDidUpdate(prevProps) {
