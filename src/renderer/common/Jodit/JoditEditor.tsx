@@ -14,31 +14,29 @@ interface IDialog {
 }
 
 enum DialogName {
-  insertImage      = 'insertImage',
+  insertImage = 'insertImage',
   insertLinkButton = 'insertLinkButton',
-  insertSnippet    = 'insertSnippet',
+  insertSnippet = 'insertSnippet',
 }
 
 export namespace JoditEditorSpace {
-
   export interface IState<T extends string> {
     current: any;
-    dialogs: {
-      [keys in T]?: IDialog;
-    };
+    dialogs: { [keys in T]?: IDialog };
   }
 
   export interface IProps {
     value: string;
+    preheader: string;
     onChangeValue?: (value: string) => void;
   }
 }
-
-export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorSpace.IState<DialogName>> {
-  constructor(props) {
-    super(props);
-    this.textArea = React.createRef();
-  }
+const tagPreheader = 'pre';
+export class JoditEditor extends Component<
+  JoditEditorSpace.IProps,
+  JoditEditorSpace.IState<DialogName>
+> {
+  textArea = React.createRef<HTMLTextAreaElement>();
 
   state: JoditEditorSpace.IState<DialogName> = {
     current: null,
@@ -53,18 +51,34 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     if (this.editor) {
       this.editor.destruct();
       const querySelector = document.querySelector('.jodit_container');
+
       if (querySelector) {
         querySelector.remove();
       }
     }
   }
+  wrapperPreheader = (preheader, tag) => {
+    return preheader
+      ? `<${tag} style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all; font-family: sans-serif">${preheader}</${tag}>`
+      : '';
+  }
+
+  handleEditorValue = (preheader, tag, value) =>
+    this.wrapperPreheader(preheader, tag) +
+    this.deletePrevPreheader(value, tag)
 
   createEditor = () => {
     this.destructEditor();
+
     if (this.textArea) {
-      this.editor                    = new Jodit(this.textArea.current, this.createOption());
-      const { value, onChangeValue } = this.props;
-      this.editor.value              = value || '';
+      this.editor = new Jodit(this.textArea.current, this.createOption());
+      const { value, onChangeValue, preheader } = this.props;
+
+      this.editor.value = this.handleEditorValue(
+        preheader,
+        tagPreheader,
+        value,
+      );
       if (onChangeValue) {
         this.editor.events.on('change', onChangeValue);
       }
@@ -87,11 +101,29 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
       toolbarAdaptive: false,
       buttons: [
         'source',
-        '|', 'bold', 'italic', 'underline', 'strikethrough',
-        '|', 'font', 'fontsize', 'brush', 'paragraph',
-        '|', 'ul', 'ol', 'outdent', 'indent', 'align',
-        '|', 'cut', 'undo', 'redo',
-        '|', 'table', 'link',
+        '|',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        '|',
+        'font',
+        'fontsize',
+        'brush',
+        'paragraph',
+        '|',
+        'ul',
+        'ol',
+        'outdent',
+        'indent',
+        'align',
+        '|',
+        'cut',
+        'undo',
+        'redo',
+        '|',
+        'table',
+        'link',
       ],
       extraButtons: [
         {
@@ -140,12 +172,29 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
     this.editor.selection.insertHTML(html);
     callback();
   }
-  private readonly textArea;
 
   private editor;
 
   componentDidMount(): void {
     this.createEditor();
+  }
+  deletePrevPreheader = (value: string, endTag: string) => {
+    const arrValue = value.split(`</${endTag}>`);
+
+    arrValue.length > 1 ? arrValue.shift() : arrValue.join('');
+
+    return arrValue.join('');
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.preheader !== this.props.preheader) {
+      const { value, preheader } = this.props;
+      this.editor.value = this.handleEditorValue(
+        preheader,
+        tagPreheader,
+        value,
+      );
+    }
   }
 
   componentWillUnmount(): void {
@@ -160,9 +209,10 @@ export class JoditEditor extends Component<JoditEditorSpace.IProps, JoditEditorS
 
   render() {
     const dialogs = this.state.dialogs;
+
     return (
       <>
-        <textarea ref={this.textArea}/>
+        <textarea ref={this.textArea} />
         <DialogInsertImage
           isOpen={dialogs[DialogName.insertImage].open}
           insertHTML={this.insertHTML}

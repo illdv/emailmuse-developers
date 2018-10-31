@@ -35,7 +35,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.EMAILS,
-    title: 'Our projects',
+    title: 'Emails',
   },
   {
     content:
@@ -47,7 +47,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.IMAGE_LIBRARY,
-    title: 'Our projects',
+    title: 'Image Library',
   },
   {
     content:
@@ -60,7 +60,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.SNIPPETS,
-    title: 'Our projects',
+    title: 'Snippets',
   },
   {
     content:
@@ -73,7 +73,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.LAYOUTS,
-    title: 'Our projects',
+    title: 'Layouts',
   },
   {
     content:
@@ -85,7 +85,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.SWIPE,
-    title: 'Our projects',
+    title: 'Swipes',
   },
   {
     content: 'Email marketing advice from the brightest minds',
@@ -96,7 +96,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.TRAINING,
-    title: 'Our projects',
+    title: 'Training',
   },
   {
     content: 'Update your email and settings here.',
@@ -107,7 +107,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.ACCOUNT,
-    title: 'Our projects',
+    title: 'Profile',
   },
   {
     content:
@@ -119,7 +119,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.EMAILS_BODY,
-    title: 'Our projects',
+    title: 'Emails',
   },
   {
     content: 'Organize your emails into folders so you can find them quickly.',
@@ -130,7 +130,7 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.NEW_FOLDER,
-    title: 'Our projects',
+    title: 'Create a Folder',
   },
   {
     content:
@@ -142,6 +142,6 @@ export const emails = disableBeacon => [
       },
     },
     target: '.' + classNamesEmails.NEW_EMAIL,
-    title: 'Our projects',
+    title: 'Create a New Email',
   },
 ];

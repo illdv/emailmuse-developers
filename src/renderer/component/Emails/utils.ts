@@ -1,5 +1,12 @@
-import { IEmail, IFolderEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
-import { EntityType, IEditEntity } from 'src/renderer/component/Editor/flux/interface';
+import {
+  IEmail,
+  IFolderEmail,
+  nodeType,
+} from 'src/renderer/component/Emails/flux/interfaceAPI';
+import {
+  EntityType,
+  IEditEntity,
+} from 'src/renderer/component/Editor/flux/interface';
 import { IFolder } from 'src/renderer/component/Folder/flux/interface';
 
 export interface INodeItem {
@@ -25,6 +32,7 @@ export function emailToFolderEmail(email: IEmail): IFolderEmail {
     type: email.type,
     updated_at: email.updated_at,
     description: email.description || '',
+    preheader: email.preheader || '',
     body: email.body,
   };
 }
@@ -57,11 +65,19 @@ export function folderEmailToEntity(folderEmail: IFolderEmail): IEditEntity {
     params: {
       subject: folderEmail.title,
       description: folderEmail.description,
+      preheader: folderEmail.preheader,
     },
   };
 }
 
-export function emailToEditEntity({ id, body, title, description, folder_id }: IEmail): IEditEntity {
+export function emailToEditEntity({
+  id,
+  body,
+  title,
+  description,
+  preheader,
+  folder_id,
+}: IEmail): IEditEntity {
   return {
     id,
     folderId: folder_id,
@@ -71,6 +87,7 @@ export function emailToEditEntity({ id, body, title, description, folder_id }: I
     params: {
       subject: title,
       description,
+      preheader,
     },
   };
 }

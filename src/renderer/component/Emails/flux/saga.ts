@@ -80,8 +80,8 @@ function* saveTemplate(action: Action<{ email: IEmail }>) {
 function* createTemplate(action: Action<{ email: IEmail }>) {
   try {
     const response = yield call(EmailAPI.create, [action.payload.email]);
-    yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
 
+    yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -129,7 +129,8 @@ function* sagaSelectNewTemplate(action) {
         id: null,
         title: selectedLayout.title,
         body: selectedLayout.body,
-        description: '---',
+        description: '',
+        preheader: '',
         folder_id: action.payload.parentId,
         type: nodeType.email,
       }),
@@ -146,7 +147,6 @@ function* watcher() {
     takeEvery(emailActions.selectNewTemplate.REQUEST, sagaSelectNewTemplate),
     takeEvery(emailActions.copy.REQUEST, copyTemplates),
     takeEvery(emailActions.getEmailFromFolder.REQUEST, getEmailsFromFolders),
-    takeEvery(emailActions.save.REQUEST, saveTemplate),
   ]);
 }
 

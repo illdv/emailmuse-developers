@@ -5,6 +5,7 @@ export interface IEmail {
   body: string;
   folder_id: number;
   description?: string;
+  preheader?: string;
   user_id?: number;
   created_at?: string;
   updated_at?: string;
@@ -21,7 +22,7 @@ export interface IFolderEmail {
   type: nodeType;
   title: string;
   updated_at: string;
-
+  preheader?: string;
   body?: string;
   description?: string;
   folderId?: number;

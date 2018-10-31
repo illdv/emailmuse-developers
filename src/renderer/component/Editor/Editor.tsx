@@ -1,15 +1,28 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Fade, TextField } from '@material-ui/core';
+import {
+  Fade,
+  TextField,
+  withStyles,
+  Tooltip,
+  IconButton,
+  InputAdornment,
+} from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
-
+import HelpIcon from '@material-ui/icons/HelpOutline';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
+import {
+  EditorActions,
+  IEditorActions,
+} from 'src/renderer/component/Editor/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { IEditorState } from 'src/renderer/component/Editor/flux/reducer';
 import { JoditEditor } from 'src/renderer/common/Jodit/JoditEditor';
-import { IEditEntity, IEditEntityParameter } from 'src/renderer/component/Editor/flux/interface';
+import {
+  IEditEntity,
+  IEditEntityParameter,
+} from 'src/renderer/component/Editor/flux/interface';
 import { Fab } from 'src/renderer/common/Fab';
 import { firstSymbolUp } from 'src/renderer/component/Editor/utils';
 import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
@@ -41,7 +54,8 @@ export namespace EditorSpace {
     editorActions?: IEditorActions;
   }
 }
-
+// const findSourseBtn = () => document.querySelector('.jodit_toolbar_btn-source');
+// let sourceBtn;
 class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   state: EditorSpace.IState = {
     html: '',
@@ -54,9 +68,10 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   static getDerivedStateFromProps(
     nextProps: EditorSpace.IProps,
-    prevState: EditorSpace.IState): EditorSpace.IState {
-
+    prevState: EditorSpace.IState,
+  ): EditorSpace.IState {
     const { html, params, idFrontEnd } = nextProps.editor.editEntity;
+
     if (idFrontEnd !== prevState.idFrontEnd) {
       return {
         hasChange: false,
@@ -75,23 +90,33 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   onChange = (html: string) => {
-    this.setState({
+    const end = html.indexOf('</span>');
+    const start = html.indexOf('none">') + 6;
+
+    const preheder = html.substring(start, end);
+
+    this.setState(state => ({
+      ...state,
       html,
       hasChange: true,
-    });
+    }));
     hasEdit = true;
   }
 
   onChangeField = (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    this.setState(state => ({
-      ...state,
-      hasChange: true,
-      params: {
-        ...state.params,
-        [key]: value,
-      },
-    } as any));
+
+    this.setState(
+      state =>
+        ({
+          ...state,
+          hasChange: true,
+          params: {
+            ...state.params,
+            [key]: value,
+          },
+        } as any),
+    );
     hasEdit = true;
   }
 
@@ -122,20 +147,48 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   renderParameters = () => {
-    return Object.keys(this.state.params).map(key => (
-      <TextField
-        key={key}
-        className={b('text-field')}
-        id={key}
-        label={firstSymbolUp(key)}
-        margin='normal'
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={this.state.params[key]}
-        onChange={this.onChangeField(key)}
-      />
-    ));
+    return Object.keys(this.state.params).map(key => {
+      if (key === 'description') {
+        return null;
+      }
+      return key === 'preheader' ? (
+        <TextField
+          key={key}
+          className={b('text-field')}
+          id={key}
+          label={firstSymbolUp(key)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={this.state.params[key]}
+          onChange={this.onChangeField(key)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='start'>
+                <Tooltip
+                  title='A preheader is the short summary text you see in your inbox after the subject line'
+                  placement='top'
+                >
+                  <HelpIcon color='primary' />
+                </Tooltip>
+              </InputAdornment>
+            ),
+          }}
+        />
+      ) : (
+        <TextField
+          key={key}
+          className={b('text-field')}
+          id={key}
+          label={firstSymbolUp(key)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={this.state.params[key]}
+          onChange={this.onChangeField(key)}
+        />
+      );
+    });
   }
 
   onOpenDialogClose = () => {
@@ -163,7 +216,12 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       <Fade in timeout={2000}>
         <div>
           {this.renderParameters()}
-          <JoditEditor onChangeValue={this.onChange} value={this.state.html}/>
+          <JoditEditor
+            onChangeValue={this.onChange}
+            value={this.state.html}
+            preheader={this.state.params.preheader}
+          />
+
           <div>
             <Confirmation
               isOpen={this.state.isOpenConfirmationClose}
@@ -171,7 +229,9 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
               onSelectYes={this.onClose}
               onSelectNo={this.onCloseDialogClose}
               title={'Warning'}
-              question={'Your changes are not saved. Do you want to leave this page? Click "No" to stay.'}
+              question={
+                'Your changes are not saved. Do you want to leave this page? Click "No" to stay.'
+              }
             />
             <Confirmation
               isOpen={this.state.isOpenConfirmationDelete}
@@ -183,13 +243,13 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             <Fab
               color={'secondary'}
               onClick={this.onOpenDialogDelete}
-              icon={<Delete/>}
+              icon={<Delete />}
               position={0}
               title={'Remove'}
             />
             <Fab
               onClick={this.onSave}
-              icon={<Save/>}
+              icon={<Save />}
               position={1}
               title={'Save'}
               whitCtrl
@@ -197,7 +257,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             />
             <Fab
               onClick={this.onOpenDialogClose}
-              icon={<Close/>}
+              icon={<Close />}
               position={2}
               title={'Close'}
             />
@@ -216,4 +276,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   editorActions: bindModuleAction(EditorActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  { pure: false },
+)(Editor);

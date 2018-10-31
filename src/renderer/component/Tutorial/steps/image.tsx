@@ -16,6 +16,6 @@ export const image = disableBeacon => [
       },
     },
     target: '.' + classNamesImage.UPLOAD,
-    title: 'Our projects',
+    title: 'Image Library',
   },
 ];

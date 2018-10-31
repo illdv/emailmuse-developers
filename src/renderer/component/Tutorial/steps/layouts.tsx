@@ -31,6 +31,6 @@ export const layouts = disableBeacon => [
       },
     },
     target: '.' + classNamesLayout.CREATE_LAYOUT,
-    title: 'Our projects',
+    title: 'Create a New Custom Layout',
   },
 ];

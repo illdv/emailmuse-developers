@@ -17,6 +17,6 @@ export const training = disableBeacon => [
       },
     },
     target: '.' + classNamesTraining.TRAINING_BODY,
-    title: 'Our projects',
+    title: 'Training',
   },
 ];
