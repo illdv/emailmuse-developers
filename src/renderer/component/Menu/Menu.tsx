@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Lock } from '@material-ui/icons';
 
 import {
   Collections,
@@ -11,6 +10,7 @@ import {
   SupervisorAccount,
   ViewCompact,
   PlayCircleOutline,
+  Lock,
 } from '@material-ui/icons';
 import { IStyle } from 'type/materialUI';
 import {
@@ -22,20 +22,55 @@ import {
   Paper,
   Slide,
   Tooltip,
-  Typography, WithStyles, withStyles,
+  Typography,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core/';
-import { IDrawerMenuActions, MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import {
+  IDrawerMenuActions,
+  MenuItemType,
+} from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 
 const createMenuSchema = (): IMenuItem[] => {
   return [
-    { title: 'Emails', icon: <Drafts/>, type: MenuItemType.EMAILS, className: classNamesEmails.EMAILS },
-    { title: 'Image library', icon: <Collections/>, type: MenuItemType.IMAGE_LIBRARY, className: classNamesEmails.IMAGE_LIBRARY },
-    { title: 'Snippets', icon: <ViewCompact/>, type: MenuItemType.SNIPPETS, className: classNamesEmails.SNIPPETS },
-    { title: 'Layouts', icon: <PictureInPictureAlt/>, type: MenuItemType.LAYOUTS, className: classNamesEmails.LAYOUTS },
-    { title: 'Swipes', icon: <PlayCircleOutline/>, type: MenuItemType.SWIPE, className: classNamesEmails.SWIPE },
-    { title: 'Training', icon: <PlayCircleOutline/>, type: MenuItemType.TRAINING, className: classNamesEmails.TRAINING },
+    {
+      title: 'Emails',
+      icon: <Drafts />,
+      type: MenuItemType.EMAILS,
+      className: classNamesEmails.EMAILS,
+    },
+    {
+      title: 'Image library',
+      icon: <Collections />,
+      type: MenuItemType.IMAGE_LIBRARY,
+      className: classNamesEmails.IMAGE_LIBRARY,
+    },
+    {
+      title: 'Snippets',
+      icon: <ViewCompact />,
+      type: MenuItemType.SNIPPETS,
+      className: classNamesEmails.SNIPPETS,
+    },
+    {
+      title: 'Layouts',
+      icon: <PictureInPictureAlt />,
+      type: MenuItemType.LAYOUTS,
+      className: classNamesEmails.LAYOUTS,
+    },
+    {
+      title: 'Swipes',
+      icon: <PlayCircleOutline />,
+      type: MenuItemType.SWIPE,
+      className: classNamesEmails.SWIPE,
+    },
+    {
+      title: 'Training',
+      icon: <PlayCircleOutline />,
+      type: MenuItemType.TRAINING,
+      className: classNamesEmails.TRAINING,
+    },
   ];
 };
 
@@ -55,28 +90,28 @@ const styles: IStyle = theme => ({
   },
 });
 
-const Item = (props: { title: string, icon, className?, onClick?: any }) => {
+const Item = (props: { title: string; icon; className?; onClick?: any }) => {
   const { className, icon, title, onClick } = props;
 
   if (title === 'Swipes') {
-      return (
-        <ListItem button className={className} onClick={onClick}>
-            <ListItemIcon>
-                {icon}
-            </ListItemIcon>
-            <Typography variant='subheading' noWrap>{title}</Typography>
-            <Lock />
-        </ListItem>
-      );
+    return (
+      <ListItem button className={className} onClick={onClick}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <Typography variant='subheading' noWrap>
+          {title}
+        </Typography>
+        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
+      </ListItem>
+    );
   }
 
   return (
-      <ListItem button className={className} onClick={onClick}>
-        <ListItemIcon>
-          {icon}
-        </ListItemIcon>
-        <Typography variant='subheading' noWrap>{title}</Typography>
-      </ListItem>
+    <ListItem button className={className} onClick={onClick}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <Typography variant='subheading' noWrap>
+        {title}
+      </Typography>
+    </ListItem>
   );
 };
 
@@ -104,9 +139,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
-@(connect(null, mapDispatchToProps))
-class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace.IState> {
-
+@connect(
+  null,
+  mapDispatchToProps,
+)
+class Menu extends React.Component<
+  MenuSpace.IProps & WithStyles<any>,
+  MenuSpace.IState
+> {
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   }
@@ -144,7 +184,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
             {toItem(menuSchema)}
             <Item
               title={'Restart TUTORIALS'}
-              icon={<Drafts/>}
+              icon={<Drafts />}
               onClick={this.select}
             />
           </MenuList>
@@ -162,7 +202,7 @@ class Menu extends React.Component<MenuSpace.IProps & WithStyles<any>, MenuSpace
                 className={classNamesEmails.ACCOUNT}
                 onClick={this.selectItem(MenuItemType.ACCOUNT)}
               >
-                <SupervisorAccount/>
+                <SupervisorAccount />
               </Button>
             </Tooltip>
           </Grid>
