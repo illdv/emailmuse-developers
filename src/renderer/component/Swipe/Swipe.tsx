@@ -45,17 +45,48 @@ export namespace SwipeSpace {
     profile?: any;
   }
 }
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  spacing: {
-    marginTop: 30,
-  },
-});
+const styles = ({ spacing, palette }) => {
+  const blockStyle = {
+    marginTop: spacing.unit * 5,
+    fontSize: '1.3rem',
+  };
+  return {
+    button: {
+      margin: spacing.unit,
+    },
+    rightIcon: {
+      marginLeft: spacing.unit,
+    },
+    textBlock: {
+      ...blockStyle,
+    },
+    urlBlock: {
+      'border': '2px solid rgba(241,241,241, 0.7)',
+      'paddingLeft': spacing.unit,
+      'paddingRight': spacing.unit,
+      'transition': '0.5s',
+      ...blockStyle,
+      '&:hover, &:focus': {
+        border: '2px solid rgba(241,241,241, 1)',
+      },
+      '&:active': {
+        border: '2px solid rgba(241,241,241, 0.7)',
+      },
+    },
+    anchor: {
+      'color': palette.text.primary,
+      'transition': '0.5s',
+      '&:hover, &:focus': {
+        color: palette.text.secondary,
+        textDecoration: 'none',
+      },
+      '&:active': {
+        color: palette.text.primary,
+        textDecoration: 'underline',
+      },
+    },
+  };
+};
 
 export class Swipe extends Component<
   SwipeSpace.IProps & WithStyles<typeof styles>,
@@ -102,24 +133,21 @@ export class Swipe extends Component<
 
   render() {
     const user = this.props.profile.auth.user;
-
     // TODO make it APP_DOMAIN constant
     const url = 'http://app.emailmuse.com/r/' + user.id;
 
     return (
       <Fade in timeout={500}>
-        <Paper style={{ padding: 30 }}>
+        <Paper style={{ padding: 30, height: '100%' }}>
           <Typography
             variant='headline'
             style={{ display: 'flex', alignItems: 'center' }}
           >
-            Swipe Vault: <b>Locked</b>
+            Swipe Vault:&nbsp;
+            <b>Locked</b>
             <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 10 }} />
           </Typography>
-          <Typography
-            variant='subheading'
-            className={this.props.classes.spacing}
-          >
+          <Typography className={this.props.classes.textBlock}>
             Unlock the Swipe Vault by sharing EmailMuse with your friends on
             Facebook or Twitter.
           </Typography>
@@ -128,26 +156,26 @@ export class Swipe extends Component<
             value={url}
             disableUnderline
             fullWidth
-            style={{
-              border: '1px solid #f1f1f1',
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}
-            className={this.props.classes.spacing}
+            className={this.props.classes.urlBlock}
           />
-          <Typography
-            variant='subheading'
-            className={this.props.classes.spacing}
-          >
-            Share on
-            <span style={{ textDecoration: 'underline' }}> Facebook</span>,
-            <span style={{ textDecoration: 'underline' }}> Twitter</span>,
-            email, mobile or however you want.
+          <Typography className={this.props.classes.textBlock}>
+            Share on&nbsp;
+            <a
+              className={this.props.classes.anchor}
+              href='https://www.facebook.com/'
+            >
+              Facebook
+            </a>
+            ,&nbsp;
+            <a
+              className={this.props.classes.anchor}
+              href='https://twitter.com/'
+            >
+              Twitter
+            </a>
+            , email, mobile or however you want.
           </Typography>
-          <Typography
-            variant='subheading'
-            className={this.props.classes.spacing}
-          >
+          <Typography className={this.props.classes.textBlock}>
             When just one new person downloads EmailMuse (which is free for
             them) you will get instant access to the Swipe Vault.
           </Typography>

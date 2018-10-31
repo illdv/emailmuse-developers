@@ -25,6 +25,7 @@ import {
   Typography,
   WithStyles,
   withStyles,
+  MenuItem,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -32,6 +33,7 @@ import {
 } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 const createMenuSchema = (): IMenuItem[] => {
   return [
@@ -89,37 +91,33 @@ const styles: IStyle = theme => ({
     paddingLeft: 0,
   },
 });
-
-const Item = (props: { title: string; icon; className?; onClick?: any }) => {
-  const { className, icon, title, onClick } = props;
-
-  if (title === 'Swipes') {
-    return (
-      <ListItem button className={className} onClick={onClick}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <Typography variant='subheading' noWrap>
-          {title}
-        </Typography>
-        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
-      </ListItem>
-    );
-  }
+interface ItemProps {
+  title: string;
+  icon: any;
+  onClick: () => void;
+  selectedItem?: string;
+}
+const Item = ({ title, icon, onClick, selectedItem }: ItemProps) => {
+  const isSelected =
+    selectedItem && selectedItem.replace(/_/gi, ' ') === title.toUpperCase();
 
   return (
-    <ListItem button className={className} onClick={onClick}>
+    <MenuItem button onClick={onClick} selected={isSelected}>
       <ListItemIcon>{icon}</ListItemIcon>
-      <Typography variant='subheading' noWrap>
-        {title}
-      </Typography>
-    </ListItem>
+      <Typography variant='subheading'>{title}</Typography>
+      {title === 'Swipes' && (
+        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
+      )}
+    </MenuItem>
   );
 };
 
 interface IMenuItem {
   title: string;
   icon: ReactElement<any>;
-  className?: string;
   type: MenuItemType;
+  selectedItem?: string;
+  className?: string;
 }
 
 export namespace MenuSpace {
@@ -128,10 +126,7 @@ export namespace MenuSpace {
   }
 
   export interface IState {
-    treeData: any;
-    searchWord: string;
-    searchFocusIndex: number;
-    isOpen: boolean;
+    selectedItem: string;
   }
 }
 
@@ -144,10 +139,16 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   mapDispatchToProps,
 )
 class Menu extends React.Component<
-  MenuSpace.IProps & WithStyles<any>,
+  MenuSpace.IProps & WithStyles<typeof styles>,
   MenuSpace.IState
 > {
+  state = {
+    selectedItem: MenuItemType.EMAILS,
+  };
   selectItem = (selectedItem: MenuItemType) => () => {
+    this.setState({
+      selectedItem,
+    });
     this.props.actions.selectMenuItem({ selectedItem });
   }
   select = () => {
@@ -170,8 +171,8 @@ class Menu extends React.Component<
           <Item
             title={item.title}
             icon={item.icon}
-            className={item.className}
             onClick={this.selectItem(item.type)}
+            selectedItem={this.state.selectedItem}
           />
         </div>
       ));
