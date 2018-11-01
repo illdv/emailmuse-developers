@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Check, KeyboardArrowRight, Lock } from '@material-ui/icons';
-import { Grid, TextField, Typography, Input } from '@material-ui/core';
+import { Check, KeyboardArrowRight } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import {
   Divider,

@@ -4,7 +4,6 @@ import { Lock } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { Fade, Paper, WithStyles, withStyles } from '@material-ui/core';
 
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ISwipeActions } from './flux/actions';
 
 export interface IProps extends WithStyles<typeof styles> {
@@ -13,8 +12,9 @@ export interface IProps extends WithStyles<typeof styles> {
 }
 
 class SwipeLocked extends Component<IProps> {
-  onCopyUrl = () => this.props.swipeActions.copiedUrl.SUCCESS({});
-
+  onCopyUrl = () => {
+    return this.props.swipeActions.copiedUrl.SUCCESS({ url: this.props.url });
+  }
   render() {
     const { classes, url } = this.props;
 
@@ -33,9 +33,9 @@ class SwipeLocked extends Component<IProps> {
             Unlock the Swipe Vault by sharing EmailMuse with your friends on
             Facebook or Twitter.
           </Typography>
-          <CopyToClipboard text={url} onCopy={this.onCopyUrl}>
-            <Typography className={classes.urlBlock}>{url}</Typography>
-          </CopyToClipboard>
+          <Typography className={classes.urlBlock} onClick={this.onCopyUrl}>
+            {url}
+          </Typography>
           <Typography className={classes.textBlock}>
             Share on&nbsp;
             <a className={classes.anchor} href='https://www.facebook.com/'>
@@ -67,18 +67,19 @@ const styles = ({ spacing, palette }) => {
       ...blockStyle,
     },
     urlBlock: {
-      'border': '2px solid rgba(241,241,241, 0.7)',
-      'paddingLeft': spacing.unit,
-      'paddingRight': spacing.unit,
-      'transition': '0.5s',
+      "border": '2px solid rgba(241,241,241, 0.7)',
+      "paddingLeft": spacing.unit,
+      "paddingRight": spacing.unit,
+      "transition": '0.5s',
+      "cursor": 'pointer',
       ...blockStyle,
       '&:hover': {
         border: '2px solid rgba(241,241,241, 1)',
       },
     },
     anchor: {
-      'color': palette.text.primary,
-      'transition': '0.5s',
+      "color": palette.text.primary,
+      "transition": '0.5s',
       '&:hover, &:focus': {
         color: palette.text.secondary,
         textDecoration: 'none',
