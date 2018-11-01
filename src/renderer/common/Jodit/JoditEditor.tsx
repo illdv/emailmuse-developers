@@ -31,7 +31,7 @@ export namespace JoditEditorSpace {
     onChangeValue?: (value: string) => void;
   }
 }
-const tagPreheader = 'pre';
+const tagPreheader = 'span';
 export class JoditEditor extends Component<
   JoditEditorSpace.IProps,
   JoditEditorSpace.IState<DialogName>
@@ -59,7 +59,7 @@ export class JoditEditor extends Component<
   }
   wrapperPreheader = (preheader, tag) => {
     return preheader
-      ? `<${tag} style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all; font-family: sans-serif">${preheader}</${tag}>`
+      ? `<${tag} name="preheader" style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all;">${preheader}</${tag}>`
       : '';
   }
 
@@ -181,7 +181,9 @@ export class JoditEditor extends Component<
   deletePrevPreheader = (value: string, endTag: string) => {
     const arrValue = value.split(`</${endTag}>`);
 
-    arrValue.length > 1 ? arrValue.shift() : arrValue.join('');
+    if (arrValue[0].includes('name="preheader"')) {
+      arrValue.shift();
+    }
 
     return arrValue.join('');
   }
