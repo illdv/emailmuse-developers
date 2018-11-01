@@ -33,7 +33,7 @@ import {
 } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 const createMenuSchema = (): IMenuItem[] => {
   return [
@@ -95,9 +95,17 @@ interface ItemProps {
   title: string;
   icon: any;
   onClick: () => void;
+  isLockedSwipe?: boolean;
   selectedItem?: string;
 }
-const Item = ({ title, icon, onClick, selectedItem }: ItemProps) => {
+
+const Item = ({
+  title,
+  icon,
+  onClick,
+  selectedItem,
+  isLockedSwipe,
+}: ItemProps) => {
   const isSelected =
     selectedItem && selectedItem.replace(/_/gi, ' ') === title.toUpperCase();
 
@@ -105,9 +113,10 @@ const Item = ({ title, icon, onClick, selectedItem }: ItemProps) => {
     <MenuItem button onClick={onClick} selected={isSelected}>
       <ListItemIcon>{icon}</ListItemIcon>
       <Typography variant='subheading'>{title}</Typography>
-      {title === 'Swipes' && (
-        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
-      )}
+      {isLockedSwipe &&
+        title === 'Swipes' && (
+          <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
+        )}
     </MenuItem>
   );
 };
@@ -123,6 +132,7 @@ interface IMenuItem {
 export namespace MenuSpace {
   export interface IProps {
     actions?: IDrawerMenuActions;
+    isLockedSwipe: boolean;
   }
 
   export interface IState {
@@ -134,8 +144,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
+const mapStateToProps = (state: IGlobalState) => ({
+  isLockedSwipe: state.profile.auth.user.is_swipe_locked,
+});
+
 @connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )
 class Menu extends React.Component<
@@ -173,6 +187,7 @@ class Menu extends React.Component<
             icon={item.icon}
             onClick={this.selectItem(item.type)}
             selectedItem={this.state.selectedItem}
+            isLockedSwipe={this.props.isLockedSwipe}
           />
         </div>
       ));

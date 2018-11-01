@@ -33,6 +33,7 @@ import './Swipe.scss';
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipe';
+import SwipeLocked from './SwipeLocked';
 
 const b = block('swipe');
 
@@ -45,45 +46,13 @@ export namespace SwipeSpace {
     profile?: any;
   }
 }
-const styles = ({ spacing, palette }) => {
-  const blockStyle = {
-    marginTop: spacing.unit * 5,
-    fontSize: '1.3rem',
-  };
+const styles = ({ spacing }) => {
   return {
     button: {
       margin: spacing.unit,
     },
     rightIcon: {
       marginLeft: spacing.unit,
-    },
-    textBlock: {
-      ...blockStyle,
-    },
-    urlBlock: {
-      'border': '2px solid rgba(241,241,241, 0.7)',
-      'paddingLeft': spacing.unit,
-      'paddingRight': spacing.unit,
-      'transition': '0.5s',
-      ...blockStyle,
-      '&:hover, &:focus': {
-        border: '2px solid rgba(241,241,241, 1)',
-      },
-      '&:active': {
-        border: '2px solid rgba(241,241,241, 0.7)',
-      },
-    },
-    anchor: {
-      'color': palette.text.primary,
-      'transition': '0.5s',
-      '&:hover, &:focus': {
-        color: palette.text.secondary,
-        textDecoration: 'none',
-      },
-      '&:active': {
-        color: palette.text.primary,
-        textDecoration: 'underline',
-      },
     },
   };
 };
@@ -135,54 +104,7 @@ export class Swipe extends Component<
     const user = this.props.profile.auth.user;
     // TODO make it APP_DOMAIN constant
     const url = 'http://app.emailmuse.com/r/' + user.id;
-
-    return (
-      <Fade in timeout={500}>
-        <Paper style={{ padding: 30, height: '100%' }}>
-          <Typography
-            variant='headline'
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Swipe Vault:&nbsp;
-            <b>Locked</b>
-            <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 10 }} />
-          </Typography>
-          <Typography className={this.props.classes.textBlock}>
-            Unlock the Swipe Vault by sharing EmailMuse with your friends on
-            Facebook or Twitter.
-          </Typography>
-          <Input
-            id='site'
-            value={url}
-            disableUnderline
-            fullWidth
-            className={this.props.classes.urlBlock}
-          />
-          <Typography className={this.props.classes.textBlock}>
-            Share on&nbsp;
-            <a
-              className={this.props.classes.anchor}
-              href='https://www.facebook.com/'
-            >
-              Facebook
-            </a>
-            ,&nbsp;
-            <a
-              className={this.props.classes.anchor}
-              href='https://twitter.com/'
-            >
-              Twitter
-            </a>
-            , email, mobile or however you want.
-          </Typography>
-          <Typography className={this.props.classes.textBlock}>
-            When just one new person downloads EmailMuse (which is free for
-            them) you will get instant access to the Swipe Vault.
-          </Typography>
-        </Paper>
-      </Fade>
-    );
-
+    const isLocked = user.is_swipe_locked;
     const {
       selectedSwipe,
       selectedSubject,
@@ -190,10 +112,6 @@ export class Swipe extends Component<
       isLoading,
     } = this.props.swipe;
     const { classes } = this.props;
-
-    if (isLoading) {
-      return <Loading />;
-    }
 
     const items = [
       {
@@ -215,8 +133,12 @@ export class Swipe extends Component<
         onClick: () => null,
       });
     }
-
-    return (
+    if (isLoading) {
+      return <Loading />;
+    }
+    return isLocked ? (
+      <SwipeLocked url={url} swipeActions={this.props.swipeActions} />
+    ) : (
       <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
         <Breadcrumbs items={items} />
         {(selectedSubject && (
