@@ -68,8 +68,7 @@ const styles = ({ spacing, palette }) => {
     },
     urlBlock: {
       "border": '2px solid rgba(241,241,241, 0.7)',
-      "paddingLeft": spacing.unit,
-      "paddingRight": spacing.unit,
+      "padding": spacing.unit,
       "transition": '0.5s',
       "cursor": 'pointer',
       ...blockStyle,
