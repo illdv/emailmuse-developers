@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { ChangeEvent, Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import {
-  Fade,
-  TextField,
-  withStyles,
-  Tooltip,
-  IconButton,
-  InputAdornment,
-} from '@material-ui/core';
+import { Fade, TextField, Tooltip, InputAdornment } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
 import HelpIcon from '@material-ui/icons/HelpOutline';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
