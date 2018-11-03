@@ -90,11 +90,6 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   }
 
   onChange = (html: string) => {
-    const end = html.indexOf('</span>');
-    const start = html.indexOf('none">') + 6;
-
-    const preheder = html.substring(start, end);
-
     this.setState(state => ({
       ...state,
       html,
@@ -149,6 +144,10 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   renderParameters = () => {
     return Object.keys(this.state.params).map(key => {
       if (key === 'description') {
+        return null;
+      }
+      // delete preheader input in layout
+      if (key === 'preheader' && typeof this.state.params[key] !== 'string') {
         return null;
       }
       return key === 'preheader' ? (
