@@ -34,6 +34,7 @@ import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 import SwipeLocked from './SwipeLocked';
+import { APP_DOMAIN } from 'src/renderer/common/Constants';
 
 const b = block('swipe');
 
@@ -102,8 +103,7 @@ export class Swipe extends Component<
 
   render() {
     const user = this.props.profile.auth.user;
-    // TODO make it APP_DOMAIN constant
-    const url = 'http://app.emailmuse.com/r/' + user.id;
+    const url = APP_DOMAIN + user.id;
     const isLocked = user.is_swipe_locked;
     const {
       selectedSwipe,

@@ -63,24 +63,19 @@ class Menu extends React.Component<IProps, IState> {
               actions={this.props.actions}
             />
           </MenuList>
-          <Grid
-            style={{ height: '100%', marginBottom: 10, marginLeft: 10 }}
-            container
-            direction={'column'}
-            justify={'flex-end'}
-          >
-            <Tooltip title={'Account'}>
-              <Button
-                variant='fab'
-                color='primary'
-                aria-label='add'
-                className={classNamesEmails.ACCOUNT}
-                onClick={this.selectIAcc(MenuItemType.ACCOUNT)}
-              >
-                <SupervisorAccount />
-              </Button>
-            </Tooltip>
-          </Grid>
+
+          <Tooltip title={'Account'}>
+            <Button
+              style={{ marginBottom: 10, marginLeft: 16, marginTop: 'auto' }}
+              variant='fab'
+              color='primary'
+              aria-label='add'
+              className={classNamesEmails.ACCOUNT}
+              onClick={this.selectIAcc(MenuItemType.ACCOUNT)}
+            >
+              <SupervisorAccount />
+            </Button>
+          </Tooltip>
         </Paper>
       </Slide>
     );
