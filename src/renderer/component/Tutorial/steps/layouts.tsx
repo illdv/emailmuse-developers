@@ -9,6 +9,7 @@ export const layouts = disableBeacon => [
   {
     content:
       'You can edit or delete existing layouts to fit your design needs.',
+    disableBeacon,
     placement: 'left',
     styles: {
       options: {

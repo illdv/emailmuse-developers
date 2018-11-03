@@ -5,7 +5,7 @@ export enum classNamesSwipe {
   SWIPE_BODY = 'SWIPE_BODY',
 }
 
-export const swipe = disableBeacon => [
+export const swipes = disableBeacon => [
   {
     content:
       'There\'s no need to start from scratch when you ' +
