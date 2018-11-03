@@ -28,5 +28,6 @@ export interface ILoginResponse {
     passed_poll: boolean;
     has_email: boolean;
     has_snippet: boolean;
+    is_swipe_locked: boolean;
   };
 }

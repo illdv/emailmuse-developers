@@ -25,6 +25,7 @@ export const account = disableBeacon => [
   },
   {
     content: 'These are our super awesome text! for ' + classNamesAccount.MAIL,
+    disableBeacon,
     placement: 'right',
     styles: {
       options: {
@@ -36,6 +37,7 @@ export const account = disableBeacon => [
   },
   {
     content: 'These are our super awesome text! for ' + classNamesAccount.NAME,
+    disableBeacon,
     placement: 'right',
     styles: {
       options: {
@@ -48,6 +50,7 @@ export const account = disableBeacon => [
   {
     content:
       'These are our super awesome text! for ' + classNamesAccount.SAVE_NAME,
+    disableBeacon,
     placement: 'top',
     styles: {
       options: {
@@ -60,6 +63,7 @@ export const account = disableBeacon => [
   {
     content:
       'These are our super awesome text! for ' + classNamesAccount.PASSWORD,
+    disableBeacon,
     placement: 'top',
     styles: {
       options: {
@@ -72,6 +76,7 @@ export const account = disableBeacon => [
   {
     content:
       'These are our super awesome text! for ' + classNamesAccount.LOGOUT_BTN,
+    disableBeacon,
     placement: 'top',
     styles: {
       options: {

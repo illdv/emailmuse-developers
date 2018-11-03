@@ -4,6 +4,6 @@ export enum StepItemType {
   IMAGE_LIBRARY = 'image',
   SNIPPETS = 'snippets',
   LAYOUTS = 'layouts',
-  SWIPE = 'swipe',
+  SWIPES = 'swipes',
   TRAINING = 'training',
 }

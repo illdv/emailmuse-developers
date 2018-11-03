@@ -3,13 +3,20 @@ import { push } from 'react-router-redux';
 import { put, race, take, takeEvery } from 'redux-saga/effects';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
-import { ModalWindowActions, ModalWindowType } from 'src/renderer/common/DialogProvider/flux/actions';
+import {
+  ModalWindowActions,
+  ModalWindowType,
+} from 'src/renderer/common/DialogProvider/flux/actions';
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 
 export function* menuSaga(action): IterableIterator<any> {
   if (hasEdit) {
-    yield put(ModalWindowActions.show.REQUEST({ type: ModalWindowType.ConfirmationCloseEditor }));
+    yield put(
+      ModalWindowActions.show.REQUEST({
+        type: ModalWindowType.ConfirmationCloseEditor,
+      }),
+    );
 
     const { failure } = yield race({
       success: take(ModalWindowActions.show.SUCCESS),
@@ -39,7 +46,7 @@ function getRoutePath(action) {
       return '/layouts';
     case MenuItemType.SNIPPETS:
       return '/snippets';
-    case MenuItemType.SWIPE:
+    case MenuItemType.SWIPES:
       return '/swipe';
     case MenuItemType.EMAILS:
       return '/emails';
