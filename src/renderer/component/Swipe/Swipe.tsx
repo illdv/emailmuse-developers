@@ -22,36 +22,46 @@ import { Breadcrumbs } from 'src/renderer/common/Breadcrumbs/Breadcrumbs';
 import PreviewMail from 'src/renderer/component/Swipe/PreviewMail';
 import { IEmail } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { ISwipeActions, SwipeActions } from 'src/renderer/component/Swipe/flux/actions';
+import {
+  ISwipeActions,
+  SwipeActions,
+} from 'src/renderer/component/Swipe/flux/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
 import './Swipe.scss';
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
-import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipe';
+import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
+import SwipeLocked from './SwipeLocked';
+import { APP_DOMAIN } from 'src/renderer/common/Constants';
 
 const b = block('swipe');
 
 export namespace SwipeSpace {
-  export interface IState {
-  }
+  export interface IState {}
 
   export interface IProps extends RouteComponentProps<any> {
     swipeActions: ISwipeActions;
     swipe: ISwipeState;
+    profile?: any;
   }
 }
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-});
+const styles = ({ spacing }) => {
+  return {
+    button: {
+      margin: spacing.unit,
+    },
+    rightIcon: {
+      marginLeft: spacing.unit,
+    },
+  };
+};
 
-export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeSpace.IState> {
+export class Swipe extends Component<
+  SwipeSpace.IProps & WithStyles<typeof styles>,
+  SwipeSpace.IState
+> {
   state: SwipeSpace.IState = {};
 
   componentDidMount(): void {
@@ -74,10 +84,10 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
     return (
       <div key={title}>
         <ListItem button onClick={onClick}>
-          <ListItemText primary={title}/>
-          <KeyboardArrowRight/>
+          <ListItemText primary={title} />
+          <KeyboardArrowRight />
         </ListItem>
-        <Divider/>
+        <Divider />
       </div>
     );
   }
@@ -92,13 +102,16 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
   }
 
   render() {
-
-    const { selectedSwipe, selectedSubject, swipes, isLoading } = this.props.swipe;
+    const user = this.props.profile.auth.user;
+    const url = APP_DOMAIN + user.id;
+    const isLocked = user.is_swipe_locked;
+    const {
+      selectedSwipe,
+      selectedSubject,
+      swipes,
+      isLoading,
+    } = this.props.swipe;
     const { classes } = this.props;
-
-    if (isLoading) {
-      return <Loading/>;
-    }
 
     const items = [
       {
@@ -120,57 +133,61 @@ export class Swipe extends Component<SwipeSpace.IProps & WithStyles<any>, SwipeS
         onClick: () => null,
       });
     }
-
-    return (
+    if (isLoading) {
+      return <Loading />;
+    }
+    return isLocked ? (
+      <SwipeLocked url={url} swipeActions={this.props.swipeActions} />
+    ) : (
       <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
-        <Breadcrumbs
-          items={items}
-        />
-        {
-          selectedSubject
-          &&
-          <PreviewMail mail={selectedSubject} swipe={selectedSwipe}/>
-          ||
+        <Breadcrumbs items={items} />
+        {(selectedSubject && (
+          <PreviewMail mail={selectedSubject} swipe={selectedSwipe} />
+        )) || (
           <Fade in timeout={500}>
             <List component='nav' className={classNamesSwipe.SWIPE_BODY}>
-              {
-                selectedSwipe
-                &&
-                selectedSwipe.subjects.map(subject => this.toItem(subject.title, this.onSelectSubject(subject)))
-                ||
-                swipes.map(swipe => this.toItem(swipe.title, this.onSelectSwipe(swipe)))
-              }
+              {(selectedSwipe &&
+                selectedSwipe.subjects.map(subject =>
+                  this.toItem(subject.title, this.onSelectSubject(subject)),
+                )) ||
+                swipes.map(swipe =>
+                  this.toItem(swipe.title, this.onSelectSwipe(swipe)),
+                )}
             </List>
           </Fade>
-        }
-        {
-          selectedSwipe && !selectedSubject &&
-          <Fab
-            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
-            title={'Use These Emails'}
-            position={0}
-            variant='contained'
-            color='primary'
-            key={'Enter'}
-            bottom={'30px'}
-            className={classes.button}
-          >Use These Emails <Check className={classes.rightIcon}/>
-          </Fab>
-        }
+        )}
+        {selectedSwipe &&
+          !selectedSubject && (
+            <Fab
+              onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+              title={'Use These Emails'}
+              position={0}
+              variant='contained'
+              color='primary'
+              key={'Enter'}
+              bottom={'30px'}
+              className={classes.button}
+            >
+              Use These Emails <Check className={classes.rightIcon} />
+            </Fab>
+          )}
       </Paper>
-
     );
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
   swipe: state.swipe,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   swipeActions: bindModuleAction(SwipeActions, dispatch),
 });
 
-export default withStyles(styles)
-(connect(mapStateToProps, mapDispatchToProps)
-(Swipe));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Swipe),
+);
