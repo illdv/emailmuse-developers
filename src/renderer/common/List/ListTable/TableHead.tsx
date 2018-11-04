@@ -1,7 +1,14 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Checkbox, TableCell, TableRow, TableSortLabel, Tooltip, TableHead } from '@material-ui/core';
+import {
+  Checkbox,
+  TableCell,
+  TableRow,
+  TableSortLabel,
+  Tooltip,
+  TableHead,
+} from '@material-ui/core';
 
 interface IColumn {
   id: string;
@@ -21,15 +28,15 @@ export namespace TableHeadSpace {
   }
 }
 
-export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadSpace.IState> {
-
+export class CustomTableHead extends Component<
+  TableHeadSpace.IProps,
+  TableHeadSpace.IState
+> {
   state: TableHeadSpace.IState = {
     isSelectAll: false,
   };
 
-  onSortColumn = (id: string) => () => {
-
-  }
+  // onSortColumn = (id: string) => () => {};
 
   onSelectAll = () => {
     this.props.onSelectAll();
@@ -42,7 +49,7 @@ export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadS
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding='checkbox'/>
+          <TableCell padding='checkbox' />
           {this.props.columnData.map((column: IColumn) => {
             return (
               <TableCell
@@ -54,7 +61,7 @@ export class CustomTableHead extends Component<TableHeadSpace.IProps, TableHeadS
                 <TableSortLabel
                   active={false}
                   direction={'asc'}
-                  onClick={this.onSortColumn(column.id)}
+                  // onClick={this.onSortColumn(column.id)}
                 >
                   {column.label}
                 </TableSortLabel>

@@ -10,9 +10,7 @@ export namespace PreloaderLayoutSpace {
     status?: constants.TStatus;
     style?: any;
   }
-  export interface IState {
-
-  }
+  export interface IState {}
 }
 
 const mapStateToProps = state => ({
@@ -20,7 +18,10 @@ const mapStateToProps = state => ({
 });
 
 @connect(mapStateToProps)
-export class PreLoaderLayout extends React.Component<PreloaderLayoutSpace.IProps, PreloaderLayoutSpace.IState> {
+export class PreLoaderLayout extends React.Component<
+  PreloaderLayoutSpace.IProps,
+  PreloaderLayoutSpace.IState
+> {
   constructor(props) {
     super(props);
   }
@@ -29,7 +30,9 @@ export class PreLoaderLayout extends React.Component<PreloaderLayoutSpace.IProps
     const { status, children, style } = this.props;
     return (
       <>
-        {status && status === constants.LOADING ? <Loading style={style ? style : null}/> : null}
+        {status && status === constants.LOADING ? (
+          <Loading style={style ? style : null} />
+        ) : null}
         {children}
       </>
     );

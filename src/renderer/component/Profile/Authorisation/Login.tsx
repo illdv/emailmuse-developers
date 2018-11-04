@@ -6,12 +6,22 @@ import { Redirect } from 'react-router-dom';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { Action, Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
+import {
+  Action,
+  Title,
+} from 'src/renderer/component/Profile/Authorisation/common/Common';
 import { TextValidator } from 'src/renderer/common/Validation/TextValidator';
-import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
+import {
+  FormContext,
+  FormValidation,
+  IFormContext,
+} from 'src/renderer/common/Validation/FormValidation';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
-import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import {
+  AuthorisationActions,
+  IAuthorisationActions,
+} from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { ChevronLeft } from '@material-ui/icons';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
@@ -39,9 +49,7 @@ const styles = theme => ({
 });
 
 export namespace AuthorizationSpace {
-
-  export interface IState {
-  }
+  export interface IState {}
 
   export interface IProps {
     classes?: any;
@@ -55,11 +63,16 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+export class Login extends Component<
+  AuthorizationSpace.IProps,
+  AuthorizationSpace.IState
+> {
   state = {};
 
   onClickForgotPassword = () => {
-    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.FORGOT_PASSWORD });
+    this.props.action.setAuthStep.REQUEST({
+      authStep: AuthStep.FORGOT_PASSWORD,
+    });
   }
 
   onCreateAccount = () => {
@@ -72,7 +85,7 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
 
   onBack = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.PRE_LOGIN });
-  };
+  }
 
   render() {
     const { classes } = this.props;
@@ -88,10 +101,12 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
       },
     };
 
-    const defaultValue = IS_PRODUCTION ? {} : {
-      email: 'slava.sinakov@yandex.ru',
-      password: '111111',
-    };
+    const defaultValue = IS_PRODUCTION
+      ? {}
+      : {
+          email: 'slava.sinakov@yandex.ru',
+          password: '111111',
+        };
 
     return (
       <FormValidation
@@ -116,11 +131,12 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                           left: '-20px',
                         }}
                         onClick={this.onBack}
-                      ><ChevronLeft/> Back
+                      >
+                        <ChevronLeft /> Back
                       </div>
                     </Grow>
                     <Grid container spacing={24} className={classes.root}>
-                      <Title title={'Sign in'}/>
+                      <Title title={'Sign in'} />
                       <Grow in timeout={1500}>
                         <Grid item xs={12} style={{ paddingTop: 0 }}>
                           <Grid item xs={12}>
@@ -146,7 +162,8 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                                 onClick={context.onSubmit}
                                 className={classes.signButton}
                                 size='large'
-                              >Sign In
+                              >
+                                Sign In
                               </Button>
                             </HotKey>
                           </Grid>
@@ -155,13 +172,15 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
                               className={classes.button}
                               onClick={this.onCreateAccount}
                               style={{ marginTop: 110 }}
-                            >Create an account
+                            >
+                              Create an account
                             </Button>
                             <Button
                               className={classes.button}
                               onClick={this.onClickForgotPassword}
                               style={{ marginTop: 110 }}
-                            >Recover your password
+                            >
+                              Recover your password
                             </Button>
                           </Grid>
                         </Grid>
@@ -179,5 +198,8 @@ export class Login extends Component<AuthorizationSpace.IProps, AuthorizationSpa
 }
 
 export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)
-  (Login));
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Login),
+);
