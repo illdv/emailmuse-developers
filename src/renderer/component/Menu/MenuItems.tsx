@@ -71,6 +71,7 @@ interface ItemProps {
   onClick: () => void;
   isLockedSwipe?: boolean;
   selectedItem?: string;
+  className?: string;
 }
 
 const Item = ({
@@ -79,12 +80,13 @@ const Item = ({
   onClick,
   selectedItem,
   isLockedSwipe,
+  className,
 }: ItemProps) => {
   const isSelected =
     selectedItem && selectedItem.replace(/_/gi, ' ') === title.toUpperCase();
 
   return (
-    <MenuItem button onClick={onClick} selected={isSelected}>
+    <MenuItem button onClick={onClick} selected={isSelected} className={className}>
       <ListItemIcon>{icon}</ListItemIcon>
       <Typography variant='subheading'>{title}</Typography>
       {isLockedSwipe &&
@@ -142,6 +144,7 @@ class MenuItems extends React.Component<IProps, IState> {
           onClick={this.selectItem(item.type)}
           selectedItem={this.state.selectedItem}
           isLockedSwipe={this.props.isLockedSwipe}
+          className={item.className}
         />
       ));
     };
