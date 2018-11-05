@@ -56,17 +56,16 @@ class Menu extends React.Component<IProps, IState> {
 
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
-        <Paper elevation={4} className={classes.root}>
+        <Paper elevation={4} classes={{ root: classes.paper }}>
           <MenuList>
             <MenuItems
               isLockedSwipe={this.props.isLockedSwipe}
               actions={this.props.actions}
             />
           </MenuList>
-
           <Tooltip title={'Account'}>
             <Button
-              style={{ marginBottom: 10, marginLeft: 16, marginTop: 'auto' }}
+              classes={{ root: classes.btnAcc }}
               variant='fab'
               color='primary'
               aria-label='add'
@@ -82,13 +81,15 @@ class Menu extends React.Component<IProps, IState> {
   }
 }
 
-const styles: IStyle = theme => ({
-  root: {
-    width: '100%',
+const styles: IStyle = ({ spacing }) => ({
+  paper: {
     height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: theme.palette.background.paper,
+    overflowY: 'auto',
+  },
+  btnAcc: {
+    left: spacing.unit * 2,
+    bottom: spacing.unit,
+    position: 'absolute',
   },
 });
 
