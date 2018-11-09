@@ -13,12 +13,12 @@
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production webpack",
-    "build-prod": "npm run build; cd build; npx electron-builder -wlm",
+    "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
+    "build:linux": "npm run build; cd build; npx electron-builder -lp always",
     "start-build": "cd ./build/dist/linux-unpacked; ./emailmuse",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "project-preparation": "rm -rf node_modules build dist; kill $(lsof -t -i:8080); npm i",
-    "build-prod-linux": "npm run build; cd build; npx electron-builder --linux deb tar.xz",
     "cy": "cypress open",
     "cy:all": "cypress --record",
     "cy:re": "cypress run --record --parallel --key --ci-build-id test"
@@ -31,6 +31,8 @@
     "axios": "^0.18.0",
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",
+    "electron-log": "^2.2.17",
+    "electron-updater": "^3.1.6",
     "jodit": "https://github.com/Kamys/jodit/tarball/master",
     "log4js": "^3.0.6",
     "moment-es6": "^1.0.0",
@@ -95,17 +97,24 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^3.0.7",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.10"
   },
   "build": {
     "productName": "EmailMuse",
     "appId": "jack.and.slava.emailmuse",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jackborn",
+        "repo": "emailmuseapp"
+      }
+    ],
     "linux": {
-      "target": "deb",
       "category": "Office"
     },
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "target": "tar.gz"
     }
   },
   "jest": {
