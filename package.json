@@ -1,9 +1,13 @@
 {
   "name": "EmailMuse",
-  "version": "0.3.14",
+  "version": "0.3.16",
   "author": {
     "name": "Vyacheslav Sinyakov",
     "email": "vyacheslav.sinyakov@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackborn/emailmuseapp"
   },
   "homepage": "homepage.example",
   "description": "EmailMuse",
@@ -30,7 +34,6 @@
     "axios": "^0.18.0",
     "bem-ts": "^0.6.0",
     "classnames": "^2.2.5",
-    "electron-builder": "^20.33.2",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.2",
     "jodit": "https://github.com/Kamys/jodit/tarball/master",
@@ -67,6 +70,7 @@
     "cypress": "^3.1.0",
     "dotenv": "^6.0.0",
     "electron": "^3.0.8",
+    "electron-builder": "^20.33.2",
     "electron-load-devtool": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -106,8 +110,8 @@
         "provider": "github",
         "owner": "jackborn",
         "repo": "emailmuseapp",
-        "private": true,
-        "token": "238ea9f72ca1f673833d35c22b2749b135b2a09b"
+        "token": "238ea9f72ca1f673833d35c22b2749b135b2a09b",
+        "private": true
       }
     ],
     "linux": {
