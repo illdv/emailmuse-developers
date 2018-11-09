@@ -1,18 +1,23 @@
-# EmailMuse App 
+# EmailMuse App
 
 ### Install dependencies
+
 ```
 npm install
 ```
 
 ### Start project with Electron
+
 ```
 npm run start-webpack-dev-server
 ```
+
 ```
 npm run start-electron
 ```
+
 ### Build app for production
+
 ```
 npm run build-prod
 ```
@@ -20,13 +25,15 @@ npm run build-prod
 Result in build/dist
 
 ### For login
+
 ```
-Email: korbin.nastasia@lm0k.com
-Passworld: korbin.nastasia@lm0k.com
+creacte new acc
 ```
 
 ### Style
+
 ##### Used commit message convention
+
 [Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
 
 #### If you use WebStorm
