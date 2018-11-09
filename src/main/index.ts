@@ -1,3 +1,4 @@
+process.env.GH_TOKEN = '238ea9f72ca1f673833d35c22b2749b135b2a09b';
 const electron = require('electron');
 const {
   app,
@@ -106,9 +107,6 @@ app.on('ready', () => {
     createMenuForMac();
   }
   if (isProduction) {
-    autoUpdater.requestHeaders = {
-      'PRIVATE-TOKEN': '238ea9f72ca1f673833d35c22b2749b135b2a09b',
-    };
     autoUpdater.setFeedURL({
       provider: 'github',
       owner: 'jackborn',
@@ -116,7 +114,7 @@ app.on('ready', () => {
       token: '238ea9f72ca1f673833d35c22b2749b135b2a09b',
       private: true,
     });
-    autoUpdater.checkForUpdates();
+    autoUpdater.checkForUpdatesAndNotify();
   }
 });
 
