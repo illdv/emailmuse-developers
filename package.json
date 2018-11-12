@@ -1,6 +1,6 @@
 {
   "name": "EmailMuse",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "author": {
     "name": "Vyacheslav Sinyakov",
     "email": "vyacheslav.sinyakov@gmail.com"
@@ -36,7 +36,7 @@
     "classnames": "^2.2.5",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.2",
-    "jodit": "https://github.com/Kamys/jodit/tarball/master",
+    "jodit": "https://github.com/illdv/jodit/tarball/master",
     "log4js": "^3.0.6",
     "moment-es6": "^1.0.0",
     "react": "^16.3.2",
@@ -105,15 +105,10 @@
   "build": {
     "productName": "EmailMuse",
     "appId": "jack.and.slava.emailmuse",
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "jackborn",
-        "repo": "emailmuseapp",
-        "token": "238ea9f72ca1f673833d35c22b2749b135b2a09b",
-        "private": true
-      }
-    ],
+    "publish": {
+      "provider": "s3",
+      "bucket": "emailmuseapp"
+    },
     "linux": {
       "category": "Office"
     },

@@ -67,18 +67,18 @@ const styles = ({ spacing, palette }) => {
       ...blockStyle,
     },
     urlBlock: {
-      "border": '2px solid rgba(241,241,241, 0.7)',
-      "padding": spacing.unit,
-      "transition": '0.5s',
-      "cursor": 'pointer',
+      'border': '2px solid rgba(241,241,241, 0.7)',
+      'padding': spacing.unit,
+      'transition': '0.5s',
+      'cursor': 'pointer',
       ...blockStyle,
       '&:hover': {
         border: '2px solid rgba(241,241,241, 1)',
       },
     },
     anchor: {
-      "color": palette.text.primary,
-      "transition": '0.5s',
+      'color': palette.text.primary,
+      'transition': '0.5s',
       '&:hover, &:focus': {
         color: palette.text.secondary,
         textDecoration: 'none',

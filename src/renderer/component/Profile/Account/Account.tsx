@@ -12,8 +12,14 @@ import { AccountsDialog } from 'src/renderer/component/Profile/Account/AccountsD
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import InCenter from 'src/renderer/common/InCenter';
 import ChangePasswordDialog from './ChangePasswordDialog';
-import { AccountActions, IAccountActions } from 'src/renderer/component/Profile/Account/flux/module';
-import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import {
+  AccountActions,
+  IAccountActions,
+} from 'src/renderer/component/Profile/Account/flux/module';
+import {
+  AuthorisationActions,
+  IAuthorisationActions,
+} from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 import { classNamesAccount } from 'src/renderer/component/Tutorial/steps/account';
 
@@ -56,10 +62,14 @@ const mapDispathToProps = dispatch => ({
   action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-@connect(mapStateToProps, mapDispathToProps)
-class AccountSettings extends React.Component<AccountSettingsSpace.IProps & WithStyles<any>,
-  AccountSettingsSpace.IState> {
-
+@connect(
+  mapStateToProps,
+  mapDispathToProps,
+)
+class AccountSettings extends React.Component<
+  AccountSettingsSpace.IProps & WithStyles<any>,
+  AccountSettingsSpace.IState
+> {
   state = {
     name: '',
     email: '',
@@ -69,9 +79,9 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
 
   static getDerivedStateFromProps(
     nextProps: AccountSettingsSpace.IProps,
-    prevState: AccountSettingsSpace.IState): AccountSettingsSpace.IState {
-
-    const { profile }     = nextProps;
+    prevState: AccountSettingsSpace.IState,
+  ): AccountSettingsSpace.IState {
+    const { profile } = nextProps;
     const { email, name } = profile.auth.user;
     if (email !== prevState.email) {
       return {
@@ -80,7 +90,6 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
         isDialogChangePasswordOpen: false,
         isDialogManageAccountsOpen: false,
       };
-
     }
     return null;
   }
@@ -130,19 +139,23 @@ class AccountSettings extends React.Component<AccountSettingsSpace.IProps & With
 
   render() {
     const { classes, profile } = this.props;
-    const { name, email }      = profile.auth.user;
+    const { name, email } = profile.auth.user;
 
     if (!name) {
-      return <Loading/>;
+      return <Loading />;
     }
 
     return (
       <Fade in timeout={1000}>
         <div className={classes.container}>
-          <Paper className={`${classes.root} ${classNamesAccount.ACCOUNT_BODY}`}>
+          <Paper
+            className={`${classes.root} ${classNamesAccount.ACCOUNT_BODY}`}
+          >
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography variant='headline' noWrap align='center'>Profile settings</Typography>
+                <Typography variant='headline' noWrap align='center'>
+                  Profile settings
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField

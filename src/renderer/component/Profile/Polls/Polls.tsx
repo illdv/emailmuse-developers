@@ -2,10 +2,16 @@ import * as React from 'react';
 import { Component } from 'react';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { connect, Dispatch } from 'react-redux';
-import { IPollsActions, PollsActions } from 'src/renderer/component/Profile/Polls/flux/actions';
+import {
+  IPollsActions,
+  PollsActions,
+} from 'src/renderer/component/Profile/Polls/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { IPoll, IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
-import { Grid, Paper, Typography, withStyles, } from '@material-ui/core';
+import {
+  IPoll,
+  IQuestion,
+} from 'src/renderer/component/Profile/Polls/flux/interfase';
+import { Grid, Paper, Typography, withStyles } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import Answers from 'src/renderer/component/Profile/Polls/Answers';
 import { Loading } from 'src/renderer/common/Loading';
@@ -83,7 +89,11 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
                   </Typography>
                 </Grid>
                 <Grid>
-                  <Answers answers={question.answers} reply={this.next} answered={this.state.answer}/>
+                  <Answers
+                    answers={question.answers}
+                    reply={this.next}
+                    answered={this.state.answer}
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -91,7 +101,7 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
         </InCenter>
       );
     }
-    return <Loading/>;
+    return <Loading />;
   }
 }
 
@@ -104,5 +114,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   pallsActions: bindModuleAction(PollsActions, dispatch),
 });
 
-export default withStyles(styles)
-(connect(mapStateToProps, mapDispatchToProps)(Polls));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Polls),
+);

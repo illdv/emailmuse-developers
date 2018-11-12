@@ -86,7 +86,12 @@ const Item = ({
     selectedItem && selectedItem.replace(/_/gi, ' ') === title.toUpperCase();
 
   return (
-    <MenuItem button onClick={onClick} selected={isSelected} className={className}>
+    <MenuItem
+      button
+      onClick={onClick}
+      selected={isSelected}
+      className={className}
+    >
       <ListItemIcon>{icon}</ListItemIcon>
       <Typography variant='subheading'>{title}</Typography>
       {isLockedSwipe &&

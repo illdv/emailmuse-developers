@@ -3,13 +3,20 @@ import { mount, shallow } from 'enzyme';
 import { Emails } from 'src/renderer/component/Emails/Emails';
 import { ActionStatus } from 'src/renderer/flux/interface';
 import { emailToEditEntity } from 'src/renderer/component/Emails/utils';
-import { IEmail, nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
+import {
+  IEmail,
+  nodeType,
+} from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { RootMock } from 'src/renderer/__mock__/rootMock';
 import toJson from 'enzyme-to-json';
 
-jest.mock('../../../src/components/ui/ColorList');
+// jest.mock('../../../src/components/ui/ColorList');
 
-const EmailMock = props => <RootMock><Emails {...props} /></RootMock>;
+const EmailMock = props => (
+  <RootMock>
+    <Emails {...props} />
+  </RootMock>
+);
 
 describe('<Emails/>', () => {
   let props;
@@ -95,7 +102,11 @@ describe('<Emails/>', () => {
   test('Waite initialize', () => {
     // spinner rotates
     props.emails.status = ActionStatus.REQUEST;
-    const render = shallow(<RootMock><Emails {...props} /></RootMock>);
+    const render = shallow(
+      <RootMock>
+        <Emails {...props} />
+      </RootMock>,
+    );
 
     expect(toJson(render)).toMatchSnapshot();
   });
@@ -109,7 +120,11 @@ describe('<Emails/>', () => {
 
   test('User click on button "Add a new email"', () => {
     props.emails.selectedEmail = undefined;
-    const render = shallow(<RootMock><Emails {...props} /></RootMock>);
+    const render = shallow(
+      <RootMock>
+        <Emails {...props} />
+      </RootMock>,
+    );
 
     render.find('Fab').simulate('click');
 
@@ -150,17 +165,18 @@ describe('<Emails/>', () => {
       const mockEmailToEditEntity = emailToEditEntity(selectedTemplate);
 
       expect(props.editorActions.edit.REQUEST).toBeCalled();
-      expect(props.editorActions.edit.REQUEST).toBeCalledWith(mockEmailToEditEntity);
+      expect(props.editorActions.edit.REQUEST).toBeCalledWith(
+        mockEmailToEditEntity,
+      );
     });
     test('User click on copy icon', () => {
-      const id = 1;  // template ids
+      const id = 1; // template ids
       const render = shallow(<EmailMock {...props} />) as any;
       render.instance().onCopy(id);
 
       expect(mockCopyTemplate).toBeCalled();
       expect(mockCopyTemplate).toBeCalledWith({ id });
     });
-
   });
   describe('Wen user select template', () => {
     let render;
@@ -211,7 +227,6 @@ describe('<Emails/>', () => {
       expect(mockCreateTemplate).toBeCalledWith(selectedTemplate);
     });
   });*/
-
 });
 
 // Todo: test: componentDidMount

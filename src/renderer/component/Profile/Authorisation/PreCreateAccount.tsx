@@ -1,14 +1,31 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Grid, Grow, Paper, Typography, withStyles } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Grow,
+  Paper,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import InCenter from 'src/renderer/common/InCenter';
-import { FormContext, FormValidation, IFormContext } from 'src/renderer/common/Validation/FormValidation';
-import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import {
+  FormContext,
+  FormValidation,
+  IFormContext,
+} from 'src/renderer/common/Validation/FormValidation';
+import {
+  AuthStep,
+  IUser,
+} from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { ILoginRequest } from 'src/renderer/component/Profile/Authorisation/flux/interface';
-import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import {
+  AuthorisationActions,
+  IAuthorisationActions,
+} from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 import block from 'bem-ts';
@@ -42,8 +59,7 @@ const styles = theme => ({
 });
 
 export namespace AuthorizationSpace {
-  export interface IState {
-  }
+  export interface IState {}
 
   export interface IProps {
     classes?: any;
@@ -51,16 +67,19 @@ export namespace AuthorizationSpace {
   }
 }
 
-export class PreCreateAccount extends Component<AuthorizationSpace.IProps, AuthorizationSpace.IState> {
+export class PreCreateAccount extends Component<
+  AuthorizationSpace.IProps,
+  AuthorizationSpace.IState
+> {
   state = {};
 
   onLoginGoogle = () => {
     this.props.action.loginInGoogle.REQUEST({});
-  };
+  }
 
   onCreateAccount = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.REGISTRATION });
-  };
+  }
 
   render() {
     const { classes } = this.props;
@@ -69,21 +88,18 @@ export class PreCreateAccount extends Component<AuthorizationSpace.IProps, Autho
         <InCenter>
           <Paper className={classes.paper}>
             <Grid container>
-              <Title title={'Create Your Account'}/>
+              <Title title={'Create Your Account'} />
               <Grow in timeout={1000}>
                 <>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{ marginTop: 80 }}
-                  >
+                  <Grid item xs={12} style={{ marginTop: 80 }}>
                     <Button
                       color='primary'
                       variant='contained'
                       onClick={this.onLoginGoogle}
                       className={classes.signButton}
                       size='large'
-                    >Sign In with Google
+                    >
+                      Sign In with Google
                     </Button>
                   </Grid>
                   <Grid
@@ -97,7 +113,8 @@ export class PreCreateAccount extends Component<AuthorizationSpace.IProps, Autho
                       className={classes.button}
                       onClick={this.onCreateAccount}
                       style={{ marginTop: 120 }}
-                    >Or sign up with email and password
+                    >
+                      Or sign up with email and password
                     </Button>
                   </Grid>
                 </>
@@ -114,5 +131,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-export default withStyles(styles)
-(connect(null, mapDispatchToProps)(PreCreateAccount));
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps,
+  )(PreCreateAccount),
+);

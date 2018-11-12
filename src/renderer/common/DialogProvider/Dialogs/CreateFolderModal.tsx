@@ -10,7 +10,15 @@ import {
   ModalWindowType,
 } from 'src/renderer/common/DialogProvider/flux/actions';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, TextField } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  TextField,
+} from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import { Check } from '@material-ui/icons';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
@@ -25,7 +33,10 @@ export namespace SelectLayoutSpace {
   }
 }
 
-class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
+class CreateFolderModal extends Component<
+  SelectLayoutSpace.IProps,
+  SelectLayoutSpace.IState
+> {
   state: SelectLayoutSpace.IState = {
     folderName: '',
   };
@@ -37,7 +48,7 @@ class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayout
     });
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     const folderName: string = event.currentTarget.value;
     this.setState({ folderName });
   }
@@ -70,7 +81,9 @@ class CreateFolderModal extends Component<SelectLayoutSpace.IProps, SelectLayout
         <DialogActions>
           <Button onClick={this.onClose}>Close</Button>
           <HotKey hotKey={'Enter'} onPress={this.onSave}>
-            <Button onClick={this.onSave} color='primary' variant='contained'>Save <Check/></Button>
+            <Button onClick={this.onSave} color='primary' variant='contained'>
+              Save <Check />
+            </Button>
           </HotKey>
         </DialogActions>
       </Dialog>
@@ -87,4 +100,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   layoutActions: bindModuleAction(LayoutActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateFolderModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CreateFolderModal);

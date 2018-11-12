@@ -5,7 +5,9 @@ import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisati
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 
-function* onSendCodeOnMail(action: { payload: { email: string } }): IterableIterator<any> {
+function* onSendCodeOnMail(action: {
+  payload: { email: string };
+}): IterableIterator<any> {
   try {
     yield sendCodeOnMail(action.payload.email);
     yield put(AuthorisationActions.sendCode.SUCCESS({}));
@@ -22,11 +24,15 @@ export function* sendCodeOnMailSaga(): IterableIterator<any> {
   }
 }
 
-function* onSendNewCodeOnMail(action: { payload: { email: string } }): IterableIterator<any> {
+function* onSendNewCodeOnMail(action: {
+  payload: { email: string };
+}): IterableIterator<any> {
   try {
     yield sendNewCodeOnMail(action.payload.email);
     yield put(AuthorisationActions.sendNewCode.SUCCESS({}));
-    yield put(FluxToast.Actions.showToast('New message was sent', ToastType.Success));
+    yield put(
+      FluxToast.Actions.showToast('New message was sent', ToastType.Success),
+    );
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.sendNewCode.FAILURE({}));
@@ -35,7 +41,9 @@ function* onSendNewCodeOnMail(action: { payload: { email: string } }): IterableI
 
 export function* sendNewCodeOnMailSaga(): IterableIterator<any> {
   while (true) {
-    const action = yield take(AuthorisationActions.sendNewCode.REQUEST(null).type);
+    const action = yield take(
+      AuthorisationActions.sendNewCode.REQUEST(null).type,
+    );
     yield call(onSendNewCodeOnMail, action);
   }
 }

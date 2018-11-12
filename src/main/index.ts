@@ -52,10 +52,6 @@ function createWindow() {
     event.preventDefault();
     shell.openExternal(url);
   });
-  // const storages = [
-  //   'appcache', 'cookies', 'filesystem', 'indexdb',
-  //   'shadercache', 'websql', 'serviceworkers', 'cachestorage'];
-  // mainWindow.webContents.session.clearStorageData({ storages });
 }
 
 autoUpdater.logger = log;
@@ -108,12 +104,6 @@ app.on('ready', () => {
     createMenuForMac();
   }
   if (isProduction) {
-    autoUpdater.setFeedURL({
-      provider: 'github',
-      owner: 'jackborn',
-      repo: 'emailmuseapp',
-      token: '238ea9f72ca1f673833d35c22b2749b135b2a09b',
-    });
     autoUpdater.checkForUpdatesAndNotify();
   }
 });

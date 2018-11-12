@@ -32,8 +32,7 @@ export namespace AccountsDialogSpace {
     open: boolean;
     emailAccounts?: IEmailAccount[];
   }
-  export interface IState {
-  }
+  export interface IState {}
 }
 
 const mapStateToProps = state => ({
@@ -41,7 +40,10 @@ const mapStateToProps = state => ({
 });
 
 @connect(mapStateToProps)
-export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, AccountsDialogSpace.IState> {
+export class AccountsDialog extends React.Component<
+  AccountsDialogSpace.IProps,
+  AccountsDialogSpace.IState
+> {
   constructor(props) {
     super(props);
   }
@@ -62,22 +64,24 @@ export class AccountsDialog extends React.Component<AccountsDialogSpace.IProps, 
     const { open, emailAccounts } = this.props;
 
     return (
-      <Dialog open={open} onClose={this.handleClose} aria-labelledby='simple-dialog-title'>
+      <Dialog
+        open={open}
+        onClose={this.handleClose}
+        aria-labelledby='simple-dialog-title'
+      >
         <DialogTitle id='simple-dialog-title'>
           Manage your connected email accounts
         </DialogTitle>
         <div>
           <List>
-            {
-              emailAccounts.map(account => (
+            {emailAccounts.map(account => (
               <AccountItemExtising
                 displayName={account.email}
                 onRemove={this.handleRemove(account)}
                 key={account.id}
               />
-            ))
-            }
-            <AccountItemNew onAddNew={this.handleAddNew}/>
+            ))}
+            <AccountItemNew onAddNew={this.handleAddNew} />
           </List>
         </div>
       </Dialog>

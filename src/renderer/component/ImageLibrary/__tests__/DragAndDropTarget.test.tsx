@@ -14,10 +14,7 @@ import { DragAndDropTarget } from '../DragAndDropTarget';
 // const root = mount(<DragAndDropTarget {...initProps}> {children} </DragAndDropTarget>);
 // const backend = root.instance().getManager().getBackend();
 
-describe.skip('DragAndDropTarget', () => {
-  it('tested independently', () => {
-
-  });
-
-});
+// describe.skip('DragAndDropTarget', () => {
+//   it('tested independently', () => {});
+// });
 // backend.simulateHover([dustbin.instance().getHandlerId()]);

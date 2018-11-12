@@ -81,9 +81,9 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
 
 function* getAccessToken() {
   const response = yield AxiosWrapper.get('/google/auth/redirect-url');
-  if (IS_PRODUCTION) {
+  // if (IS_PRODUCTION) {
     ipcRenderer.send('authorized-google', response.data.url);
-  }
+  // }
   return yield call(getToken);
 }
 

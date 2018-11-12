@@ -3,19 +3,26 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import ModalWindow, { IModalAction } from 'src/renderer/common/DialogProvider/ModalWindow';
+import ModalWindow, {
+  IModalAction,
+} from 'src/renderer/common/DialogProvider/ModalWindow';
 import { IListItem } from 'src/renderer/common/List/ListTable/ListTable';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { ILayout, ILayoutActions, ILayoutState } from 'src/renderer/component/Layouts/flux/interface';
+import {
+  ILayout,
+  ILayoutActions,
+  ILayoutState,
+} from 'src/renderer/component/Layouts/flux/interface';
 import ListCard from 'src/renderer/common/List/ListCard/ListCard';
 import { toItem } from 'src/renderer/component/Layouts/utils';
-import { IModalWindowActions, ModalWindowActions } from 'src/renderer/common/DialogProvider/flux/actions';
+import {
+  IModalWindowActions,
+  ModalWindowActions,
+} from 'src/renderer/common/DialogProvider/flux/actions';
 import { LayoutActions } from 'src/renderer/component/Layouts/flux/module';
 
 export namespace SelectLayoutSpace {
-  export interface IState {
-
-  }
+  export interface IState {}
 
   export interface IProps {
     layoutActions?: ILayoutActions;
@@ -24,8 +31,10 @@ export namespace SelectLayoutSpace {
   }
 }
 
-class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace.IState> {
-
+class SelectLayout extends Component<
+  SelectLayoutSpace.IProps,
+  SelectLayoutSpace.IState
+> {
   state: SelectLayoutSpace.IState = {};
 
   componentDidMount(): void {
@@ -33,16 +42,21 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
   }
 
   toItem = (item: ILayout): IListItem => {
-    return { id: String(item.id), title: item.title, description: '---', rightText: item.updated_at };
+    return {
+      id: String(item.id),
+      title: item.title,
+      description: '---',
+      rightText: item.updated_at,
+    };
   }
 
   onSelect = (item: ILayout) => () => {
     this.props.modalWindowActions.show.SUCCESS({ layout: item });
   }
 
-  onChangePage = (item: ILayout) => () => {
+  // onChangePage = (item: ILayout) => () => {
 
-  }
+  // }
 
   selectScratch = () => {
     const layout: ILayout = {
@@ -58,11 +72,15 @@ class SelectLayout extends Component<SelectLayoutSpace.IProps, SelectLayoutSpace
     const { layouts, pagination } = this.props.layout;
 
     const actions: IModalAction[] = [
-      { title: 'No thanks. I\'ll start from scratch', color: 'primary', onClick: this.selectScratch },
+      {
+        title: 'No thanks. I\'ll start from scratch',
+        color: 'primary',
+        onClick: this.selectScratch,
+      },
     ];
 
     return (
-      <ModalWindow actions={actions} title={ 'Choose your email layout' }>
+      <ModalWindow actions={actions} title={'Choose your email layout'}>
         <ListCard
           entities={layouts}
           toItem={toItem}
@@ -86,4 +104,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   layoutActions: bindModuleAction(LayoutActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectLayout);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SelectLayout);
