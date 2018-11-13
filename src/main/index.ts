@@ -1,4 +1,3 @@
-process.env.GH_TOKEN = '238ea9f72ca1f673833d35c22b2749b135b2a09b';
 const electron = require('electron');
 const {
   app,

@@ -34,7 +34,6 @@ import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 import SwipeLocked from './SwipeLocked';
-import { APP_DOMAIN } from 'src/renderer/common/Constants';
 
 const b = block('swipe');
 
@@ -102,8 +101,10 @@ export class Swipe extends Component<
   }
 
   render() {
+    const AppDomain = process.env.APP_DOMAIN;
+
     const user = this.props.profile.auth.user;
-    const url = APP_DOMAIN + user.id;
+    const url = AppDomain + user.id;
     const isLocked = user.is_swipe_locked;
     const {
       selectedSwipe,
@@ -156,21 +157,20 @@ export class Swipe extends Component<
             </List>
           </Fade>
         )}
-        {selectedSwipe &&
-          !selectedSubject && (
-            <Fab
-              onClick={this.onMoveSwipeInEmail(selectedSwipe)}
-              title={'Use These Emails'}
-              position={0}
-              variant='contained'
-              color='primary'
-              key={'Enter'}
-              bottom={'30px'}
-              className={classes.button}
-            >
-              Use These Emails <Check className={classes.rightIcon} />
-            </Fab>
-          )}
+        {selectedSwipe && !selectedSubject && (
+          <Fab
+            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+            title={'Use These Emails'}
+            position={0}
+            variant='contained'
+            color='primary'
+            key={'Enter'}
+            bottom={'30px'}
+            className={classes.button}
+          >
+            Use These Emails <Check className={classes.rightIcon} />
+          </Fab>
+        )}
       </Paper>
     );
   }

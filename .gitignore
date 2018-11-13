@@ -2,7 +2,7 @@
 1test
 dist
 src/main/*.js
-
+.env
 # dependencies
 /node_modules
 

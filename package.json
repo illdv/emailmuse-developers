@@ -1,13 +1,9 @@
 {
   "name": "EmailMuse",
-  "version": "0.3.18",
+  "version": "0.3.20",
   "author": {
     "name": "Vyacheslav Sinyakov",
     "email": "vyacheslav.sinyakov@gmail.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jackborn/emailmuseapp"
   },
   "homepage": "homepage.example",
   "description": "EmailMuse",
@@ -15,7 +11,7 @@
   "scripts": {
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
-    "build": "rm -rf build; NODE_ENV=production webpack",
+    "build": "rm -rf build; NODE_ENV=production  webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
     "build:linux": "npm run build; cd build; npx electron-builder -lp always",
     "start-build": "cd ./build/dist/linux-unpacked; ./emailmuse",
@@ -59,6 +55,7 @@
   },
   "devDependencies": {
     "@cypress/snapshot": "^2.0.1",
+    "@types/dotenv": "^6.1.0",
     "@types/enzyme": "^3.1.10",
     "@types/jest": "^23.1.0",
     "@types/node": "^10.1.2",
@@ -83,6 +80,7 @@
     "jest": "^22.4.4",
     "jest-webpack-resolver": "^0.3.0",
     "mini-css-extract-plugin": "^0.4.0",
+    "node-env-run": "^3.0.2",
     "node-sass": "^4.9.0",
     "react-addons-test-utils": "^15.6.2",
     "react-dev-utils": "^6.0.5",
@@ -107,7 +105,7 @@
     "appId": "jack.and.slava.emailmuse",
     "publish": {
       "provider": "s3",
-      "bucket": "emailmuseapp"
+      "bucket": "emailmuse"
     },
     "linux": {
       "category": "Office"

@@ -9,7 +9,7 @@ import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { FluxToast, ToastType } from 'src/renderer/common/Toast/flux/actions';
 import { Action } from 'redux-act';
-const { clipboard } = require('electron');
+import { clipboard } from 'electron';
 
 function* swipeLoading() {
   const { tutorial } = yield select();
