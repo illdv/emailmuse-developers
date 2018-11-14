@@ -104,7 +104,7 @@ export class Swipe extends Component<
     const AppDomain = process.env.APP_DOMAIN;
 
     const user = this.props.profile.auth.user;
-    const url = AppDomain + user.id;
+    const url = AppDomain + '/r/' + user.id;
     const isLocked = user.is_swipe_locked;
     const {
       selectedSwipe,
