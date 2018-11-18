@@ -55,10 +55,11 @@ class Tour extends React.Component<Props, State> {
   componentWillUnmount() {
     document.removeEventListener('keydown', () => this.stopedTour);
   }
-  handleSteps = ({ name, isDisableBeacon }) =>
-    name === MenuItemType[name]
-      ? Steps[StepItemType[name]](isDisableBeacon)
-      : Steps[StepItemType[name]]
+  handleSteps = ({ name, isDisableBeacon }) => {
+    console.log(name === MenuItemType[name]);
+
+    return Steps[StepItemType[name]](isDisableBeacon);
+  }
 
   render() {
     const { tutorial } = this.props;
