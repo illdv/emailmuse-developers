@@ -34,6 +34,7 @@ import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 import SwipeLocked from './SwipeLocked';
+import { APP_DOMAIN } from 'src/common/constants';
 
 const b = block('swipe');
 
@@ -101,10 +102,8 @@ export class Swipe extends Component<
   }
 
   render() {
-    const AppDomain = process.env.APP_DOMAIN;
-
     const user = this.props.profile.auth.user;
-    const url = AppDomain + '/r/' + user.id;
+    const url = APP_DOMAIN() + '/r/' + user.id;
     const isLocked = user.is_swipe_locked;
     const {
       selectedSwipe,

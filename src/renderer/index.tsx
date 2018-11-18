@@ -1,7 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { config } from 'dotenv';
-config();
 import Root from './root';
 import Application from 'src/renderer/component/Application';
 

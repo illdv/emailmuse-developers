@@ -31,7 +31,10 @@ function createWindow() {
     title: 'EmailMuse',
     center: true,
   });
-
+  const loadDevTool = require('electron-load-devtool');
+  loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+  loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+  mainWindow.toggleDevTools();
   if (isProduction) {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
@@ -41,10 +44,6 @@ function createWindow() {
     mainWindow.loadURL(loadUrl);
   } else {
     mainWindow.loadURL('http://localhost:8080');
-    const loadDevTool = require('electron-load-devtool');
-    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
