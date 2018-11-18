@@ -30,7 +30,7 @@ Result in build/dist
 creacte new acc
 ```
 
-### Style
+### For publish and code signing check setEnvVar.sh
 
 ##### Used commit message convention
 
