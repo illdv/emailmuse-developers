@@ -1,6 +1,6 @@
 {
   "name": "EmailMuse",
-  "version": "0.3.20",
+  "version": "0.3.22",
   "author": {
     "name": "Vyacheslav Sinyakov",
     "email": "vyacheslav.sinyakov@gmail.com"
@@ -13,6 +13,7 @@
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production  webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
+    "build-mac": "npm run build; cd build; npx electron-builder -mp always",
     "build:linux": "npm run build; cd build; npx electron-builder -lp always",
     "start-build": "cd ./build/dist/linux-unpacked; ./emailmuse",
     "test": "jest",
@@ -111,8 +112,7 @@
       "category": "Office"
     },
     "mac": {
-      "category": "public.app-category.utilities",
-      "target": "tar.gz"
+      "category": "public.app-category.utilities"
     }
   },
   "jest": {
