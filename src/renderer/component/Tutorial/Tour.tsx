@@ -62,7 +62,9 @@ class Tour extends React.Component<Props, State> {
   }
 
   render() {
+    
     const { tutorial } = this.props;
+    console.log(tutorial.name);
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
     return (
       <>

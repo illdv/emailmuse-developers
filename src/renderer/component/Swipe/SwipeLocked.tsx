@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { Fade, Paper, WithStyles, withStyles } from '@material-ui/core';
 
 import { ISwipeActions } from './flux/actions';
+import { classNamesSwipeLocked } from '../Tutorial/steps/swipesLocked';
 
 export interface IProps extends WithStyles<typeof styles> {
   url: string;
@@ -20,7 +21,7 @@ class SwipeLocked extends Component<IProps> {
 
     return (
       <Fade in timeout={500}>
-        <Paper style={{ padding: 30, height: '100%' }}>
+        <Paper style={{ padding: 30, height: '100%' }} className={classNamesSwipeLocked.SWIPE_LOCKED_BODY}>
           <Typography
             variant='headline'
             style={{ display: 'flex', alignItems: 'center' }}
