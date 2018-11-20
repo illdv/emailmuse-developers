@@ -7,7 +7,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 
 import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
-import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
+import { MenuItemType } from '../Menu/flux/interface';
 
 type Props = injectMapStateToProps;
 type State = {
@@ -15,6 +15,7 @@ type State = {
 };
 const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
+  profile: state.profile, 
 });
 
 class Tour extends React.Component<Props, State> {
@@ -55,17 +56,21 @@ class Tour extends React.Component<Props, State> {
   componentWillUnmount() {
     document.removeEventListener('keydown', () => this.stopedTour);
   }
-  handleSteps = ({ name, isDisableBeacon }) => {
-    console.log(name === MenuItemType[name]);
-
+  handleSteps = ({ name, isDisableBeacon, user }) => {
+  if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
+    return Steps[StepItemType[name+'_LOCKED']](isDisableBeacon);
+  } else {
     return Steps[StepItemType[name]](isDisableBeacon);
+
+  }
   }
 
   render() {
     
     const { tutorial } = this.props;
-    console.log(tutorial.name);
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
+    const user = this.props.profile.auth.user;
+
     return (
       <>
         <Joyride
@@ -75,6 +80,7 @@ class Tour extends React.Component<Props, State> {
           showSkipButton
           stepIndex={getStepNumber}
           steps={this.handleSteps({
+            user,
             name: tutorial.name,
             isDisableBeacon: this.state.isDisableBeacon,
           })}
