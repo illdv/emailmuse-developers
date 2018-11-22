@@ -10,6 +10,7 @@ export interface IEmail {
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
+  is_locked?: boolean;
 }
 
 export enum nodeType {

@@ -18,7 +18,14 @@ interface IFabProps {
   isFly?: boolean;
   children?: any;
   bottom?: string;
-  variant?: 'fab' | 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'extendedFab';
+  variant?:
+    | 'fab'
+    | 'text'
+    | 'flat'
+    | 'outlined'
+    | 'contained'
+    | 'raised'
+    | 'extendedFab';
 }
 
 const initFabProps = (): IFabProps => ({
@@ -34,24 +41,35 @@ const initFabProps = (): IFabProps => ({
 
 export function Fab(props: IFabProps = initFabProps()) {
   const {
-    color, icon, onClick, position, className,
-    hotKey, title, whitCtrl, isFly,
-    children, bottom = null, variant = 'fab',
+    color,
+    icon,
+    onClick,
+    position,
+    className,
+    hotKey,
+    title,
+    whitCtrl,
+    isFly,
+    children,
+    bottom = null,
+    variant = 'fab',
   } = { ...initFabProps(), ...props };
   return (
-    <Zoom
-      in={true}
-      timeout={1000}
-      unmountOnExit
-    >
-      <HotKey whitCtrl={whitCtrl} hotKey={hotKey} tooltip={title} onPress={onClick}>
+    <Zoom in={true} timeout={1000} unmountOnExit>
+      <HotKey
+        whitCtrl={whitCtrl}
+        hotKey={hotKey}
+        tooltip={title}
+        onPress={onClick}
+      >
         <Button
-          style={{ zIndex: 99, right: (62 * position) + 20, bottom }}
+          style={{ zIndex: 99, right: 62 * position + 20, bottom, margin: 8 }}
           className={`${classNames({ fab: isFly })} ${className}`}
           color={color}
           variant={variant}
           onClick={onClick}
-        >{children ? children : icon}
+        >
+          {children ? children : icon}
         </Button>
       </HotKey>
     </Zoom>

@@ -4,9 +4,8 @@ export enum classNamesSwipeLocked {
 
 export const swipesLocked = disableBeacon => [
   {
-    content:
-      'This tab is locked.',
-    placement: 'bottom',
+    content: 'This tab is locked.',
+    placement: 'top',
     disableBeacon,
     styles: {
       options: {

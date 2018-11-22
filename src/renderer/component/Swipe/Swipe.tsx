@@ -12,9 +12,6 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-
-import block from 'bem-ts';
-
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
 
@@ -29,13 +26,11 @@ import {
 import { RouteComponentProps } from 'react-router-dom';
 import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
-import './Swipe.scss';
 import { Loading } from 'src/renderer/common/Loading';
 import { Fab } from 'src/renderer/common/Fab';
 import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 import SwipeLocked from './SwipeLocked';
-
-const b = block('swipe');
+import { IProfileState } from '../Profile/flux/models';
 
 export namespace SwipeSpace {
   export interface IState {}
@@ -43,19 +38,9 @@ export namespace SwipeSpace {
   export interface IProps extends RouteComponentProps<any> {
     swipeActions: ISwipeActions;
     swipe: ISwipeState;
-    profile?: any;
+    profile?: IProfileState;
   }
 }
-const styles = ({ spacing }) => {
-  return {
-    button: {
-      margin: spacing.unit,
-    },
-    rightIcon: {
-      marginLeft: spacing.unit,
-    },
-  };
-};
 
 export class Swipe extends Component<
   SwipeSpace.IProps & WithStyles<typeof styles>,
@@ -137,44 +122,67 @@ export class Swipe extends Component<
     if (isLoading) {
       return <Loading />;
     }
-    return isLocked ? (
-      <SwipeLocked url={url} swipeActions={this.props.swipeActions} />
-    ) : (
-      <Paper className={b()} style={selectedSubject && { height: 'auto' }}>
-        <Breadcrumbs items={items} />
-        {(selectedSubject && (
-          <PreviewMail mail={selectedSubject} swipe={selectedSwipe} />
-        )) || (
-          <Fade in timeout={500}>
-            <List component='nav' className={classNamesSwipe.SWIPE_BODY}>
-              {(selectedSwipe &&
-                selectedSwipe.subjects.map(subject =>
-                  this.toItem(subject.title, this.onSelectSubject(subject)),
-                )) ||
-                swipes.map(swipe =>
-                  this.toItem(swipe.title, this.onSelectSwipe(swipe)),
-                )}
-            </List>
-          </Fade>
-        )}
-        {selectedSwipe && !selectedSubject && (
-          <Fab
-            onClick={this.onMoveSwipeInEmail(selectedSwipe)}
-            title={'Use These Emails'}
-            position={0}
-            variant='contained'
-            color='primary'
-            key={'Enter'}
-            bottom={'30px'}
-            className={classes.button}
-          >
-            Use These Emails <Check className={classes.rightIcon} />
-          </Fab>
-        )}
+
+    return (
+      <Paper classes={{ root: classes.wrapper }}>
+        <Fade in timeout={500}>
+          {isLocked ? (
+            <SwipeLocked url={url} swipeActions={this.props.swipeActions} />
+          ) : (
+            <>
+              <Breadcrumbs items={items} />
+              {(selectedSubject && (
+                <PreviewMail mail={selectedSubject} swipe={selectedSwipe} />
+              )) || (
+                <List component='nav' className={classNamesSwipe.SWIPE_BODY}>
+                  {(selectedSwipe &&
+                    selectedSwipe.subjects.map(
+                      subject =>
+                        !subject.is_locked &&
+                        this.toItem(
+                          subject.title,
+                          this.onSelectSubject(subject),
+                        ),
+                    )) ||
+                    swipes.map(
+                      swipe =>
+                        !swipe.is_locked &&
+                        this.toItem(swipe.title, this.onSelectSwipe(swipe)),
+                    )}
+                </List>
+              )}
+              {selectedSwipe && !selectedSubject && (
+                <Fab
+                  onClick={this.onMoveSwipeInEmail(selectedSwipe)}
+                  title={'Use These Emails'}
+                  position={0}
+                  variant='contained'
+                  color='primary'
+                  key={'Enter'}
+                  bottom={'30px'}
+                >
+                  Use These Emails <Check className={classes.rightIcon} />
+                </Fab>
+              )}
+            </>
+          )}
+        </Fade>
       </Paper>
     );
   }
 }
+
+const styles = ({ spacing }) => {
+  return {
+    rightIcon: {
+      marginLeft: spacing.unit,
+    },
+    wrapper: {
+      padding: 30,
+      height: '100%',
+    },
+  };
+};
 
 const mapStateToProps = (state: IGlobalState) => ({
   swipe: state.swipe,
