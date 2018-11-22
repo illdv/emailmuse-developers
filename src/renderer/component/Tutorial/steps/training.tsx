@@ -6,9 +6,8 @@ export enum classNamesTraining {
 
 export const training = disableBeacon => [
   {
-    content:
-      'These are our super awesome text! for ' +
-      classNamesTraining.TRAINING_BODY,
+    content: 'Write better emails and make more sales with' +
+        ' advice from the top email marketing experts in the world.',
     placement: 'left',
     disableBeacon,
     styles: {
@@ -17,6 +16,6 @@ export const training = disableBeacon => [
       },
     },
     target: '.' + classNamesTraining.TRAINING_BODY,
-    title: 'Training',
+    title: 'Training Library',
   },
 ];

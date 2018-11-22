@@ -17,7 +17,7 @@ export const layouts = disableBeacon => [
       },
     },
     target: '.' + classNamesLayout.LAYOUT_BODY,
-    title: 'Our projects',
+    title: 'Layouts',
   },
   {
     content:
