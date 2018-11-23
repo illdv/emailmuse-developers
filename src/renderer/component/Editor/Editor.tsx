@@ -89,7 +89,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       hasChange: true,
     }));
     hasEdit = true;
-  }
+  };
 
   onChangeField = (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -106,7 +106,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
         } as any),
     );
     hasEdit = true;
-  }
+  };
 
   get getEntity(): IEditEntity {
     return {
@@ -118,27 +118,28 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
   onRemove = () => {
     this.props.editorActions.remove.REQUEST(this.getEntity);
-  }
+  };
 
   onSave = () => {
     this.props.editorActions.save.REQUEST(this.getEntity);
     this.setState({ hasChange: false });
     hasEdit = false;
-  }
+  };
 
   onSaveAndClose = () => {
     this.props.editorActions.saveAndClose.REQUEST(this.getEntity);
-  }
+  };
 
   onClose = () => {
     this.props.editorActions.close.REQUEST(this.getEntity);
-  }
+  };
 
   renderParameters = () => {
     return Object.keys(this.state.params).map(key => {
       if (key === 'description') {
         return null;
       }
+
       // delete preheader input in layout
       if (key === 'preheader' && typeof this.state.params[key] !== 'string') {
         return null;
@@ -181,7 +182,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
         />
       );
     });
-  }
+  };
 
   onOpenDialogClose = () => {
     if (this.state.hasChange) {
@@ -189,19 +190,19 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
       return;
     }
     this.onClose();
-  }
+  };
 
   onOpenDialogDelete = () => {
     this.setState({ isOpenConfirmationDelete: true });
-  }
+  };
 
   onCloseDialogClose = () => {
     this.setState({ isOpenConfirmationClose: false });
-  }
+  };
 
   onCloseDialogDelete = () => {
     this.setState({ isOpenConfirmationDelete: false });
-  }
+  };
 
   render() {
     return (
