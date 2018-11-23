@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { Check, KeyboardArrowRight } from '@material-ui/icons';
+import { Component, Fragment } from 'react';
+import { Check, KeyboardArrowRight, Lock } from '@material-ui/icons';
 import { connect, Dispatch } from 'react-redux';
 import {
   Divider,
@@ -67,13 +67,25 @@ export class Swipe extends Component<
 
   toItem = (title: string, onClick: () => void) => {
     return (
-      <div key={title}>
+      <Fragment key={title}>
         <ListItem button onClick={onClick}>
           <ListItemText primary={title} />
           <KeyboardArrowRight />
         </ListItem>
         <Divider />
-      </div>
+      </Fragment>
+    );
+  };
+  toDisabledItem = (title: string) => {
+    return (
+      <Fragment key={title}>
+        <ListItem button disabled>
+          <ListItemText primary={title} />
+          <Lock />
+          <KeyboardArrowRight />
+        </ListItem>
+        <Divider />
+      </Fragment>
     );
   };
 
@@ -135,18 +147,18 @@ export class Swipe extends Component<
               )) || (
                 <List component='nav' className={classNamesSwipe.SWIPE_BODY}>
                   {(selectedSwipe &&
-                    selectedSwipe.subjects.map(
-                      subject =>
-                        !subject.is_locked &&
-                        this.toItem(
-                          subject.title,
-                          this.onSelectSubject(subject),
-                        ),
+                    selectedSwipe.subjects.map(subject =>
+                      !subject.is_locked
+                        ? this.toItem(
+                            subject.title,
+                            this.onSelectSubject(subject),
+                          )
+                        : this.toDisabledItem(subject.title),
                     )) ||
-                    swipes.map(
-                      swipe =>
-                        !swipe.is_locked &&
-                        this.toItem(swipe.title, this.onSelectSwipe(swipe)),
+                    swipes.map(swipe =>
+                      !swipe.is_locked
+                        ? this.toItem(swipe.title, this.onSelectSwipe(swipe))
+                        : this.toDisabledItem(swipe.title),
                     )}
                 </List>
               )}
