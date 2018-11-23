@@ -9,9 +9,9 @@ const {
 } = require('electron');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
-const isDev = require('electron-is-dev');
 const path = require('path');
 const urlFormat = require('url');
+const loadDevTool = require('electron-load-devtool');
 
 let mainWindow;
 
@@ -31,10 +31,7 @@ function createWindow() {
     title: 'EmailMuse',
     center: true,
   });
-  const loadDevTool = require('electron-load-devtool');
-  loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-  loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-  mainWindow.toggleDevTools();
+
   if (isProduction) {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
@@ -44,6 +41,9 @@ function createWindow() {
     mainWindow.loadURL(loadUrl);
   } else {
     mainWindow.loadURL('http://localhost:8080');
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
