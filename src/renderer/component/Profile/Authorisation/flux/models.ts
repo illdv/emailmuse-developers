@@ -21,6 +21,7 @@ export interface IUser {
   has_email: boolean;
   has_snippet: boolean;
   is_swipe_locked: boolean;
+  id: number;
 }
 
 export interface IAuthState {

@@ -4,4 +4,5 @@ export interface ISwipe {
   id: string;
   title: string;
   subjects: IEmail[];
+  is_locked: boolean;
 }
