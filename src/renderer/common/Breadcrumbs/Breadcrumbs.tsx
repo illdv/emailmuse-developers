@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Fade, Typography } from '@material-ui/core';
-import block from 'bem-ts';
-import './Breadcrumbs.scss';
-
-const b = block('breadcrumbs');
+import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 
 export interface IBreadcrumbs {
   title: string;
@@ -18,21 +15,19 @@ export const Breadcrumbs: React.SFC<IBreadcrumbsProps> = ({ items }) => {
   const separator = ' > ';
   return (
     <Typography
-      className={b()}
       variant='headline'
       noWrap
+      className={classNamesSwipe.SWIPE_HEAD}
     >
       <>
-        {
-          items.map((item, index) => (
-            <Fade key={index} in timeout={500}>
-              <span onClick={item.onClick} className={b('item')}>
-                {index !== 0 && separator}
-                {item.title}
-              </span>
-            </Fade>
-          ))
-        }
+        {items.map((item, index) => (
+          <Fade key={index} in timeout={500}>
+            <span onClick={item.onClick} style={{ cursor: 'pointer' }}>
+              {index !== 0 && separator}
+              {item.title}
+            </span>
+          </Fade>
+        ))}
       </>
     </Typography>
   );

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import {
   Collections,
@@ -12,13 +10,15 @@ import {
   PlayCircleOutline,
   Lock,
 } from '@material-ui/icons';
-import { IStyle } from 'type/materialUI';
 import {
   ListItemIcon,
   Typography,
   WithStyles,
   withStyles,
   MenuItem,
+  Tooltip,
+  Button,
+  withTheme,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -94,10 +94,9 @@ const Item = ({
     >
       <ListItemIcon>{icon}</ListItemIcon>
       <Typography variant='subheading'>{title}</Typography>
-      {isLockedSwipe &&
-        title === 'Swipes' && (
-          <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
-        )}
+      {isLockedSwipe && title.toUpperCase() === MenuItemType.SWIPES && (
+        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
+      )}
     </MenuItem>
   );
 };
@@ -129,17 +128,18 @@ class MenuItems extends React.Component<IProps, IState> {
     });
     this.props.actions.selectMenuItem({ selectedItem });
   }
-  select = () => {
+  resetTour = () => {
     localStorage.setItem('EMAILS', '0');
     localStorage.setItem('SNIPPETS', '0');
     localStorage.setItem('LAYOUTS', '0');
     localStorage.setItem('IMAGE_LIBRARY', '0');
-    localStorage.setItem('SWIPE', '0');
+    localStorage.setItem('SWIPES', '0');
     localStorage.setItem('TRAINING', '0');
     localStorage.setItem('ACCOUNT', '0');
   }
 
   render() {
+    const { primary } = this.props.theme.palette;
     const toItem = (items: IMenuItem[]) => {
       return items.map(item => (
         <Item
@@ -160,13 +160,37 @@ class MenuItems extends React.Component<IProps, IState> {
         <Item
           title={'Restart TUTORIALS'}
           icon={<Drafts />}
-          onClick={this.select}
+          onClick={this.resetTour}
         />
+        <Tooltip title='Account'>
+          <Button
+            style={{
+              backgroundColor:
+                this.state.selectedItem === MenuItemType.ACCOUNT
+                  ? primary.light
+                  : primary.main,
+            }}
+            classes={{ root: this.props.classes.btnAcc }}
+            variant='fab'
+            color='primary'
+            aria-label='add'
+            className={classNamesEmails.ACCOUNT}
+            onClick={this.selectItem(MenuItemType.ACCOUNT)}
+          >
+            <SupervisorAccount />
+          </Button>
+        </Tooltip>
       </>
     );
   }
 }
 
-const styles: IStyle = theme => ({});
+const styles = ({ spacing, palette }) => ({
+  btnAcc: {
+    marginLeft: spacing.unit * 2,
+    marginTop: 'auto',
+    marginBottom: spacing.unit * 2,
+  },
+});
 
-export default withStyles(styles)(MenuItems);
+export default withStyles(styles, { withTheme: true })(MenuItems);

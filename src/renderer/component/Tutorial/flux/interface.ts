@@ -5,5 +5,7 @@ export enum StepItemType {
   SNIPPETS = 'snippets',
   LAYOUTS = 'layouts',
   SWIPES = 'swipes',
+  SWIPES_LOCKED = 'swipesLocked',
+
   TRAINING = 'training',
 }
