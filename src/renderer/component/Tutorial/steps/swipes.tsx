@@ -1,5 +1,3 @@
-import React = require('react');
-
 export enum classNamesSwipe {
   SWIPE_HEAD = 'SWIPE_HEAD',
   SWIPE_BODY = 'SWIPE_BODY',
