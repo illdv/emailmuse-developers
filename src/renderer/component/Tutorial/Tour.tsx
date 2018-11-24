@@ -58,7 +58,7 @@ class Tour extends React.Component<Props, State> {
   }
   handleSteps = ({ name, isDisableBeacon, user }) => {
   if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
-    return Steps[StepItemType[name+'_LOCKED']](isDisableBeacon);
+    return Steps[StepItemType[name + '_LOCKED']](isDisableBeacon);
   } else {
     return Steps[StepItemType[name]](isDisableBeacon);
 

@@ -43,8 +43,7 @@ function validation(params: IEditEntityParameter): string {
 function* sagaSave(action: Action<IEditEntity>) {
   const { type, id, params, html, folderId } = action.payload;
   const validationResult = validation(params);
-
-  if (validationResult) {
+  if (validationResult && typeof params.preheader !== 'undefined') {
     yield call(toastError, `${firstSymbolUp(validationResult)} can't be empty`);
     return;
   }
