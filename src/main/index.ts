@@ -137,12 +137,12 @@ ipcMain.on('authorized-google', (e, url) => {
     extractResponseFromPage(newUrl, loginWindow);
   });
 
-  // loginWindow.webContents.on(
-  //   'did-get-redirect-request',
-  //   (event, oldUrl, newUrl) => {
-  //     extractResponseFromPage(newUrl, loginWindow);
-  //   },
-  // );
+  loginWindow.webContents.on(
+    'did-get-redirect-request',
+    (event, oldUrl, newUrl) => {
+      extractResponseFromPage(newUrl, loginWindow);
+    },
+  );
 
   loginWindow.loadURL(url);
   loginWindow.webContents.session.clearStorageData({});
