@@ -69,7 +69,7 @@ interface ItemProps {
   onClick: () => void;
   isLockedSwipe?: boolean;
   className?: string;
-  currentRoute?:string;
+  currentRoute?: string;
 }
 
 const Item = ({
@@ -80,8 +80,10 @@ const Item = ({
   className,
   currentRoute,
 }: ItemProps) => {
+  const getRootRoute = route => route.split('/')[0];
   const isSelected =
-  currentRoute && currentRoute === title.toLowerCase();
+    currentRoute && getRootRoute(currentRoute) === title.toLowerCase();
+
   return (
     <MenuItem
       button
@@ -112,15 +114,13 @@ export interface IProps extends WithStyles<typeof styles> {
   pathname: string;
 }
 
-
-
 class MenuItems extends React.Component<IProps> {
   state = {
     selectedItem: MenuItemType.EMAILS,
   };
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
-  }
+  };
   resetTour = () => {
     localStorage.setItem('EMAILS', '0');
     localStorage.setItem('SNIPPETS', '0');
@@ -129,11 +129,11 @@ class MenuItems extends React.Component<IProps> {
     localStorage.setItem('SWIPES', '0');
     localStorage.setItem('TRAINING', '0');
     localStorage.setItem('ACCOUNT', '0');
-  }
+  };
 
   render() {
     const { primary } = this.props.theme.palette;
-    const currentRoute = this.props.pathname.slice(1).replace(/-/gi, ' ')
+    const currentRoute = this.props.pathname.slice(1).replace(/-/gi, ' ');
     const toItem = (items: IMenuItem[]) => {
       return items.map(item => (
         <Item
@@ -160,7 +160,7 @@ class MenuItems extends React.Component<IProps> {
           <Button
             style={{
               backgroundColor:
-              currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
+                currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
                   ? primary.light
                   : primary.main,
             }}

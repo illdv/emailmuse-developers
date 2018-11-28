@@ -42,20 +42,22 @@ class CreateFolderModal extends Component<
   };
 
   onSave = () => {
-    this.props.modalWindowActions.show.SUCCESS({
-      type: ModalWindowType.CreateFolder,
-      folderName: this.state.folderName,
-    });
-  }
+    this.state.folderName
+      ? this.props.modalWindowActions.show.SUCCESS({
+          type: ModalWindowType.CreateFolder,
+          folderName: this.state.folderName,
+        })
+      : this.props.modalWindowActions.hide.REQUEST({});
+  };
 
   handleChange = event => {
     const folderName: string = event.currentTarget.value;
     this.setState({ folderName });
-  }
+  };
 
   onClose = () => {
     this.props.modalWindowActions.hide.REQUEST({});
-  }
+  };
 
   render() {
     return (

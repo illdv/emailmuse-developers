@@ -11,8 +11,7 @@ export enum classNamesAccount {
 
 export const account = disableBeacon => [
   {
-    content:
-      'These are our super awesome text! for ' + classNamesAccount.ACCOUNT_BODY,
+    content: 'You can view and update your profile settings from this screen.',
     placement: 'left',
     disableBeacon,
     styles: {
@@ -21,69 +20,6 @@ export const account = disableBeacon => [
       },
     },
     target: '.' + classNamesAccount.ACCOUNT_BODY,
-    title: 'Our projects',
-  },
-  {
-    content: 'These are our super awesome text! for ' + classNamesAccount.MAIL,
-    disableBeacon,
-    placement: 'right',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesAccount.MAIL,
-    title: 'Our projects',
-  },
-  {
-    content: 'These are our super awesome text! for ' + classNamesAccount.NAME,
-    disableBeacon,
-    placement: 'right',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesAccount.NAME,
-    title: 'Our projects',
-  },
-  {
-    content:
-      'These are our super awesome text! for ' + classNamesAccount.SAVE_NAME,
-    disableBeacon,
-    placement: 'top',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesAccount.SAVE_NAME,
-    title: 'Our projects',
-  },
-  {
-    content:
-      'These are our super awesome text! for ' + classNamesAccount.PASSWORD,
-    disableBeacon,
-    placement: 'top',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesAccount.PASSWORD,
-    title: 'Our projects',
-  },
-  {
-    content:
-      'These are our super awesome text! for ' + classNamesAccount.LOGOUT_BTN,
-    disableBeacon,
-    placement: 'top',
-    styles: {
-      options: {
-        width: 600,
-      },
-    },
-    target: '.' + classNamesAccount.LOGOUT_BTN,
-    title: 'Our projects',
+    title: 'Profile Settings',
   },
 ];
