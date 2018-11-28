@@ -55,7 +55,7 @@ function* toGiveUserToInsertMarker(selectedLayout: ILayout) {
   if (save) {
     return save;
   } else {
-    yield put(push('/swipe'));
+    yield put(push('/swipes'));
     return null;
   }
 }

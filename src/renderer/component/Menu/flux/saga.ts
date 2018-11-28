@@ -47,7 +47,7 @@ function getRoutePath(action) {
     case MenuItemType.SNIPPETS:
       return '/snippets';
     case MenuItemType.SWIPES:
-      return '/swipe';
+      return '/swipes';
     case MenuItemType.EMAILS:
       return '/emails';
     case MenuItemType.TRAINING:

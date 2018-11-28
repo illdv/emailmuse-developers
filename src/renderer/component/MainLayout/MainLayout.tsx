@@ -65,7 +65,7 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
             <Route path='/layouts' component={Layouts}/>
             <Route path='/image-library' component={ImageLibrary}/>
             <Route path='/snippets' component={Snippets}/>
-            <Route path='/swipe' component={Swipe}/>
+            <Route path='/swipes' component={Swipe}/>
             <Route path='/account' component={Account}/>
             <Route path='/editor' component={Editor}/>
             <Route path='/training' component={StepsSelection}/>

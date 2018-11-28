@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-
 import {
   Collections,
   Drafts,
@@ -18,7 +17,6 @@ import {
   MenuItem,
   Tooltip,
   Button,
-  withTheme,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -70,20 +68,21 @@ interface ItemProps {
   icon: any;
   onClick: () => void;
   isLockedSwipe?: boolean;
-  selectedItem?: string;
   className?: string;
+  currentRoute?: string;
 }
 
 const Item = ({
   title,
   icon,
   onClick,
-  selectedItem,
   isLockedSwipe,
   className,
+  currentRoute,
 }: ItemProps) => {
+  const getRootRoute = route => route.split('/')[0];
   const isSelected =
-    selectedItem && selectedItem.replace(/_/gi, ' ') === title.toUpperCase();
+    currentRoute && getRootRoute(currentRoute) === title.toLowerCase();
 
   return (
     <MenuItem
@@ -112,22 +111,16 @@ interface IMenuItem {
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
+  pathname: string;
 }
 
-export interface IState {
-  selectedItem: string;
-}
-
-class MenuItems extends React.Component<IProps, IState> {
+class MenuItems extends React.Component<IProps> {
   state = {
     selectedItem: MenuItemType.EMAILS,
   };
   selectItem = (selectedItem: MenuItemType) => () => {
-    this.setState({
-      selectedItem,
-    });
     this.props.actions.selectMenuItem({ selectedItem });
-  }
+  };
   resetTour = () => {
     localStorage.setItem('EMAILS', '0');
     localStorage.setItem('SNIPPETS', '0');
@@ -136,10 +129,11 @@ class MenuItems extends React.Component<IProps, IState> {
     localStorage.setItem('SWIPES', '0');
     localStorage.setItem('TRAINING', '0');
     localStorage.setItem('ACCOUNT', '0');
-  }
+  };
 
   render() {
     const { primary } = this.props.theme.palette;
+    const currentRoute = this.props.pathname.slice(1).replace(/-/gi, ' ');
     const toItem = (items: IMenuItem[]) => {
       return items.map(item => (
         <Item
@@ -147,9 +141,9 @@ class MenuItems extends React.Component<IProps, IState> {
           title={item.title}
           icon={item.icon}
           onClick={this.selectItem(item.type)}
-          selectedItem={this.state.selectedItem}
           isLockedSwipe={this.props.isLockedSwipe}
           className={item.className}
+          currentRoute={currentRoute}
         />
       ));
     };
@@ -166,7 +160,7 @@ class MenuItems extends React.Component<IProps, IState> {
           <Button
             style={{
               backgroundColor:
-                this.state.selectedItem === MenuItemType.ACCOUNT
+                currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
                   ? primary.light
                   : primary.main,
             }}
