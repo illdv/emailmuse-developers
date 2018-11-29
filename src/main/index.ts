@@ -132,24 +132,31 @@ ipcMain.on('authorized-google', (e, url) => {
   const loginWindow = new BrowserWindow({
     webPreferences: { nodeIntegration: false },
   });
+  loginWindow.loadURL(url);
+  const ses = mainWindow.webContents.session;
+  // loginWindow.webContents.on('will-navigate', (event, newUrl) => {
+  //   extractResponseFromPage(newUrl, loginWindow);
+  // });
 
-  loginWindow.webContents.on('will-navigate', (event, newUrl) => {
-    extractResponseFromPage(newUrl, loginWindow);
+  ses.webRequest.onBeforeRequest({ urls: [] }, (details, callback) => {
+    if (!details.url.includes('app.emailmuse.com')) {
+      extractResponseFromPage(details.url, loginWindow);
+    }
+    callback({});
   });
 
-  loginWindow.webContents.on(
-    'did-get-redirect-request',
-    (event, oldUrl, newUrl) => {
-      extractResponseFromPage(newUrl, loginWindow);
-    },
-  );
+  // loginWindow.webContents.on(
+  //   'did-get-redirect-request',
+  //   (event, oldUrl, newUrl) => {
+  //     // console.log(newUrl);
 
-  loginWindow.loadURL(url);
-  loginWindow.webContents.session.clearStorageData({});
+  //     extractResponseFromPage(newUrl, loginWindow);
+  //   },
+  // );
+  ses.clearStorageData({});
 });
 
 function extractResponseFromPage(url, loginWindow) {
-  console.log(url);
   const javaScript = `
   function getUser() {
     if(document.body.children.length === 1) {
@@ -162,9 +169,7 @@ function extractResponseFromPage(url, loginWindow) {
   loginWindow.webContents.executeJavaScript(javaScript, result => {
     if (result) {
       mainWindow.webContents.send(`authorized-google-success`, result);
-      if (!loginWindow.isDestroyed()) {
-        loginWindow.close();
-      }
+      loginWindow.hide();
     }
   });
 }
