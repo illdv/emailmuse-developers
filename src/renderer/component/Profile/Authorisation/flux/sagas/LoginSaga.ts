@@ -5,9 +5,15 @@ import { push } from 'react-router-redux';
 
 import { login } from 'src/renderer/API/AuthAPI';
 import CustomStorage from 'src/common/CustomStorage';
-import { AuthStep, IUser } from 'src/renderer/component/Profile/Authorisation/flux/models';
+import {
+  AuthStep,
+  IUser,
+} from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { AxiosWrapper } from 'src/renderer/API/AxiosWrapper';
-import { ILoginRequest, ILoginResponse } from 'src/renderer/component/Profile/Authorisation/flux/interface';
+import {
+  ILoginRequest,
+  ILoginResponse,
+} from 'src/renderer/component/Profile/Authorisation/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { errorHandler } from 'src/renderer/flux/saga/errorHandler';
 import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
@@ -18,10 +24,17 @@ const { ipcRenderer } = (window as any).require('electron');
 
 function* watcherSetToken() {
   while (true) {
-    const action: Action<{ user: IUser }> = yield take(AuthorisationActions.login.SUCCESS(null).type);
-    const token                           = action.payload.user.token;
-    const time                            = Date.now();
-    CustomStorage.setItemWithTimer({ key: 'token', value: token, isRemembered: true, time });
+    const action: Action<{ user: IUser }> = yield take(
+      AuthorisationActions.login.SUCCESS(null).type,
+    );
+    const token = action.payload.user.token;
+    const time = Date.now();
+    CustomStorage.setItemWithTimer({
+      key: 'token',
+      value: token,
+      isRemembered: true,
+      time,
+    });
     // noinspection TsLint
     axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }
@@ -42,8 +55,15 @@ function* watcherInitApp() {
   while (true) {
     yield take(AuthorisationActions.initializeApp.REQUEST(null).type);
     if (localStorage.getItem('token')) {
-      if (Date.now() - parseInt(localStorage.getItem('time_token'), 10) < (30 * oneDay) ) {
-        yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
+      if (
+        Date.now() - parseInt(localStorage.getItem('time_token'), 10) <
+        30 * oneDay
+      ) {
+        yield put(
+          AuthorisationActions.setAuthStep.REQUEST({
+            authStep: AuthStep.LOADING,
+          }),
+        );
         const token = localStorage.getItem('token');
         axios.defaults.headers.common.authorization = `Bearer ${token}`;
         yield put(AccountActions.loadingProfile.REQUEST({}));
@@ -60,11 +80,18 @@ function* watcherInitApp() {
   }
 }
 
-function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<any> {
+function* onLogin(
+  action: Action<{ request: ILoginRequest }>,
+): IterableIterator<any> {
   try {
-    yield put(AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }));
-    const response: AxiosResponse<ILoginResponse> = yield call(login, action.payload.request);
-    const user                                    = extractUser(response);
+    yield put(
+      AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }),
+    );
+    const response: AxiosResponse<ILoginResponse> = yield call(
+      login,
+      action.payload.request,
+    );
+    const user = extractUser(response);
     yield put(AuthorisationActions.login.SUCCESS({ user }));
     // Check If User is new
     if (user.passed_poll === false) {
@@ -81,9 +108,7 @@ function* onLogin(action: Action<{ request: ILoginRequest }>): IterableIterator<
 
 function* getAccessToken() {
   const response = yield AxiosWrapper.get('/google/auth/redirect-url');
-  // if (IS_PRODUCTION) {
-    ipcRenderer.send('authorized-google', response.data.url);
-  // }
+  ipcRenderer.send('authorized-google', response.data.url);
   return yield call(getToken);
 }
 
@@ -96,7 +121,6 @@ function* onGoogleLogin(): IterableIterator<any> {
       yield call(pollsFlow);
     }
     yield put(FolderActions.openFolder.REQUEST({}));
-
   } catch (error) {
     yield call(errorHandler, error);
     yield put(AuthorisationActions.login.FAILURE({}));
@@ -106,17 +130,18 @@ function* onGoogleLogin(): IterableIterator<any> {
 function* loginSaga(): IterableIterator<any> {
   yield all([
     takeEvery(AuthorisationActions.login.REQUEST(null).type, onLogin),
-    takeEvery(AuthorisationActions.loginInGoogle.REQUEST(null).type, onGoogleLogin),
+    takeEvery(
+      AuthorisationActions.loginInGoogle.REQUEST(null).type,
+      onGoogleLogin,
+    ),
   ]);
 }
 
 function getToken() {
   return new Promise((resolve, reject) => {
-    if (IS_PRODUCTION) {
-      ipcRenderer.on('authorized-google-success', (event, value) => {
-        resolve(value);
-      });
-    }
+    ipcRenderer.on('authorized-google-success', (event, value) => {
+      resolve(value);
+    });
   });
 }
 
