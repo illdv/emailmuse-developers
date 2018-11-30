@@ -13,6 +13,8 @@ import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 import ModalProvider from 'src/renderer/common/DialogProvider/ModalProvider';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
 import Swipe from 'src/renderer/component/Swipe/Swipe';
+import SwipeLocked from 'src/renderer/component/Swipe/SwipeLocked';
+
 import ImageLibrary from 'src/renderer/component/ImageLibrary/ImageLibrary';
 import Layouts from 'src/renderer/component/Layouts/Layouts';
 import Account from 'src/renderer/component/Profile/Account/Account';
@@ -36,17 +38,17 @@ const styles: IStyle = {
 };
 
 export namespace MainLayoutSpace {
-  export interface IState {
-
-  }
+  export interface IState {}
 
   export interface IProps {
     drawerMenu?: IDrawerMenuState;
   }
 }
 @DragDropContext
-class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, MainLayoutSpace.IState> {
-
+class MainLayout extends Component<
+  MainLayoutSpace.IProps & WithStyles<any>,
+  MainLayoutSpace.IState
+> {
   state = {};
 
   render() {
@@ -55,21 +57,27 @@ class MainLayout extends Component<MainLayoutSpace.IProps & WithStyles<any>, Mai
       <div className={classes.root}>
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
-            <Route path='/' component={Menu}/>
+            <Route path='/' component={Menu} />
           </Grid>
-          <Grid item xs={12} sm={9} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+          <Grid
+            item
+            xs={12}
+            sm={9}
+            style={{ overflowY: 'auto', overflowX: 'hidden' }}
+          >
             <Switch>
-              <Route path='/emails/:id/:name' component={Emails}/>
-              <Route path='/emails' component={Emails}/>
+              <Route path='/emails/:id/:name' component={Emails} />
+              <Route path='/emails' component={Emails} />
             </Switch>
-            <Route path='/layouts' component={Layouts}/>
-            <Route path='/image-library' component={ImageLibrary}/>
-            <Route path='/snippets' component={Snippets}/>
-            <Route path='/swipes' component={Swipe}/>
-            <Route path='/account' component={Account}/>
-            <Route path='/editor' component={Editor}/>
-            <Route path='/training' component={StepsSelection}/>
-            <ModalProvider/>
+            <Route path='/layouts' component={Layouts} />
+            <Route path='/image-library' component={ImageLibrary} />
+            <Route path='/snippets' component={Snippets} />
+            <Route path='/swipes' component={Swipe} />
+            <Route path='/swipes-locked' component={SwipeLocked} />
+            <Route path='/account' component={Account} />
+            <Route path='/editor' component={Editor} />
+            <Route path='/training' component={StepsSelection} />
+            <ModalProvider />
           </Grid>
         </Grid>
       </div>

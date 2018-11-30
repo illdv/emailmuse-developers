@@ -45,7 +45,6 @@ class Menu extends React.Component<IProps, IState> {
 
   render() {
   
-    
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>

@@ -11,6 +11,7 @@ import {
   Paper,
   WithStyles,
   withStyles,
+  Theme,
 } from '@material-ui/core';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { ISwipe } from 'src/renderer/component/Swipe/flux/interface';
@@ -23,7 +24,7 @@ import {
   ISwipeActions,
   SwipeActions,
 } from 'src/renderer/component/Swipe/flux/actions';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { ISwipeState } from 'src/renderer/component/Swipe/flux/reducer';
 
 import { Loading } from 'src/renderer/common/Loading';
@@ -32,6 +33,7 @@ import { classNamesSwipe } from 'src/renderer/component/Tutorial/steps/swipes';
 import SwipeLocked from './SwipeLocked';
 import { IProfileState } from '../Profile/flux/models';
 import { APP_DOMAIN } from 'src/common/constants';
+import { classNamesEmails } from '../Tutorial/steps/emails';
 
 export namespace SwipeSpace {
   export interface IState {}
@@ -76,16 +78,17 @@ export class Swipe extends Component<
       </Fragment>
     );
   };
-  toDisabledItem = (title: string) => {
+
+  toDisabledItem = (title: string, classes) => {
     return (
-      <Fragment key={title}>
-        <ListItem button disabled>
+      <Link to='/swipes-locked' key={title} className={classes.link}>
+        <ListItem button>
           <ListItemText primary={title} />
           <Lock />
           <KeyboardArrowRight />
         </ListItem>
         <Divider />
-      </Fragment>
+      </Link>
     );
   };
 
@@ -135,12 +138,12 @@ export class Swipe extends Component<
     }
 
     return (
-      <Paper classes={{ root: classes.wrapper }}>
-        <Fade in timeout={500}>
-          {isLocked ? (
-            <SwipeLocked url={url} swipeActions={this.props.swipeActions} />
-          ) : (
-            <>
+      <>
+        {isLocked ? (
+          <SwipeLocked />
+        ) : (
+          <Fade in timeout={500}>
+            <Paper classes={{ root: classes.wrapper }}>
               <Breadcrumbs items={items} />
               {(selectedSubject && (
                 <PreviewMail mail={selectedSubject} swipe={selectedSwipe} />
@@ -153,12 +156,12 @@ export class Swipe extends Component<
                             subject.title,
                             this.onSelectSubject(subject),
                           )
-                        : this.toDisabledItem(subject.title),
+                        : this.toDisabledItem(subject.title, classes),
                     )) ||
                     swipes.map(swipe =>
                       !swipe.is_locked
                         ? this.toItem(swipe.title, this.onSelectSwipe(swipe))
-                        : this.toDisabledItem(swipe.title),
+                        : this.toDisabledItem(swipe.title, classes),
                     )}
                 </List>
               )}
@@ -175,15 +178,15 @@ export class Swipe extends Component<
                   Use These Emails <Check className={classes.rightIcon} />
                 </Fab>
               )}
-            </>
-          )}
-        </Fade>
-      </Paper>
+            </Paper>
+          </Fade>
+        )}
+      </>
     );
   }
 }
 
-const styles = ({ spacing }) => {
+const styles = ({ spacing, palette }: Theme) => {
   return {
     rightIcon: {
       marginLeft: spacing.unit,
@@ -191,6 +194,10 @@ const styles = ({ spacing }) => {
     wrapper: {
       padding: 30,
       height: '100%',
+    },
+    link: {
+      textDecoration: 'none',
+      color: palette.text.primary,
     },
   };
 };
