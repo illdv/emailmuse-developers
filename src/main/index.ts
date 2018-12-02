@@ -4,7 +4,6 @@ const {
   BrowserWindow,
   Menu,
   ipcMain,
-  ipcRenderer,
   shell,
   dialog,
 } = require('electron');
@@ -13,14 +12,9 @@ const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const urlFormat = require('url');
 const loadDevTool = require('electron-load-devtool');
-let mainWindow;
+const isDev = require('electron-is-dev');
 
-let isProduction = false;
-try {
-  isProduction = IS_PRODUCTION;
-} catch (e) {
-  console.log('Failed get IS_PRODUCTION in Electron!');
-}
+let mainWindow = null;
 
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -31,18 +25,18 @@ function createWindow() {
     center: true,
   });
 
-  if (isProduction) {
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:8080');
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
+  } else {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
       protocol: 'file:',
       slashes: true,
     });
     mainWindow.loadURL(loadUrl);
-  } else {
-    mainWindow.loadURL('http://localhost:8080');
-    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
@@ -56,8 +50,8 @@ autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
 function sendStatusToWindow(text) {
-  // log.info(text);
-  mainWindow.webContents.send('message', text);
+  log.info(text);
+  // mainWindow.webContents.send('message', text);
 }
 
 let updater;
@@ -93,9 +87,11 @@ autoUpdater.on('error', err => {
   sendStatusToWindow('Error in auto-updater. ' + err);
 });
 autoUpdater.on('download-progress', progressObj => {
+  // https://github.com/electron-userland/electron-builder/issues/3462
   const logMessage = ' - Downloaded ' + Math.floor(progressObj.percent) + '%';
   // logMessage =
   //   logMessage + ' (' + progressObj.transferred + '/' + progressObj.total + ')';
+  mainWindow.setProgressBar(progressObj.percent / 100);
   sendStatusToWindow(logMessage);
 });
 
@@ -140,10 +136,14 @@ function dialogWarningClose(window) {
 
 app.on('ready', () => {
   createWindow();
+  ipcMain.on('update', e => {
+    // dialog.showErrorBox('An error message', 'devo');
+    e.sender.send('ping', '111');
+  });
   if (process.platform === 'darwin') {
     createMenuForMac();
   }
-  if (isProduction) {
+  if (!isDev) {
     autoUpdater.checkForUpdates();
   }
 });

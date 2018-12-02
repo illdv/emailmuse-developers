@@ -16,11 +16,11 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuItems from './MenuItems';
-
+// const { ipcRenderer } = (window as any).require('electron');
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
-  location: any,
+  location: any;
 }
 
 export interface IState {
@@ -41,14 +41,20 @@ const mapStateToProps = (state: IGlobalState) => ({
 class Menu extends React.Component<IProps, IState> {
   selectIAcc = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
-  }
+  };
+  // foo = () => {
+  //   ipcRenderer.send('update');
+  //   ipcRenderer.on('ping', (e, arg) => {
+  //     console.log(arg);
+  //   });
+  // };
 
   render() {
-  
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
         <Paper elevation={4} classes={{ root: classes.paper }}>
+          {/* <button onClick={this.foo}>TEST</button> */}
           <MenuList classes={{ root: classes.list }}>
             <MenuItems
               isLockedSwipe={this.props.isLockedSwipe}
@@ -76,4 +82,4 @@ const styles = ({ spacing, palette }) =>
     },
   });
 
-export default withStyles(styles)(Menu)
+export default withStyles(styles)(Menu);
