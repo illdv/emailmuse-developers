@@ -56,6 +56,7 @@ function sendStatusToWindow(text) {
 
 let updater;
 autoUpdater.autoDownload = false;
+let downloadProgress;
 
 autoUpdater.on('update-available', () => {
   sendStatusToWindow('Checking for update...');
@@ -86,13 +87,15 @@ autoUpdater.on('update-not-available', info => {
 autoUpdater.on('error', err => {
   sendStatusToWindow('Error in auto-updater. ' + err);
 });
+ipcMain.on('download-progress-request', e => {
+  e.returnValue = downloadProgress;
+});
 autoUpdater.on('download-progress', progressObj => {
   // https://github.com/electron-userland/electron-builder/issues/3462
-  const logMessage = ' - Downloaded ' + Math.floor(progressObj.percent) + '%';
-  // logMessage =
-  //   logMessage + ' (' + progressObj.transferred + '/' + progressObj.total + ')';
+
+  downloadProgress = progressObj.percent;
+  autoUpdater.logger.info(downloadProgress);
   mainWindow.setProgressBar(progressObj.percent / 100);
-  sendStatusToWindow(logMessage);
 });
 
 autoUpdater.on('update-downloaded', () => {
