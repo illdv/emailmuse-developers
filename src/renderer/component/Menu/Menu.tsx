@@ -16,7 +16,7 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuItems from './MenuItems';
-// const { ipcRenderer } = (window as any).require('electron');
+const { ipcRenderer } = (window as any).require('electron');
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
@@ -24,7 +24,7 @@ export interface IProps extends WithStyles<typeof styles> {
 }
 
 export interface IState {
-  selectedAcc: boolean;
+  isUpdate: boolean;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -39,22 +39,29 @@ const mapStateToProps = (state: IGlobalState) => ({
   mapDispatchToProps,
 )
 class Menu extends React.Component<IProps, IState> {
+  state = {
+    isUpdate: null,
+  };
   selectIAcc = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   };
-  // foo = () => {
-  //   ipcRenderer.send('update');
-  //   ipcRenderer.on('ping', (e, arg) => {
-  //     console.log(arg);
-  //   });
-  // };
 
+  componentDidMount() {
+    ipcRenderer.send('update');
+    ipcRenderer.on('ping', (e, arg) => {
+      this.setState({
+        isUpdate: arg,
+      });
+    });
+  }
   render() {
+    console.log(this.state.isUpdate);
+
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
         <Paper elevation={4} classes={{ root: classes.paper }}>
-          {/* <button onClick={this.foo}>TEST</button> */}
+          {this.state.isUpdate ? <h1>1111111111</h1> : <h1>222222222222</h1>}
           <MenuList classes={{ root: classes.list }}>
             <MenuItems
               isLockedSwipe={this.props.isLockedSwipe}
@@ -79,6 +86,7 @@ const styles = ({ spacing, palette }) =>
       padding: 0,
       flexDirection: 'column',
       overflowY: 'auto',
+      backgroundColor: 'red',
     },
   });
 
