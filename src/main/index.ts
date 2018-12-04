@@ -55,12 +55,13 @@ function sendStatusToWindow(text) {
   // mainWindow.webContents.send('message', text);
 }
 
-let updater;
 autoUpdater.autoDownload = false;
-let downloadProgress;
 
-autoUpdater.on('update-available', () => {
+autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
+});
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available.');
 
   dialog.showMessageBox(
     mainWindow,
@@ -73,16 +74,14 @@ autoUpdater.on('update-available', () => {
     buttonIndex => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
-      } else {
-        updater = null;
+        mainWindow.on('close', dialogWarningClose);
+        mainWindow.setProgressBar(2);
+        ipcMain.on('update', e => {
+          e.sender.send('start', true);
+        });
       }
     },
   );
-});
-autoUpdater.on('update-available', info => {
-  sendStatusToWindow('Update available.');
-  mainWindow.on('close', dialogWarningClose);
-  mainWindow.setProgressBar(2);
 });
 autoUpdater.on('update-not-available', info => {
   sendStatusToWindow('Update not available.');
@@ -95,6 +94,10 @@ autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded');
   mainWindow.setProgressBar(-1);
   mainWindow.removeListener('close', dialogWarningClose);
+  ipcMain.on('update', e => {
+    e.sender.send('end', false);
+  });
+
   dialog.showMessageBox(
     mainWindow,
     {
@@ -134,10 +137,7 @@ app.on('ready', () => {
   ipcMain.on('authorized-google', (e, url) => {
     authorizedGoogle(url, mainWindow);
   });
-  ipcMain.on('update', e => {
-    // dialog.showErrorBox('An error message', 'devo');
-    e.sender.send('ping', true);
-  });
+
   if (process.platform === 'darwin') {
     createMenuForMac();
   }

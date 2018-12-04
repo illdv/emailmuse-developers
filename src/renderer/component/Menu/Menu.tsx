@@ -46,14 +46,10 @@ class Menu extends React.Component<IProps, IState> {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
-  componentDidMount() {
-    ipcRenderer.send('update');
-    ipcRenderer.on('ping', (e, arg) => {
-      this.setState({
-        isUpdate: arg,
-      });
-    });
+  static getDerivedStateFromProps(props, state) {
+    return null;
   }
+
   render() {
     console.log(this.state.isUpdate);
 
@@ -61,7 +57,6 @@ class Menu extends React.Component<IProps, IState> {
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
         <Paper elevation={4} classes={{ root: classes.paper }}>
-          {this.state.isUpdate ? <h1>1111111111</h1> : <h1>222222222222</h1>}
           <MenuList classes={{ root: classes.list }}>
             <MenuItems
               isLockedSwipe={this.props.isLockedSwipe}
@@ -86,7 +81,6 @@ const styles = ({ spacing, palette }) =>
       padding: 0,
       flexDirection: 'column',
       overflowY: 'auto',
-      backgroundColor: 'red',
     },
   });
 
