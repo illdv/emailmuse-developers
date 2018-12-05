@@ -16,15 +16,15 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuItems from './MenuItems';
-
+const { ipcRenderer } = (window as any).require('electron');
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
-  location: any,
+  location: any;
 }
 
 export interface IState {
-  selectedAcc: boolean;
+  isUpdate: boolean;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -39,12 +39,20 @@ const mapStateToProps = (state: IGlobalState) => ({
   mapDispatchToProps,
 )
 class Menu extends React.Component<IProps, IState> {
+  state = {
+    isUpdate: null,
+  };
   selectIAcc = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    return null;
   }
 
   render() {
-  
+    console.log(this.state.isUpdate);
+
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
@@ -76,4 +84,4 @@ const styles = ({ spacing, palette }) =>
     },
   });
 
-export default withStyles(styles)(Menu)
+export default withStyles(styles)(Menu);

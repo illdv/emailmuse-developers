@@ -1,7 +1,6 @@
 .idea
 1test
 dist
-src/main/*.js
 .env
 DeveloperIdInstaller.p12
 DeveloperIdApp.p12

@@ -104,7 +104,6 @@ const commonConfig = {
       chunkFilename: "[id].css",
     }),
     new CopyWebpackPlugin([{ from: "../package.json", to: "../build" }]),
-    new CopyWebpackPlugin([{ from: "../.env", to: "../build" }]),
 
     new webpack.DefinePlugin({
       IS_PRODUCTION: JSON.stringify(isProduction),
