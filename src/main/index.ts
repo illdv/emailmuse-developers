@@ -17,7 +17,7 @@ const authorizedGoogle = require('./authGoogle');
 // const ProgressBar = require('electron-progressbar');
 
 let mainWindow = null;
-
+let progressСycle = null;
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -80,6 +80,16 @@ autoUpdater.on('update-available', info => {
         ipcMain.on('update', e => {
           e.sender.send('start', true);
         });
+
+        let counter = 0;
+        progressСycle = setInterval(() => {
+          if (counter < 1) {
+            counter += 0.1;
+          } else {
+            counter = 0.1;
+          }
+          mainWindow.setProgressBar(counter);
+        }, 500);
       }
     },
   );
@@ -98,6 +108,7 @@ autoUpdater.on('update-downloaded', () => {
   ipcMain.on('update', e => {
     e.sender.send('end', false);
   });
+  clearInterval(progressСycle);
 
   dialog.showMessageBox(
     mainWindow,
@@ -108,7 +119,6 @@ autoUpdater.on('update-downloaded', () => {
     },
     buttonIndex => {
       if (buttonIndex === 0) {
-        // autoUpdater.quitAndInstall();
         setImmediate(() => {
           app.removeAllListeners('window-all-closed');
           if (mainWindow != null) {
@@ -142,6 +152,7 @@ function dialogWarningClose(e) {
 
 app.on('ready', () => {
   createWindow();
+
   ipcMain.on('authorized-google', (e, url) => {
     authorizedGoogle(url, mainWindow);
   });

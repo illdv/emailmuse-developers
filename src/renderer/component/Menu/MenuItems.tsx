@@ -80,9 +80,17 @@ const Item = ({
   className,
   currentRoute,
 }: ItemProps) => {
-  const getRootRoute = route => route.split('/')[0];
+  const getRootRoute = route => {
+    if (route === 'swipes locked') {
+      return 'swipes';
+    } else {
+      return route;
+    }
+  };
+
   const isSelected =
     currentRoute && getRootRoute(currentRoute) === title.toLowerCase();
+  console.log(getRootRoute(currentRoute));
 
   return (
     <MenuItem
