@@ -14,6 +14,7 @@ const urlFormat = require('url');
 const loadDevTool = require('electron-load-devtool');
 const isDev = require('electron-is-dev');
 const authorizedGoogle = require('./authGoogle');
+// const ProgressBar = require('electron-progressbar');
 
 let mainWindow = null;
 
@@ -52,7 +53,7 @@ log.info('App starting...');
 
 function sendStatusToWindow(text) {
   log.info(text);
-  // mainWindow.webContents.send('message', text);
+  mainWindow.webContents.send('message', text);
 }
 
 autoUpdater.autoDownload = false;
@@ -107,7 +108,14 @@ autoUpdater.on('update-downloaded', () => {
     },
     buttonIndex => {
       if (buttonIndex === 0) {
-        autoUpdater.quitAndInstall();
+        // autoUpdater.quitAndInstall();
+        setImmediate(() => {
+          app.removeAllListeners('window-all-closed');
+          if (mainWindow != null) {
+            mainWindow.close();
+          }
+          autoUpdater.quitAndInstall(false);
+        });
       }
     },
   );
