@@ -76,7 +76,6 @@ autoUpdater.on('update-available', info => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
         mainWindow.on('close', dialogWarningClose);
-        mainWindow.setProgressBar(2);
         ipcMain.on('update', e => {
           e.sender.send('start', true);
         });
@@ -103,13 +102,12 @@ autoUpdater.on('error', err => {
 
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded');
-  mainWindow.setProgressBar(-1);
   mainWindow.removeListener('close', dialogWarningClose);
   ipcMain.on('update', e => {
     e.sender.send('end', false);
   });
   clearInterval(progressСycle);
-
+  mainWindow.setProgressBar(-1);
   dialog.showMessageBox(
     mainWindow,
     {
@@ -147,6 +145,9 @@ function dialogWarningClose(e) {
   });
   if (warningClose === 1) {
     e.preventDefault();
+  }
+  if (warningClose === 0) {
+    clearInterval(progressСycle);
   }
 }
 
