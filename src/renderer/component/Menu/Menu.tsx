@@ -8,6 +8,8 @@ import {
   WithStyles,
   withStyles,
   createStyles,
+  LinearProgress,
+  Theme,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -16,6 +18,7 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuItems from './MenuItems';
+// import { ProgressBar } from 'src/renderer/common/ProgressBar';
 const { ipcRenderer } = (window as any).require('electron');
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
@@ -49,20 +52,23 @@ class Menu extends React.Component<IProps, IState> {
   static getDerivedStateFromProps(props, state) {
     return null;
   }
+  foo = () => {
+    ipcRenderer.send('update-notify-value', () => console.log(111));
+  };
 
   render() {
-    console.log(this.state.isUpdate);
-
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
         <Paper elevation={4} classes={{ root: classes.paper }}>
+          {/* <button onClick={this.foo}>asdasd</button> */}
           <MenuList classes={{ root: classes.list }}>
             <MenuItems
               isLockedSwipe={this.props.isLockedSwipe}
               actions={this.props.actions}
               pathname={this.props.location.pathname}
             />
+            {/* <ProgressBar /> */}
           </MenuList>
         </Paper>
       </Slide>
@@ -70,17 +76,19 @@ class Menu extends React.Component<IProps, IState> {
   }
 }
 
-const styles = ({ spacing, palette }) =>
+const styles = ({ spacing, palette }: Theme) =>
   createStyles({
     paper: {
       height: '100%',
     },
+
     list: {
       display: 'flex',
       height: '100%',
       padding: 0,
       flexDirection: 'column',
       overflowY: 'auto',
+      position: 'relative',
     },
   });
 

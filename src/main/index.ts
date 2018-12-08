@@ -76,7 +76,7 @@ autoUpdater.on('update-available', info => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
         mainWindow.on('close', dialogWarningClose);
-        ipcMain.on('update', e => {
+        ipcMain.on('updateStart', e => {
           e.sender.send('start', true);
         });
 
@@ -157,7 +157,9 @@ app.on('ready', () => {
   ipcMain.on('authorized-google', (e, url) => {
     authorizedGoogle(url, mainWindow);
   });
-
+  ipcMain.on('update-notify-value', function(event, arg) {
+    mainWindow.webContents.send('targetPriceVal', arg);
+  });
   if (process.platform === 'darwin') {
     createMenuForMac();
   }

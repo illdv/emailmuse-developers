@@ -90,8 +90,6 @@ const Item = ({
 
   const isSelected =
     currentRoute && getRootRoute(currentRoute) === title.toLowerCase();
-  console.log(getRootRoute(currentRoute));
-
   return (
     <MenuItem
       button
