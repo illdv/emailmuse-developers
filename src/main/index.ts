@@ -18,6 +18,8 @@ const authorizedGoogle = require('./authGoogle');
 
 let mainWindow = null;
 let progressСycle = null;
+
+let Update = false;
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -27,11 +29,12 @@ function createWindow() {
     center: true,
   });
 
+  loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+  loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+  mainWindow.toggleDevTools();
+
   if (isDev) {
     mainWindow.loadURL('http://localhost:8080');
-    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-    mainWindow.toggleDevTools();
   } else {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
@@ -76,10 +79,7 @@ autoUpdater.on('update-available', info => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
         mainWindow.on('close', dialogWarningClose);
-        ipcMain.on('updateStart', e => {
-          e.sender.send('start', true);
-        });
-
+        console.log(Update);
         let counter = 0;
         progressСycle = setInterval(() => {
           if (counter < 1) {
@@ -103,9 +103,7 @@ autoUpdater.on('error', err => {
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded');
   mainWindow.removeListener('close', dialogWarningClose);
-  ipcMain.on('update', e => {
-    e.sender.send('end', false);
-  });
+
   clearInterval(progressСycle);
   mainWindow.setProgressBar(-1);
   dialog.showMessageBox(
@@ -157,9 +155,15 @@ app.on('ready', () => {
   ipcMain.on('authorized-google', (e, url) => {
     authorizedGoogle(url, mainWindow);
   });
-  ipcMain.on('update-notify-value', function(event, arg) {
-    mainWindow.webContents.send('targetPriceVal', arg);
+  ipcMain.on('updated', (event, arg) => {
+    Update = true;
+    event.sender.send('isDownloaded', Update);
+    Update = false;
   });
+  ipcMain.on('updated', (event, arg) => {
+    setTimeout(() => event.sender.send('isDownloaded', Update), 3000);
+  });
+
   if (process.platform === 'darwin') {
     createMenuForMac();
   }
