@@ -70,8 +70,8 @@ autoUpdater.on('update-available', info => {
     {
       type: 'info',
       title: 'Found Updates',
-      message: 'Found updates, do you want update now?',
-      buttons: ['Sure', 'No'],
+      message: 'New app version available for uploading. Do you want upload updates now?',
+      buttons: ['Yes', 'No'],
     },
     buttonIndex => {
       if (buttonIndex === 0) {
@@ -105,8 +105,8 @@ autoUpdater.on('update-downloaded', () => {
     mainWindow,
     {
       title: 'Install Updates',
-      message: 'Updates downloaded, application will be quit for update...',
-      buttons: ['Reset', 'No'],
+      message: 'Updates downloaded and installed. Restart app for opening new version.',
+      buttons: ['Restart', 'No'],
     },
     buttonIndex => {
       if (buttonIndex === 0) {
@@ -136,7 +136,7 @@ function dialogWarningClose(e) {
   const warningClose = dialog.showMessageBox(mainWindow, {
     type: 'warning',
     message:
-      'Аpplication update is running, you are sure you want to close it?',
+      'App updating process is running. Do you want cancel updating and close app?',
     defaultId: 1,
     buttons: ['Yes', 'No'],
   });

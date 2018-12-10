@@ -34,8 +34,8 @@ class ProgressBar extends PureComponent<IProps, IState> {
         <div className={classes.wrapper}>
           <p className={classes.message}>
             {this.state.isDownloaded
-              ? 'Your application is updated...'
-              : 'download done'}
+              ? 'Your application updating now...'
+              : 'Updating success!'}
           </p>
           <LinearProgress />
         </div>
