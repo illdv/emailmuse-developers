@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, PureComponent } from 'react';
+import { PureComponent } from 'react';
 const { ipcRenderer } = require('electron');
 
 import {
@@ -20,14 +20,11 @@ class ProgressBar extends PureComponent<IProps, IState> {
   state = {
     isDownloaded: false,
   };
-  componentDidMount() {
-    ipcRenderer.send('updated');
-    console.log(this.state.isDownloaded);
-  }
+
   render() {
-    ipcRenderer.on('isDownloaded', (event, isDownloaded) => {
+    ipcRenderer.on('update message', (event, text) => {
       this.setState({
-        isDownloaded,
+        isDownloaded: text === 'update is loading',
       });
     });
 
@@ -53,6 +50,7 @@ const styles = ({ spacing, palette }: Theme) =>
       position: 'absolute',
       bottom: '0',
       width: '100%',
+      textAlign: 'center',
     },
     message: {
       color: palette.text.secondary,

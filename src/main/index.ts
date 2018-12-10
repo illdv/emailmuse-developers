@@ -19,7 +19,6 @@ const authorizedGoogle = require('./authGoogle');
 let mainWindow = null;
 let progressСycle = null;
 
-let Update = false;
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -28,10 +27,6 @@ function createWindow() {
     title: 'EmailMuse',
     center: true,
   });
-
-  loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-  loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-  mainWindow.toggleDevTools();
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:8080');
@@ -42,6 +37,9 @@ function createWindow() {
       slashes: true,
     });
     mainWindow.loadURL(loadUrl);
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
@@ -56,7 +54,7 @@ log.info('App starting...');
 
 function sendStatusToWindow(text) {
   log.info(text);
-  mainWindow.webContents.send('message', text);
+  mainWindow.webContents.send('update message', text);
 }
 
 autoUpdater.autoDownload = false;
@@ -79,7 +77,7 @@ autoUpdater.on('update-available', info => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
         mainWindow.on('close', dialogWarningClose);
-        console.log(Update);
+        sendStatusToWindow('update is loading');
         let counter = 0;
         progressСycle = setInterval(() => {
           if (counter < 1) {
@@ -95,9 +93,6 @@ autoUpdater.on('update-available', info => {
 });
 autoUpdater.on('update-not-available', info => {
   sendStatusToWindow('Update not available.');
-});
-autoUpdater.on('error', err => {
-  sendStatusToWindow('Error in auto-updater. ' + err);
 });
 
 autoUpdater.on('update-downloaded', () => {
@@ -125,6 +120,10 @@ autoUpdater.on('update-downloaded', () => {
       }
     },
   );
+});
+
+autoUpdater.on('error', err => {
+  sendStatusToWindow('Error in auto-updater. ' + err);
 });
 
 app.on('activate', () => {
@@ -155,20 +154,12 @@ app.on('ready', () => {
   ipcMain.on('authorized-google', (e, url) => {
     authorizedGoogle(url, mainWindow);
   });
-  ipcMain.on('updated', (event, arg) => {
-    Update = true;
-    event.sender.send('isDownloaded', Update);
-    Update = false;
-  });
-  ipcMain.on('updated', (event, arg) => {
-    setTimeout(() => event.sender.send('isDownloaded', Update), 3000);
-  });
 
   if (process.platform === 'darwin') {
     createMenuForMac();
   }
   if (!isDev) {
-    autoUpdater.checkForUpdates();
+    setTimeout(() => autoUpdater.checkForUpdates(), 2000);
   }
 });
 
