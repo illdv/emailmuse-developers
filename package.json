@@ -1,6 +1,6 @@
 {
   "name": "EmailMuse",
-  "version": "0.3.21",
+  "version": "0.3.20",
   "author": {
     "name": "Vyacheslav Sinyakov",
     "email": "vyacheslav.sinyakov@gmail.com"
@@ -15,6 +15,7 @@
     "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
     "build:linux": "npm run build; cd build; npx electron-builder -l",
     "build:mac": "npm run build; cd build; npx electron-builder -m",
+    "build:win": "npm run build; cd build; npx electron-builder -w",
     "release": ". ./setEnvVar.sh && cd build && npx electron-builder -p always",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",

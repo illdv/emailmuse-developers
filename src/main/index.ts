@@ -18,6 +18,7 @@ const authorizedGoogle = require('./authGoogle');
 
 let mainWindow = null;
 let progressСycle = null;
+
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -29,9 +30,6 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:8080');
-    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-    mainWindow.toggleDevTools();
   } else {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
@@ -39,6 +37,9 @@ function createWindow() {
       slashes: true,
     });
     mainWindow.loadURL(loadUrl);
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
@@ -53,7 +54,7 @@ log.info('App starting...');
 
 function sendStatusToWindow(text) {
   log.info(text);
-  mainWindow.webContents.send('message', text);
+  mainWindow.webContents.send('update message', text);
 }
 
 autoUpdater.autoDownload = false;
@@ -76,10 +77,7 @@ autoUpdater.on('update-available', info => {
       if (buttonIndex === 0) {
         autoUpdater.downloadUpdate();
         mainWindow.on('close', dialogWarningClose);
-        ipcMain.on('update', e => {
-          e.sender.send('start', true);
-        });
-
+        sendStatusToWindow('update is loading');
         let counter = 0;
         progressСycle = setInterval(() => {
           if (counter < 1) {
@@ -96,16 +94,11 @@ autoUpdater.on('update-available', info => {
 autoUpdater.on('update-not-available', info => {
   sendStatusToWindow('Update not available.');
 });
-autoUpdater.on('error', err => {
-  sendStatusToWindow('Error in auto-updater. ' + err);
-});
 
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded');
   mainWindow.removeListener('close', dialogWarningClose);
-  ipcMain.on('update', e => {
-    e.sender.send('end', false);
-  });
+
   clearInterval(progressСycle);
   mainWindow.setProgressBar(-1);
   dialog.showMessageBox(
@@ -127,6 +120,10 @@ autoUpdater.on('update-downloaded', () => {
       }
     },
   );
+});
+
+autoUpdater.on('error', err => {
+  sendStatusToWindow('Error in auto-updater. ' + err);
 });
 
 app.on('activate', () => {
@@ -162,7 +159,7 @@ app.on('ready', () => {
     createMenuForMac();
   }
   if (!isDev) {
-    autoUpdater.checkForUpdates();
+    setTimeout(() => autoUpdater.checkForUpdates(), 2000);
   }
 });
 

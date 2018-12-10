@@ -8,6 +8,7 @@ import {
   WithStyles,
   withStyles,
   createStyles,
+  Theme,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -16,7 +17,6 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuItems from './MenuItems';
-const { ipcRenderer } = (window as any).require('electron');
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
@@ -46,13 +46,7 @@ class Menu extends React.Component<IProps, IState> {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
-  static getDerivedStateFromProps(props, state) {
-    return null;
-  }
-
   render() {
-    console.log(this.state.isUpdate);
-
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
@@ -70,17 +64,19 @@ class Menu extends React.Component<IProps, IState> {
   }
 }
 
-const styles = ({ spacing, palette }) =>
+const styles = ({ spacing, palette }: Theme) =>
   createStyles({
     paper: {
       height: '100%',
     },
+
     list: {
       display: 'flex',
       height: '100%',
       padding: 0,
       flexDirection: 'column',
       overflowY: 'auto',
+      position: 'relative',
     },
   });
 
