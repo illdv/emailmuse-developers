@@ -14,7 +14,7 @@
     "build": "rm -rf build; NODE_ENV=production  webpack",
     "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
     "build:linux": "npm run build; cd build; npx electron-builder -l",
-    "build:mac": "npm run build; cd build; npx electron-builder -m",
+    "build:mac": ". ./setEnvVar.sh && npm run build; cd build; npx electron-builder -m",
     "build:win": "npm run build; cd build; npx electron-builder -w",
     "release": ". ./setEnvVar.sh && cd build && npx electron-builder -p always",
     "test": "jest",
