@@ -30,6 +30,9 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:8080');
+    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
+    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
+    mainWindow.toggleDevTools();
   } else {
     const loadUrl = urlFormat.format({
       pathname: path.join(__dirname, './index.html'),
@@ -37,9 +40,6 @@ function createWindow() {
       slashes: true,
     });
     mainWindow.loadURL(loadUrl);
-    loadDevTool(loadDevTool.REDUX_DEVTOOLS);
-    loadDevTool(loadDevTool.REACT_DEVELOPER_TOOLS);
-    mainWindow.toggleDevTools();
   }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
