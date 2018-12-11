@@ -12,7 +12,7 @@
     "start-webpack-dev-server": "webpack-dev-server",
     "start-electron": "npx electron ./src/main/index.ts",
     "build": "rm -rf build; NODE_ENV=production  webpack",
-    "build-prod": "npm run build; cd build; npx electron-builder -wlmp always",
+    "build:all": "npm run build; cd build; npx electron-builder -wlm",
     "build:linux": "npm run build; cd build; npx electron-builder -l",
     "build:mac": ". ./setEnvVar.sh && npm run build; cd build; npx electron-builder -m",
     "build:win": "npm run build; cd build; npx electron-builder -w",
