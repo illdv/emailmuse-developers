@@ -7,17 +7,15 @@ const {
   shell,
   dialog,
 } = require('electron');
-const log = require('electron-log');
-const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const urlFormat = require('url');
 const loadDevTool = require('electron-load-devtool');
 const isDev = require('electron-is-dev');
 const authorizedGoogle = require('./authGoogle');
-// const ProgressBar = require('electron-progressbar');
+const log = require('electron-log');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow = null;
-let progressСycle = null;
 
 function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -48,110 +46,16 @@ function createWindow() {
   });
 }
 
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
-
-function sendStatusToWindow(text) {
-  log.info(text);
-  mainWindow.webContents.send('update message', text);
-}
-
-autoUpdater.autoDownload = false;
-
-autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Checking for update...');
-});
-autoUpdater.on('update-available', info => {
-  sendStatusToWindow('Update available.');
-
-  dialog.showMessageBox(
-    mainWindow,
-    {
-      type: 'info',
-      title: 'Found Updates',
-      message: 'New app version available for uploading. Do you want upload updates now?',
-      buttons: ['Yes', 'No'],
-    },
-    buttonIndex => {
-      if (buttonIndex === 0) {
-        autoUpdater.downloadUpdate();
-        mainWindow.on('close', dialogWarningClose);
-        sendStatusToWindow('update is loading');
-        let counter = 0;
-        progressСycle = setInterval(() => {
-          if (counter < 1) {
-            counter += 0.1;
-          } else {
-            counter = 0.1;
-          }
-          mainWindow.setProgressBar(counter);
-        }, 500);
-      }
-    },
-  );
-});
-autoUpdater.on('update-not-available', info => {
-  sendStatusToWindow('Update not available.');
-});
-
-autoUpdater.on('update-downloaded', () => {
-  sendStatusToWindow('Update downloaded');
-  mainWindow.removeListener('close', dialogWarningClose);
-
-  clearInterval(progressСycle);
-  mainWindow.setProgressBar(-1);
-  dialog.showMessageBox(
-    mainWindow,
-    {
-      title: 'Install Updates',
-      message: 'Updates downloaded and installed. Restart app for opening new version.',
-      buttons: ['Restart', 'No'],
-    },
-    buttonIndex => {
-      if (buttonIndex === 0) {
-        setImmediate(() => {
-          app.removeAllListeners('window-all-closed');
-          if (mainWindow != null) {
-            mainWindow.close();
-          }
-          autoUpdater.quitAndInstall(false);
-        });
-      }
-    },
-  );
-});
-
-autoUpdater.on('error', err => {
-  sendStatusToWindow('Error in auto-updater. ' + err);
-});
-
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
 });
 
-function dialogWarningClose(e) {
-  const warningClose = dialog.showMessageBox(mainWindow, {
-    type: 'warning',
-    message:
-      'App updating process is running. Do you want cancel updating and close app?',
-    defaultId: 1,
-    buttons: ['Yes', 'No'],
-  });
-  if (warningClose === 1) {
-    e.preventDefault();
-  }
-  if (warningClose === 0) {
-    clearInterval(progressСycle);
-  }
-}
-
 app.on('ready', () => {
   createWindow();
 
-  ipcMain.on('authorized-google', (e, url) => {
+  ipcMain.on('authorized-google', (e: any, url: string) => {
     authorizedGoogle(url, mainWindow);
   });
 
@@ -159,7 +63,7 @@ app.on('ready', () => {
     createMenuForMac();
   }
   if (!isDev) {
-    setTimeout(() => autoUpdater.checkForUpdates(), 2000);
+    updater(mainWindow);
   }
 });
 
@@ -188,4 +92,104 @@ function createMenuForMac() {
       },
     ]),
   );
+}
+
+function updater(window) {
+  setTimeout(() => autoUpdater.checkForUpdates(), 2000);
+  let progressСycle = null;
+  autoUpdater.logger = log;
+  autoUpdater.logger.transports.file.level = 'info';
+  log.info('App starting...');
+
+  function sendStatusToWindow(text) {
+    log.info(text);
+    window.webContents.send('update message', text);
+  }
+
+  autoUpdater.autoDownload = false;
+
+  autoUpdater.on('checking-for-update', () => {
+    sendStatusToWindow('Checking for update...');
+  });
+  autoUpdater.on('update-available', info => {
+    sendStatusToWindow('Update available.');
+
+    dialog.showMessageBox(
+      window,
+      {
+        type: 'info',
+        title: 'Found Updates',
+        message:
+          'New app version available for uploading. Do you want upload updates now?',
+        buttons: ['Yes', 'No'],
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          autoUpdater.downloadUpdate();
+          window.on('close', dialogWarningClose);
+          sendStatusToWindow('update is loading');
+          let counter = 0;
+          progressСycle = setInterval(() => {
+            if (counter < 1) {
+              counter += 0.1;
+            } else {
+              counter = 0.1;
+            }
+            window.setProgressBar(counter);
+          }, 500);
+        }
+      },
+    );
+  });
+  autoUpdater.on('update-not-available', info => {
+    sendStatusToWindow('Update not available.');
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    sendStatusToWindow('Update downloaded');
+    window.removeListener('close', dialogWarningClose);
+
+    clearInterval(progressСycle);
+    window.setProgressBar(-1);
+    dialog.showMessageBox(
+      window,
+      {
+        title: 'Install Updates',
+        message:
+          'Updates downloaded and installed. Restart app for opening new version.',
+        buttons: ['Restart', 'No'],
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          setImmediate(() => {
+            app.removeAllListeners('window-all-closed');
+            if (window != null) {
+              window.close();
+            }
+            autoUpdater.quitAndInstall(false);
+          });
+        }
+      },
+    );
+  });
+
+  autoUpdater.on('error', err => {
+    sendStatusToWindow('Error in auto-updater. ' + err);
+  });
+
+  function dialogWarningClose(e) {
+    const warningClose = dialog.showMessageBox(window, {
+      type: 'warning',
+      message:
+        'App updating process is running. Do you want cancel updating and close app?',
+      defaultId: 1,
+      buttons: ['Yes', 'No'],
+    });
+    if (warningClose === 1) {
+      e.preventDefault();
+    }
+    if (warningClose === 0) {
+      clearInterval(progressСycle);
+    }
+  }
 }
