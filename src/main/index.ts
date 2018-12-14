@@ -119,8 +119,7 @@ function updater(window) {
       {
         type: 'info',
         title: 'Found Updates',
-        message:
-          'New app version available for uploading. Do you want upload updates now?',
+        message: 'A software update is available. Do you want to update now?',
         buttons: ['Yes', 'No'],
       },
       buttonIndex => {
@@ -155,8 +154,8 @@ function updater(window) {
       window,
       {
         title: 'Install Updates',
-        message:
-          'Updates downloaded and installed. Restart app for opening new version.',
+        message: 'Your software has been updated! ' +
+        'Please restart EmailMuse to load the latest updates.',
         buttons: ['Restart', 'No'],
       },
       buttonIndex => {
