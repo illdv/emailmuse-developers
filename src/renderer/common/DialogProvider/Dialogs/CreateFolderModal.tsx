@@ -16,29 +16,25 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Paper,
   TextField,
 } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import { Check } from '@material-ui/icons';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
-export namespace SelectLayoutSpace {
-  export interface IState {
-    folderName: string;
-  }
-
-  export interface IProps {
-    modalWindowActions?: IModalWindowActions;
-  }
+export interface IState {
+  folderName: string;
+  error: boolean;
 }
 
-class CreateFolderModal extends Component<
-  SelectLayoutSpace.IProps,
-  SelectLayoutSpace.IState
-> {
-  state: SelectLayoutSpace.IState = {
+export interface IProps {
+  modalWindowActions?: IModalWindowActions;
+}
+
+class CreateFolderModal extends Component<IProps, IState> {
+  state = {
     folderName: '',
+    error: false,
   };
 
   onSave = () => {
@@ -73,10 +69,12 @@ class CreateFolderModal extends Component<
             <TextField
               id='FolderName'
               label='Folder name'
-              value={this.state.folderName || ''}
+              value={this.state.folderName}
               onChange={this.handleChange}
               margin='normal'
               style={{ marginRight: '50px', width: '300px' }}
+              autoFocus
+              error={this.state.error}
             />
           </InCenter>
         </DialogContent>
