@@ -43,12 +43,14 @@ class CreateFolderModal extends Component<IProps, IState> {
           type: ModalWindowType.CreateFolder,
           folderName: this.state.folderName,
         })
-      : this.props.modalWindowActions.hide.REQUEST({});
+      : this.setState({
+          error: true,
+        });
   };
 
   handleChange = event => {
     const folderName: string = event.currentTarget.value;
-    this.setState({ folderName });
+    this.setState({ folderName, error: !folderName });
   };
 
   onClose = () => {
@@ -56,6 +58,8 @@ class CreateFolderModal extends Component<IProps, IState> {
   };
 
   render() {
+    const { error } = this.state;
+
     return (
       <Dialog
         open={true}
@@ -68,13 +72,13 @@ class CreateFolderModal extends Component<IProps, IState> {
           <InCenter>
             <TextField
               id='FolderName'
-              label='Folder name'
+              label={error ? 'this field cannot be empty' : 'Folder name'}
               value={this.state.folderName}
               onChange={this.handleChange}
               margin='normal'
               style={{ marginRight: '50px', width: '300px' }}
               autoFocus
-              error={this.state.error}
+              error={error}
             />
           </InCenter>
         </DialogContent>

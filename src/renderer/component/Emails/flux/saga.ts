@@ -122,7 +122,6 @@ function* sagaSelectNewTemplate(action) {
   );
 
   const selectedLayout = actionSelectLayout.payload.layout;
-
   yield put(
     EditorActions.edit.REQUEST(
       emailToEditEntity({
