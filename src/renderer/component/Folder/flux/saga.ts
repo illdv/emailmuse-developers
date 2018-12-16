@@ -13,8 +13,10 @@ import { nodeType } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 
 function* showFolderModal(action: Action<{ parentId: number }>) {
-  const newFolderName: Action<{ folderName: string }> = yield selectFromModal(ModalWindowType.CreateFolder);
-  const folder: IFolder                               = {
+  const newFolderName: Action<{ folderName: string }> = yield selectFromModal(
+    ModalWindowType.CreateFolder,
+  );
+  const folder: IFolder = {
     id: null,
     name: newFolderName.payload.folderName,
     parentId: action.payload.parentId,
@@ -25,27 +27,35 @@ function* showFolderModal(action: Action<{ parentId: number }>) {
 
 function* createFolder(action: Action<{ folder: IFolder }>) {
   const folder: IFolder = action.payload.folder;
-  try {
-    const response = yield call(FolderAPI.createFolder, folder);
-    yield put(FolderActions.createFolder.SUCCESS(response.data));
+  if (folder.name) {
+    try {
+      const response = yield call(FolderAPI.createFolder, folder);
+      yield put(FolderActions.createFolder.SUCCESS(response.data));
 
-    yield put(emailActions.loading.REQUEST({}));
-    yield put(FluxToast.Actions.showToast('Folder created', ToastType.Success));
-  } catch (error) {
-    yield call(errorHandler, error);
-    yield put(FluxToast.Actions.showToast('Failed folder created', ToastType.Error));
+      yield put(emailActions.loading.REQUEST({}));
+      yield put(
+        FluxToast.Actions.showToast('Folder created', ToastType.Success),
+      );
+    } catch (error) {
+      yield call(errorHandler, error);
+      yield put(
+        FluxToast.Actions.showToast('Failed folder created', ToastType.Error),
+      );
+    }
   }
 }
 
 function* updateFolder(action: Action<{ folder: IFolder }>) {
-  const folder: IFolder  = action.payload.folder;
+  const folder: IFolder = action.payload.folder;
   const folderId: number = action.payload.folder.id;
   try {
     yield call(FolderAPI.updateFolder, folderId, folder);
     yield put(FluxToast.Actions.showToast('Folder updated', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
-    yield put(FluxToast.Actions.showToast('Failed folder updated', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed folder updated', ToastType.Error),
+    );
   }
 }
 
@@ -55,13 +65,19 @@ function* deleteFolder(action: Action<{ ids: number[] }>) {
     yield call(FolderAPI.deleteFolders, folderIds);
     yield put(FolderActions.deleteFolder.SUCCESS({ ids: folderIds }));
     if (folderIds.length > 1) {
-      yield put(FluxToast.Actions.showToast('Folders deleted', ToastType.Success));
+      yield put(
+        FluxToast.Actions.showToast('Folders deleted', ToastType.Success),
+      );
     } else {
-      yield put(FluxToast.Actions.showToast('Folder deleted', ToastType.Success));
+      yield put(
+        FluxToast.Actions.showToast('Folder deleted', ToastType.Success),
+      );
     }
   } catch (error) {
     yield call(errorHandler, error);
-    yield put(FluxToast.Actions.showToast('Failed folder deleted', ToastType.Error));
+    yield put(
+      FluxToast.Actions.showToast('Failed folder deleted', ToastType.Error),
+    );
   }
 }
 
@@ -78,7 +94,6 @@ function* openFolder(action: Action<{ folder?: IFolder }>) {
     if (success) {
       yield put(push(`/emails/${folder.id}/${folder.name}`));
     }
-
   } else {
     yield put(push(`/emails`));
     yield put(emailActions.loading.REQUEST({}));
