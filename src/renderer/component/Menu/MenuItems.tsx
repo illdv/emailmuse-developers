@@ -17,6 +17,7 @@ import {
   MenuItem,
   Tooltip,
   Button,
+  Theme,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
@@ -63,13 +64,23 @@ const menuSchema: IMenuItem[] = [
   },
 ];
 
+const enum Route {
+  emails = 'emails',
+  editor = 'editor',
+  imageLibrary = 'image library',
+  snippets = 'snippets',
+  layouts = 'layouts',
+  swipes = 'swipes',
+  swipesLocked = 'swipes locked',
+  training = 'training',
+}
 interface ItemProps {
   title: string;
   icon: any;
   onClick: () => void;
   isLockedSwipe?: boolean;
+  currentRoute?: Route;
   className?: string;
-  currentRoute?: string;
 }
 
 const Item = ({
@@ -80,12 +91,16 @@ const Item = ({
   className,
   currentRoute,
 }: ItemProps) => {
-  const getRootRoute = route => {
-    if (route === 'swipes locked') {
-      return 'swipes';
-    } else {
-      return route;
+  const getRootRoute = (r: Route) => {
+    let route = r;
+    console.log(route);
+    if (route.includes(Route.emails) || route === Route.editor) {
+      route = Route.emails;
     }
+    if (route === Route.swipesLocked) {
+      route = Route.swipes;
+    }
+    return route;
   };
 
   const isSelected =
@@ -139,7 +154,7 @@ class MenuItems extends React.Component<IProps> {
 
   render() {
     const { primary } = this.props.theme.palette;
-    const currentRoute = this.props.pathname.slice(1).replace(/-/gi, ' ');
+    const currentRoute: any = this.props.pathname.slice(1).replace(/-/gi, ' ');
     const toItem = (items: IMenuItem[]) => {
       return items.map(item => (
         <Item
@@ -185,7 +200,7 @@ class MenuItems extends React.Component<IProps> {
   }
 }
 
-const styles = ({ spacing, palette }) => ({
+const styles = ({ spacing, palette }: Theme) => ({
   btnAcc: {
     marginLeft: spacing.unit * 2,
     marginTop: 'auto',
