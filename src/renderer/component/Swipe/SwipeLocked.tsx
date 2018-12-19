@@ -65,8 +65,9 @@ class SwipeLocked extends Component<IProps> {
             , email, mobile or however you want.
           </Typography>
           <Typography className={classes.textBlock}>
-            When just one new person downloads EmailMuse (which is free for
-            them) you will get instant access to the Swipe Vault.
+              When just ONE new person downloads EmailMuse
+              (which is free for them) you will get instant
+              access to ALL of the emails in the Swipe Vault.
           </Typography>
         </Paper>
       </Fade>
