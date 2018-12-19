@@ -29,7 +29,7 @@ export function snippetToEditEntity({ id, body, shortcut }: ISnippet): IEditEnti
     html: body,
     folderId: null, // set root folder
     params: {
-      ['shortcut name']: shortcut,
+      ['Snippet Name']: shortcut,
     },
   };
 }
