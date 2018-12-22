@@ -5,6 +5,7 @@ import {
   Drafts,
   PictureInPictureAlt,
   SupervisorAccount,
+  Help,
   ViewCompact,
   PlayCircleOutline,
   Lock,
@@ -93,9 +94,11 @@ const Item = ({
 }: ItemProps) => {
   const getRootRoute = (r: Route) => {
     let route = r;
-    console.log(route);
     if (route.includes(Route.emails) || route === Route.editor) {
       route = Route.emails;
+    }
+    if (route.includes(Route.training)) {
+      route = Route.training;
     }
     if (route === Route.swipesLocked) {
       route = Route.swipes;
@@ -142,15 +145,6 @@ class MenuItems extends React.Component<IProps> {
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   };
-  resetTour = () => {
-    localStorage.setItem('EMAILS', '0');
-    localStorage.setItem('SNIPPETS', '0');
-    localStorage.setItem('LAYOUTS', '0');
-    localStorage.setItem('IMAGE_LIBRARY', '0');
-    localStorage.setItem('SWIPES', '0');
-    localStorage.setItem('TRAINING', '0');
-    localStorage.setItem('ACCOUNT', '0');
-  };
 
   render() {
     const { primary } = this.props.theme.palette;
@@ -172,38 +166,61 @@ class MenuItems extends React.Component<IProps> {
     return (
       <>
         {toItem(menuSchema)}
-        <Item
-          title={'Restart TUTORIALS'}
-          icon={<Drafts />}
-          onClick={this.resetTour}
-        />
-        <Tooltip title='Account'>
-          <Button
-            style={{
-              backgroundColor:
-                currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
-                  ? primary.light
-                  : primary.main,
-            }}
-            classes={{ root: this.props.classes.btnAcc }}
-            variant='fab'
-            color='primary'
-            aria-label='add'
-            className={classNamesEmails.ACCOUNT}
-            onClick={this.selectItem(MenuItemType.ACCOUNT)}
-          >
-            <SupervisorAccount />
-          </Button>
-        </Tooltip>
+        <div className={this.props.classes.btnWrapper}>
+          <Tooltip title='Account'>
+            <Button
+              style={{
+                backgroundColor:
+                  currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
+                    ? primary.light
+                    : primary.main,
+              }}
+              classes={{ root: this.props.classes.btn }}
+              variant='fab'
+              color='primary'
+              aria-label='add'
+              className={classNamesEmails.ACCOUNT}
+              onClick={this.selectItem(MenuItemType.ACCOUNT)}
+            >
+              <SupervisorAccount />
+            </Button>
+          </Tooltip>
+          <Tooltip title='Help'>
+            <Button
+              style={{
+                backgroundColor:
+                  currentRoute === MenuItemType.HELP.toLocaleLowerCase()
+                    ? primary.light
+                    : primary.main,
+              }}
+              classes={{ root: this.props.classes.btn }}
+              variant='fab'
+              color='primary'
+              aria-label='add'
+              className={classNamesEmails.HELP}
+              onClick={this.selectItem(MenuItemType.HELP)}
+            >
+              <Help />
+            </Button>
+          </Tooltip>
+        </div>
       </>
     );
   }
 }
 
 const styles = ({ spacing, palette }: Theme) => ({
-  btnAcc: {
-    marginLeft: spacing.unit * 2,
+  btn: {
+    '&:first-child': {
+      marginLeft: spacing.unit * 2,
+    },
+    '&:not(:first-child)': {
+      marginLeft: spacing.unit,
+    },
+  },
+  btnWrapper: {
     marginTop: 'auto',
+    display: 'flex',
     marginBottom: spacing.unit * 2,
   },
 });

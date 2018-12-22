@@ -40,6 +40,8 @@ function getRoutePath(action) {
   switch (action.payload.selectedItem) {
     case MenuItemType.ACCOUNT:
       return '/account';
+    case MenuItemType.HELP:
+      return '/help';
     case MenuItemType.IMAGE_LIBRARY:
       return '/image-library';
     case MenuItemType.LAYOUTS:

@@ -8,6 +8,7 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
+import { resetTour } from '../Help';
 
 type Props = injectMapStateToProps;
 type State = {
@@ -15,7 +16,7 @@ type State = {
 };
 const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
-  profile: state.profile, 
+  profile: state.profile,
 });
 
 class Tour extends React.Component<Props, State> {
@@ -28,7 +29,7 @@ class Tour extends React.Component<Props, State> {
     this.setState({
       isDisableBeacon: false,
     });
-  }
+  };
 
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
@@ -47,7 +48,7 @@ class Tour extends React.Component<Props, State> {
         localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
       }
     }
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('keydown', () => this.stopedTour);
@@ -57,16 +58,14 @@ class Tour extends React.Component<Props, State> {
     document.removeEventListener('keydown', () => this.stopedTour);
   }
   handleSteps = ({ name, isDisableBeacon, user }) => {
-  if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
-    return Steps[StepItemType[name + '_LOCKED']](isDisableBeacon);
-  } else {
-    return Steps[StepItemType[name]](isDisableBeacon);
-
-  }
-  }
+    if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
+      return Steps[StepItemType[name + '_LOCKED']](isDisableBeacon);
+    } else {
+      return Steps[StepItemType[name]](isDisableBeacon);
+    }
+  };
 
   render() {
-    
     const { tutorial } = this.props;
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
     const user = this.props.profile.auth.user;
