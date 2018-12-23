@@ -23,6 +23,7 @@ import Editor from 'src/renderer/component/Editor/Editor';
 import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 import DragDropContext from 'src/renderer/DragDropContext';
 import Help from 'src/renderer/component/Help';
+import Tour from '../Tutorial/Tour';
 
 const styles: IStyle = {
   root: {
@@ -82,6 +83,7 @@ class MainLayout extends Component<
             <ModalProvider />
           </Grid>
         </Grid>
+        <Tour />
       </div>
     );
   }
