@@ -1,7 +1,8 @@
 const { BrowserWindow } = require("electron");
 
+let loginWindow = null;
 module.exports = function authorizedGoogle(url, window) {
-  const loginWindow = new BrowserWindow({
+  loginWindow = new BrowserWindow({
     webPreferences: { nodeIntegration: false },
     parent: window,
     modal: true,
@@ -40,11 +41,14 @@ module.exports = function authorizedGoogle(url, window) {
       return false;
      }
      getUser();`;
-    loginWindow.webContents.executeJavaScript(javaScript, result => {
-      if (result) {
-        window.webContents.send(`authorized-google-success`, result);
-        loginWindow.hide();
-      }
-    });
+    if (loginWindow) {
+      loginWindow.webContents.executeJavaScript(javaScript, result => {
+        if (result) {
+          window.webContents.send(`authorized-google-success`, result);
+          loginWindow.hide();
+        }
+      });
+    }
   }
+  loginWindow.on("close", () => (loginWindow = null));
 };

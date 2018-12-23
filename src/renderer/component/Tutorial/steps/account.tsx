@@ -10,8 +10,6 @@ export enum classNamesAccount {
 }
 
 export const account = disableBeacon => {
-  console.log('acc');
-
   return [
     {
       content:

@@ -5,8 +5,6 @@ export enum classNamesHelp {
 }
 
 export const help = disableBeacon => {
-  console.log('help');
-
   return [
     {
       content: 'Help.',
