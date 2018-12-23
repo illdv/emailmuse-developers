@@ -35,7 +35,6 @@ class Tour extends React.Component<Props, State> {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
     this.forceUpdate();
-
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
       this.stopedTour();
     } else {
@@ -68,9 +67,8 @@ class Tour extends React.Component<Props, State> {
   handleSteps = ({ name, isDisableBeacon, user }) => {
     if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
       return Steps[StepItemType[name + '_LOCKED']](isDisableBeacon);
-    } else {
-      return Steps[StepItemType[name]](isDisableBeacon);
     }
+    return Steps[StepItemType[name]](isDisableBeacon);
   };
 
   render() {

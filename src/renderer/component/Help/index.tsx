@@ -9,8 +9,12 @@ import {
 } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import { classNamesHelp } from '../Tutorial/steps/help';
+import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
+import { connect } from 'react-redux';
 
-type Props = {} & WithStyles<typeof styles>;
+type Props = {
+  runTutorial: ({}) => void;
+} & WithStyles<typeof styles>;
 
 type State = {
   videoLoading: boolean;
@@ -25,10 +29,15 @@ export const resetTour = () => {
   localStorage.setItem('ACCOUNT', '0');
   localStorage.setItem('HELP', '0');
 };
+
 class Help extends React.Component<Props, State> {
   state = {
     videoLoading: true,
   };
+
+  componentDidMount() {
+    this.props.runTutorial({});
+  }
 
   onLoadVideo = () => {
     this.setState({
@@ -77,4 +86,9 @@ const styles = ({ spacing, palette }: Theme) =>
     },
   });
 
-export default withStyles(styles)(Help);
+const styledHelp = withStyles(styles)(Help);
+
+export default connect(
+  null,
+  { runTutorial },
+)(styledHelp);
