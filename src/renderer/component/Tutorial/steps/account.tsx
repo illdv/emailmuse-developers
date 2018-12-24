@@ -9,17 +9,20 @@ export enum classNamesAccount {
   LOGOUT_BTN = 'LOGOUT_BTN',
 }
 
-export const account = disableBeacon => [
-  {
-    content: 'You can view and update your profile settings from this screen.',
-    placement: 'left',
-    disableBeacon,
-    styles: {
-      options: {
-        width: 600,
+export const account = disableBeacon => {
+  return [
+    {
+      content:
+        'You can view and update your profile settings from this screen.',
+      placement: 'left',
+      disableBeacon,
+      styles: {
+        options: {
+          width: 600,
+        },
       },
+      target: '.' + classNamesAccount.ACCOUNT_BODY,
+      title: 'Profile Settings',
     },
-    target: '.' + classNamesAccount.ACCOUNT_BODY,
-    title: 'Profile Settings',
-  },
-];
+  ];
+};

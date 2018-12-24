@@ -22,6 +22,8 @@ import Emails from 'src/renderer/component/Emails/Emails';
 import Editor from 'src/renderer/component/Editor/Editor';
 import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 import DragDropContext from 'src/renderer/DragDropContext';
+import Help from 'src/renderer/component/Help';
+import Tour from '../Tutorial/Tour';
 
 const styles: IStyle = {
   root: {
@@ -75,11 +77,13 @@ class MainLayout extends Component<
             <Route path='/swipes' component={Swipe} />
             <Route path='/swipes-locked' component={SwipeLocked} />
             <Route path='/account' component={Account} />
+            <Route path='/help' component={Help} />
             <Route path='/editor' component={Editor} />
             <Route path='/training' component={StepsSelection} />
             <ModalProvider />
           </Grid>
         </Grid>
+        <Tour />
       </div>
     );
   }

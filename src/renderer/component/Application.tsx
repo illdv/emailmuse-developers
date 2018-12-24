@@ -13,7 +13,6 @@ import { Route, Switch as SwitchRoute } from 'react-router-dom';
 import Polls from 'src/renderer/component/Profile/Polls/Polls';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import Tour from 'src/renderer/component/Tutorial/Tour';
 import ProgressBar from 'src/renderer/common/ProgressBar';
 
 type Props = injectMapStateToProps & injectMapDispatchToProps;
@@ -33,7 +32,6 @@ class Application extends React.Component<Props, object> {
   render() {
     return (
       <ErrorBoundary>
-        <Tour />
         <SwitchRoute>
           <Route path='/login' component={Auth} />
           <Route path='/polls' component={Polls} />

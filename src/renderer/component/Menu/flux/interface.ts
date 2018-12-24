@@ -5,6 +5,7 @@ import { CreateAction } from 'src/renderer/flux/interface';
 
 export enum MenuItemType {
   ACCOUNT = 'ACCOUNT',
+  HELP = 'HELP',
   EMAILS = 'EMAILS',
   IMAGE_LIBRARY = 'IMAGE_LIBRARY',
   SNIPPETS = 'SNIPPETS',

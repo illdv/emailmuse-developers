@@ -7,6 +7,7 @@ import { swipesLocked } from 'src/renderer/component/Tutorial/steps/swipesLocked
 
 import { training } from 'src/renderer/component/Tutorial/steps/training';
 import { account } from 'src/renderer/component/Tutorial/steps/account';
+import { help } from 'src/renderer/component/Tutorial/steps/help';
 
 export const Steps = {
   emails,
@@ -17,4 +18,5 @@ export const Steps = {
   swipesLocked,
   training,
   account,
+  help,
 };

@@ -2,6 +2,7 @@ import React = require('react');
 
 export enum classNamesEmails {
   ACCOUNT = 'ACCOUNT',
+  HELP = 'HELP',
   EMAILS = 'EMAILS',
   IMAGE_LIBRARY = 'IMAGE_LIBRARY',
   SNIPPETS = 'SNIPPETS',
@@ -115,6 +116,18 @@ export const emails = disableBeacon => [
     },
     target: '.' + classNamesEmails.ACCOUNT,
     title: 'Profile',
+  },
+  {
+    content: 'help.',
+    disableBeacon,
+    placement: 'top-start',
+    styles: {
+      options: {
+        width: 600,
+      },
+    },
+    target: '.' + classNamesEmails.HELP,
+    title: 'Help',
   },
   {
     content:
