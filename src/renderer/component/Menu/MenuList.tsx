@@ -20,43 +20,45 @@ import {
 import {
   IDrawerMenuActions,
   MenuItemType,
+  Routes,
 } from 'src/renderer/component/Menu/flux/interface';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 import Item from './MenuItem';
+import MenuRouteBtn from './MenuRouteBtn';
 
 const menuSchema: IMenuItem[] = [
   {
-    title: 'Emails',
+    title: Routes.emails,
     icon: <Drafts />,
     type: MenuItemType.EMAILS,
     className: classNamesEmails.EMAILS,
   },
   {
-    title: 'Image library',
+    title: Routes.imageLibrary,
     icon: <Collections />,
     type: MenuItemType.IMAGE_LIBRARY,
     className: classNamesEmails.IMAGE_LIBRARY,
   },
   {
-    title: 'Snippets',
+    title: Routes.snippets,
     icon: <ViewCompact />,
     type: MenuItemType.SNIPPETS,
     className: classNamesEmails.SNIPPETS,
   },
   {
-    title: 'Layouts',
+    title: Routes.layouts,
     icon: <PictureInPictureAlt />,
     type: MenuItemType.LAYOUTS,
     className: classNamesEmails.LAYOUTS,
   },
   {
-    title: 'Swipes',
+    title: Routes.swipes,
     icon: <PlayCircleOutline />,
     type: MenuItemType.SWIPES,
     className: classNamesEmails.SWIPES,
   },
   {
-    title: 'Training',
+    title: Routes.training,
     icon: <PlayCircleOutline />,
     type: MenuItemType.TRAINING,
     className: classNamesEmails.TRAINING,
@@ -83,10 +85,22 @@ class List extends React.Component<IProps> {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
-  render() {
-    const currentRoute: any = this.props.pathname.slice(1).replace(/-/gi, ' ');
+  calcCurrentRoute: any = () => {
+    const shortRoute = this.props.pathname.replace(/-/gi, ' ').split('/')[1];
+    let route = shortRoute;
+    if (shortRoute === Routes.editor) {
+      route = Routes.emails;
+    }
+    if (shortRoute === Routes.swipesLocked) {
+      route = Routes.emails;
+    }
+    return route;
+  };
 
-    const { theme, classes } = this.props;
+  render() {
+    const currentRoute = this.calcCurrentRoute();
+
+    const { classes } = this.props;
     return (
       <MenuList classes={{ root: classes.list }}>
         {menuSchema.map(item => (
@@ -100,44 +114,19 @@ class List extends React.Component<IProps> {
             currentRoute={currentRoute}
           />
         ))}
-
         <div className={classes.btnWrapper}>
-          <Tooltip title='Account'>
-            <Button
-              style={{
-                backgroundColor:
-                  currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
-                    ? theme.palette.primary.light
-                    : theme.palette.primary.main,
-              }}
-              classes={{ root: this.props.classes.btn }}
-              variant='fab'
-              color='primary'
-              aria-label='Account'
-              className={classNamesEmails.ACCOUNT}
-              onClick={this.selectItem(MenuItemType.ACCOUNT)}
-            >
-              <SupervisorAccount />
-            </Button>
-          </Tooltip>
-          <Tooltip title='Help'>
-            <Button
-              style={{
-                backgroundColor:
-                  currentRoute === MenuItemType.HELP.toLocaleLowerCase()
-                    ? theme.palette.primary.light
-                    : theme.palette.primary.main,
-              }}
-              classes={{ root: this.props.classes.btn }}
-              variant='fab'
-              color='primary'
-              aria-label='Help'
-              className={classNamesEmails.HELP}
-              onClick={this.selectItem(MenuItemType.HELP)}
-            >
-              <Help />
-            </Button>
-          </Tooltip>
+          <MenuRouteBtn
+            currentRoute={currentRoute}
+            type={'account'}
+            selectItem={this.selectItem}
+            icon={<SupervisorAccount />}
+          />
+          <MenuRouteBtn
+            currentRoute={currentRoute}
+            type={'help'}
+            selectItem={this.selectItem}
+            icon={<Help />}
+          />
         </div>
       </MenuList>
     );
@@ -154,14 +143,6 @@ const styles = ({ spacing, palette }: Theme) =>
       overflowY: 'auto',
       position: 'relative',
     },
-    btn: {
-      '&:first-child': {
-        marginLeft: spacing.unit * 2,
-      },
-      '&:not(:first-child)': {
-        marginLeft: spacing.unit,
-      },
-    },
     btnWrapper: {
       marginTop: 'auto',
       display: 'flex',
@@ -169,4 +150,4 @@ const styles = ({ spacing, palette }: Theme) =>
     },
   });
 
-export default withStyles(styles, { withTheme: true })(List);
+export default withStyles(styles)(List);

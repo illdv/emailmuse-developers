@@ -14,15 +14,15 @@ export enum MenuItemType {
   TRAINING = 'TRAINING',
 }
 
-export const enum Route {
-  emails = 'Emails',
-  editor = 'Editor',
-  imageLibrary = 'Image library',
-  snippets = 'Snippets',
-  layouts = 'Layouts',
-  swipes = 'Swipes',
-  swipesLocked = 'Swipes locked',
-  training = 'Training',
+export enum Routes {
+  emails = 'emails',
+  editor = 'editor',
+  imageLibrary = 'image library',
+  snippets = 'snippets',
+  layouts = 'layouts',
+  swipes = 'swipes',
+  swipesLocked = 'swipes locked',
+  training = 'training',
 }
 export interface IDrawerMenuState {
   /**

@@ -61,12 +61,7 @@ class MainLayout extends Component<
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={9}
-            style={{ overflowY: 'auto', overflowX: 'hidden' }}
-          >
+          <Grid item xs={12} sm={9}>
             <Switch>
               <Route path='/emails/:id/:name' component={Emails} />
               <Route path='/emails' component={Emails} />
