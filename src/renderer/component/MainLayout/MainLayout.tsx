@@ -7,7 +7,7 @@ import { IStyle } from 'type/materialUI';
 // import { DragDropContext } from 'react-dnd';
 import { Route, Switch } from 'react-router-dom';
 
-import Menu from 'src/renderer/component/Menu/Menu';
+import Menu from 'src/renderer/component/Menu';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
 
 import ModalProvider from 'src/renderer/common/DialogProvider/ModalProvider';

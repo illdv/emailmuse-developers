@@ -14,6 +14,16 @@ export enum MenuItemType {
   TRAINING = 'TRAINING',
 }
 
+export const enum Route {
+  emails = 'Emails',
+  editor = 'Editor',
+  imageLibrary = 'Image library',
+  snippets = 'Snippets',
+  layouts = 'Layouts',
+  swipes = 'Swipes',
+  swipesLocked = 'Swipes locked',
+  training = 'Training',
+}
 export interface IDrawerMenuState {
   /**
    * Use for definitions selected item in menu.

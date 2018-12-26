@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import {
   Collections,
   Drafts,
@@ -8,23 +7,22 @@ import {
   Help,
   ViewCompact,
   PlayCircleOutline,
-  Lock,
 } from '@material-ui/icons';
 import {
-  ListItemIcon,
-  Typography,
   WithStyles,
   withStyles,
-  MenuItem,
   Tooltip,
   Button,
   Theme,
+  MenuList,
+  createStyles,
 } from '@material-ui/core/';
 import {
   IDrawerMenuActions,
   MenuItemType,
 } from 'src/renderer/component/Menu/flux/interface';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
+import Item from './MenuItem';
 
 const menuSchema: IMenuItem[] = [
   {
@@ -65,120 +63,57 @@ const menuSchema: IMenuItem[] = [
   },
 ];
 
-const enum Route {
-  emails = 'emails',
-  editor = 'editor',
-  imageLibrary = 'image library',
-  snippets = 'snippets',
-  layouts = 'layouts',
-  swipes = 'swipes',
-  swipesLocked = 'swipes locked',
-  training = 'training',
-}
-interface ItemProps {
+export interface IMenuItem {
   title: string;
-  icon: any;
-  onClick: () => void;
-  isLockedSwipe?: boolean;
-  currentRoute?: Route;
-  className?: string;
-}
-
-const Item = ({
-  title,
-  icon,
-  onClick,
-  isLockedSwipe,
-  className,
-  currentRoute,
-}: ItemProps) => {
-  const getRootRoute = (r: Route) => {
-    let route = r;
-    if (route.includes(Route.emails) || route === Route.editor) {
-      route = Route.emails;
-    }
-    if (route.includes(Route.training)) {
-      route = Route.training;
-    }
-    if (route === Route.swipesLocked) {
-      route = Route.swipes;
-    }
-    return route;
-  };
-
-  const isSelected =
-    currentRoute && getRootRoute(currentRoute) === title.toLowerCase();
-  return (
-    <MenuItem
-      button
-      onClick={onClick}
-      selected={isSelected}
-      className={className}
-    >
-      <ListItemIcon>{icon}</ListItemIcon>
-      <Typography variant='subheading'>{title}</Typography>
-      {isLockedSwipe && title.toUpperCase() === MenuItemType.SWIPES && (
-        <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
-      )}
-    </MenuItem>
-  );
-};
-
-interface IMenuItem {
-  title: string;
-  icon: ReactElement<any>;
-  type: MenuItemType;
+  icon: React.ReactElement<any>;
+  type?: MenuItemType;
   selectedItem?: string;
   className?: string;
+  isLockedSwipe?: boolean;
 }
 
-export interface IProps extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
   pathname: string;
 }
 
-class MenuItems extends React.Component<IProps> {
-  state = {
-    selectedItem: MenuItemType.EMAILS,
-  };
+class List extends React.Component<IProps> {
   selectItem = (selectedItem: MenuItemType) => () => {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
   render() {
-    const { primary } = this.props.theme.palette;
     const currentRoute: any = this.props.pathname.slice(1).replace(/-/gi, ' ');
-    const toItem = (items: IMenuItem[]) => {
-      return items.map(item => (
-        <Item
-          key={item.title}
-          title={item.title}
-          icon={item.icon}
-          onClick={this.selectItem(item.type)}
-          isLockedSwipe={this.props.isLockedSwipe}
-          className={item.className}
-          currentRoute={currentRoute}
-        />
-      ));
-    };
 
+    const { theme, classes } = this.props;
     return (
-      <>
-        {toItem(menuSchema)}
-        <div className={this.props.classes.btnWrapper}>
+      <MenuList classes={{ root: classes.list }}>
+        {menuSchema.map(item => (
+          <Item
+            key={item.title}
+            title={item.title}
+            icon={item.icon}
+            onClick={this.selectItem(item.type)}
+            isLockedSwipe={this.props.isLockedSwipe}
+            className={item.className}
+            currentRoute={currentRoute}
+          />
+        ))}
+
+        <div className={classes.btnWrapper}>
           <Tooltip title='Account'>
             <Button
               style={{
                 backgroundColor:
                   currentRoute === MenuItemType.ACCOUNT.toLocaleLowerCase()
-                    ? primary.light
-                    : primary.main,
+                    ? theme.palette.primary.light
+                    : theme.palette.primary.main,
               }}
               classes={{ root: this.props.classes.btn }}
               variant='fab'
               color='primary'
-              aria-label='add'
+              aria-label='Account'
               className={classNamesEmails.ACCOUNT}
               onClick={this.selectItem(MenuItemType.ACCOUNT)}
             >
@@ -190,13 +125,13 @@ class MenuItems extends React.Component<IProps> {
               style={{
                 backgroundColor:
                   currentRoute === MenuItemType.HELP.toLocaleLowerCase()
-                    ? primary.light
-                    : primary.main,
+                    ? theme.palette.primary.light
+                    : theme.palette.primary.main,
               }}
               classes={{ root: this.props.classes.btn }}
               variant='fab'
               color='primary'
-              aria-label='add'
+              aria-label='Help'
               className={classNamesEmails.HELP}
               onClick={this.selectItem(MenuItemType.HELP)}
             >
@@ -204,25 +139,34 @@ class MenuItems extends React.Component<IProps> {
             </Button>
           </Tooltip>
         </div>
-      </>
+      </MenuList>
     );
   }
 }
 
-const styles = ({ spacing, palette }: Theme) => ({
-  btn: {
-    '&:first-child': {
-      marginLeft: spacing.unit * 2,
+const styles = ({ spacing, palette }: Theme) =>
+  createStyles({
+    list: {
+      display: 'flex',
+      height: '100%',
+      padding: 0,
+      flexDirection: 'column',
+      overflowY: 'auto',
+      position: 'relative',
     },
-    '&:not(:first-child)': {
-      marginLeft: spacing.unit,
+    btn: {
+      '&:first-child': {
+        marginLeft: spacing.unit * 2,
+      },
+      '&:not(:first-child)': {
+        marginLeft: spacing.unit,
+      },
     },
-  },
-  btnWrapper: {
-    marginTop: 'auto',
-    display: 'flex',
-    marginBottom: spacing.unit * 2,
-  },
-});
+    btnWrapper: {
+      marginTop: 'auto',
+      display: 'flex',
+      marginBottom: spacing.unit * 2,
+    },
+  });
 
-export default withStyles(styles, { withTheme: true })(MenuItems);
+export default withStyles(styles, { withTheme: true })(List);

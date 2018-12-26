@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import {
-  MenuList,
   Paper,
   Slide,
   WithStyles,
@@ -10,21 +9,15 @@ import {
   createStyles,
   Theme,
 } from '@material-ui/core/';
-import {
-  IDrawerMenuActions,
-  MenuItemType,
-} from 'src/renderer/component/Menu/flux/interface';
+import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import MenuItems from './MenuItems';
+import MenuList from './MenuList';
+
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
   location: any;
-}
-
-export interface IState {
-  isUpdate: boolean;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -38,26 +31,17 @@ const mapStateToProps = (state: IGlobalState) => ({
   mapStateToProps,
   mapDispatchToProps,
 )
-class Menu extends React.Component<IProps, IState> {
-  state = {
-    isUpdate: null,
-  };
-  selectIAcc = (selectedItem: MenuItemType) => () => {
-    this.props.actions.selectMenuItem({ selectedItem });
-  };
-
+class Menu extends React.Component<IProps> {
   render() {
     const { classes } = this.props;
     return (
       <Slide direction='right' in mountOnEnter unmountOnExit>
         <Paper elevation={4} classes={{ root: classes.paper }}>
-          <MenuList classes={{ root: classes.list }}>
-            <MenuItems
-              isLockedSwipe={this.props.isLockedSwipe}
-              actions={this.props.actions}
-              pathname={this.props.location.pathname}
-            />
-          </MenuList>
+          <MenuList
+            isLockedSwipe={this.props.isLockedSwipe}
+            actions={this.props.actions}
+            pathname={this.props.location.pathname}
+          />
         </Paper>
       </Slide>
     );
@@ -68,15 +52,6 @@ const styles = ({ spacing, palette }: Theme) =>
   createStyles({
     paper: {
       height: '100%',
-    },
-
-    list: {
-      display: 'flex',
-      height: '100%',
-      padding: 0,
-      flexDirection: 'column',
-      overflowY: 'auto',
-      position: 'relative',
     },
   });
 
