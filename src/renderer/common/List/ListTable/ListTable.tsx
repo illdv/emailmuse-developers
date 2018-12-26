@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Grid, IconButton, Table, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@material-ui/core';
-import { ContentCopy as ContentCopyIcon } from '@material-ui/icons';
+import {
+  Grid,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TablePagination,
+  TableRow,
+  Toolbar,
+} from '@material-ui/core';
+import { FileCopy } from '@material-ui/icons';
 import block from 'bem-ts';
 
 import InCenter from 'src/renderer/common/InCenter';
@@ -47,7 +56,10 @@ export namespace ListElementSpace {
   }
 }
 
-export class ListTable extends Component<ListElementSpace.IProps<any>, ListElementSpace.IState> {
+export class ListTable extends Component<
+  ListElementSpace.IProps<any>,
+  ListElementSpace.IState
+> {
   state: ListElementSpace.IState = {
     selectedItemIds: [],
   };
@@ -58,89 +70,97 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
     } else {
       this.select(selectId);
     }
-  }
+  };
 
   private select = (selectId: string) => {
     this.setState(state => ({
       ...state,
       selectedItemIds: [...state.selectedItemIds, selectId],
     }));
-  }
+  };
 
   private unSelect = (selectId: string) => {
     this.setState(state => ({
       ...state,
       selectedItemIds: state.selectedItemIds.filter(id => id !== selectId),
     }));
-  }
+  };
 
   isSelected = (selectId: string) => {
     return this.state.selectedItemIds.some(id => id === selectId);
-  }
+  };
 
   unSelectAll = () => {
     this.setState(state => ({
       ...state,
       selectedItemIds: [],
     }));
-  }
+  };
 
   onCopy = (id: string) => () => {
     if (this.props.onCopy) {
       this.props.onCopy(id);
     }
-  }
+  };
 
   renderTable = () => {
     const { entities, toItem, onOpenItem, isLoading } = this.props;
 
     if (isLoading) {
-      return <Loading style={{ height: 200 }}/>;
+      return <Loading style={{ height: 200 }} />;
     }
     return (
       <Table aria-labelledby='tableTitle'>
         <TableBody>
-          {
-            entities.map((entity: {}) => {
-              const item: IListItem = toItem(entity);
-              const isSelected = this.isSelected(item.id);
-              return (
-                <TableRow
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={item.id}
-                  selected={isSelected}
-                  className={b('row')}
-                >
-                  {
-                    this.props.onCopy
-                    &&
-                    <TableCell
-                      style={{ width: 40 }}
-                      onClick={this.onCopy(item.id)}
-                      padding={'checkbox'}
-                    >
-                      <IconButton title={'Create Duplicate'}>
-                        <ContentCopyIcon/>
-                      </IconButton>
-                    </TableCell>
-                    ||
-                    <TableCell onClick={this.onSelect(item.id)} padding='checkbox'/>
-                  }
-                  <TableCell onClick={onOpenItem(entity)} component='th' scope='row' padding='none'>
-                    {item.title}
+          {entities.map((entity: {}) => {
+            const item: IListItem = toItem(entity);
+            const isSelected = this.isSelected(item.id);
+            return (
+              <TableRow
+                role='checkbox'
+                aria-checked={isSelected}
+                tabIndex={-1}
+                key={item.id}
+                selected={isSelected}
+                className={b('row')}
+              >
+                {(this.props.onCopy && (
+                  <TableCell
+                    style={{ width: 40 }}
+                    onClick={this.onCopy(item.id)}
+                    padding={'checkbox'}
+                  >
+                    <IconButton title={'Create Duplicate'}>
+                      <FileCopy />
+                    </IconButton>
                   </TableCell>
-                  <TableCell onClick={onOpenItem(entity)}>{item.description || '---'}</TableCell>
-                  <TableCell onClick={onOpenItem(entity)}>{item.rightText || '---'}</TableCell>
-                </TableRow>
-              );
-            })
-          }
+                )) || (
+                  <TableCell
+                    onClick={this.onSelect(item.id)}
+                    padding='checkbox'
+                  />
+                )}
+                <TableCell
+                  onClick={onOpenItem(entity)}
+                  component='th'
+                  scope='row'
+                  padding='none'
+                >
+                  {item.title}
+                </TableCell>
+                <TableCell onClick={onOpenItem(entity)}>
+                  {item.description || '---'}
+                </TableCell>
+                <TableCell onClick={onOpenItem(entity)}>
+                  {item.rightText || '---'}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     );
-  }
+  };
 
   render() {
     const { pagination, onChangePage, onSearch } = this.props;
@@ -156,22 +176,16 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
             style={{ marginTop: 0 }}
           >
             <Grid item>
-              <HeaderToolbar title={this.props.title}/>
+              <HeaderToolbar title={this.props.title} />
             </Grid>
             <Grid style={{ paddingRight: 15 }} item>
-              {
-                onSearch &&
-                <Search search={onSearch}/>
-              }
+              {onSearch && <Search search={onSearch} />}
             </Grid>
           </Grid>
         </Grid>
-        <div style={{ minHeight: 200 }}>
-          {this.renderTable()}
-        </div>
+        <div style={{ minHeight: 200 }}>{this.renderTable()}</div>
         <InCenter>
-          {
-            pagination &&
+          {pagination && (
             <TablePagination
               component='div'
               count={pagination.total || 0}
@@ -186,7 +200,7 @@ export class ListTable extends Component<ListElementSpace.IProps<any>, ListEleme
               }}
               onChangePage={onChangePage}
             />
-          }
+          )}
         </InCenter>
       </>
     );

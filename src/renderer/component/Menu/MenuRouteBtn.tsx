@@ -14,6 +14,7 @@ interface IProps extends WithStyles<typeof styles> {
   selectItem: any;
   currentRoute: string;
   icon: React.ReactElement<any>;
+  theme: Theme;
 }
 
 const RouteBtn = ({
