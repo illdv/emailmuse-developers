@@ -35,10 +35,11 @@ add AWS keys in your setEnvVar.sh (option)
 
 only when performing the previous paragraph!
 
-1. check DeveloperIdApp.p12 in root project
-2. check setEnvVar.sh in root project
-3. check build folder in root project
-4. npm run release
+1. check DeveloperIdApp.p12 in root project(for mac)
+2. check sertWin in root project(for windows)
+3. check setEnvVar.sh in root project
+4. check build folder in root project
+5. npm run release
 
 ##### Used commit message convention
 
