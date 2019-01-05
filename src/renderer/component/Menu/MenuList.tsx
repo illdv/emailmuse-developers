@@ -77,6 +77,7 @@ export interface IMenuItem {
 interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
+  menuItem: string;
   pathname: string;
 }
 
@@ -89,7 +90,7 @@ class List extends React.Component<IProps> {
     const shortRoute = this.props.pathname.replace(/-/gi, ' ').split('/')[1];
     let route = shortRoute;
     if (shortRoute === Routes.editor) {
-      route = Routes.emails;
+      route = this.props.menuItem.toLowerCase();
     }
     if (shortRoute === Routes.swipesLocked) {
       route = Routes.emails;
@@ -99,18 +100,15 @@ class List extends React.Component<IProps> {
 
   render() {
     const currentRoute = this.calcCurrentRoute();
-
     const { classes } = this.props;
     return (
       <MenuList classes={{ root: classes.list }}>
         {menuSchema.map(item => (
           <Item
             key={item.title}
-            title={item.title}
-            icon={item.icon}
-            onClick={this.selectItem(item.type)}
+            itemMenu={item}
+            selectItem={this.selectItem}
             isLockedSwipe={this.props.isLockedSwipe}
-            className={item.className}
             currentRoute={currentRoute}
           />
         ))}

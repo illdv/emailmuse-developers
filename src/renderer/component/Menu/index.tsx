@@ -17,6 +17,7 @@ import MenuList from './MenuList';
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
+  menuItem: string;
   location: any;
 }
 
@@ -26,6 +27,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: IGlobalState) => ({
   isLockedSwipe: state.profile.auth.user.is_swipe_locked,
+  menuItem: state.tutorial.name,
 });
 @connect(
   mapStateToProps,
@@ -39,6 +41,7 @@ class Menu extends React.Component<IProps> {
         <Paper elevation={4} classes={{ root: classes.paper }}>
           <MenuList
             isLockedSwipe={this.props.isLockedSwipe}
+            menuItem={this.props.menuItem}
             actions={this.props.actions}
             pathname={this.props.location.pathname}
           />

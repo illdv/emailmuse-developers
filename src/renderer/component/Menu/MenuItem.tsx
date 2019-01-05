@@ -11,23 +11,23 @@ import { Lock } from '@material-ui/icons';
 import { MenuItemType, Routes } from './flux/interface';
 import { IMenuItem } from './MenuList';
 
-interface ItemProps extends IMenuItem {
-  onClick: () => void;
+interface ItemProps {
+  selectItem: any;
   currentRoute: Routes;
+  itemMenu: IMenuItem;
+  isLockedSwipe: boolean;
 }
 
 const Item = ({
-  title,
-  icon,
-  onClick,
+  selectItem,
   isLockedSwipe,
-  className,
   currentRoute,
+  itemMenu: { type, title, className, icon },
 }: ItemProps) => {
   return (
     <MenuItem
       button
-      onClick={onClick}
+      onClick={selectItem(type.toUpperCase())}
       selected={currentRoute === title}
       className={className}
     >
