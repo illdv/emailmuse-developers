@@ -24,6 +24,7 @@ import StepsSelection from 'src/renderer/component/Training/StepsSelection';
 import DragDropContext from 'src/renderer/DragDropContext';
 import Help from 'src/renderer/component/Help';
 import Tour from '../Tutorial/Tour';
+import GreatJob from '../GreatJob';
 
 const styles: IStyle = {
   root: {
@@ -67,6 +68,7 @@ class MainLayout extends Component<
               <Route path='/emails' component={Emails} />
             </Switch>
             <Route path='/layouts' component={Layouts} />
+            <Route path='/greatJob' component={GreatJob} />
             <Route path='/image-library' component={ImageLibrary} />
             <Route path='/snippets' component={Snippets} />
             <Route path='/swipes' component={Swipe} />

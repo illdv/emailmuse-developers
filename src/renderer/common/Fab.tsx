@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as classNames from 'classnames';
 
-import { Button, PropTypes, Zoom } from '@material-ui/core/';
+import { Button, PropTypes, Zoom, Fab as FabBtn } from '@material-ui/core/';
 import { HotKey } from 'src/renderer/common/HotKey/HotKey';
 
 interface IFabProps {
@@ -18,14 +18,7 @@ interface IFabProps {
   isFly?: boolean;
   children?: any;
   bottom?: string;
-  variant?:
-    | 'fab'
-    | 'text'
-    | 'flat'
-    | 'outlined'
-    | 'contained'
-    | 'raised'
-    | 'extendedFab';
+  variant?: 'text' | 'flat' | 'outlined' | 'contained' | 'raised';
 }
 
 const initFabProps = (): IFabProps => ({
@@ -52,7 +45,7 @@ export function Fab(props: IFabProps = initFabProps()) {
     isFly,
     children,
     bottom = null,
-    variant = 'fab',
+    variant,
   } = { ...initFabProps(), ...props };
   return (
     <Zoom in={true} timeout={1000} unmountOnExit>
@@ -62,15 +55,26 @@ export function Fab(props: IFabProps = initFabProps()) {
         tooltip={title}
         onPress={onClick}
       >
-        <Button
-          style={{ zIndex: 99, right: 62 * position + 20, bottom, margin: 8 }}
-          className={`${classNames({ fab: isFly })} ${className}`}
-          color={color}
-          variant={variant}
-          onClick={onClick}
-        >
-          {children ? children : icon}
-        </Button>
+        {variant === 'contained' ? (
+          <Button
+            style={{ zIndex: 99, right: 62 * position + 20, bottom, margin: 8 }}
+            className={`${classNames({ fab: isFly })} ${className}`}
+            color={color}
+            variant={variant}
+            onClick={onClick}
+          >
+            {children ? children : icon}
+          </Button>
+        ) : (
+          <FabBtn
+            style={{ zIndex: 99, right: 62 * position + 20, bottom, margin: 8 }}
+            className={`${classNames({ fab: isFly })} ${className}`}
+            color={color}
+            onClick={onClick}
+          >
+            {children ? children : icon}
+          </FabBtn>
+        )}
       </HotKey>
     </Zoom>
   );

@@ -12,7 +12,6 @@ import {
 
 interface IColumn {
   id: string;
-  numeric: boolean;
   disablePadding: boolean;
   label: string;
 }
@@ -43,7 +42,7 @@ export class CustomTableHead extends Component<
     this.setState(state => ({
       isSelectAll: !state.isSelectAll,
     }));
-  }
+  };
 
   render() {
     return (
@@ -54,7 +53,6 @@ export class CustomTableHead extends Component<
             return (
               <TableCell
                 key={column.id}
-                numeric={column.numeric}
                 padding={column.disablePadding ? 'none' : 'default'}
                 sortDirection={'asc'}
               >

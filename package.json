@@ -10,7 +10,7 @@
   "main": "./main.js",
   "scripts": {
     "start-webpack-dev-server": "webpack-dev-server",
-    "start-electron": "npx electron ./src/main/index.ts",
+    "start-electron": "npx electron ./src/main/index.js",
     "build": "rm -rf build; NODE_ENV=production  webpack",
     "build:all": "npm run build; cd build; npx electron-builder -wlm",
     "build:linux": "npm run build; cd build; npx electron-builder -l",
@@ -102,7 +102,7 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^3.0.7",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.14"
   },
   "build": {
     "productName": "EmailMuse",

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-  Button,
   Tooltip,
   createStyles,
   Theme,
   withStyles,
   WithStyles,
+  Fab,
 } from '@material-ui/core';
 import { classNamesEmails } from '../Tutorial/steps/emails';
 
@@ -33,17 +33,16 @@ const RouteBtn = ({
   };
   return (
     <Tooltip title={type}>
-      <Button
+      <Fab
         style={selected}
         classes={{ root: classes.btn }}
-        variant='fab'
         color='primary'
         aria-label={type}
         className={classNamesEmails[type.toUpperCase()]}
         onClick={selectItem(type.toUpperCase())}
       >
         {icon}
-      </Button>
+      </Fab>
     </Tooltip>
   );
 };

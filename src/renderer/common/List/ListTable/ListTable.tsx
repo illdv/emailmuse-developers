@@ -27,7 +27,6 @@ export interface IColumn {
   id: string;
   label: string;
   disablePadding: boolean;
-  numeric: boolean;
 }
 
 export interface IListItem {

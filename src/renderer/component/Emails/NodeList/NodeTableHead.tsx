@@ -1,8 +1,16 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { TableCell, TableRow, TableSortLabel, TableHead } from '@material-ui/core';
-import { IColumnNodeTable, SortingType } from 'src/renderer/component/Emails/NodeList/NodeTableList';
+import {
+  TableCell,
+  TableRow,
+  TableSortLabel,
+  TableHead,
+} from '@material-ui/core';
+import {
+  IColumnNodeTable,
+  SortingType,
+} from 'src/renderer/component/Emails/NodeList/NodeTableList';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 
 export namespace TableHeadSpace {
@@ -18,22 +26,24 @@ export namespace TableHeadSpace {
   }
 }
 
-export class NodeTableHead extends Component<TableHeadSpace.IProps, TableHeadSpace.IState> {
-
+export class NodeTableHead extends Component<
+  TableHeadSpace.IProps,
+  TableHeadSpace.IState
+> {
   state: TableHeadSpace.IState = {
     isSelectAll: false,
   };
 
   onSortColumn = (type: SortingType) => () => {
     this.props.onSorting(type);
-  }
+  };
 
   onSelectAll = () => {
     this.props.onSelectAll();
     this.setState(state => ({
       isSelectAll: !state.isSelectAll,
     }));
-  }
+  };
 
   render() {
     const { reverse } = this.props;
@@ -44,7 +54,6 @@ export class NodeTableHead extends Component<TableHeadSpace.IProps, TableHeadSpa
             return (
               <TableCell
                 key={column.id}
-                numeric={column.numeric}
                 padding={column.padding || 'default'}
                 sortDirection={reverse ? 'desc' : 'asc'}
               >
