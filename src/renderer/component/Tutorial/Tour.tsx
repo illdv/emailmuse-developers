@@ -9,6 +9,7 @@ import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
 import { resetTour } from '../Help';
+import isFirstTime from 'src/renderer/common/isFirstTime';
 
 type Props = injectMapStateToProps;
 type State = {
@@ -45,20 +46,15 @@ class Tour extends React.Component<Props, State> {
         type === EVENTS.TARGET_NOT_FOUND
       ) {
         localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
-        localStorage.setItem('FirstTimeTour', 'false');
       }
-    }
-  };
-  checkFirstTime = () => {
-    if (!localStorage.getItem('FirstTimeTour')) {
-      localStorage.setItem('FirstTimeTour', 'true');
-      resetTour();
     }
   };
 
   componentDidMount() {
     document.addEventListener('keydown', () => this.stopedTour);
-    this.checkFirstTime();
+    if (isFirstTime()) {
+      resetTour();
+    }
   }
 
   componentWillUnmount() {

@@ -23,7 +23,7 @@ export const resetTour = () => {
   localStorage.setItem('EMAILS', '0');
   localStorage.setItem('SNIPPETS', '0');
   localStorage.setItem('LAYOUTS', '0');
-  localStorage.setItem('IMAGE_LIBRARY', '0');
+  localStorage.setItem('IMAGE LIBRARY', '0');
   localStorage.setItem('SWIPES', '0');
   localStorage.setItem('TRAINING', '0');
   localStorage.setItem('ACCOUNT', '0');

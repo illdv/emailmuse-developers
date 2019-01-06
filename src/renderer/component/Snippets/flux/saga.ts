@@ -1,3 +1,4 @@
+import { snippets } from './../../Tutorial/steps/snippets';
 import { AxiosResponse } from 'axios';
 
 import { call, put, take, select } from 'redux-saga/effects';
@@ -7,6 +8,8 @@ import { ILoadingResponse } from 'src/renderer/component/Snippets/flux/interface
 import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from '../../Menu/flux/interface';
+import { push } from 'react-router-redux';
+import isFirstTime from 'src/renderer/common/isFirstTime';
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -83,6 +86,11 @@ function* addSnippetsSaga(action) {
     yield put(
       FluxToast.Actions.showToast('Snippet created', ToastType.Success),
     );
+    const getSnippets = state => state.snippets.snippets;
+    const snips = yield select(getSnippets);
+    if (isFirstTime() && !snips.length) {
+      yield put(push('/greatJob'));
+    }
   } catch (error) {
     yield put(
       FluxToast.Actions.showToast('Failed snippet created', ToastType.Error),

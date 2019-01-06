@@ -13,7 +13,7 @@ import { IMenuItem } from './MenuList';
 
 interface ItemProps {
   selectItem: any;
-  currentRoute: Routes;
+  currentRoute: string;
   itemMenu: IMenuItem;
   isLockedSwipe: boolean;
 }
@@ -28,7 +28,7 @@ const Item = ({
     <MenuItem
       button
       onClick={selectItem(type.toUpperCase())}
-      selected={currentRoute === title}
+      selected={currentRoute.replace(/_/gi, ' ') === title}
       className={className}
     >
       <ListItemIcon>{icon}</ListItemIcon>

@@ -86,21 +86,22 @@ class List extends React.Component<IProps> {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
-  calcCurrentRoute: any = () => {
-    const shortRoute = this.props.pathname.replace(/-/gi, ' ').split('/')[1];
-    let route = shortRoute;
-    if (shortRoute === Routes.editor) {
-      route = this.props.menuItem.toLowerCase();
-    }
-    if (shortRoute === Routes.swipesLocked) {
-      route = Routes.emails;
-    }
-    return route;
-  };
+  // calcCurrentRoute: any = () => {
+  //   const shortRoute = this.props.pathname.replace(/-/gi, ' ').split('/')[1];
+  //   let route = shortRoute;
+  //   if (shortRoute === Routes.editor) {
+  //     route = this.props.menuItem.toLowerCase();
+  //   }
+  //   if (shortRoute === Routes.swipesLocked) {
+  //     route = Routes.emails;
+  //   }
+  //   return route;
+  // };
 
   render() {
-    const currentRoute = this.calcCurrentRoute();
+    // const currentRoute = this.calcCurrentRoute();
     const { classes } = this.props;
+    const menuItem = this.props.menuItem.toLowerCase();
     return (
       <MenuList classes={{ root: classes.list }}>
         {menuSchema.map(item => (
@@ -109,18 +110,18 @@ class List extends React.Component<IProps> {
             itemMenu={item}
             selectItem={this.selectItem}
             isLockedSwipe={this.props.isLockedSwipe}
-            currentRoute={currentRoute}
+            currentRoute={menuItem}
           />
         ))}
         <div className={classes.btnWrapper}>
           <MenuRouteBtn
-            currentRoute={currentRoute}
+            currentRoute={menuItem}
             type={'account'}
             selectItem={this.selectItem}
             icon={<SupervisorAccount />}
           />
           <MenuRouteBtn
-            currentRoute={currentRoute}
+            currentRoute={menuItem}
             type={'help'}
             selectItem={this.selectItem}
             icon={<Help />}
