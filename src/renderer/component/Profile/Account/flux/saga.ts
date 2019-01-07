@@ -14,8 +14,8 @@ function* getProfileSaga() {
 
     const { tutorial } = yield select();
     if (
-      localStorage.getItem(MenuItemType.ACCOUNT) &&
-      tutorial.name === MenuItemType.ACCOUNT
+      localStorage.getItem(MenuItemType.account) &&
+      tutorial.name === MenuItemType.account
     ) {
       yield put(runTutorial({}));
     }

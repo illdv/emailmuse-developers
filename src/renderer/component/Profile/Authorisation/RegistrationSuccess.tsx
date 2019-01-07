@@ -7,14 +7,15 @@ import { Button, Grow, Typography } from '@material-ui/core';
 import { Title } from 'src/renderer/component/Profile/Authorisation/common/Common';
 import InCenter from 'src/renderer/common/InCenter';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
-import { AuthorisationActions, IAuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import {
+  AuthorisationActions,
+  IAuthorisationActions,
+} from 'src/renderer/component/Profile/Authorisation/flux/actions';
 import { AuthStep } from 'src/renderer/component/Profile/Authorisation/flux/models';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
 
 export namespace RegistrationSuccessSpace {
-  export interface IState {
-
-  }
+  export interface IState {}
 
   export interface IProps {
     profile?: IProfileState;
@@ -30,26 +31,36 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   action: bindModuleAction(AuthorisationActions, dispatch),
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-export class RegistrationSuccess
-  extends Component<RegistrationSuccessSpace.IProps, RegistrationSuccessSpace.IState> {
-
+@connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)
+export class RegistrationSuccess extends Component<
+  RegistrationSuccessSpace.IProps,
+  RegistrationSuccessSpace.IState
+> {
   state = {};
 
   onBackLogin = () => {
-    this.props.action.setAuthStep.REQUEST({authStep: AuthStep.LOGIN});
-  }
+    this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.LOGIN });
+  };
 
   render() {
     const { profile } = this.props;
-    const error        = profile.auth.error;
+    const error = profile.auth.error;
 
-    const title = error ? 'Failed to create account' : 'Account has been successfully created';
-    const body  = error || `A message was sent to ${profile.auth.user.email}. Check your email and follow the link.`;
+    const title = error
+      ? 'Failed to create account'
+      : 'Account has been successfully created';
+    const body =
+      error ||
+      `A message was sent to ${
+        profile.auth.user.email
+      }. Check your email and follow the link.`;
 
     return (
       <PaperInCenter>
-        <Title title={title}/>
+        <Title title={title} />
         <Grow in timeout={1000}>
           <Typography variant='title' gutterBottom>
             {body}
@@ -57,7 +68,11 @@ export class RegistrationSuccess
         </Grow>
         <InCenter>
           <Grow in timeout={1000}>
-            <Button variant={'raised'} color='primary' onClick={this.onBackLogin}>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={this.onBackLogin}
+            >
               Next
             </Button>
           </Grow>

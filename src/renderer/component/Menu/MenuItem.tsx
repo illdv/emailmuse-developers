@@ -8,7 +8,7 @@ import {
   Theme,
 } from '@material-ui/core';
 import { Lock } from '@material-ui/icons';
-import { MenuItemType, Routes } from './flux/interface';
+import { MenuItemType } from './flux/interface';
 import { IMenuItem } from './MenuList';
 
 interface ItemProps {
@@ -22,20 +22,23 @@ const Item = ({
   selectItem,
   isLockedSwipe,
   currentRoute,
-  itemMenu: { type, title, className, icon },
+  itemMenu: { type, className, icon },
 }: ItemProps) => {
+  const selectedItem = selectItem(type);
+  const title =
+    type === MenuItemType.image_library ? type.replace(/_/gi, ' ') : type;
   return (
     <MenuItem
       button
-      onClick={selectItem(type.toUpperCase())}
-      selected={currentRoute.replace(/_/gi, ' ') === title}
+      onClick={selectedItem}
+      selected={currentRoute === type}
       className={className}
     >
       <ListItemIcon>{icon}</ListItemIcon>
       <Typography variant='subheading' style={{ textTransform: 'capitalize' }}>
         {title}
       </Typography>
-      {isLockedSwipe && title.toUpperCase() === MenuItemType.SWIPES && (
+      {isLockedSwipe && type === MenuItemType.swipes && (
         <Lock style={{ color: 'rgba(0, 0, 0, 0.54)', marginLeft: 'auto' }} />
       )}
     </MenuItem>

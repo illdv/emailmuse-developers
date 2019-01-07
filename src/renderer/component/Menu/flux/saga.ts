@@ -38,21 +38,21 @@ export function* menuSaga(action): IterableIterator<any> {
 
 function getRoutePath(action) {
   switch (action.payload.selectedItem) {
-    case MenuItemType.ACCOUNT:
+    case MenuItemType.account:
       return '/account';
-    case MenuItemType.HELP:
+    case MenuItemType.help:
       return '/help';
-    case MenuItemType.IMAGE_LIBRARY:
+    case MenuItemType.image_library:
       return '/image-library';
-    case MenuItemType.LAYOUTS:
+    case MenuItemType.layouts:
       return '/layouts';
-    case MenuItemType.SNIPPETS:
+    case MenuItemType.snippets:
       return '/snippets';
-    case MenuItemType.SWIPES:
+    case MenuItemType.swipes:
       return '/swipes';
-    case MenuItemType.EMAILS:
+    case MenuItemType.emails:
       return '/emails';
-    case MenuItemType.TRAINING:
+    case MenuItemType.training:
       return '/training';
     default:
       return '/';

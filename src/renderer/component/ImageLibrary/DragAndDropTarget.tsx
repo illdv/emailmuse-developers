@@ -17,9 +17,7 @@ namespace DragAndDropTargetSpace {
     dragOver?: boolean;
   }
 
-  export interface IState {
-
-  }
+  export interface IState {}
 }
 
 const types = {
@@ -44,21 +42,35 @@ const collect = (connect, monitor) => ({
 });
 
 @DropTarget(types.FILE, specs, collect)
-export class DragAndDropTarget extends React.Component<DragAndDropTargetSpace.IProps, DragAndDropTargetSpace.IState> {
+export class DragAndDropTarget extends React.Component<
+  DragAndDropTargetSpace.IProps,
+  DragAndDropTargetSpace.IState
+> {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { connectDropTarget, canDrop, dragOver, showOverlay, overlayMessage, children } = this.props;
+    const {
+      connectDropTarget,
+      canDrop,
+      dragOver,
+      showOverlay,
+      overlayMessage,
+      children,
+    } = this.props;
     return connectDropTarget(
       <div className={`${b()}`}>
-        {showOverlay ?
-          <div className={b('overlay', { 'can-drop': canDrop, 'drag-over': dragOver })}>
+        {showOverlay ? (
+          <div
+            className={b('overlay', {
+              'can-drop': canDrop,
+              'drag-over': dragOver,
+            })}
+          >
             {overlayMessage ? <span>{overlayMessage}</span> : null}
-          </div> :
-          null
-        }
+          </div>
+        ) : null}
         {children}
       </div>,
     );

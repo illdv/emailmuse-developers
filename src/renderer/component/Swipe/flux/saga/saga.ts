@@ -15,8 +15,8 @@ function* swipeLoading() {
   const { tutorial } = yield select();
 
   if (
-    localStorage.getItem(MenuItemType.SWIPES) &&
-    tutorial.name === MenuItemType.SWIPES
+    localStorage.getItem(MenuItemType.swipes) &&
+    tutorial.name === MenuItemType.swipes
   ) {
     yield put(runTutorial({}));
   }

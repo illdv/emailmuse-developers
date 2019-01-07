@@ -20,14 +20,14 @@ type State = {
   videoLoading: boolean;
 };
 export const resetTour = () => {
-  localStorage.setItem('EMAILS', '0');
-  localStorage.setItem('SNIPPETS', '0');
-  localStorage.setItem('LAYOUTS', '0');
-  localStorage.setItem('IMAGE LIBRARY', '0');
-  localStorage.setItem('SWIPES', '0');
-  localStorage.setItem('TRAINING', '0');
-  localStorage.setItem('ACCOUNT', '0');
-  localStorage.setItem('HELP', '0');
+  localStorage.setItem('emails', '0');
+  localStorage.setItem('snippets', '0');
+  localStorage.setItem('layouts', '0');
+  localStorage.setItem('image_library', '0');
+  localStorage.setItem('swipes', '0');
+  localStorage.setItem('training', '0');
+  localStorage.setItem('account', '0');
+  localStorage.setItem('help', '0');
 };
 
 class Help extends React.Component<Props, State> {

@@ -20,7 +20,6 @@ import {
 import {
   IDrawerMenuActions,
   MenuItemType,
-  Routes,
 } from 'src/renderer/component/Menu/flux/interface';
 import { classNamesEmails } from 'src/renderer/component/Tutorial/steps/emails';
 import Item from './MenuItem';
@@ -28,45 +27,38 @@ import MenuRouteBtn from './MenuRouteBtn';
 
 const menuSchema: IMenuItem[] = [
   {
-    title: Routes.emails,
     icon: <Drafts />,
-    type: MenuItemType.EMAILS,
+    type: MenuItemType.emails,
     className: classNamesEmails.EMAILS,
   },
   {
-    title: Routes.imageLibrary,
     icon: <Collections />,
-    type: MenuItemType.IMAGE_LIBRARY,
+    type: MenuItemType.image_library,
     className: classNamesEmails.IMAGE_LIBRARY,
   },
   {
-    title: Routes.snippets,
     icon: <ViewCompact />,
-    type: MenuItemType.SNIPPETS,
+    type: MenuItemType.snippets,
     className: classNamesEmails.SNIPPETS,
   },
   {
-    title: Routes.layouts,
     icon: <PictureInPictureAlt />,
-    type: MenuItemType.LAYOUTS,
+    type: MenuItemType.layouts,
     className: classNamesEmails.LAYOUTS,
   },
   {
-    title: Routes.swipes,
     icon: <PlayCircleOutline />,
-    type: MenuItemType.SWIPES,
+    type: MenuItemType.swipes,
     className: classNamesEmails.SWIPES,
   },
   {
-    title: Routes.training,
     icon: <PlayCircleOutline />,
-    type: MenuItemType.TRAINING,
+    type: MenuItemType.training,
     className: classNamesEmails.TRAINING,
   },
 ];
 
 export interface IMenuItem {
-  title: string;
   icon: React.ReactElement<any>;
   type?: MenuItemType;
   selectedItem?: string;
@@ -78,7 +70,6 @@ interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
   menuItem: string;
-  pathname: string;
 }
 
 class List extends React.Component<IProps> {
@@ -86,27 +77,14 @@ class List extends React.Component<IProps> {
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
-  // calcCurrentRoute: any = () => {
-  //   const shortRoute = this.props.pathname.replace(/-/gi, ' ').split('/')[1];
-  //   let route = shortRoute;
-  //   if (shortRoute === Routes.editor) {
-  //     route = this.props.menuItem.toLowerCase();
-  //   }
-  //   if (shortRoute === Routes.swipesLocked) {
-  //     route = Routes.emails;
-  //   }
-  //   return route;
-  // };
-
   render() {
-    // const currentRoute = this.calcCurrentRoute();
     const { classes } = this.props;
     const menuItem = this.props.menuItem.toLowerCase();
     return (
       <MenuList classes={{ root: classes.list }}>
         {menuSchema.map(item => (
           <Item
-            key={item.title}
+            key={item.type}
             itemMenu={item}
             selectItem={this.selectItem}
             isLockedSwipe={this.props.isLockedSwipe}
@@ -116,13 +94,13 @@ class List extends React.Component<IProps> {
         <div className={classes.btnWrapper}>
           <MenuRouteBtn
             currentRoute={menuItem}
-            type={'account'}
+            type={MenuItemType.account}
             selectItem={this.selectItem}
             icon={<SupervisorAccount />}
           />
           <MenuRouteBtn
             currentRoute={menuItem}
-            type={'help'}
+            type={MenuItemType.help}
             selectItem={this.selectItem}
             icon={<Help />}
           />

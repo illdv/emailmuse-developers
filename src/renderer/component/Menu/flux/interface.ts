@@ -4,26 +4,16 @@
 import { CreateAction } from 'src/renderer/flux/interface';
 
 export enum MenuItemType {
-  ACCOUNT = 'ACCOUNT',
-  HELP = 'HELP',
-  EMAILS = 'EMAILS',
-  IMAGE_LIBRARY = 'IMAGE_LIBRARY',
-  SNIPPETS = 'SNIPPETS',
-  LAYOUTS = 'LAYOUTS',
-  SWIPES = 'SWIPES',
-  TRAINING = 'TRAINING',
-}
-
-export enum Routes {
+  account = 'account',
+  help = 'help',
   emails = 'emails',
-  editor = 'editor',
-  imageLibrary = 'image library',
+  image_library = 'image_library',
   snippets = 'snippets',
   layouts = 'layouts',
   swipes = 'swipes',
-  swipesLocked = 'swipes locked',
   training = 'training',
 }
+
 export interface IDrawerMenuState {
   /**
    * Use for definitions selected item in menu.

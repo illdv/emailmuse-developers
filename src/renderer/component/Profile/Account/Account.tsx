@@ -182,7 +182,7 @@ class AccountSettings extends React.Component<
                 <InCenter>
                   <Button
                     onClick={this.onOpenDialogChangePassword}
-                    variant='raised'
+                    variant='contained'
                     color='primary'
                     className={classNamesAccount.PASSWORD}
                   >
@@ -190,7 +190,7 @@ class AccountSettings extends React.Component<
                   </Button>
                   <Button
                     onClick={this.onSave}
-                    variant='raised'
+                    variant='contained'
                     color='primary'
                     style={{ marginLeft: 10 }}
                     className={classNamesAccount.SAVE_NAME}
@@ -198,7 +198,7 @@ class AccountSettings extends React.Component<
                     Save setting
                   </Button>
                   <Button
-                    variant='raised'
+                    variant='contained'
                     color='secondary'
                     onClick={this.onLogout}
                     style={{ marginLeft: 10 }}

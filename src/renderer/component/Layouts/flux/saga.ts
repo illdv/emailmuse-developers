@@ -15,8 +15,8 @@ function* layoutLoading() {
   yield put(LayoutActions.loading.REQUEST({}));
   const { tutorial } = yield select();
   if (
-    localStorage.getItem(MenuItemType.LAYOUTS) &&
-    tutorial.name === MenuItemType.LAYOUTS
+    localStorage.getItem(MenuItemType.layouts) &&
+    tutorial.name === MenuItemType.layouts
   ) {
     yield put(runTutorial({}));
   }
@@ -25,8 +25,8 @@ function* layoutLoading() {
 function* sagaLoadingSuccess() {
   const { tutorial } = yield select();
   if (
-    localStorage.getItem(MenuItemType.LAYOUTS) &&
-    tutorial.name === MenuItemType.LAYOUTS
+    localStorage.getItem(MenuItemType.layouts) &&
+    tutorial.name === MenuItemType.layouts
   ) {
     yield put(runTutorial({}));
   }

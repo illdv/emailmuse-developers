@@ -37,10 +37,10 @@ namespace ImageLibrarySpace {
   export interface IProps {
     classes?: { root };
     actions?: {
-      getImagesRequest: typeof getImagesRequest,
-      uploadImagesRequest: typeof uploadImagesRequest,
-      deleteImagesRequest: typeof deleteImagesRequest,
-      updateImageRequest: typeof updateImageRequest,
+      getImagesRequest: typeof getImagesRequest;
+      uploadImagesRequest: typeof uploadImagesRequest;
+      deleteImagesRequest: typeof deleteImagesRequest;
+      updateImageRequest: typeof updateImageRequest;
     };
     items: IImageLibraryItem[];
     pagination: IPagination;
@@ -60,8 +60,10 @@ const styles: IStyle = theme => ({
   },
 });
 
-export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, ImageLibrarySpace.IState> {
-
+export class ImageLibrary extends React.Component<
+  ImageLibrarySpace.IProps,
+  ImageLibrarySpace.IState
+> {
   state: ImageLibrarySpace.IState = {
     openDialog: false,
     searchWorld: '',
@@ -80,7 +82,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
     if (item && item.files) {
       this.props.actions.uploadImagesRequest(item.files);
     }
-  }
+  };
 
   onUploadFiles = e => {
     if (e.target.files) {
@@ -93,31 +95,31 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
         this.props.actions.uploadImagesRequest(files);
       }
     }
-  }
+  };
 
   onOpenImageInfo = (item: IImageLibraryItem) => () => {
     this.setState({ openDialog: true, chosenImage: item });
-  }
+  };
 
   closeDialog = () => {
     this.setState({ openDialog: false, chosenImage: null });
-  }
+  };
 
   deleteItem = (item: IImageLibraryItem) => () => {
     this.props.actions.deleteImagesRequest(item.id);
-  }
+  };
 
   updateItem = (item: IImageLibraryItem, name) => {
     this.props.actions.updateImageRequest({ imageId: item.id, name });
-  }
+  };
 
   onChangePage = (e, page) => {
     this.props.actions.getImagesRequest(page + 1);
-  }
+  };
 
   onLoading = (searchWorld: string) => {
     this.props.actions.getImagesRequest(1, searchWorld);
-  }
+  };
 
   render() {
     const { classes, pagination } = this.props;
@@ -125,7 +127,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
       <Fade in timeout={1000}>
         <Paper elevation={4} className={classes.root}>
           <div className={b()}>
-            <Search search={this.onLoading}/>
+            <Search search={this.onLoading} />
             <TablePagination
               component='div'
               count={pagination.total || 0}
@@ -143,19 +145,20 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
             <DragAndDropTarget
               onDrop={this.onDropFile}
               showOverlay={true}
-              overlayMessage={'Drop files here to add them to your image library'}
+              overlayMessage={
+                'Drop files here to add them to your image library'
+              }
             >
               <div className={b('container')}>
-                {
-                  this.state.chosenImage &&
+                {this.state.chosenImage && (
                   <ImageLibraryDialog
                     item={this.state.chosenImage}
                     onDeleteItem={this.deleteItem}
                     onUpdateItem={this.updateItem}
                     onClose={this.closeDialog}
                   />
-                }
-                <PreLoaderLayout/>
+                )}
+                <PreLoaderLayout />
                 <ImageLibraryList
                   items={this.props.items}
                   onDelete={this.deleteItem}
@@ -165,9 +168,7 @@ export class ImageLibrary extends React.Component<ImageLibrarySpace.IProps, Imag
             </DragAndDropTarget>
             <div className={b('footer')}>
               <Button color='primary' className={classNamesImage.UPLOAD}>
-                <label htmlFor='upload'>
-                  Upload images
-                </label>
+                <label htmlFor='upload'>Upload images</label>
                 <input
                   id='upload'
                   className={b('upload-input')}
@@ -196,10 +197,19 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { getImagesRequest, uploadImagesRequest, deleteImagesRequest, updateImageRequest },
-    dispatch),
+    {
+      getImagesRequest,
+      uploadImagesRequest,
+      deleteImagesRequest,
+      updateImageRequest,
+    },
+    dispatch,
+  ),
 });
 
-export default withStyles(styles)
-(connect(mapStateToProps, mapDispatchToProps)
-(ImageLibrary as any));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(ImageLibrary as any),
+);

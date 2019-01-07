@@ -12,8 +12,8 @@ function* layoutLoading() {
   const { tutorial } = yield select();
 
   if (
-    localStorage.getItem(MenuItemType.TRAINING) &&
-    tutorial.name === MenuItemType.TRAINING
+    localStorage.getItem(MenuItemType.training) &&
+    tutorial.name === MenuItemType.training
   ) {
     yield put(runTutorial({}));
   }

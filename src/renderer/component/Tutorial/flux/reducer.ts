@@ -9,7 +9,7 @@ export interface ITutorialState {
 }
 
 const initialState: ITutorialState = {
-  name: MenuItemType.EMAILS,
+  name: MenuItemType.emails,
   run: false,
 };
 

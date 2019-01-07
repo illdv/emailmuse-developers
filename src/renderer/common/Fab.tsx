@@ -18,7 +18,7 @@ interface IFabProps {
   isFly?: boolean;
   children?: any;
   bottom?: string;
-  variant?: 'text' | 'flat' | 'outlined' | 'contained' | 'raised';
+  variant?: 'text' | 'flat' | 'outlined' | 'contained';
 }
 
 const initFabProps = (): IFabProps => ({

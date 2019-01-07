@@ -27,8 +27,8 @@ function* getImagesWorker(
     const { tutorial } = yield select();
 
     if (
-      localStorage.getItem(MenuItemType.IMAGE_LIBRARY) &&
-      tutorial.name === MenuItemType.IMAGE_LIBRARY
+      localStorage.getItem(MenuItemType.image_library) &&
+      tutorial.name === MenuItemType.image_library
     ) {
       yield put(runTutorial({}));
     }

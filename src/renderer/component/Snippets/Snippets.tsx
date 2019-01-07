@@ -10,11 +10,21 @@ import { ISnippetsState } from 'src/renderer/component/Snippets/flux/interface';
 import { ListTable } from 'src/renderer/common/List/ListTable/ListTable';
 import { ISnippet } from 'src/renderer/component/Snippets/flux/interfaceAPI';
 import { Fab } from 'src/renderer/common/Fab';
-import { createEmptySnippet, snippetToEditEntity, snippetToItem } from 'src/renderer/component/Snippets/utils';
+import {
+  createEmptySnippet,
+  snippetToEditEntity,
+  snippetToItem,
+} from 'src/renderer/component/Snippets/utils';
 import { ActionStatus } from 'src/renderer/flux/interface';
-import { ISnippetsAction, SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
+import {
+  ISnippetsAction,
+  SnippetsAction,
+} from 'src/renderer/component/Snippets/flux/actions';
 import { bindModuleAction } from 'src/renderer/flux/saga/utils';
-import { EditorActions, IEditorActions } from 'src/renderer/component/Editor/flux/actions';
+import {
+  EditorActions,
+  IEditorActions,
+} from 'src/renderer/component/Editor/flux/actions';
 import Flex from 'src/renderer/common/Flex';
 import { IProfileState } from 'src/renderer/component/Profile/flux/models';
 import { useOrDefault } from 'src/renderer/utils';
@@ -49,9 +59,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   editorActions: bindModuleAction(EditorActions, dispatch),
 });
 
-@(connect(mapStateToProps, mapDispatchToProps))
-export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.IState> {
-
+@connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)
+export class Snippets extends Component<
+  SnippetsSpace.IProps,
+  SnippetsSpace.IState
+> {
   state: SnippetsSpace.IState = {
     videoLoading: true,
   };
@@ -62,39 +77,34 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
 
   onChangePage = (event, page: number) => {
     this.props.actions.loading.REQUEST({ page: page + 1 });
-  }
+  };
 
   onSelect = (snippet: ISnippet) => () => {
     this.props.editorActions.edit.REQUEST(snippetToEditEntity(snippet));
-  }
+  };
 
   onLoadVideo = () => {
     this.setState({
       videoLoading: false,
     });
-  }
+  };
 
   selectNew = () => {
     const emptySnippet = createEmptySnippet();
     this.props.editorActions.edit.REQUEST(snippetToEditEntity(emptySnippet));
-  }
-
+  };
   renderIfNotSnippet = () => (
     <Paper style={{ height: '100%' }}>
-      <Flex
-        direction={'column'}
-        justify={'center'}
-        alignItems={'center'}
-      >
+      <Flex direction={'column'} justify={'center'} alignItems={'center'}>
         <Typography variant='title'>
           <p>
-            Let's create a "snippet" you can use <br/>
+            Let's create a "snippet" you can use <br />
             over and over in your email to save time.
           </p>
         </Typography>
         <Fab
           onClick={this.selectNew}
-          icon={<Add/>}
+          icon={<Add />}
           position={0}
           title={'Add a new snippet'}
           whitCtrl
@@ -109,8 +119,7 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
             src='https://www.youtube.com/embed/eSdoidIMGNk'
             onLoad={this.onLoadVideo}
           />
-          {
-            this.state.videoLoading &&
+          {this.state.videoLoading && (
             <InCenter>
               <CircularProgress
                 style={{
@@ -121,16 +130,19 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
                 size={60}
               />
             </InCenter>
-          }
+          )}
         </div>
       </Flex>
     </Paper>
-  )
+  );
 
   renderContent = () => {
     const { status, snippets, pagination } = this.props.snippets;
 
-    if (status === ActionStatus.SUCCESS && useOrDefault(() => snippets.length, 0) === 0) {
+    if (
+      status === ActionStatus.SUCCESS &&
+      useOrDefault(() => snippets.length, 0) === 0
+    ) {
       return this.renderIfNotSnippet();
     }
 
@@ -149,15 +161,16 @@ export class Snippets extends Component<SnippetsSpace.IProps, SnippetsSpace.ISta
         }
         <Fab
           onClick={this.selectNew}
-          icon={<Add/>}
+          icon={<Add />}
           position={0}
           title={'Add a new snippet'}
           whitCtrl
           hotKey={'N'}
+          className={classNamesSnippets.CREATE_SNIPPET}
         />
       </Paper>
     );
-  }
+  };
 
   render() {
     return (

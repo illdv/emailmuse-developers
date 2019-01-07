@@ -38,8 +38,8 @@ const RouteBtn = ({
         classes={{ root: classes.btn }}
         color='primary'
         aria-label={type}
-        className={classNamesEmails[type.toUpperCase()]}
-        onClick={selectItem(type.toUpperCase())}
+        className={classNamesEmails[type]}
+        onClick={selectItem(type)}
       >
         {icon}
       </Fab>

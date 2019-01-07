@@ -18,7 +18,6 @@ export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
   menuItem: string;
-  location: any;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -43,7 +42,6 @@ class Menu extends React.Component<IProps> {
             isLockedSwipe={this.props.isLockedSwipe}
             menuItem={this.props.menuItem}
             actions={this.props.actions}
-            pathname={this.props.location.pathname}
           />
         </Paper>
       </Slide>

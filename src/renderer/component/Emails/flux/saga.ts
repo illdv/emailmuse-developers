@@ -39,8 +39,8 @@ function* loadingFoldersAndEmails(action: Action<{ s: string }>) {
     yield put(emailActions.successfully.REQUEST({ emails }));
     const { tutorial } = yield select();
     if (
-      localStorage.getItem(MenuItemType.EMAILS) &&
-      tutorial.name === MenuItemType.EMAILS
+      localStorage.getItem(MenuItemType.emails) &&
+      tutorial.name === MenuItemType.emails
     ) {
       yield put(runTutorial({}));
     }

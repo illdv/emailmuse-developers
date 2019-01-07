@@ -33,10 +33,9 @@ function* loadingSnippetsSaga(action) {
       }),
     );
     const { tutorial } = yield select();
-
     if (
-      localStorage.getItem(MenuItemType.SNIPPETS) &&
-      tutorial.name === MenuItemType.SNIPPETS
+      localStorage.getItem(MenuItemType.snippets) &&
+      tutorial.name === MenuItemType.snippets
     ) {
       yield put(runTutorial({}));
     }

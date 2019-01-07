@@ -61,8 +61,8 @@ class Tour extends React.Component<Props, State> {
     document.removeEventListener('keydown', () => this.stopedTour);
   }
   handleSteps = ({ name, isDisableBeacon, user }) => {
-    if (user && user.is_swipe_locked && name === MenuItemType.SWIPES) {
-      return Steps[StepItemType[name + '_LOCKED']](isDisableBeacon);
+    if (user && user.is_swipe_locked && name === MenuItemType.swipes) {
+      return Steps[StepItemType[name + '_locked']](isDisableBeacon);
     }
     return Steps[StepItemType[name]](isDisableBeacon);
   };
