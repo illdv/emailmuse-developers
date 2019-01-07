@@ -6,6 +6,7 @@ import {
   WithStyles,
   createStyles,
   CircularProgress,
+  Paper,
 } from '@material-ui/core';
 import InCenter from 'src/renderer/common/InCenter';
 import { classNamesHelp } from '../Tutorial/steps/help';
@@ -48,7 +49,7 @@ class Help extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     return (
-      <div className={`${classNamesHelp.HELP_BODY} ${classes.wrapper}`}>
+      <Paper className={`${classNamesHelp.HELP_BODY} ${classes.wrapper}`}>
         <Button variant='contained' color='primary' onClick={resetTour}>
           restart tutorial
         </Button>
@@ -72,7 +73,7 @@ class Help extends React.Component<Props, State> {
             </InCenter>
           )}
         </div>
-      </div>
+      </Paper>
     );
   }
 }
@@ -83,6 +84,7 @@ const styles = ({ spacing, palette }: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      height: '100%',
     },
   });
 

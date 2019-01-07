@@ -9,7 +9,10 @@ import {
   createStyles,
   Theme,
 } from '@material-ui/core/';
-import { IDrawerMenuActions } from 'src/renderer/component/Menu/flux/interface';
+import {
+  IDrawerMenuActions,
+  MenuItemType,
+} from 'src/renderer/component/Menu/flux/interface';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuList from './MenuList';
@@ -17,7 +20,7 @@ import MenuList from './MenuList';
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
-  menuItem: string;
+  menuItem: MenuItemType;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
