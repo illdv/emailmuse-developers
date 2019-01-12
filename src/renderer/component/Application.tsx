@@ -32,12 +32,14 @@ class Application extends React.Component<Props, object> {
 
   checkFirstTime = () => {
     if (!localStorage.getItem('FirstTime')) {
-      localStorage.setItem('FirstTime', 'yes');
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
+    }
+    if (!localStorage.getItem('ResTour')) {
+      localStorage.setItem('ResTour', 'yes');
     } else {
-      localStorage.setItem('FirstTime', 'no');
+      localStorage.setItem('ResTour', 'no');
     }
   };
-
   render() {
     return (
       <ErrorBoundary>

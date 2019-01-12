@@ -9,7 +9,7 @@ import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
 import { resetTour } from '../Help';
-import isFirstTime from 'src/renderer/common/isFirstTime';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 
 type Props = injectMapStateToProps;
 type State = {
@@ -35,7 +35,6 @@ class Tour extends React.Component<Props, State> {
   handleJoyrideCallback = data => {
     const name = this.props.tutorial.name;
     const { action, index, type } = data;
-    this.forceUpdate();
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.CLOSE) {
       this.stopedTour();
     } else {
@@ -48,6 +47,7 @@ class Tour extends React.Component<Props, State> {
         localStorage.setItem(name, index + (action === ACTIONS.PREV ? -1 : 1));
       }
     }
+    this.forceUpdate();
   };
 
   componentDidMount() {

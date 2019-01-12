@@ -30,12 +30,13 @@ function* sagaEdit() {
 function validation(params: IEditEntityParameter): string {
   for (const key of Object.keys(params)) {
     const value = params[key];
-    if (!value && key !== 'description') {
+    const withoutDescPreh = key !== 'description' && key !== 'preheader';
+    if (!value && withoutDescPreh) {
       return key;
     }
-    if (value.length === 0 && key !== 'description') {
-      return key;
-    }
+    // if (value.length === 0 && key !== 'description' && key !== 'preheader') {
+    //   return key;
+    // }
   }
   return null;
 }
@@ -43,7 +44,7 @@ function validation(params: IEditEntityParameter): string {
 function* sagaSave(action: Action<IEditEntity>) {
   const { type, id, params, html, folderId } = action.payload;
   const validationResult = validation(params);
-  if (validationResult && typeof params.preheader !== 'undefined') {
+  if (validationResult) {
     yield call(toastError, `${firstSymbolUp(validationResult)} can't be empty`);
     return;
   }

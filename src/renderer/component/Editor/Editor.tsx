@@ -23,6 +23,8 @@ import { Confirmation } from 'src/renderer/common/DialogProvider/Confirmation';
 import block from 'bem-ts';
 
 import './Editor.scss';
+import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { MenuItemType } from '../Menu/flux/interface';
 
 const b = block('editor');
 
@@ -45,10 +47,10 @@ export namespace EditorSpace {
   export interface IProps {
     editor?: IEditorState;
     editorActions?: IEditorActions;
+    menuItem: MenuItemType;
   }
 }
-// const findSourseBtn = () => document.querySelector('.jodit_toolbar_btn-source');
-// let sourceBtn;
+
 class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
   state: EditorSpace.IState = {
     html: '',
@@ -213,6 +215,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
             onChangeValue={this.onChange}
             value={this.state.html}
             preheader={this.state.params.preheader}
+            menuItem={this.props.menuItem}
           />
 
           <div>
@@ -263,6 +266,7 @@ class Editor extends Component<EditorSpace.IProps, EditorSpace.IState> {
 
 const mapStateToProps = (state: IGlobalState) => ({
   editor: state.editor,
+  menuItem: state.tutorial.name,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

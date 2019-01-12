@@ -9,7 +9,7 @@ import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from '../../Menu/flux/interface';
 import { push } from 'react-router-redux';
-import isFirstTime from 'src/renderer/common/isFirstTime';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -87,7 +87,8 @@ function* addSnippetsSaga(action) {
     );
     const getSnippets = state => state.snippets.snippets;
     const snips = yield select(getSnippets);
-    if (isFirstTime() && !snips.length) {
+    if (isFirstTime(0) && !snips.length) {
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: 1 }));
       yield put(push('/greatJob'));
     }
   } catch (error) {

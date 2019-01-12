@@ -23,6 +23,8 @@ import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
 import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from '../../Menu/flux/interface';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { push } from 'react-router-redux';
 
 function* loadingFoldersAndEmails(action: Action<{ s: string }>) {
   try {
@@ -70,6 +72,9 @@ function* saveTemplate(action: Action<{ email: IEmail }>) {
     yield put(emailActions.loading.REQUEST({}));
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
+    if (isFirstTime(2) || isFirstTime(3)) {
+      yield put(push('/greatJob'));
+    }
   } catch (error) {
     yield put(
       FluxToast.Actions.showToast('Failed email saved', ToastType.Error),
@@ -83,6 +88,9 @@ function* createTemplate(action: Action<{ email: IEmail }>) {
 
     yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
+    if (isFirstTime(1)) {
+      yield put(push('/greatJob'));
+    }
   } catch (error) {
     yield call(errorHandler, error);
     yield put(
@@ -120,8 +128,8 @@ function* sagaSelectNewTemplate(action) {
   const actionSelectLayout: Action<{ layout: ILayout }> = yield selectFromModal(
     ModalWindowType.SelectLayout,
   );
-
   const selectedLayout = actionSelectLayout.payload.layout;
+
   yield put(
     EditorActions.edit.REQUEST(
       emailToEditEntity({

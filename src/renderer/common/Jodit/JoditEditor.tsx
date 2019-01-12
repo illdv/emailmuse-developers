@@ -5,9 +5,10 @@ import * as Jodit from 'jodit';
 import DialogInsertImage from 'src/renderer/common/Jodit/dialogs/insertImage/DialogInsertImage';
 import DialogInsertLinkButton from 'src/renderer/common/Jodit/dialogs/insertLinkButton/DialogInsertLinkButton';
 import DialogInsertSnippet from 'src/renderer/common/Jodit/dialogs/insertSnippet/DialogInsertSnippet';
-
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
+import { isFirstTime } from '../isFirstTime';
+import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 interface IDialog {
   open: boolean;
@@ -19,26 +20,23 @@ enum DialogName {
   insertSnippet = 'insertSnippet',
 }
 
-export namespace JoditEditorSpace {
-  export interface IState<T extends string> {
-    current: any;
-    dialogs: { [keys in T]?: IDialog };
-  }
+export interface IState<T extends string> {
+  current: any;
+  dialogs: { [keys in T]?: IDialog };
+}
 
-  export interface IProps {
-    value: string;
-    preheader: string;
-    onChangeValue?: (value: string) => void;
-  }
+export interface IProps {
+  value: string;
+  preheader: string;
+  menuItem: MenuItemType;
+  onChangeValue?: (value: string) => void;
 }
 const tagPreheader = 'span';
-export class JoditEditor extends Component<
-  JoditEditorSpace.IProps,
-  JoditEditorSpace.IState<DialogName>
-> {
+
+export class JoditEditor extends Component<IProps, IState<DialogName>> {
   textArea = React.createRef<HTMLTextAreaElement>();
 
-  state: JoditEditorSpace.IState<DialogName> = {
+  state: IState<DialogName> = {
     current: null,
     dialogs: {
       [DialogName.insertLinkButton]: { open: false },
@@ -56,18 +54,18 @@ export class JoditEditor extends Component<
         querySelector.remove();
       }
     }
-  }
+  };
   wrapperPreheader = (preheader, tag) => {
     return preheader
       ? `<${tag} name="preheader"
        style="display: none !important;visibility: hidden;opacity: 0;mso-hide: all;">
        ${preheader}</${tag}>`
       : '';
-  }
+  };
 
   handleEditorValue = (preheader, tag, value) =>
     this.wrapperPreheader(preheader, tag) +
-    this.deletePrevPreheader(value, tag)
+    this.deletePrevPreheader(value, tag);
 
   createEditor = () => {
     this.destructEditor();
@@ -85,9 +83,11 @@ export class JoditEditor extends Component<
         this.editor.events.on('change', onChangeValue);
       }
     }
-  }
+  };
 
   createOption = () => {
+    const isFirstTimeEmail = n =>
+      isFirstTime(n) && this.props.menuItem === MenuItemType.emails;
     return {
       readonly: !this.props.onChangeValue,
       cleanHTML: {
@@ -130,22 +130,26 @@ export class JoditEditor extends Component<
       extraButtons: [
         {
           tooltip: 'Insert image',
-          name: 'insertImage',
+          name: isFirstTimeEmail(3) ? 'highlightedInsertImage' : 'insertImage',
           exec: this.handleOpenDialog(DialogName.insertImage),
         },
         {
           tooltip: 'Insert button',
-          name: 'insertLinkButton',
+          name: isFirstTimeEmail(2)
+            ? 'highlightedInsertLinkButton'
+            : 'insertLinkButton',
           exec: this.handleOpenDialog(DialogName.insertLinkButton),
         },
         {
           tooltip: 'Insert snippet',
-          name: 'insertSnippet',
+          name: isFirstTimeEmail(1)
+            ? 'highlightedInsertSnippet'
+            : 'insertSnippet',
           exec: this.handleOpenDialog(DialogName.insertSnippet),
         },
       ],
     };
-  }
+  };
 
   handleOpenDialog = (nameDialog: DialogName) => () => {
     const current = this.editor.selection.current();
@@ -156,7 +160,7 @@ export class JoditEditor extends Component<
         [nameDialog]: { open: true },
       },
     });
-  }
+  };
 
   handleCloseDialog = (nameDialog: DialogName) => () => {
     this.setState({
@@ -165,7 +169,7 @@ export class JoditEditor extends Component<
         [nameDialog]: { open: false },
       },
     });
-  }
+  };
   insertHTML = (html: string, callback: () => void) => {
     const current = this.state.current;
     if (current) {
@@ -173,7 +177,7 @@ export class JoditEditor extends Component<
     }
     this.editor.selection.insertHTML(html);
     callback();
-  }
+  };
 
   private editor;
 
@@ -188,7 +192,7 @@ export class JoditEditor extends Component<
     }
 
     return arrValue.join('');
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.preheader !== this.props.preheader) {
