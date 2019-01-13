@@ -15,6 +15,7 @@ import { emailToEditEntity } from '../../Emails/utils';
 import { nodeType } from '../../Emails/flux/interfaceAPI';
 import EmailsForFirstTime from '../EmailsForFirstTime';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { SnippetsAction } from '../../Snippets/flux/actions';
 
 export function* menuSaga(action): IterableIterator<any> {
   if (hasEdit) {
@@ -41,6 +42,7 @@ export function* menuSaga(action): IterableIterator<any> {
     yield put(FolderActions.openFolder.REQUEST({}));
     if (isFirstTime() === 1) {
       routePath = '/editor';
+      yield put(SnippetsAction.loading.REQUEST({}));
       yield put(
         EditorActions.edit.REQUEST(
           emailToEditEntity({
@@ -59,7 +61,6 @@ export function* menuSaga(action): IterableIterator<any> {
       routePath = '/editor';
       const emails = yield select((state: IGlobalState) => state.emails.emails);
       const lastEmailId = Math.max.apply(null, emails.map(email => +email.id));
-
       yield put(
         EditorActions.edit.REQUEST(
           emailToEditEntity({
