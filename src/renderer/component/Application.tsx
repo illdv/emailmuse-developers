@@ -27,19 +27,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class Application extends React.Component<Props, object> {
   componentDidMount() {
     this.props.actionAuthorisation.initializeApp.REQUEST({});
-    this.checkFirstTime();
   }
 
-  checkFirstTime = () => {
-    if (!localStorage.getItem('FirstTime')) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
-    }
-    if (!localStorage.getItem('ResTour')) {
-      localStorage.setItem('ResTour', 'yes');
-    } else {
-      localStorage.setItem('ResTour', 'no');
-    }
-  };
   render() {
     return (
       <ErrorBoundary>

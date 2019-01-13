@@ -48,11 +48,11 @@ class GreatJob extends React.Component<Props, State> {
   };
 
   selectItem = (selectedItem: MenuItemType) => () => {
-    if (isFirstTime(1)) {
+    if (isFirstTime() === 1) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 2 }));
-    } else if (isFirstTime(2)) {
+    } else if (isFirstTime() === 2) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 3 }));
-    } else if (isFirstTime(3)) {
+    } else if (isFirstTime() === 3) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 'done' }));
     }
     this.props.actions.selectMenuItem({ selectedItem });
@@ -67,7 +67,7 @@ class GreatJob extends React.Component<Props, State> {
         </Typography>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime(1)) {
+    if (menuItem === MenuItemType.emails && isFirstTime() === 1) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -92,7 +92,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime(2)) {
+    if (menuItem === MenuItemType.emails && isFirstTime() === 2) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -117,7 +117,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime(3)) {
+    if (menuItem === MenuItemType.emails && isFirstTime() === 3) {
       return (
         <div>
           <Typography variant='body1' paragraph>

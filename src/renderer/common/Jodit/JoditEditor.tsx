@@ -87,7 +87,7 @@ export class JoditEditor extends Component<IProps, IState<DialogName>> {
 
   createOption = () => {
     const isFirstTimeEmail = n =>
-      isFirstTime(n) && this.props.menuItem === MenuItemType.emails;
+      isFirstTime() === n && this.props.menuItem === MenuItemType.emails;
     return {
       readonly: !this.props.onChangeValue,
       cleanHTML: {

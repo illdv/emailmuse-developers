@@ -5,7 +5,7 @@ import { Grid, WithStyles, withStyles } from '@material-ui/core/';
 import { IStyle } from 'type/materialUI';
 // import HTML5Backend from 'react-dnd-html5-backend';
 // import { DragDropContext } from 'react-dnd';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Menu from 'src/renderer/component/Menu';
 import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
@@ -25,6 +25,7 @@ import DragDropContext from 'src/renderer/DragDropContext';
 import Help from 'src/renderer/component/Help';
 import Tour from '../Tutorial/Tour';
 import GreatJob from '../GreatJob';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 
 const styles: IStyle = {
   root: {
@@ -52,12 +53,26 @@ class MainLayout extends Component<
   MainLayoutSpace.IProps & WithStyles<any>,
   MainLayoutSpace.IState
 > {
-  state = {};
+  // componentDidMount() {
 
+  // }
+
+  checkFirstTime = () => {
+    if (!localStorage.getItem('FirstTime')) {
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
+    }
+    if (!localStorage.getItem('ResTour')) {
+      localStorage.setItem('ResTour', 'yes');
+    } else {
+      localStorage.setItem('ResTour', 'no');
+    }
+    return true;
+  };
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
+        {this.checkFirstTime() && <Tour />}
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />
@@ -65,7 +80,16 @@ class MainLayout extends Component<
           <Grid item xs={12} sm={9}>
             <Switch>
               <Route path='/emails/:id/:name' component={Emails} />
-              <Route path='/emails' component={Emails} />
+              <Route
+                path='/emails'
+                render={({ match }) =>
+                  isFirstTime() === 0 ? (
+                    <Redirect to='/snippets' />
+                  ) : (
+                    <Emails match={match} />
+                  )
+                }
+              />
             </Switch>
             <Route path='/layouts' component={Layouts} />
             <Route path='/greatJob' component={GreatJob} />
@@ -80,7 +104,6 @@ class MainLayout extends Component<
             <ModalProvider />
           </Grid>
         </Grid>
-        <Tour />
       </div>
     );
   }

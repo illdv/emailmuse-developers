@@ -9,7 +9,7 @@ import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
 import { resetTour } from '../Help';
-import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { onRestTour } from 'src/renderer/common/isFirstTime';
 
 type Props = injectMapStateToProps;
 type State = {
@@ -52,7 +52,7 @@ class Tour extends React.Component<Props, State> {
 
   componentDidMount() {
     document.addEventListener('keydown', () => this.stopedTour);
-    if (isFirstTime()) {
+    if (onRestTour()) {
       resetTour();
     }
   }

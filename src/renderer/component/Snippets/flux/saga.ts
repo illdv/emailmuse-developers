@@ -87,7 +87,8 @@ function* addSnippetsSaga(action) {
     );
     const getSnippets = state => state.snippets.snippets;
     const snips = yield select(getSnippets);
-    if (isFirstTime(0) && !snips.length) {
+
+    if (isFirstTime() === 0 && !snips.length) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 1 }));
       yield put(push('/greatJob'));
     }

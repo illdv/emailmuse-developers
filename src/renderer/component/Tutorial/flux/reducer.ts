@@ -2,6 +2,7 @@ import { createAction, createReducer } from 'redux-act';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 
 export interface ITutorialState {
   name: MenuItemType;
@@ -9,7 +10,7 @@ export interface ITutorialState {
 }
 
 const initialState: ITutorialState = {
-  name: MenuItemType.emails,
+  name: isFirstTime() === 0 ? MenuItemType.snippets : MenuItemType.emails,
   run: false,
 };
 

@@ -39,7 +39,7 @@ export function* menuSaga(action): IterableIterator<any> {
 
   if (routePath === '/emails') {
     yield put(FolderActions.openFolder.REQUEST({}));
-    if (isFirstTime(1)) {
+    if (isFirstTime() === 1) {
       routePath = '/editor';
       yield put(
         EditorActions.edit.REQUEST(
@@ -55,7 +55,7 @@ export function* menuSaga(action): IterableIterator<any> {
         ),
       );
     }
-    if (isFirstTime(2)) {
+    if (isFirstTime() === 2) {
       routePath = '/editor';
       const emails = yield select((state: IGlobalState) => state.emails.emails);
       const lastEmailId = Math.max.apply(null, emails.map(email => +email.id));
@@ -74,7 +74,7 @@ export function* menuSaga(action): IterableIterator<any> {
         ),
       );
     }
-    if (isFirstTime(3)) {
+    if (isFirstTime() === 3) {
       routePath = '/editor';
       const emails = yield select((state: IGlobalState) => state.emails.emails);
       const lastEmailId = Math.max.apply(null, emails.map(email => +email.id));
