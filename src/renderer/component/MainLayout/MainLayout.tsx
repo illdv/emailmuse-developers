@@ -25,7 +25,12 @@ import DragDropContext from 'src/renderer/DragDropContext';
 import Help from 'src/renderer/component/Help';
 import Tour from '../Tutorial/Tour';
 import GreatJob from '../GreatJob';
-import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { isFirstTime, onRestTour } from 'src/renderer/common/isFirstTime';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { getSnippetsFromState } from 'src/renderer/selectors';
+import { ISnippet } from '../Snippets/flux/interfaceAPI';
+import { SnippetsAction, ISnippetsAction } from '../Snippets/flux/actions';
+import { bindActionCreators } from 'redux';
 
 const styles: IStyle = {
   root: {
@@ -45,17 +50,34 @@ export namespace MainLayoutSpace {
   export interface IState {}
 
   export interface IProps {
+    snippets: ISnippet[];
+    actions: ISnippetsAction;
     drawerMenu?: IDrawerMenuState;
   }
 }
+
+const mapStateToProps = (state: IGlobalState) => ({
+  snippets: getSnippetsFromState(state),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  actions: {
+    loading: bindActionCreators(SnippetsAction.loading, dispatch),
+  },
+});
+
 @DragDropContext
+@connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)
 class MainLayout extends Component<
   MainLayoutSpace.IProps & WithStyles<any>,
   MainLayoutSpace.IState
 > {
-  // componentDidMount() {
-
-  // }
+  componentDidMount() {
+    this.props.actions.loading.REQUEST({});
+  }
 
   checkFirstTime = () => {
     if (!localStorage.getItem('FirstTime')) {
@@ -68,6 +90,10 @@ class MainLayout extends Component<
     }
     return true;
   };
+
+  onRedirectFirstTime = ({ match }) =>
+    onRestTour() ? <Redirect to='/snippets' /> : <Emails match={match} />;
+
   render() {
     const { classes } = this.props;
     return (
@@ -80,16 +106,7 @@ class MainLayout extends Component<
           <Grid item xs={12} sm={9}>
             <Switch>
               <Route path='/emails/:id/:name' component={Emails} />
-              <Route
-                path='/emails'
-                render={({ match }) =>
-                  isFirstTime() === 0 ? (
-                    <Redirect to='/snippets' />
-                  ) : (
-                    <Emails match={match} />
-                  )
-                }
-              />
+              <Route path='/emails' render={this.onRedirectFirstTime} />
             </Switch>
             <Route path='/layouts' component={Layouts} />
             <Route path='/greatJob' component={GreatJob} />

@@ -10,6 +10,7 @@ import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from '../../Menu/flux/interface';
 import { push } from 'react-router-redux';
 import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { getSnippetsFromState } from 'src/renderer/selectors';
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -85,8 +86,7 @@ function* addSnippetsSaga(action) {
     yield put(
       FluxToast.Actions.showToast('Snippet created', ToastType.Success),
     );
-    const getSnippets = state => state.snippets.snippets;
-    const snips = yield select(getSnippets);
+    const snips = yield select(getSnippetsFromState);
 
     if (isFirstTime() === 0 && !snips.length) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 1 }));
