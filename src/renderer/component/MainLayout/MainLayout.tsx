@@ -89,14 +89,14 @@ class MainLayout extends Component<
   }
 
   checkFirstTime = () => {
-    //   if (!localStorage.getItem('ResTour')) {
-    localStorage.setItem('ResTour', 'yes');
-    // } else {
-    //   localStorage.setItem('ResTour', 'no');
-    // }
-    // if (!localStorage.getItem('FirstTime')) {
-    localStorage.setItem('FirstTime', JSON.stringify({ yes: 2 }));
-    // }
+    if (!localStorage.getItem('ResTour')) {
+      localStorage.setItem('ResTour', 'yes');
+    } else {
+      localStorage.setItem('ResTour', 'no');
+    }
+    if (!localStorage.getItem('FirstTime')) {
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
+    }
   };
 
   onRedirectFirstTime = ({ match }) =>

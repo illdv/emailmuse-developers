@@ -38,54 +38,37 @@ export function* menuSaga(action): IterableIterator<any> {
   setEdit(false);
   let routePath = getRoutePath(action);
 
+  const emails = yield select((state: IGlobalState) => state.emails.emails);
+
+  const lastEmailId = emails.length
+    ? Math.max.apply(null, emails.map(email => +email.id))
+    : null;
+
+  const changedBody = () => {
+    if (isFirstTime() === 1) {
+      return EmailsForFirstTime.snippet;
+    }
+    if (isFirstTime() === 2) {
+      return EmailsForFirstTime.btn;
+    }
+    if (isFirstTime() === 3) {
+      return EmailsForFirstTime.image;
+    } else {
+      return null;
+    }
+  };
+
   if (routePath === '/emails') {
     yield put(FolderActions.openFolder.REQUEST({}));
-    if (isFirstTime() === 1) {
+    if (isFirstTime() !== 'done') {
       routePath = '/editor';
       yield put(SnippetsAction.loading.REQUEST({}));
       yield put(
         EditorActions.edit.REQUEST(
           emailToEditEntity({
-            id: null,
+            id: isFirstTime() === 1 ? null : lastEmailId,
             title: EmailsForFirstTime.title,
-            body: EmailsForFirstTime.snippet,
-            description: '',
-            preheader: '',
-            folder_id: action.payload.parentId,
-            type: nodeType.email,
-          }),
-        ),
-      );
-    }
-    if (isFirstTime() === 2) {
-      routePath = '/editor';
-      const emails = yield select((state: IGlobalState) => state.emails.emails);
-      const lastEmailId = Math.max.apply(null, emails.map(email => +email.id));
-      yield put(
-        EditorActions.edit.REQUEST(
-          emailToEditEntity({
-            id: lastEmailId,
-            title: EmailsForFirstTime.title,
-            body: EmailsForFirstTime.btn,
-            description: '',
-            preheader: '',
-            folder_id: action.payload.parentId,
-            type: nodeType.email,
-          }),
-        ),
-      );
-    }
-    if (isFirstTime() === 3) {
-      routePath = '/editor';
-      const emails = yield select((state: IGlobalState) => state.emails.emails);
-      const lastEmailId = Math.max.apply(null, emails.map(email => +email.id));
-
-      yield put(
-        EditorActions.edit.REQUEST(
-          emailToEditEntity({
-            id: lastEmailId,
-            title: EmailsForFirstTime.title,
-            body: EmailsForFirstTime.image,
+            body: changedBody(),
             description: '',
             preheader: '',
             folder_id: action.payload.parentId,
@@ -95,7 +78,6 @@ export function* menuSaga(action): IterableIterator<any> {
       );
     }
   }
-
   yield put(push(routePath));
 }
 
