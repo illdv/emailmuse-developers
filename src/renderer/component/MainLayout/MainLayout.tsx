@@ -47,7 +47,9 @@ const styles: IStyle = {
 };
 
 export namespace MainLayoutSpace {
-  export interface IState {}
+  export interface IState {
+    firstTime: boolean;
+  }
 
   export interface IProps {
     snippets: ISnippet[];
@@ -75,30 +77,42 @@ class MainLayout extends Component<
   MainLayoutSpace.IProps & WithStyles<any>,
   MainLayoutSpace.IState
 > {
+  state = {
+    firstTime: onRestTour(),
+  };
   componentDidMount() {
     this.props.actions.loading.REQUEST({});
+    this.checkFirstTime();
+    this.setState({
+      firstTime: onRestTour(),
+    });
   }
 
   checkFirstTime = () => {
-    if (!localStorage.getItem('FirstTime')) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
-    }
-    if (!localStorage.getItem('ResTour')) {
-      localStorage.setItem('ResTour', 'yes');
-    } else {
-      localStorage.setItem('ResTour', 'no');
-    }
-    return true;
+    //   if (!localStorage.getItem('ResTour')) {
+    localStorage.setItem('ResTour', 'yes');
+    // } else {
+    //   localStorage.setItem('ResTour', 'no');
+    // }
+    // if (!localStorage.getItem('FirstTime')) {
+    localStorage.setItem('FirstTime', JSON.stringify({ yes: 2 }));
+    // }
   };
 
   onRedirectFirstTime = ({ match }) =>
-    onRestTour() ? <Redirect to='/snippets' /> : <Emails match={match} />;
+    this.state.firstTime &&
+    this.props.snippets &&
+    !this.props.snippets.length ? (
+      <Redirect to='/snippets' />
+    ) : (
+      <Emails match={match} />
+    );
 
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        {this.checkFirstTime() && <Tour />}
+        <Tour firstTime={this.state.firstTime} />
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />

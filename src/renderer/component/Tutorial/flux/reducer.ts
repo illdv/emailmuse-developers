@@ -2,14 +2,13 @@ import { createAction, createReducer } from 'redux-act';
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 import { AuthorisationActions } from 'src/renderer/component/Profile/Authorisation/flux/actions';
-import { isFirstTime, onRestTour } from 'src/renderer/common/isFirstTime';
 export interface ITutorialState {
   name: MenuItemType;
   run: boolean;
 }
 
 const initialState: ITutorialState = {
-  name: onRestTour() ? MenuItemType.snippets : MenuItemType.emails,
+  name: MenuItemType.emails,
   run: false,
 };
 

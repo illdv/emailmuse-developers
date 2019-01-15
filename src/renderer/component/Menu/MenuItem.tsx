@@ -27,6 +27,7 @@ const Item = ({
   const selectedItem = selectItem(type);
   const title =
     type === MenuItemType.image_library ? type.replace(/_/gi, ' ') : type;
+
   return (
     <MenuItem
       button

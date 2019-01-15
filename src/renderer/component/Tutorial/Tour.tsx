@@ -11,7 +11,9 @@ import { MenuItemType } from '../Menu/flux/interface';
 import { resetTour } from '../Help';
 import { onRestTour } from 'src/renderer/common/isFirstTime';
 
-type Props = injectMapStateToProps;
+type Props = {
+  firstTime: boolean;
+} & injectMapStateToProps;
 type State = {
   isDisableBeacon: boolean;
 };
@@ -52,11 +54,12 @@ class Tour extends React.Component<Props, State> {
 
   componentDidMount() {
     document.addEventListener('keydown', () => this.stopedTour);
-    if (onRestTour()) {
+  }
+  componentDidUpdate() {
+    if (this.props.firstTime) {
       resetTour();
     }
   }
-
   componentWillUnmount() {
     document.removeEventListener('keydown', () => this.stopedTour);
   }

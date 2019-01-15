@@ -69,7 +69,7 @@ export interface IMenuItem {
 interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;
   isLockedSwipe: boolean;
-  menuItem: string;
+  currentRoute: string;
 }
 
 class List extends React.Component<IProps> {
@@ -78,8 +78,8 @@ class List extends React.Component<IProps> {
   };
 
   render() {
-    const { classes } = this.props;
-    const menuItem = this.props.menuItem.toLowerCase();
+    const { classes, currentRoute } = this.props;
+
     return (
       <MenuList classes={{ root: classes.list }}>
         {menuSchema.map(item => (
@@ -88,18 +88,18 @@ class List extends React.Component<IProps> {
             itemMenu={item}
             selectItem={this.selectItem}
             isLockedSwipe={this.props.isLockedSwipe}
-            currentRoute={menuItem}
+            currentRoute={currentRoute}
           />
         ))}
         <div className={classes.btnWrapper}>
           <MenuRouteBtn
-            currentRoute={menuItem}
+            currentRoute={currentRoute}
             type={MenuItemType.account}
             selectItem={this.selectItem}
             icon={<SupervisorAccount />}
           />
           <MenuRouteBtn
-            currentRoute={menuItem}
+            currentRoute={currentRoute}
             type={MenuItemType.help}
             selectItem={this.selectItem}
             icon={<Help />}
