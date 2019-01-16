@@ -31,12 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: IGlobalState) => ({
   isLockedSwipe: state.profile.auth.user.is_swipe_locked,
-  currentRoute:
-    onRestTour() &&
-    getSnippetsFromState(state) &&
-    !getSnippetsFromState(state).length
-      ? MenuItemType.snippets
-      : state.tutorial.name,
+  currentRoute: state.tutorial.name,
 });
 @connect(
   mapStateToProps,

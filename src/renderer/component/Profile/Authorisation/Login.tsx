@@ -73,19 +73,19 @@ export class Login extends Component<
     this.props.action.setAuthStep.REQUEST({
       authStep: AuthStep.FORGOT_PASSWORD,
     });
-  }
+  };
 
   onCreateAccount = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.REGISTRATION });
-  }
+  };
 
   onSignIn = (request: ILoginRequest) => {
     this.props.action.login.REQUEST({ request });
-  }
+  };
 
   onBack = () => {
     this.props.action.setAuthStep.REQUEST({ authStep: AuthStep.PRE_LOGIN });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -104,8 +104,8 @@ export class Login extends Component<
     const defaultValue = IS_PRODUCTION
       ? {}
       : {
-          email: 'slava.sinakov@yandex.ru',
-          password: '111111',
+          email: 'illdv@mail.ru',
+          password: '123456',
         };
 
     return (

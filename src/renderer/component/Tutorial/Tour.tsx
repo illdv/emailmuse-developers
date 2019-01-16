@@ -55,11 +55,11 @@ class Tour extends React.Component<Props, State> {
   componentDidMount() {
     document.addEventListener('keydown', () => this.stopedTour);
   }
-  componentDidUpdate() {
-    if (this.props.firstTime) {
-      resetTour();
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.props.firstTime) {
+  //     resetTour();
+  //   }
+  // }
   componentWillUnmount() {
     document.removeEventListener('keydown', () => this.stopedTour);
   }

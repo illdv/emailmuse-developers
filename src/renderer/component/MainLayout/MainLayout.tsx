@@ -82,22 +82,22 @@ class MainLayout extends Component<
   };
   componentDidMount() {
     this.props.actions.loading.REQUEST({});
-    this.checkFirstTime();
+    // this.checkFirstTime();
     this.setState({
       firstTime: onRestTour(),
     });
   }
 
-  checkFirstTime = () => {
-    if (!localStorage.getItem('ResTour')) {
-      localStorage.setItem('ResTour', 'yes');
-    } else {
-      localStorage.setItem('ResTour', 'no');
-    }
-    if (!localStorage.getItem('FirstTime')) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
-    }
-  };
+  // checkFirstTime = () => {
+  //   if (!localStorage.getItem('ResTour')) {
+  //     localStorage.setItem('ResTour', 'yes');
+  //   } else {
+  //     localStorage.setItem('ResTour', 'no');
+  //   }
+  //   if (!localStorage.getItem('FirstTime')) {
+  //     localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
+  //   }
+  // };
 
   onRedirectFirstTime = ({ match }) =>
     this.state.firstTime &&
