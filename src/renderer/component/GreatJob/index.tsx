@@ -13,7 +13,7 @@ import {
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { MenuItemType, IDrawerMenuActions } from '../Menu/flux/interface';
-import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import {incrementFirstTime, isFirstTime} from 'src/renderer/common/isFirstTime';
 import { DrawerMenuAction } from '../Menu/flux/action';
 import { bindActionCreators } from 'redux';
 import InCenter from 'src/renderer/common/InCenter';
@@ -48,18 +48,11 @@ class GreatJob extends React.Component<Props, State> {
   };
 
   selectItem = (selectedItem: MenuItemType) => () => {
-    if (isFirstTime() === 1) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 2 }));
-    } else if (isFirstTime() === 2) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 3 }));
-    } else if (isFirstTime() === 3) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 'done' }));
-    }
     this.props.actions.selectMenuItem({ selectedItem });
   };
 
   textBlock = (menuItem: MenuItemType) => {
-    if (menuItem === MenuItemType.snippets) {
+    if (isFirstTime() === 1) {
       return (
         <Typography variant='body1'>
           Okay... next let's create a simple email. <br /> Click the Emails
@@ -67,7 +60,7 @@ class GreatJob extends React.Component<Props, State> {
         </Typography>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime() === 1) {
+    if (isFirstTime() === 2) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -92,7 +85,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime() === 2) {
+    if (isFirstTime() === 3) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -117,7 +110,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (menuItem === MenuItemType.emails && isFirstTime() === 3) {
+    if (isFirstTime() === 'done') {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -164,7 +157,7 @@ class GreatJob extends React.Component<Props, State> {
 
   render() {
     const { classes, menuItem } = this.props;
-    console.log(menuItem);
+
     return (
       <Fade in timeout={1000}>
         <Paper classes={{ root: classes.wrapper }}>

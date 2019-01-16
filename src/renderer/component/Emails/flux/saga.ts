@@ -25,6 +25,7 @@ import { runTutorial } from 'src/renderer/component/Tutorial/flux/reducer';
 import { MenuItemType } from '../../Menu/flux/interface';
 import { isFirstTime } from 'src/renderer/common/isFirstTime';
 import { push } from 'react-router-redux';
+import {incrementFirstTime} from '../../../common/isFirstTime';
 
 function* loadingFoldersAndEmails(action: Action<{ s: string }>) {
   try {
@@ -73,6 +74,8 @@ function* saveTemplate(action: Action<{ email: IEmail }>) {
 
     yield put(FluxToast.Actions.showToast('Email saved', ToastType.Success));
     if (isFirstTime() === 2 || isFirstTime() === 3) {
+      yield incrementFirstTime();
+
       yield put(push('/greatJob'));
     }
   } catch (error) {
@@ -89,6 +92,8 @@ function* createTemplate(action: Action<{ email: IEmail }>) {
     yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
     if (isFirstTime() === 1 || isFirstTime() === 2) {
+      yield incrementFirstTime();
+
       yield put(push('/greatJob'));
     }
   } catch (error) {

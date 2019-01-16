@@ -11,6 +11,7 @@ import { MenuItemType } from '../../Menu/flux/interface';
 import { push } from 'react-router-redux';
 import { isFirstTime } from 'src/renderer/common/isFirstTime';
 import { getSnippetsFromState } from 'src/renderer/selectors';
+import {incrementFirstTime} from '../../../common/isFirstTime';
 
 function* loadingSnippetsSaga(action) {
   try {
@@ -88,7 +89,7 @@ function* addSnippetsSaga(action) {
     );
 
     if (isFirstTime() === 0) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 1 }));
+      yield incrementFirstTime();
       yield put(push('/greatJob'));
     }
   } catch (error) {

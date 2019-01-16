@@ -8,3 +8,14 @@ export const isFirstTime = () => {
 };
 
 export const onRestTour = () => localStorage.getItem('ResTour') === 'yes';
+
+export const incrementFirstTime = () => {
+  const yes = isFirstTime();
+
+  if (yes === 3) {
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: 'done'}));
+  } else {
+      const newValue = yes + 1;
+      localStorage.setItem('FirstTime', JSON.stringify({ yes: newValue}));
+  }
+}
