@@ -86,9 +86,8 @@ function* addSnippetsSaga(action) {
     yield put(
       FluxToast.Actions.showToast('Snippet created', ToastType.Success),
     );
-    const snips = yield select(getSnippetsFromState);
 
-    if (isFirstTime() === 0 && !snips.length) {
+    if (isFirstTime() === 0) {
       localStorage.setItem('FirstTime', JSON.stringify({ yes: 1 }));
       yield put(push('/greatJob'));
     }

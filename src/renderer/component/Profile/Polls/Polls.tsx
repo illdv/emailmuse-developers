@@ -65,6 +65,7 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
   }
 
   render() {
+    localStorage.removeItem('FirstTime');
     const { classes } = this.props;
     const question = this.props.currentQuestion;
     if (question) {
