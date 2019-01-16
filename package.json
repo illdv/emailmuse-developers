@@ -85,7 +85,7 @@
     "jest-webpack-resolver": "^0.3.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-env-run": "^3.0.2",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.11.0",
     "react-addons-test-utils": "^15.6.2",
     "react-dev-utils": "^6.0.5",
     "react-test-renderer": "^16.4.1",

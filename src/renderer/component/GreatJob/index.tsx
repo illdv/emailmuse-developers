@@ -62,7 +62,7 @@ class GreatJob extends React.Component<Props, State> {
     if (menuItem === MenuItemType.snippets) {
       return (
         <Typography variant='body1'>
-          Okay... next let's creacte a simple email. <br /> Click the Emails
+          Okay... next let's create a simple email. <br /> Click the Emails
           button in the left nav.
         </Typography>
       );
