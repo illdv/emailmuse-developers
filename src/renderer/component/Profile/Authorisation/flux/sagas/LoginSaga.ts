@@ -20,6 +20,7 @@ import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import checkFirstTimeStorage from 'src/common/checkFirstTimeStorage';
+import { onRestTour } from 'src/renderer/common/isFirstTime';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -53,10 +54,12 @@ function* watcherLogout() {
 
 function* watcherInitApp() {
   const oneDay: number = 86_400_000;
-
+  yield call(checkFirstTimeStorage);
+  yield put(
+    AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+  );
   while (true) {
     yield take(AuthorisationActions.initializeApp.REQUEST(null).type);
-    yield call(checkFirstTimeStorage);
     if (localStorage.getItem('token')) {
       if (
         Date.now() - parseInt(localStorage.getItem('time_token'), 10) <

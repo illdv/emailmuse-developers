@@ -8,8 +8,6 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
-import { resetTour } from '../Help';
-import { onRestTour } from 'src/renderer/common/isFirstTime';
 
 type Props = {
   firstTime: boolean;

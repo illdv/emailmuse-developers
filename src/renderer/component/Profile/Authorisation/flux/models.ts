@@ -32,4 +32,5 @@ export interface IAuthState {
   status?: number;
   password?: string;
   password_confirmation?: string;
+  firstTime: boolean;
 }

@@ -25,9 +25,11 @@ import DragDropContext from 'src/renderer/DragDropContext';
 import Help from 'src/renderer/component/Help';
 import Tour from '../Tutorial/Tour';
 import GreatJob from '../GreatJob';
-import { isFirstTime, onRestTour } from 'src/renderer/common/isFirstTime';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
-import { getSnippetsFromState } from 'src/renderer/selectors';
+import {
+  getSnippetsFromState,
+  getFirstTimeSelector,
+} from 'src/renderer/selectors';
 import { ISnippet } from '../Snippets/flux/interfaceAPI';
 import { SnippetsAction, ISnippetsAction } from '../Snippets/flux/actions';
 import { bindActionCreators } from 'redux';
@@ -47,19 +49,19 @@ const styles: IStyle = {
 };
 
 export namespace MainLayoutSpace {
-  export interface IState {
-    firstTime: boolean;
-  }
+  export interface IState {}
 
   export interface IProps {
     snippets: ISnippet[];
     actions: ISnippetsAction;
     drawerMenu?: IDrawerMenuState;
+    firstTime: boolean;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
   snippets: getSnippetsFromState(state),
+  firstTime: getFirstTimeSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -77,30 +79,12 @@ class MainLayout extends Component<
   MainLayoutSpace.IProps & WithStyles<any>,
   MainLayoutSpace.IState
 > {
-  state = {
-    firstTime: onRestTour(),
-  };
   componentDidMount() {
     this.props.actions.loading.REQUEST({});
-    // this.checkFirstTime();
-    this.setState({
-      firstTime: onRestTour(),
-    });
   }
 
-  // checkFirstTime = () => {
-  //   if (!localStorage.getItem('ResTour')) {
-  //     localStorage.setItem('ResTour', 'yes');
-  //   } else {
-  //     localStorage.setItem('ResTour', 'no');
-  //   }
-  //   if (!localStorage.getItem('FirstTime')) {
-  //     localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
-  //   }
-  // };
-
   onRedirectFirstTime = ({ match }) =>
-    this.state.firstTime &&
+    this.props.firstTime &&
     this.props.snippets &&
     !this.props.snippets.length ? (
       <Redirect to='/snippets' />
@@ -112,7 +96,7 @@ class MainLayout extends Component<
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Tour firstTime={this.state.firstTime} />
+        <Tour />
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />
