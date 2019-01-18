@@ -33,6 +33,7 @@ import {
 import { ISnippet } from '../Snippets/flux/interfaceAPI';
 import { SnippetsAction, ISnippetsAction } from '../Snippets/flux/actions';
 import { bindActionCreators } from 'redux';
+import { MenuItemProps } from '@material-ui/core/MenuItem';
 
 const styles: IStyle = {
   root: {
@@ -56,12 +57,14 @@ export namespace MainLayoutSpace {
     actions: ISnippetsAction;
     drawerMenu?: IDrawerMenuState;
     firstTime: boolean;
+    currentRoute: MenuItemProps;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
   snippets: getSnippetsFromState(state),
   firstTime: getFirstTimeSelector(state),
+  currentRoute: state.tutorial.name,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -84,19 +87,18 @@ class MainLayout extends Component<
   }
 
   onRedirectFirstTime = ({ match }) =>
-    this.props.firstTime &&
-    this.props.snippets &&
-    !this.props.snippets.length ? (
+    this.props.firstTime ? (
       <Redirect to='/snippets' />
     ) : (
       <Emails match={match} />
     );
 
   render() {
-    const { classes } = this.props;
+    const { classes, currentRoute } = this.props;
+
     return (
       <div className={classes.root}>
-        <Tour />
+        {/* {currentRoute && <Tour />} */}
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />

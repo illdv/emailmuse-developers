@@ -1,5 +1,8 @@
 import { resetTour } from './../renderer/component/Help/index';
-export default () => {
+export default (remove = null) => {
+  if (remove) {
+    localStorage.removeItem('ResTour');
+  }
   if (!localStorage.getItem('ResTour')) {
     localStorage.setItem('ResTour', 'yes');
     resetTour();

@@ -29,6 +29,7 @@ function* watcherSetToken() {
     const action: Action<{ user: IUser }> = yield take(
       AuthorisationActions.login.SUCCESS(null).type,
     );
+
     const token = action.payload.user.token;
     const time = Date.now();
     CustomStorage.setItemWithTimer({
@@ -54,12 +55,17 @@ function* watcherLogout() {
 
 function* watcherInitApp() {
   const oneDay: number = 86_400_000;
-  yield call(checkFirstTimeStorage);
-  yield put(
-    AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
-  );
+
   while (true) {
     yield take(AuthorisationActions.initializeApp.REQUEST(null).type);
+    yield call(checkFirstTimeStorage);
+    yield put(
+      AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+    );
+    // yield call(checkFirstTimeStorage);
+    // yield put(
+    //   AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+    // );
     if (localStorage.getItem('token')) {
       if (
         Date.now() - parseInt(localStorage.getItem('time_token'), 10) <
@@ -99,6 +105,7 @@ function* onLogin(
     );
     const user = extractUser(response);
     yield put(AuthorisationActions.login.SUCCESS({ user }));
+
     // Check If User is new
     if (user.passed_poll === false) {
       yield call(pollsFlow);
@@ -122,7 +129,13 @@ function* onGoogleLogin(): IterableIterator<any> {
   try {
     const token = yield call(getAccessToken);
     const user = extractUser({ data: JSON.parse(token) } as any);
+
     yield put(AuthorisationActions.login.SUCCESS({ user }));
+
+    yield call(() => checkFirstTimeStorage('remove'));
+    yield put(
+      AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+    );
     if (user.passed_poll === false) {
       yield call(pollsFlow);
     }

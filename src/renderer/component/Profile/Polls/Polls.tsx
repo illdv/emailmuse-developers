@@ -62,10 +62,9 @@ export class Polls extends Component<PollsSpace.IProps, PollsSpace.IState> {
     setTimeout(() => {
       this.props.pallsActions.nextQuestion.REQUEST({ answer });
     }, 500);
-  }
+  };
 
   render() {
-    localStorage.removeItem('FirstTime');
     const { classes } = this.props;
     const question = this.props.currentQuestion;
     if (question) {

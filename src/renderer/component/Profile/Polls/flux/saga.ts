@@ -1,4 +1,12 @@
-import { all, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import {
+  all,
+  put,
+  select,
+  take,
+  takeEvery,
+  takeLatest,
+  call,
+} from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { Action } from 'redux-act';
 import { PollsActions } from './actions';
@@ -6,9 +14,16 @@ import { PollsAPI } from 'src/renderer/API/Polls';
 import { createSagaHandler } from 'src/renderer/flux/saga/utils';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
+import checkFirstTimeStorage from 'src/common/checkFirstTimeStorage';
+import { onRestTour } from 'src/renderer/common/isFirstTime';
+import { AuthorisationActions } from '../../Authorisation/flux/actions';
 
 export function* pollsFlow() {
   yield put(PollsActions.getPoll.REQUEST({}));
+  yield call(() => checkFirstTimeStorage('remove'));
+  yield put(
+    AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+  );
   yield take(PollsActions.getPoll.SUCCESS);
   yield put(PollsActions.nextQuestion.REQUEST({}));
   yield put(push('/polls'));
@@ -48,40 +63,46 @@ function* nextQuestion(action?: Action<{ answer: string }>) {
 
   if (!action.payload.answer) {
     // initial
-    yield put(PollsActions.nextQuestion.SUCCESS({
-      currentQuestion,
-      currentQuestionId,
-      answers,
-      done: false,
-    }));
+    yield put(
+      PollsActions.nextQuestion.SUCCESS({
+        currentQuestion,
+        currentQuestionId,
+        answers,
+        done: false,
+      }),
+    );
   } else {
     // next
-    yield put(PollsActions.nextQuestion.SUCCESS({
-      currentQuestion,
-      done: false,
-      currentQuestionId,
-      answers: [...answers, ...[action.payload.answer]],
-    }));
+    yield put(
+      PollsActions.nextQuestion.SUCCESS({
+        currentQuestion,
+        done: false,
+        currentQuestionId,
+        answers: [...answers, ...[action.payload.answer]],
+      }),
+    );
     if (isPollsCompleted(answers, questions)) {
       // done
       answers = [...answers, ...[action.payload.answer]];
-      yield put(PollsActions.nextQuestion.SUCCESS({ currentQuestion: null, done: true, currentQuestionId: null }));
+      yield put(
+        PollsActions.nextQuestion.SUCCESS({
+          currentQuestion: null,
+          done: true,
+          currentQuestionId: null,
+        }),
+      );
       yield put(PollsActions.savePoll.REQUEST({ answers }));
-      localStorage.setItem('EMAILS', '0');
-      localStorage.setItem('SNIPPETS', '0');
-      localStorage.setItem('LAYOUTS', '0');
-      localStorage.setItem('IMAGE_LIBRARY', '0');
-      localStorage.setItem('SWIPE', '0');
-      localStorage.setItem('TRAINING', '0');
-      localStorage.setItem('ACCOUNT', '0');
     }
   }
 }
 
-const isPollsCompleted = (answers: string[], questions: IQuestion[]): boolean => {
+const isPollsCompleted = (
+  answers: string[],
+  questions: IQuestion[],
+): boolean => {
   const answersCount = answers.length;
   const questionsCount = questions.length - 1;
-  return answersCount && (answersCount === questionsCount);
+  return answersCount && answersCount === questionsCount;
 };
 
 function* watcher() {
