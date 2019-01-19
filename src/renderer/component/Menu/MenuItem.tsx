@@ -28,17 +28,17 @@ class Item extends React.Component<ItemProps, State> {
     currentRoute: null,
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (isFirstTime() && onboardingSteps() === 0) {
-      return {
-        currentRoute: MenuItemType.snippets,
-      };
-    }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (isFirstTime() && onboardingSteps() === 0) {
+  //     return {
+  //       currentRoute: MenuItemType.snippets,
+  //     };
+  //   }
 
-    return {
-      currentRoute: nextProps.currentRoute,
-    };
-  }
+  //   return {
+  //     currentRoute: nextProps.currentRoute,
+  //   };
+  // }
 
   selectedItem = this.props.selectItem(this.props.itemMenu.type);
   title =
@@ -55,7 +55,7 @@ class Item extends React.Component<ItemProps, State> {
       <MenuItem
         button
         onClick={this.selectedItem}
-        selected={this.state.currentRoute === type}
+        selected={this.props.currentRoute === type}
         className={className}
       >
         <ListItemIcon>{icon}</ListItemIcon>

@@ -91,8 +91,6 @@ function* addSnippetsSaga(action) {
     );
 
     if (isFirstTime() && onboardingSteps() === 0) {
-      console.log('1111111');
-
       yield call(incrementOnboardingSteps);
       yield put(push('/greatJob'));
     }

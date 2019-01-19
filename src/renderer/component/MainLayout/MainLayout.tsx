@@ -65,12 +65,14 @@ export namespace MainLayoutSpace {
     firstTime: boolean;
     location: any;
     initRoute: IDrawerMenuActions;
+    currentRoute: MenuItemType;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
   snippets: getSnippetsFromState(state),
   firstTime: getFirstTimeSelector(state),
+  currentRoute: state.tutorial.name,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -99,7 +101,8 @@ class MainLayout extends Component<
   }
 
   onRedirectFirstTime = ({ match }) =>
-    this.props.firstTime ? (
+    this.props.firstTime &&
+    this.props.currentRoute === MenuItemType.snippets ? (
       <Redirect to='/snippets' />
     ) : (
       <Emails match={match} />

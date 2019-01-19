@@ -12,8 +12,8 @@ import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { isFirstTime, onboardingSteps } from 'src/renderer/common/isFirstTime';
 import { EditorActions } from '../../Editor/flux/actions';
 import { emailToEditEntity } from '../../Emails/utils';
-import { nodeType } from '../../Emails/flux/interfaceAPI';
-import EmailsForFirstTime from '../EmailsForFirstTime';
+import { nodeType, IEmail } from '../../Emails/flux/interfaceAPI';
+import EmailsForFirstTime from '../../Emails/EmailsForFirstTime';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { SnippetsAction } from '../../Snippets/flux/actions';
 
@@ -41,25 +41,23 @@ export function* menuSaga(action): IterableIterator<any> {
   const emails = yield select((state: IGlobalState) => state.emails.emails);
 
   const lastEmailId = emails.length
-    ? Math.max.apply(null, emails.map(email => +email.id))
+    ? Math.max.apply(null, emails.map((email: IEmail) => +email.id))
     : null;
 
-  const changedBody = () => {
-    if (onboardingSteps() === 1) {
-      return EmailsForFirstTime.snippet;
-    }
-    if (onboardingSteps() === 2) {
-      return EmailsForFirstTime.btn;
-    }
-    if (onboardingSteps() === 3) {
-      return EmailsForFirstTime.image;
-    } else {
-      return null;
-    }
+  const emailOnboardingBody = {
+    1: EmailsForFirstTime.snippet,
+    2: EmailsForFirstTime.btn,
+    3: EmailsForFirstTime.image,
   };
+  const changedBody = emailOnboardingBody[onboardingSteps()];
+
   if (routePath === '/emails') {
     yield put(FolderActions.openFolder.REQUEST({}));
-    if (onboardingSteps() !== 'done') {
+    if (
+      isFirstTime() &&
+      onboardingSteps() !== 'done' &&
+      onboardingSteps() !== 0
+    ) {
       routePath = '/editor';
       yield put(SnippetsAction.loading.REQUEST({}));
       yield put(
@@ -67,7 +65,7 @@ export function* menuSaga(action): IterableIterator<any> {
           emailToEditEntity({
             id: onboardingSteps() === 1 ? null : lastEmailId,
             title: EmailsForFirstTime.title,
-            body: changedBody(),
+            body: changedBody,
             description: '',
             preheader: '',
             folder_id: action.payload.parentId,
