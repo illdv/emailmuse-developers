@@ -7,7 +7,7 @@ import DialogInsertLinkButton from 'src/renderer/common/Jodit/dialogs/insertLink
 import DialogInsertSnippet from 'src/renderer/common/Jodit/dialogs/insertSnippet/DialogInsertSnippet';
 import 'jodit/build/jodit.min.css';
 import './JoditEditor.scss';
-import { isFirstTime } from '../isFirstTime';
+import { onboardingSteps } from '../isFirstTime';
 import { MenuItemType } from 'src/renderer/component/Menu/flux/interface';
 
 interface IDialog {
@@ -87,7 +87,7 @@ export class JoditEditor extends Component<IProps, IState<DialogName>> {
 
   createOption = () => {
     const isFirstTimeEmail = n =>
-      isFirstTime() === n && this.props.menuItem === MenuItemType.emails;
+      onboardingSteps() === n && this.props.menuItem === MenuItemType.emails;
     return {
       readonly: !this.props.onChangeValue,
       cleanHTML: {

@@ -20,7 +20,8 @@ import { pollsFlow } from 'src/renderer/component/Profile/Polls/flux/saga';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { AccountActions } from 'src/renderer/component/Profile/Account/flux/module';
 import checkFirstTimeStorage from 'src/common/checkFirstTimeStorage';
-import { onRestTour } from 'src/renderer/common/isFirstTime';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { SnippetsAction } from 'src/renderer/component/Snippets/flux/actions';
 
 const { ipcRenderer } = (window as any).require('electron');
 
@@ -60,12 +61,8 @@ function* watcherInitApp() {
     yield take(AuthorisationActions.initializeApp.REQUEST(null).type);
     yield call(checkFirstTimeStorage);
     yield put(
-      AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+      AuthorisationActions.firstTime.REQUEST({ firstTime: isFirstTime() }),
     );
-    // yield call(checkFirstTimeStorage);
-    // yield put(
-    //   AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
-    // );
     if (localStorage.getItem('token')) {
       if (
         Date.now() - parseInt(localStorage.getItem('time_token'), 10) <
@@ -81,6 +78,7 @@ function* watcherInitApp() {
         yield put(AccountActions.loadingProfile.REQUEST({}));
         yield take(AccountActions.loadingProfile.SUCCESS(null).type);
         yield put(FolderActions.openFolder.REQUEST({}));
+
         localStorage.setItem('time_token', String(Date.now()));
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('time_token', String(Date.now()));
@@ -96,6 +94,10 @@ function* onLogin(
   action: Action<{ request: ILoginRequest }>,
 ): IterableIterator<any> {
   try {
+    yield call(() => checkFirstTimeStorage('remove'));
+    yield put(
+      AuthorisationActions.firstTime.REQUEST({ firstTime: isFirstTime() }),
+    );
     yield put(
       AuthorisationActions.setAuthStep.REQUEST({ authStep: AuthStep.LOADING }),
     );
@@ -111,7 +113,9 @@ function* onLogin(
       yield call(pollsFlow);
     }
     // redirect to main page
-    yield put(FolderActions.openFolder.REQUEST({}));
+
+    yield put(SnippetsAction.loading.REQUEST({}));
+    yield put(push('/snippets'));
   } catch (error) {
     const status = error.response.status;
     yield call(errorHandler, error);
@@ -134,7 +138,7 @@ function* onGoogleLogin(): IterableIterator<any> {
 
     yield call(() => checkFirstTimeStorage('remove'));
     yield put(
-      AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+      AuthorisationActions.firstTime.REQUEST({ firstTime: isFirstTime() }),
     );
     if (user.passed_poll === false) {
       yield call(pollsFlow);

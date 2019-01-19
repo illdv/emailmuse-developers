@@ -1,15 +1,15 @@
 import { resetTour } from './../renderer/component/Help/index';
 export default (remove = null) => {
   if (remove) {
-    localStorage.removeItem('ResTour');
+    localStorage.removeItem('isFirstTime');
   }
-  if (!localStorage.getItem('ResTour')) {
-    localStorage.setItem('ResTour', 'yes');
+  if (!localStorage.getItem('isFirstTime')) {
+    localStorage.setItem('isFirstTime', 'yes');
     resetTour();
   } else {
-    localStorage.setItem('ResTour', 'no');
+    localStorage.setItem('isFirstTime', 'no');
   }
-  if (!localStorage.getItem('FirstTime')) {
-    localStorage.setItem('FirstTime', JSON.stringify({ yes: 0 }));
+  if (!localStorage.getItem('onboardingSteps')) {
+    localStorage.setItem('onboardingSteps', JSON.stringify({ step: 0 }));
   }
 };

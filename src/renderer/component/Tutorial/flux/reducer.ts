@@ -8,7 +8,7 @@ export interface ITutorialState {
 }
 
 const initialState: ITutorialState = {
-  name: MenuItemType.emails,
+  name: null,
   run: false,
 };
 

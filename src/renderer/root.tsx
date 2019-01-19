@@ -15,7 +15,7 @@ const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
 const routeMiddleware = routerMiddleware(history);
 
-const store = createStore(
+export const store = createStore(
   reducer,
   composeWithDevTools(applyMiddleware(routeMiddleware, sagaMiddleware)),
 );

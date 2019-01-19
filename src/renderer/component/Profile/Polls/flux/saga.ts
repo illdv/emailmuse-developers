@@ -15,14 +15,14 @@ import { createSagaHandler } from 'src/renderer/flux/saga/utils';
 import { toastError } from 'src/renderer/flux/saga/toast';
 import { IQuestion } from 'src/renderer/component/Profile/Polls/flux/interfase';
 import checkFirstTimeStorage from 'src/common/checkFirstTimeStorage';
-import { onRestTour } from 'src/renderer/common/isFirstTime';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 import { AuthorisationActions } from '../../Authorisation/flux/actions';
 
 export function* pollsFlow() {
   yield put(PollsActions.getPoll.REQUEST({}));
   yield call(() => checkFirstTimeStorage('remove'));
   yield put(
-    AuthorisationActions.firstTime.REQUEST({ firstTime: onRestTour() }),
+    AuthorisationActions.firstTime.REQUEST({ firstTime: isFirstTime() }),
   );
   yield take(PollsActions.getPoll.SUCCESS);
   yield put(PollsActions.nextQuestion.REQUEST({}));

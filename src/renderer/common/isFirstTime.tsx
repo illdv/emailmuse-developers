@@ -1,21 +1,21 @@
-export const isFirstTime = () => {
-  if (!localStorage.getItem('FirstTime')) {
+export const onboardingSteps = () => {
+  if (!localStorage.getItem('onboardingSteps')) {
     return 0;
   } else {
-    const { yes } = JSON.parse(localStorage.getItem('FirstTime'));
-    return yes;
+    const { step } = JSON.parse(localStorage.getItem('onboardingSteps'));
+    return step;
   }
 };
 
-export const onRestTour = () => localStorage.getItem('ResTour') === 'yes';
+export const isFirstTime = () => localStorage.getItem('isFirstTime') === 'yes';
 
-export const incrementFirstTime = () => {
-  const yes = isFirstTime();
+export const incrementOnboardingSteps = () => {
+  const step = onboardingSteps();
 
-  if ((yes === 3) || (yes === 'done')) {
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: 'done'}));
+  if (step === 3) {
+    localStorage.setItem('onboardingSteps', JSON.stringify({ step: 'done' }));
   } else {
-      const newValue = yes + 1;
-      localStorage.setItem('FirstTime', JSON.stringify({ yes: newValue}));
+    const newValue = step + 1;
+    localStorage.setItem('onboardingSteps', JSON.stringify({ step: newValue }));
   }
-}
+};

@@ -8,7 +8,11 @@ import { IStyle } from 'type/materialUI';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Menu from 'src/renderer/component/Menu';
-import { IDrawerMenuState } from 'src/renderer/component/Menu/flux/interface';
+import {
+  IDrawerMenuState,
+  IDrawerMenuActions,
+  MenuItemType,
+} from 'src/renderer/component/Menu/flux/interface';
 
 import ModalProvider from 'src/renderer/common/DialogProvider/ModalProvider';
 import { Snippets } from 'src/renderer/component/Snippets/Snippets';
@@ -34,6 +38,8 @@ import { ISnippet } from '../Snippets/flux/interfaceAPI';
 import { SnippetsAction, ISnippetsAction } from '../Snippets/flux/actions';
 import { bindActionCreators } from 'redux';
 import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { DrawerMenuAction } from '../Menu/flux/action';
+import { DrawerProps } from '@material-ui/core/Drawer';
 
 const styles: IStyle = {
   root: {
@@ -57,20 +63,21 @@ export namespace MainLayoutSpace {
     actions: ISnippetsAction;
     drawerMenu?: IDrawerMenuState;
     firstTime: boolean;
-    currentRoute: MenuItemProps;
+    location: any;
+    initRoute: IDrawerMenuActions;
   }
 }
 
 const mapStateToProps = (state: IGlobalState) => ({
   snippets: getSnippetsFromState(state),
   firstTime: getFirstTimeSelector(state),
-  currentRoute: state.tutorial.name,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   actions: {
     loading: bindActionCreators(SnippetsAction.loading, dispatch),
   },
+  initRoute: bindActionCreators(DrawerMenuAction, dispatch),
 });
 
 @DragDropContext
@@ -84,6 +91,11 @@ class MainLayout extends Component<
 > {
   componentDidMount() {
     this.props.actions.loading.REQUEST({});
+
+    ((selectedItem: MenuItemType) =>
+      this.props.initRoute.selectMenuItem({ selectedItem }))(
+      this.props.location.pathname.slice(1),
+    );
   }
 
   onRedirectFirstTime = ({ match }) =>
@@ -94,11 +106,11 @@ class MainLayout extends Component<
     );
 
   render() {
-    const { classes, currentRoute } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
-        {/* {currentRoute && <Tour />} */}
+        <Tour />
         <Grid container spacing={8} className={classes.grid}>
           <Grid item xs={12} sm={3}>
             <Route path='/' component={Menu} />

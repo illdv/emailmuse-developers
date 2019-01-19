@@ -13,7 +13,7 @@ import {
 import { connect, Dispatch } from 'react-redux';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { MenuItemType, IDrawerMenuActions } from '../Menu/flux/interface';
-import {incrementFirstTime, isFirstTime} from 'src/renderer/common/isFirstTime';
+import { isFirstTime, onboardingSteps } from 'src/renderer/common/isFirstTime';
 import { DrawerMenuAction } from '../Menu/flux/action';
 import { bindActionCreators } from 'redux';
 import InCenter from 'src/renderer/common/InCenter';
@@ -52,7 +52,7 @@ class GreatJob extends React.Component<Props, State> {
   };
 
   textBlock = (menuItem: MenuItemType) => {
-    if (isFirstTime() === 1) {
+    if (onboardingSteps() === 1) {
       return (
         <Typography variant='body1'>
           Okay... next let's create a simple email. <br /> Click the Emails
@@ -60,7 +60,7 @@ class GreatJob extends React.Component<Props, State> {
         </Typography>
       );
     }
-    if (isFirstTime() === 2) {
+    if (onboardingSteps() === 2) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -85,7 +85,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (isFirstTime() === 3) {
+    if (onboardingSteps() === 3) {
       return (
         <div>
           <Typography variant='body1' paragraph>
@@ -110,7 +110,7 @@ class GreatJob extends React.Component<Props, State> {
         </div>
       );
     }
-    if (isFirstTime() === 'done') {
+    if (onboardingSteps() === 'done') {
       return (
         <div>
           <Typography variant='body1' paragraph>

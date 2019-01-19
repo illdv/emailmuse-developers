@@ -9,7 +9,7 @@ import {
 } from 'src/renderer/common/DialogProvider/flux/actions';
 import { hasEdit, setEdit } from 'src/renderer/component/Editor/Editor';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
-import { isFirstTime } from 'src/renderer/common/isFirstTime';
+import { isFirstTime, onboardingSteps } from 'src/renderer/common/isFirstTime';
 import { EditorActions } from '../../Editor/flux/actions';
 import { emailToEditEntity } from '../../Emails/utils';
 import { nodeType } from '../../Emails/flux/interfaceAPI';
@@ -45,28 +45,27 @@ export function* menuSaga(action): IterableIterator<any> {
     : null;
 
   const changedBody = () => {
-    if (isFirstTime() === 1) {
+    if (onboardingSteps() === 1) {
       return EmailsForFirstTime.snippet;
     }
-    if (isFirstTime() === 2) {
+    if (onboardingSteps() === 2) {
       return EmailsForFirstTime.btn;
     }
-    if (isFirstTime() === 3) {
+    if (onboardingSteps() === 3) {
       return EmailsForFirstTime.image;
     } else {
       return null;
     }
   };
-
   if (routePath === '/emails') {
     yield put(FolderActions.openFolder.REQUEST({}));
-    if (isFirstTime() !== 'done') {
+    if (onboardingSteps() !== 'done') {
       routePath = '/editor';
       yield put(SnippetsAction.loading.REQUEST({}));
       yield put(
         EditorActions.edit.REQUEST(
           emailToEditEntity({
-            id: isFirstTime() === 1 ? null : lastEmailId,
+            id: onboardingSteps() === 1 ? null : lastEmailId,
             title: EmailsForFirstTime.title,
             body: changedBody(),
             description: '',

@@ -16,8 +16,6 @@ import {
 import { DrawerMenuAction } from 'src/renderer/component/Menu/flux/action';
 import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import MenuList from './MenuList';
-import { onRestTour } from 'src/renderer/common/isFirstTime';
-import { getSnippetsFromState } from 'src/renderer/selectors';
 
 export interface IProps extends WithStyles<typeof styles> {
   actions: IDrawerMenuActions;

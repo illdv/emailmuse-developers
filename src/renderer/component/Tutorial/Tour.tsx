@@ -8,12 +8,14 @@ import { IGlobalState } from 'src/renderer/flux/rootReducers';
 import { Steps } from 'src/renderer/component/Tutorial/steps';
 import { StepItemType } from 'src/renderer/component/Tutorial/flux/interface';
 import { MenuItemType } from '../Menu/flux/interface';
+import { isFirstTime } from 'src/renderer/common/isFirstTime';
 
 type Props = {
   firstTime: boolean;
 } & injectMapStateToProps;
 type State = {
   isDisableBeacon: boolean;
+  currentRoute: MenuItemType;
 };
 const mapStateToProps = (state: IGlobalState) => ({
   tutorial: state.tutorial,
@@ -24,6 +26,7 @@ class Tour extends React.Component<Props, State> {
   tour: any = React.createRef();
   state = {
     isDisableBeacon: true,
+    currentRoute: null,
   };
   stopedTour = () => {
     this.tour.current.helpers.skip();
@@ -67,7 +70,12 @@ class Tour extends React.Component<Props, State> {
     }
     return Steps[StepItemType[name]](isDisableBeacon);
   };
-
+  currentedName = name => {
+    if (name) {
+      return name;
+    }
+    return isFirstTime() ? MenuItemType.snippets : MenuItemType.emails;
+  };
   render() {
     const { tutorial } = this.props;
     const getStepNumber = Number(localStorage.getItem(tutorial.name));
@@ -83,7 +91,7 @@ class Tour extends React.Component<Props, State> {
           stepIndex={getStepNumber}
           steps={this.handleSteps({
             user,
-            name: tutorial.name,
+            name: this.currentedName(tutorial.name),
             isDisableBeacon: this.state.isDisableBeacon,
           })}
           run={tutorial.run}

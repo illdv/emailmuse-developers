@@ -10,8 +10,7 @@ import {
 import { Lock } from '@material-ui/icons';
 import { MenuItemType } from './flux/interface';
 import { IMenuItem } from './MenuList';
-import { render } from 'enzyme';
-import { onRestTour, isFirstTime } from 'src/renderer/common/isFirstTime';
+import { isFirstTime, onboardingSteps } from 'src/renderer/common/isFirstTime';
 
 interface ItemProps {
   selectItem: any;
@@ -29,22 +28,13 @@ class Item extends React.Component<ItemProps, State> {
     currentRoute: null,
   };
 
-  // componentDidMount() {
-  //   this.setState({
-  //     currentRoute: onRestTour()
-  //       ? MenuItemType.snippets
-  //       : this.props.currentRoute,
-  //   });
-  // }
-
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (onRestTour() && isFirstTime() === 0) {
+    if (isFirstTime() && onboardingSteps() === 0) {
       return {
         currentRoute: MenuItemType.snippets,
       };
     }
 
-    // Return null to indicate no change to state.
     return {
       currentRoute: nextProps.currentRoute,
     };
