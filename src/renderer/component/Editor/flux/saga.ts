@@ -1,5 +1,5 @@
 import { push } from 'react-router-redux';
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import { delay } from 'redux-saga';
 
@@ -22,6 +22,8 @@ import {
 } from 'src/renderer/component/Emails/flux/interfaceAPI';
 import { FolderActions } from 'src/renderer/component/Folder/flux/actions';
 import { emailActions } from 'src/renderer/component/Emails/flux/action';
+import { IGlobalState } from 'src/renderer/flux/rootReducers';
+import { isFirstTime, onboardingSteps } from 'src/renderer/common/isFirstTime';
 
 function* sagaEdit() {
   yield put(push('/editor'));
@@ -49,10 +51,19 @@ function* sagaSave(action: Action<IEditEntity>) {
     return;
   }
 
+  const emails = yield select((state: IGlobalState) => state.emails.emails);
+
+  const lastEmailId = emails.length
+    ? Math.max.apply(null, emails.map((email: IEmail) => +email.id))
+    : null;
+
+  const changedId = (currentId: number) =>
+    isFirstTime() && onboardingSteps() !== 1 ? lastEmailId : currentId;
+
   if (type === EntityType.Email) {
     const email: IEmail = {
       body: html,
-      id,
+      id: changedId(id),
       description: params.description,
       title: params.subject,
       preheader: params.preheader,

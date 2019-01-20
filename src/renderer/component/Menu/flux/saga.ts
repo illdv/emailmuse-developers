@@ -38,12 +38,6 @@ export function* menuSaga(action): IterableIterator<any> {
   setEdit(false);
   let routePath = getRoutePath(action);
 
-  const emails = yield select((state: IGlobalState) => state.emails.emails);
-
-  const lastEmailId = emails.length
-    ? Math.max.apply(null, emails.map((email: IEmail) => +email.id))
-    : null;
-
   const emailOnboardingBody = {
     1: EmailsForFirstTime.snippet,
     2: EmailsForFirstTime.btn,
@@ -63,7 +57,7 @@ export function* menuSaga(action): IterableIterator<any> {
       yield put(
         EditorActions.edit.REQUEST(
           emailToEditEntity({
-            id: onboardingSteps() === 1 ? null : lastEmailId,
+            id: null,
             title: EmailsForFirstTime.title,
             body: changedBody,
             description: '',

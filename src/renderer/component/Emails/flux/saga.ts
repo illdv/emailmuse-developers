@@ -94,9 +94,7 @@ function* createTemplate(action: Action<{ email: IEmail }>) {
 
     yield put(emailActions.createSuccess.REQUEST({ emails: response.data }));
     yield put(FluxToast.Actions.showToast('Email created', ToastType.Success));
-    if (isFirstTime() && onboardingSteps() === 1 && onboardingSteps() === 2) {
-      console.log(onboardingSteps());
-
+    if (isFirstTime() && onboardingSteps() === 1) {
       yield call(incrementOnboardingSteps);
 
       yield put(push('/greatJob'));
